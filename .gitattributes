@@ -1,0 +1,2 @@
+* text=auto
+*.osm.xml filter=lfs diff=lfs merge=lfs -text
