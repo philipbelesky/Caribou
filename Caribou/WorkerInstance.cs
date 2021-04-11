@@ -7,7 +7,7 @@
     using Grasshopper.Kernel;
 
     /// <summary>
-    /// A class that holds the actual compute logic and encapsulates the state it needs. Every <see cref="GHBAsyncComponent"/> needs to have one.
+    /// A class that holds the actual compute logic and encapsulates the state it needs. Every <see cref="CaribouAsyncComponent"/> needs to have one.
     /// </summary>
     public abstract class WorkerInstance
     {
@@ -17,12 +17,12 @@
         public GH_Component Parent { get; set; }
 
         /// <summary>
-        /// This token is set by the parent <see cref="GHBAsyncComponent"/>.
+        /// This token is set by the parent <see cref="CaribouAsyncComponent"/>.
         /// </summary>
         public CancellationToken CancellationToken { get; set; }
 
         /// <summary>
-        /// This is set by the parent <see cref="GHBAsyncComponent"/>. You can set it yourself, but it's not really worth it.
+        /// This is set by the parent <see cref="CaribouAsyncComponent"/>. You can set it yourself, but it's not really worth it.
         /// </summary>
         public string Id { get; set; }
 
@@ -46,13 +46,13 @@
         public abstract void DoWork(Action<string, double> reportProgress, Action done);
 
         /// <summary>
-        /// Write your data setting logic here. <b>Do not call this function directly from this class. It will be invoked by the parent <see cref="GHBAsyncComponent"/> after you've called `Done` in the <see cref="DoWork(Action{string}, Action{string, GH_RuntimeMessageLevel}, Action)"/> function.</b>
+        /// Write your data setting logic here. <b>Do not call this function directly from this class. It will be invoked by the parent <see cref="CaribouAsyncComponent"/> after you've called `Done` in the <see cref="DoWork(Action{string}, Action{string, GH_RuntimeMessageLevel}, Action)"/> function.</b>
         /// </summary>
         /// <param name="da"></param>
         public abstract void SetData(IGH_DataAccess da);
 
         /// <summary>
-        /// Write your data collection logic here. <b>Do not call this method directly. It will be invoked by the parent <see cref="GHBAsyncComponent"/>.</b>
+        /// Write your data collection logic here. <b>Do not call this method directly. It will be invoked by the parent <see cref="CaribouAsyncComponent"/>.</b>
         /// </summary>
         /// <param name="da"></param>
         /// <param name="params"></param>

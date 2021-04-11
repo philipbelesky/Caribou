@@ -7,8 +7,8 @@
     <ProjectGuid>{FD7BACC9-8FAF-4DF3-90AF-AD237F91F2F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GrasshopperBootstrap.Tests</RootNamespace>
-    <AssemblyName>GrasshopperBootstrap.Tests</AssemblyName>
+    <RootNamespace>Caribou.Tests</RootNamespace>
+    <AssemblyName>Caribou.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

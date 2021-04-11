@@ -5,13 +5,13 @@
     using System.Net.Http;
     using System.ServiceModel.Syndication;
     using System.Xml;
-    using Grasshopper.Kernel;
     using Caribou.Properties;
+    using Grasshopper.Kernel;
 
-    public class AboutComponent : GHBComponent
+    public class AboutComponent : CaribouComponent
     {
         public AboutComponent() : base(
-            "About GrasshopperBootstrap", "AB", "Displays information about this plugin, including " +
+            "About Caribou", "AB", "Displays information about this plugin, including " +
             "documentation sources and current/latest versions.", "About")
         { }
 
@@ -20,7 +20,7 @@
             // No input parameters needed
         }
 
-        protected override void GrasshopperBootstrapRegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void CaribouRegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddTextParameter("Current Version", "cV", "The version of the installed plugin.", GH_ParamAccess.item);
             pManager.AddTextParameter("Latest Version", "lV", "The latest released version of the installed plugin.", GH_ParamAccess.item);
@@ -29,9 +29,9 @@
             pManager.AddTextParameter("URL", "U", "A link to this plugin's documentation.", GH_ParamAccess.item);
         }
 
-        protected override void GrasshopperBootstrapSolveInstance(IGH_DataAccess da)
+        protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-            var assemblyInfo = new GrasshopperBootstrapInfo();
+            var assemblyInfo = new CaribouInfo();
             da.SetData(0, GetPluginVersion());
             LogTiming("Setup"); // Debug Info
             da.SetData(1, GetLatestVersion(assemblyInfo.ReleasesFeed));
@@ -70,7 +70,7 @@
 
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
-        public override Guid ComponentGuid => new Guid("524e4194-6cca-4d09-908f-f2ee8e8b6352");
+        public override Guid ComponentGuid => new Guid("4ccad95b-ec0d-4559-a26f-07dc5dc18a32");
 
         protected override System.Drawing.Bitmap Icon => Resources.icons_icon_plugin;
     }

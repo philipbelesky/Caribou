@@ -11,7 +11,7 @@
     using Grasshopper.Kernel;
     using Timer = System.Timers.Timer;
 
-    public abstract class GHBAsyncComponent : GHBComponent
+    public abstract class CaribouAsyncComponent : CaribouComponent
     {
         // This is a base class that can be used by all of a plugin's components to do calculations asynchronously
         // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
@@ -38,7 +38,7 @@
         public TaskCreationOptions? TaskCreationOptions { get; set; } = null;
 
         // Pass the constructor parameters up to the main GHBComponent abstract class
-        protected GHBAsyncComponent(string name, string nickname, string description, string subCategory)
+        protected CaribouAsyncComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory)
         {
             displayProgressTimer = new Timer(333) { AutoReset = false };
@@ -159,7 +159,7 @@
             });
         }
 
-        protected override void GrasshopperBootstrapSolveInstance(IGH_DataAccess da)
+        protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
             if (state == 0)
             {

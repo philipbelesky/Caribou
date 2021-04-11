@@ -7,13 +7,13 @@
     using Grasshopper.Kernel;
     using Rhino;
 
-    public abstract class GHBComponent : GH_Component
+    public abstract class CaribouComponent : GH_Component
     {
         // This is a base class that can be used by all the plugin's components. This can allow for better code reuse for:
         // - Very commonly used functions (e.g. retrieving tolerances)
         // - Shared setup tasks (e.g. plugin category; or if wrapping SolveInstance in exception tracking (e.g. Sentry))
 
-        private static string pluginCategory = "GrasshopperBootstrap"; // GrasshopperBootstrapTODO: The Grasshopper tab that all components sit in
+        private static string pluginCategory = "Caribou";
         public static readonly double DocAngleTolerance = RhinoDoc.ActiveDoc.ModelAngleToleranceRadians;
         public static readonly double DocAbsTolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
 
@@ -22,7 +22,7 @@
         protected int indexOfDebugOutput; // Tracking where to output logs
 
         // Pass the constructor parameters up to the main GH_Component abstract class
-        protected GHBComponent(string name, string nickname, string description, string subCategory)
+        protected CaribouComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, pluginCategory, subCategory)
         {
         }
@@ -59,12 +59,12 @@
 
         // Components must implement the method
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>")]
-        protected abstract void GrasshopperBootstrapRegisterOutputParams(GH_Component.GH_OutputParamManager pManager);
+        protected abstract void CaribouRegisterOutputParams(GH_Component.GH_OutputParamManager pManager);
 
         // Override the output paramater registration. This allows for a debug logging output to be injected for DEBUG builds
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            GrasshopperBootstrapRegisterOutputParams(pManager);
+            CaribouRegisterOutputParams(pManager);
 #if DEBUG
             pManager.AddTextParameter("Debug", "D", "Debug output logged from component - this parameter should be hidden in release builds", GH_ParamAccess.list); // Debugging affordance
             indexOfDebugOutput = pManager.ParamCount - 1;
@@ -73,7 +73,7 @@
 
         // Components must implement the method
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>")]
-        protected abstract void GrasshopperBootstrapSolveInstance(IGH_DataAccess da);
+        protected abstract void CaribouSolveInstance(IGH_DataAccess da);
 
         // Override the main solve instance method. This allows it to be wrapped in a try/catch for error reporting purposes
         protected override void SolveInstance(IGH_DataAccess DA)
@@ -83,7 +83,7 @@
             debugLogs = new List<string>(); // The debugging log that would be output
 #endif
 
-            GrasshopperBootstrapSolveInstance(DA);
+            CaribouSolveInstance(DA);
 
 #if DEBUG
             DA.SetDataList(indexOfDebugOutput, debugLogs);
