@@ -1,4 +1,4 @@
-﻿namespace GrasshopperBootstrap
+﻿namespace Caribou
 {
     using System;
     using System.Linq;
@@ -6,7 +6,7 @@
     using System.ServiceModel.Syndication;
     using System.Xml;
     using Grasshopper.Kernel;
-    using GrasshopperBootstrap.Properties;
+    using Caribou.Properties;
 
     public class AboutComponent : GHBComponent
     {

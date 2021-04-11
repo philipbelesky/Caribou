@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrasshopperBootstrap.Properties {
+namespace Caribou.Properties {
     using System;
     
     

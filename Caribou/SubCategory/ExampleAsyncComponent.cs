@@ -1,9 +1,9 @@
-﻿namespace GrasshopperBootstrap
+﻿namespace Caribou
 {
     using System;
     using Grasshopper.Kernel;
-    using GrasshopperBootstrap.Properties;
-    using GrasshopperBootstrap.SubCategory;
+    using Caribou.Properties;
+    using Caribou.SubCategory;
     using Rhino.Geometry;
 
     public class ExampleAsyncComponent : GHBAsyncComponent

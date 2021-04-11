@@ -67,9 +67,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GrasshopperBootstrap\GrasshopperBootstrap.csproj">
+    <ProjectReference Include="..\Caribou\Caribou.csproj">
       <Project>{F41C375B-0EFE-4F49-AB21-283CCD838303}</Project>
-      <Name>GrasshopperBootstrap</Name>
+      <Name>Caribou</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace GrasshopperBootstrap
+﻿namespace Caribou
 {
     using System;
     using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace GrasshopperBootstrap.SubCategory
+﻿namespace Caribou.SubCategory
 {
     using System;
     using System.Collections.Generic;

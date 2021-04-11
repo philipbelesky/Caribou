@@ -1,9 +1,9 @@
-﻿namespace GrasshopperBootstrap
+﻿namespace Caribou
 {
     using System;
     using System.Drawing;
     using Grasshopper.Kernel;
-    using GrasshopperBootstrap.Properties;
+    using Caribou.Properties;
 
     public class GrasshopperBootstrapInfo : GH_AssemblyInfo
     {

@@ -1,4 +1,4 @@
-﻿namespace GrasshopperBootstrap.Tests
+﻿namespace Caribou.Tests
 {
     using System;
     using System.Reflection;
