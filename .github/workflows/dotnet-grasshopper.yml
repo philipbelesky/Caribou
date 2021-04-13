@@ -21,7 +21,7 @@ jobs:
 
     env:
       Solution_Name: Caribou                       # Replace with your solution name, i.e. MyWpfApp.sln.
-      Plugin_File_Name:Caribou
+      Plugin_File_Name: Caribou
       Debug_File_Path: '.\Caribou\bin\'
       Release_File_Path: '.\Caribou\release\'
       # Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
