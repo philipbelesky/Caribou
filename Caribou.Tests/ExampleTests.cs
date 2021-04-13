@@ -20,7 +20,7 @@
         public void TestParseB()
         {
             var result = Caribou.Processing.XMLParsing.ParserB();
-            Assert.AreEqual(result, "OKB");
+            Assert.AreEqual(result, "OKB deliberate fail");
         }
     }
 }
