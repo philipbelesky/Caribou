@@ -20,22 +20,24 @@ namespace Caribou.Profiling
 
         public BasicBenchmarks()
         {
-            data = new byte[N];
-            new Random(42).NextBytes(data);
         }
 
         [Benchmark]
-        public void ProfilingA()
+        public void TestParseA()
         {
-            sha256.ComputeHash(data);
-            XMLParsing.ParserA();
+            var result = Caribou.Processing.XMLParsing.ParserA();
+        }
+        
+        [Benchmark]
+        public void TestParseB()
+        {
+            var result = Caribou.Processing.XMLParsing.ParserB();
         }
 
         [Benchmark]
-        public void ProfilingB()
+        public void TestParseC()
         {
-            sha256.ComputeHash(data);
-            XMLParsing.ParserB();
+            var result = Caribou.Processing.XMLParsing.ParserC();
         }
     }
 }

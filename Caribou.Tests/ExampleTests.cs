@@ -13,14 +13,21 @@
         public void TestParseA()
         {
             var result = Caribou.Processing.XMLParsing.ParserA();
-            Assert.AreEqual(result, "OKA");
+            Assert.AreEqual(result, 3);
         }
 
         [TestMethod]
         public void TestParseB()
         {
             var result = Caribou.Processing.XMLParsing.ParserB();
-            Assert.AreEqual(result, "OKB");
+            Assert.AreEqual(result, 3);
+        }
+
+        [TestMethod]
+        public void TestParseC()
+        {
+            var result = Caribou.Processing.XMLParsing.ParserC();
+            Assert.AreEqual(result, 3);
         }
     }
 }

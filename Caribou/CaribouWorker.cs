@@ -35,7 +35,7 @@
         public override void SetData(IGH_DataAccess da)
         {
             if (CancellationToken.IsCancellationRequested) return;
-            da.SetData(0, null); 
+            da.SetData(0, null);
         }
     }
 }
