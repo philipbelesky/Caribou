@@ -13,7 +13,7 @@ namespace Caribou.Profiling
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<BasicBenchmarks>();
+            var summary = BenchmarkRunner.Run<SimpleBenchmarks>();
             Console.Write("Finished Benchmarks. Press any key to exit.");
             Console.ReadLine(); // wait for input
         }

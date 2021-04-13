@@ -10,10 +10,10 @@ using Caribou.Processing;
 namespace Caribou.Profiling
 {
 
-    public class BasicBenchmarks
+    public class SimpleBenchmarks
     {
         private string simpleProfile = Properties.Resources.simpleXMLProfile;
-        public BasicBenchmarks()
+        public SimpleBenchmarks()
         {
         }
 

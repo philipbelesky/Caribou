@@ -221,7 +221,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RunBenchmarks.cs" />
+    <Compile Include="SimpleBenchmarks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
