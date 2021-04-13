@@ -116,9 +116,7 @@
     <None Include="Resources\icons_icon_plugin.png" />
     <None Include="Resources\icons_icon_test.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Processing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
