@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETFramework,Version=v4.6.1": {
+    ".NETFramework,Version=v4.8": {
       "Grasshopper": {
         "type": "Direct",
         "requested": "[6.0.18016.23451, )",
@@ -68,8 +68,8 @@
         "contentHash": "JTfMic5fEFWICePbr7GXOGPranqS9Qxu2U/BZEcnnGbK1SFW8TxRyGp6O1L52xsbfOdqmzjc0t5ubhDrjj+Xpg=="
       }
     },
-    ".NETFramework,Version=v4.6.1/win": {},
-    ".NETFramework,Version=v4.6.1/win-x64": {},
-    ".NETFramework,Version=v4.6.1/win-x86": {}
+    ".NETFramework,Version=v4.8/win": {},
+    ".NETFramework,Version=v4.8/win-x64": {},
+    ".NETFramework,Version=v4.8/win-x86": {}
   }
 }
