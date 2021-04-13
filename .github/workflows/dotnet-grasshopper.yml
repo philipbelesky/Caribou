@@ -20,10 +20,9 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: Caribou                                    # Replace with your solution name, i.e. MyWpfApp.
+      Solution_Name: Caribou    # Replace with your solution name, i.e. MyWpfApp
       Debug_File_Path: '.\Caribou\bin\'
       Release_File_Path: '.\Caribou\release\'
-      Test_Project_Name: 'Caribou.Tests' # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
 
     steps:
     - name: Checkout
@@ -61,25 +60,3 @@ jobs:
       with:
         name: ${{ env.Plugin_File_Name }}
         path: ${{ env.Release_File_Path }}/${{ env.Plugin_File_Name }}.gha
-
-
-    - name: Check still empty
-      run: ls Caribou.Tests\
-
-    # Restore the tests
-    - name: Restore the tests
-      run: msbuild Caribou.Tests /t:Restore /p:Configuration="Debug"
-
-    # Build the application
-    - name: Build the tests
-      run: msbuild Caribou.Tests /p:Configuration="Debug"
-
-    - name: Test4
-      run: ls Caribou.Tests\bin\Debug
-
-    # Take2 using SETUP-VSTest-Test
-    - name: Setup VSTest.exe
-      uses: Malcolmnixon/Setup-VSTest@v4
-
-    - name: VSTest
-      run: vstest.console Caribou.Tests\bin\Debug\Caribou.Tests.dll

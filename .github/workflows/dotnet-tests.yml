@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     env:
-      Solution_Name: Caribou                                    # Replace with your solution name, i.e. MyWpfApp.sln.
+      Tests_Name: Caribou.Tests   # Replace with your test project name, i.e. MyWpfApp
 
     steps:
     - name: Checkout
@@ -29,36 +29,18 @@ jobs:
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
-    # Restore NuGet packages
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration="Debug"
-
-    # Build the application
-    - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration="Debug"
-
-    - name: Check still empty
-      run: ls Caribou.Tests\
-
     # Restore the tests
-    - name: Restore the tests
+    - name: Restore tests project
       run: msbuild Caribou.Tests /t:Restore /p:Configuration="Debug"
 
     # Build the application
-    - name: Build the tests
+    - name: Build tests project
       run: msbuild Caribou.Tests /p:Configuration="Debug"
 
-    - name: Test4
-      run: ls Caribou.Tests\bin\Debug
+    # Required to add VSTest to path (instead of adding mstest to path)
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v4
 
-    # Run the tests
-    # Per https://stackoverflow.com/questions/64655888/jenkins-plugin-mstestrunner-equivalent-in-github-workflow-actions
-    # Per https://github.com/sensate-iot/dsmr-parser/blob/fd141f4e0876b97eb2c14d3ce3e222531e5145b5/.github/workflows/unittest-parser.yml
-
-    - name: TestMSTest help
-      run:  '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /help'
-
-    - name: Test the application
-      working-directory: Caribou.Tests\bin\Debug
-      run: '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /testcontainer:"Caribou.Tests.dll" /noisolation'
-      # TODO: use env variabless
+    # Run the actual tests
+    - name: VSTest
+      run: vstest.console Caribou.Tests\bin\Debug\Caribou.Tests.dll
