@@ -1,10 +1,7 @@
-﻿// File from https://github.com/tmakin/RhinoCommonUnitTesting
-namespace Caribou.Tests
+﻿namespace Caribou.Tests
 {
     using System;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Rhino.Geometry;
-    using Caribou.Processing;
 
     [TestClass]
     public class ExampleTests
@@ -15,14 +12,14 @@ namespace Caribou.Tests
         [TestMethod]
         public void TestParseA()
         {
-            var result = XMLParsing.ParserA();
+            var result = Caribou.Processing.XMLParsing.ParserA();
             Assert.AreEqual(result, "OKA");
         }
 
         [TestMethod]
         public void TestParseB()
         {
-            var result = XMLParsing.ParserB();
+            var result = Caribou.Processing.XMLParsing.ParserB();
             Assert.AreEqual(result, "OKB");
         }
     }

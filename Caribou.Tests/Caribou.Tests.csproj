@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="ExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestInit.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grasshopper">
