@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Processing
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml;
@@ -8,10 +9,10 @@
 
     public class XMLParsing
     {
-        public static int ParserA()
+        public static int ParserA(string xmlContents)
         {
             int studentCount = 0;
-            using (XmlReader reader = XmlReader.Create(@"C:\Users\philip\Sites\Caribou\Caribou.Tests\Cases\simple.xml"))
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {
                 while (reader.Read())
                 {
@@ -38,11 +39,11 @@
             return studentCount;
         }
 
-        public static int ParserB()
+        public static int ParserB(string xmlContents)
         {
             int studentCount = 0;
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\Users\philip\Sites\Caribou\Caribou.Tests\Cases\simple.xml");
+            doc.LoadXml(xmlContents);
             XmlNodeList itemRefList = doc.GetElementsByTagName("Student");
             foreach (XmlNode node in itemRefList)
             {
@@ -55,10 +56,10 @@
             return studentCount;
         }
 
-        public static int ParserC()
+        public static int ParserC(string xmlContents)
         {
             int studentCount = 0;
-            var xml = XDocument.Load(@"C:\Users\philip\Sites\Caribou\Caribou.Tests\Cases\simple.xml");
+            var xml = XDocument.Parse(xmlContents);
             var results = from student in xml.Descendants("Student")
                           where (string)student.Element("Id") != ""
                           select student;

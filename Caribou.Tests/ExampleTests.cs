@@ -6,27 +6,26 @@
     [TestClass]
     public class ExampleTests
     {
-        /// <summary>
-        /// Transform a brep using a translation
-        /// </summary>
+        private string simpleFile = Properties.Resources.SimpleXMLParse;
+
         [TestMethod]
         public void TestParseA()
         {
-            var result = Caribou.Processing.XMLParsing.ParserA();
+            var result = Caribou.Processing.XMLParsing.ParserA(simpleFile);
             Assert.AreEqual(result, 3);
         }
 
         [TestMethod]
         public void TestParseB()
         {
-            var result = Caribou.Processing.XMLParsing.ParserB();
+            var result = Caribou.Processing.XMLParsing.ParserB(simpleFile);
             Assert.AreEqual(result, 3);
         }
 
         [TestMethod]
         public void TestParseC()
         {
-            var result = Caribou.Processing.XMLParsing.ParserC();
+            var result = Caribou.Processing.XMLParsing.ParserC(simpleFile);
             Assert.AreEqual(result, 3);
         }
     }

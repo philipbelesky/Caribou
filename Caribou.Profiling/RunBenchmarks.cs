@@ -12,12 +12,7 @@ namespace Caribou.Profiling
 
     public class BasicBenchmarks
     {
-        private const int N = 10000;
-        private readonly byte[] data;
-
-        private readonly SHA256 sha256 = SHA256.Create();
-        private readonly MD5 md5 = MD5.Create();
-
+        private string simpleProfile = Properties.Resources.simpleXMLProfile;
         public BasicBenchmarks()
         {
         }
@@ -25,19 +20,19 @@ namespace Caribou.Profiling
         [Benchmark]
         public void TestParseA()
         {
-            var result = Caribou.Processing.XMLParsing.ParserA();
+            var result = Caribou.Processing.XMLParsing.ParserA(simpleProfile);
         }
         
         [Benchmark]
         public void TestParseB()
         {
-            var result = Caribou.Processing.XMLParsing.ParserB();
+            var result = Caribou.Processing.XMLParsing.ParserB(simpleProfile);
         }
 
         [Benchmark]
         public void TestParseC()
         {
-            var result = Caribou.Processing.XMLParsing.ParserC();
+            var result = Caribou.Processing.XMLParsing.ParserC(simpleProfile);
         }
     }
 }
