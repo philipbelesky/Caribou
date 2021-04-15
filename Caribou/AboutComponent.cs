@@ -45,7 +45,18 @@
         {
             var version = "A latest release could not be found";
             var client = new HttpClient();
-            var result = client.GetStreamAsync(feedURL).Result;
+            System.IO.Stream result;
+
+            try
+            {
+                result = client.GetStreamAsync(feedURL).Result; // Will throw during debug; should be fine in release
+            }
+            catch (HttpRequestException)
+            {
+                client.Dispose();
+                return version;
+            }
+
             using (var xmlReader = XmlReader.Create(result))
             {
                 SyndicationFeed feed = SyndicationFeed.Load(xmlReader);

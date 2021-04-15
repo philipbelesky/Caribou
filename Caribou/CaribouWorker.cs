@@ -29,13 +29,16 @@
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
             if (CancellationToken.IsCancellationRequested) return;
-            da.GetData(0, ref test);
+            // da.GetData(0, ref test);
+            // TODO: validation cases
+            // If the ReadFile output is set to per-line or total file
+            // If a filepath is provided by mistake 
         }
 
         public override void SetData(IGH_DataAccess da)
         {
             if (CancellationToken.IsCancellationRequested) return;
-            da.SetData(0, null);
+            // da.SetData(0, null);
         }
     }
 }
