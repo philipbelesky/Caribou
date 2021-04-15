@@ -10,18 +10,19 @@
         public LoadAndParseComponent() : base(
          "OpenStreetMap", "OSM", "Load and parse data from an OSM file based on its key", "OSM")
         {
-            BaseWorker = new CaribouWorker();
+            BaseWorker = new LoadAndParseWorker();
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("OSM Content", "C", "The contents of an XML OSM file (use the output of a Read File component", GH_ParamAccess.list);
+            pManager.AddGenericParameter("OSM Content", "C", "The contents of an XML OSM file (use the output of a Read File component)", GH_ParamAccess.item);
         }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Ways", "W", "Ways; e.g. nodes linked in a linear order via a Polyline", GH_ParamAccess.list);
             pManager.AddPointParameter("Nodes", "N", "Notes; e.g. points that describe a location of interest", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Ways", "W", "Ways; e.g. nodes linked in a linear order via a Polyline", GH_ParamAccess.list);
+            // TODO: output the found keys/values? Associate them with the items via index?
         }
 
         public override GH_Exposure Exposure => GH_Exposure.primary;

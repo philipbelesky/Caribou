@@ -8,20 +8,6 @@ using System.IO;
 
 namespace Caribou.Processing
 {
-    public struct Coords
-    {
-        public Coords(double x, double y)
-        {
-            Latitude = x;
-            Longitude = y;
-        }
-
-        public double Latitude { get; }
-        public double Longitude { get; }
-
-        public override string ToString() => $"({Latitude}, {Longitude})";
-    }       
-
     public class FindNodes
     {
         public static Dictionary<string, List<Coords>> FindByFeaturesA(Dictionary<string, string> featuresSpecified, string xmlContents)

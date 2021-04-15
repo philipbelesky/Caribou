@@ -8,6 +8,12 @@
 
     public class LoadAndParseWorker : WorkerInstance
     {
+        private string xmlFileContents;
+        private List<string> debugOutput = new List<string>();
+        private Dictionary<string, string> keyValuesToFind;
+        private Dictionary<string, List<Coords>> foundItems;
+        private List<Point3d> foundNodes;
+        private List<Polyline> foundWays;
         public LoadAndParseWorker() : base(null) { }
 
         public override void DoWork(Action<string, double> reportProgress, Action done)
@@ -15,7 +21,9 @@
             // Checking for cancellation
             if (CancellationToken.IsCancellationRequested) { return; }
 
-            // Do the work 
+            foundItems = FindNodes.FindByFeaturesA(keyValuesToFind, xmlFileContents);
+            foundNodes = XMLOutput.GetNodesFromCoords(foundItems);
+            foundWays = XMLOutput.GetWaysFromCoords(foundItems);
 
             done();
         }
@@ -26,18 +34,26 @@
         {
             if (CancellationToken.IsCancellationRequested) return;
 
-            // da.GetData(0, ref file);
+            da.GetData(0, ref xmlFileContents);
+            // TODO: validation of input
+
+            // TODO: set below dictionary based on input
+            keyValuesToFind = new Dictionary<string, string>
+            {
+                { "amenity", "restaurant" },
+                { "craft", "jeweller" },
+            };
         }
 
         public override void SetData(IGH_DataAccess da)
         {
             if (CancellationToken.IsCancellationRequested) return;
 
-            // da.SetData(0, spiral); 
+            da.SetDataList(0, foundNodes);
+            da.SetDataList(1, foundWays);
 
-            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
-            var debugOutput = new List<string> { $"Test." };
-            da.SetDataList(1, debugOutput);
+            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually            
+            da.SetDataList(2, debugOutput);
         }
     }
 }
