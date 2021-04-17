@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Processing
+﻿namespace Caribou.Processing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public struct RequestedFeature
     {
         // A specific key:value pair represent feature/subfeatures to search for in an OSM file

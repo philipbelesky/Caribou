@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Threading.Tasks;
-using System.IO;
-
-namespace Caribou.Processing
+﻿namespace Caribou.Processing
 {
-    public class FindNodes
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Xml;
+    using System.Threading.Tasks;
+    using System.IO;
+
+    public class FindNodesViaXMLReader
     {
-        public static ResultsForFeatures FindByFeaturesA(RequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(RequestedFeature[] featuresSpecified, string xmlContents)
         {
-            // Output
-            var matches = new ResultsForFeatures(featuresSpecified);
+            var matches = new ResultsForFeatures(featuresSpecified); // Output
             var matchAllKey = RequestedFeature.SearchAllKey;
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))

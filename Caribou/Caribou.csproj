@@ -61,12 +61,14 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
+    <Compile Include="Processing\FindNodesViaLinq.cs" />
     <Compile Include="Processing\DataCoordsLocation.cs" />
-    <Compile Include="Processing\FindNodesByFeature.cs" />
+    <Compile Include="Processing\FindNodesViaXMLDocument.cs" />
+    <Compile Include="Processing\FindNodesViaXMLReader.cs" />
     <Compile Include="Processing\LoadAndParseComponent.cs" />
     <Compile Include="Processing\LoadAndParseWorker.cs" />
     <Compile Include="Processing\DataRequestResult.cs" />
-    <Compile Include="Processing\XMLOutput.cs" />
+    <Compile Include="Processing\DataRhinoOutputs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -75,7 +77,6 @@
     </Compile>
     <Compile Include="CaribouAsyncComponent.cs" />
     <Compile Include="WorkerInstance.cs" />
-    <Compile Include="Processing\XMLParsing.cs" />
     <Compile Include="CaribouWorker.cs" />
   </ItemGroup>
   <ItemGroup>

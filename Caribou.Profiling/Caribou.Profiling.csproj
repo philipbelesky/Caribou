@@ -221,7 +221,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SimpleBenchmarks.cs" />
+    <Compile Include="MelbourneBenchmarks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -244,7 +244,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Cases\simple.xml" />
+    <None Include="Cases\melbourne.osm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

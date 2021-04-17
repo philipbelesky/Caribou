@@ -21,9 +21,9 @@
             // Checking for cancellation
             if (CancellationToken.IsCancellationRequested) { return; }
 
-            foundItems = FindNodes.FindByFeaturesA(featuresSpecified, xmlFileContents);
-            foundNodes = XMLOutput.GetNodesFromCoords(foundItems);
-            foundWays = XMLOutput.GetWaysFromCoords(foundItems);
+            foundItems = FindNodesViaXMLReader.FindByFeatures(featuresSpecified, xmlFileContents);
+            foundNodes = DataRhinoOutputs.GetNodesFromCoords(foundItems);
+            foundWays = DataRhinoOutputs.GetWaysFromCoords(foundItems);
 
             done();
         }

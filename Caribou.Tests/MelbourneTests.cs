@@ -19,9 +19,9 @@
         };
 
         [TestMethod]
-        public void ParseMelbourneAForKeyValue()
+        public void ParseMelbourneForKeyValueViaXMLReader()
         {
-            var matches = Caribou.Processing.FindNodes.FindByFeaturesA(restarauntsAndJewelers, melbourneFile);
+            var matches = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(restarauntsAndJewelers, melbourneFile);
             Assert.AreEqual(matches.Results["amenity"]["restaurant"].Count, 173);
             Assert.AreEqual(matches.Results["amenity"]["restaurant"][0].Latitude, -37.8134515);
             Assert.AreEqual(matches.Results["craft"]["jeweller"].Count, 1);
@@ -29,22 +29,57 @@
         }
 
         [TestMethod]
-        public void ParseMelbourneAForKey()
+        public void ParseMelbourneForKeyValueViaXMLDocument()
         {
-            var matches = Caribou.Processing.FindNodes.FindByFeaturesA(restaraunts, melbourneFile);
-            var amenityMatches = 0;
-            foreach (var matchedSubFeature in matches.Results["amenity"].Keys)
-            {
-                amenityMatches += matches.Results["amenity"][matchedSubFeature].Count;
-            }
-            Assert.AreEqual(amenityMatches, 655);
+            var matches = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(restarauntsAndJewelers, melbourneFile);
+            Assert.AreEqual(matches.Results["amenity"]["restaurant"].Count, 173);
+            Assert.AreEqual(matches.Results["amenity"]["restaurant"][0].Latitude, -37.8134515);
+            Assert.AreEqual(matches.Results["craft"]["jeweller"].Count, 1);
+            Assert.AreEqual(matches.Results["craft"]["jeweller"][0].Longitude, 144.9658410);
+        }
 
-            var highwayMatches = 0;
-            foreach (var matchedSubFeature in matches.Results["highway"].Keys)
+        [TestMethod]
+        public void ParseMelbourneForKeyValueViaLinq()
+        {
+            var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(restarauntsAndJewelers, melbourneFile);
+            Assert.AreEqual(matches.Results["amenity"]["restaurant"].Count, 173);
+            Assert.AreEqual(matches.Results["amenity"]["restaurant"][0].Latitude, -37.8134515);
+            Assert.AreEqual(matches.Results["craft"]["jeweller"].Count, 1);
+            Assert.AreEqual(matches.Results["craft"]["jeweller"][0].Longitude, 144.9658410);
+        }
+
+        [TestMethod]
+        public void ParseMelbourneForKeyViaXMLReader()
+        {
+            var matches = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(restaraunts, melbourneFile);
+            Assert.AreEqual(CountForKey(matches, "amenity"), 655);
+            Assert.AreEqual(CountForKey(matches, "highway"), 755);
+        }
+
+        [TestMethod]
+        public void ParseMelbourneForKeyViaXMLDocument()
+        {
+            var matches = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(restaraunts, melbourneFile);
+            Assert.AreEqual(CountForKey(matches, "amenity"), 655);
+            Assert.AreEqual(CountForKey(matches, "highway"), 755);
+        }
+
+        [TestMethod]
+        public void ParseMelbourneForKeyViaLinq()
+        {
+            var matches = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(restaraunts, melbourneFile);
+            Assert.AreEqual(CountForKey(matches, "amenity"), 655);
+            Assert.AreEqual(CountForKey(matches, "highway"), 755);
+        }
+
+        private int CountForKey(ResultsForFeatures matches, string key)
+        {
+            var matchesCount = 0;
+            foreach (var matchedSubFeature in matches.Results[key].Keys)
             {
-                highwayMatches += matches.Results["highway"][matchedSubFeature].Count;
+                matchesCount += matches.Results[key][matchedSubFeature].Count;
             }
-            Assert.AreEqual(highwayMatches, 755);
+            return matchesCount;
         }
     }
 }

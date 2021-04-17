@@ -61,39 +61,17 @@ namespace Caribou.Profiling.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;Students&gt;
-        /// &lt;Student&gt;
-        ///    &lt;Id&gt;Olivia&lt;/Id&gt;
-        ///    &lt;Grade&gt;A&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        ///  &lt;Student&gt;
-        ///    &lt;Id&gt;Laura&lt;/Id&gt;
-        ///    &lt;Grade&gt;A+&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        ///  &lt;Student&gt;
-        ///    &lt;Id&gt;Ben&lt;/Id&gt;
-        ///    &lt;Grade&gt;A-&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        ///  &lt;Student&gt;
-        ///    &lt;Id&gt;&lt;/Id&gt;
-        ///    &lt;Grade&gt;A-&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        /// &lt;Student&gt;
-        ///    &lt;Id&gt;Olivia&lt;/Id&gt;
-        ///    &lt;Grade&gt;A&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        ///  &lt;Student&gt;
-        ///    &lt;Id&gt;Laura&lt;/Id&gt;
-        ///    &lt;Grade&gt;A+&lt;/Grade&gt;
-        ///  &lt;/Student&gt;
-        ///  &lt;Student&gt;
-        ///    &lt;Id&gt;Ben&lt;/Id&gt;
-        ///    &lt;Grade&gt;A-&lt;/Gra [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
+        ///
+        ///  &lt;bounds minlat=&quot;-37.8164200&quot; minlon=&quot;144.9627400&quot; maxlat=&quot;-37.8089200&quot; maxlon=&quot;144.9710600&quot;/&gt;
+        ///  &lt;node id=&quot;4795887585&quot; lat=&quot;-37.8134515&quot; lon=&quot;144.9689196&quot; version=&quot;1&quot; timestamp=&quot;2017-04-15T22:43:13Z&quot; changeset=&quot;47826499&quot; uid=&quot;4633898&quot; user=&quot;monena [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string simpleXMLProfile {
+        internal static string MelbourneOSM {
             get {
-                return ResourceManager.GetString("simpleXMLProfile", resourceCulture);
+                return ResourceManager.GetString("MelbourneOSM", resourceCulture);
             }
         }
     }

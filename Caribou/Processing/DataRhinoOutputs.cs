@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Rhino.Geometry;
 
-    public class XMLOutput
+    public class DataRhinoOutputs
     {
         public static List<Point3d> GetNodesFromCoords(ResultsForFeatures foundItems)
         {
