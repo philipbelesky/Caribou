@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rhino.Geometry;
-
-namespace Caribou.Processing
+﻿namespace Caribou.Processing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Rhino.Geometry;
+
     public class XMLOutput
     {
-        public static List<Point3d> GetNodesFromCoords(Dictionary<string, List<Coords>> foundItems)
+        public static List<Point3d> GetNodesFromCoords(ResultsForFeatures foundItems)
         {
             var results = new List<Point3d>();
-            foreach (var featureType in foundItems)
+            foreach (var featureType in foundItems.Results.Keys)
             {
-                foreach (var coord in featureType.Value)
+                foreach (var subfeatureType in foundItems.Results[featureType].Keys)
                 {
-                    results.Add(GetPointFromLatLong(coord));
+                    foreach (var coord in foundItems.Results[featureType][subfeatureType])
+                    {
+                        results.Add(GetPointFromLatLong(coord));
+                    }
                 }
             }
             return results;
         }
 
-        public static List<Polyline> GetWaysFromCoords(Dictionary<string, List<Coords>> foundItems)
+        public static List<Polyline> GetWaysFromCoords(ResultsForFeatures foundItems)
         {
             var results = new List<Polyline>();
-            foreach (var featureType in foundItems)
+            foreach (var featureType in foundItems.Results.Keys)
             {
                 // TODO: implementation
             }

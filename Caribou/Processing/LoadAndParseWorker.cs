@@ -10,8 +10,8 @@
     {
         private string xmlFileContents;
         private List<string> debugOutput = new List<string>();
-        private Dictionary<string, string> keyValuesToFind;
-        private Dictionary<string, List<Coords>> foundItems;
+        private RequestedFeature[] featuresSpecified;
+        private ResultsForFeatures foundItems;
         private List<Point3d> foundNodes;
         private List<Polyline> foundWays;
         public LoadAndParseWorker() : base(null) { }
@@ -21,7 +21,7 @@
             // Checking for cancellation
             if (CancellationToken.IsCancellationRequested) { return; }
 
-            foundItems = FindNodes.FindByFeaturesA(keyValuesToFind, xmlFileContents);
+            foundItems = FindNodes.FindByFeaturesA(featuresSpecified, xmlFileContents);
             foundNodes = XMLOutput.GetNodesFromCoords(foundItems);
             foundWays = XMLOutput.GetWaysFromCoords(foundItems);
 
@@ -37,11 +37,10 @@
             da.GetData(0, ref xmlFileContents);
             // TODO: validation of input
 
-            // TODO: set below dictionary based on input
-            keyValuesToFind = new Dictionary<string, string>
+            // TODO: set below array based on input
+            var featuresSpecified = new RequestedFeature[]
             {
-                { "amenity", "restaurant" },
-                { "craft", "jeweller" },
+                new RequestedFeature("amenity", "restaurant" ), new RequestedFeature( "craft", "jeweller" )
             };
         }
 

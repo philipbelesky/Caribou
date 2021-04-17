@@ -10,14 +10,11 @@ namespace Caribou.Processing
 {
     public class FindNodes
     {
-        public static Dictionary<string, List<Coords>> FindByFeaturesA(Dictionary<string, string> featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeaturesA(RequestedFeature[] featuresSpecified, string xmlContents)
         {
             // Output
-            var matches = new Dictionary<string, List<Coords>>();
-            foreach (string key in featuresSpecified.Keys)
-            {
-                matches[key + ":" + featuresSpecified[key]] = new List<Coords>();
-            }
+            var matches = new ResultsForFeatures(featuresSpecified);
+            var matchAllKey = RequestedFeature.SearchAllKey;
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {
@@ -26,7 +23,6 @@ namespace Caribou.Processing
                 double longitude = 0.0;
                 string tagKey;
                 string tagValue;
-                string[] featureKeys = featuresSpecified.Keys.ToArray(); // TODO: is this actually faster than just checking the dict?
                 
                 while (reader.Read())
                 {
@@ -40,14 +36,29 @@ namespace Caribou.Processing
                         else if (reader.Name == "tag")
                         {
                             tagKey = reader.GetAttribute("k");
-                            if (featureKeys.Contains(tagKey))
+                            if (matches.Results.ContainsKey(tagKey))
                             {
                                 tagValue = reader.GetAttribute("v");
-                                if (tagValue == featuresSpecified[tagKey])
+                                if (matches.Results[tagKey].ContainsKey(matchAllKey))
                                 {
-                                    matches[tagKey + ":" + tagValue].Add(new Coords(latitude, longitude));
+                                    // If we are searching for all items within a feature then add it regardless
+                                    if (matches.Results[tagKey].ContainsKey(tagValue)) {
+                                        // If we have already found items of this sub-type, add it to an existing list
+                                        matches.Results[tagKey][tagValue].Add(new Coords(latitude, longitude));
+                                    } 
+                                    else
+                                    {
+                                        // If not then need to add the key and init the list
+                                        matches.Results[tagKey][tagValue] = new List<Coords>() {
+                                            new Coords(latitude, longitude)
+                                        };
+                                    }
+                                } 
+                                else if (matches.Results[tagKey].ContainsKey(tagValue))
+                                {
+                                    // If searching for a particular key:value only add if there is 
+                                    matches.Results[tagKey][tagValue].Add(new Coords(latitude, longitude));
                                 }
-                                // TODO: skip read to next <node> value rather than continue reading subsequent sibling tags
                             }
                         }
                     }
