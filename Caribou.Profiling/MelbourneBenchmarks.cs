@@ -22,19 +22,19 @@
         }
 
         [Benchmark]
-        public void TestParseA()
+        public void TestParseViaXMLReader()
         {
             var result = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(features, melbourneFile);
         }
         
         [Benchmark]
-        public void TestParseB()
+        public void TestParseViaXMLDocument()
         {
             var result = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(features, melbourneFile);
         }
 
         [Benchmark]
-        public void TestParseC()
+        public void TestParseViaLinq()
         {
             var result = Caribou.Processing.FindNodesViaLinq.FindByFeatures(features, melbourneFile);
         }
