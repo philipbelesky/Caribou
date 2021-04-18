@@ -9,37 +9,37 @@
     using BenchmarkDotNet.Attributes;
     using Caribou.Processing;
 
-    public class MelbourneBenchmarks
+    public class ChicagoBenchmarks
     {
-        // These are benchmarks for a medium sized XML case (10mbs)
+        // These are benchmarks for a large XML case (100mbs)
 
-        private string melbourneFile = Properties.Resources.MelbourneOSM;
+        private string chicagoFile = Properties.Resources.ChicagoOSM;
         private RequestedFeature[] features = new RequestedFeature[]
         {
             new RequestedFeature("amenity", ""), new RequestedFeature("highway",  ""),
             new RequestedFeature("amenity", "restaurant"), new RequestedFeature("highway",  "residential")
         };
 
-        public MelbourneBenchmarks()
+        public ChicagoBenchmarks()
         {
         }
 
         [Benchmark]
         public void TestParseViaXMLReader()
         {
-            var result = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(features, melbourneFile);
+            var result = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(features, chicagoFile);
         }
         
         [Benchmark]
         public void TestParseViaXMLDocument()
         {
-            var result = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(features, melbourneFile);
+            var result = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(features, chicagoFile);
         }
 
         [Benchmark]
         public void TestParseViaLinq()
         {
-            var result = Caribou.Processing.FindNodesViaLinq.FindByFeatures(features, melbourneFile);
+            var result = Caribou.Processing.FindNodesViaLinq.FindByFeatures(features, chicagoFile);
         }
     }
 }

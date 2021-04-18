@@ -62,6 +62,23 @@ namespace Caribou.Profiling.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.55.7 8b86ff77&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2019-06-28T00:10:02Z&quot;/&gt;
+        ///
+        ///  &lt;bounds minlat=&quot;41.8467000&quot; minlon=&quot;-87.7123000&quot; maxlat=&quot;41.9193000&quot; maxlon=&quot;-87.6022000&quot;/&gt;
+        ///
+        ///  &lt;node id=&quot;20216902&quot; lat=&quot;41.8895268&quot; lon=&quot;-87.6393324&quot; version=&quot;9&quot; timestamp=&quot;2011-06-02T20:24:34Z&quot; changeset=&quot;8323836&quot; uid=&quot;451048&quot; user=&quot;bbmiller&quot;&gt;
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChicagoOSM {
+            get {
+                return ResourceManager.GetString("ChicagoOSM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
         ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
         ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;

@@ -214,6 +214,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChicagoBenchmarks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -245,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Cases\melbourne.osm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cases\chicago.osm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
