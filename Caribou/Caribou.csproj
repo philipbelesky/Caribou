@@ -62,7 +62,7 @@
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
-    <Compile Include="Processing\DataCoordsLocation.cs" />
+    <Compile Include="Processing\Coord.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
     <Compile Include="Processing\ParseViaXMLReader.cs" />
     <Compile Include="Processing\LoadAndParseComponent.cs" />
