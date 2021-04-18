@@ -27,23 +27,9 @@
                     foreach (XmlNode featureTag in nodeList)
                     {
                         var tagValue = featureTag.Attributes.GetNamedItem("v").Value;
-                        if (matches.Results[tagKey].ContainsKey(tagValue))
-                        {
-                            // If this particular value is already present in the dictionary (e.g. already added before)
-                            matches.Results[tagKey][tagValue].Add(new Coords(
-                                Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value),
-                                Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value)
-                            ));
-                        }
-                        else
-                        {
-                            matches.Results[tagKey][tagValue] = new List<Coords>() {
-                                new Coords(
-                                    Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value),
-                                    Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value)
-                                )
-                            };
-                        }
+                        var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
+                        var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+                        matches.AddCoordForFeature(tagKey, tagValue, lat, lon);
                     }
                 }
                 else
@@ -54,10 +40,9 @@
                         nodeList = root.SelectNodes("/osm/node/tag[@k='" + tagKey + "' and @v='" + tagValue + "']");
                         foreach (XmlNode featureTag in nodeList)
                         {
-                            matches.Results[tagKey][tagValue].Add(new Coords(
-                                Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value),
-                                Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value)
-                            ));
+                            var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
+                            var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+                            matches.AddCoordForFeatureAndSubFeature(tagKey, tagValue, lat, lon);
                         }
                     }
                 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caribou.Processing
 {
-    public struct Coords
+    public readonly struct Coords
     {
         public Coords(double x, double y)
         {

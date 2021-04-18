@@ -42,25 +42,16 @@
                             if (matches.Results.ContainsKey(tagKey))
                             {
                                 tagValue = reader.GetAttribute("v");
+
                                 if (matches.Results[tagKey].ContainsKey(matchAllKey))
                                 {
                                     // If we are searching for all items within a feature then add it regardless
-                                    if (matches.Results[tagKey].ContainsKey(tagValue)) {
-                                        // If we have already found items of this sub-type, add it to an existing list
-                                        matches.Results[tagKey][tagValue].Add(new Coords(latitude, longitude));
-                                    } 
-                                    else
-                                    {
-                                        // If not then need to add the key and init the list
-                                        matches.Results[tagKey][tagValue] = new List<Coords>() {
-                                            new Coords(latitude, longitude)
-                                        };
-                                    }
+                                    matches.AddCoordForFeature(tagKey, tagValue, latitude, longitude);
                                 } 
                                 else if (matches.Results[tagKey].ContainsKey(tagValue))
                                 {
                                     // If searching for a particular key:value only add if there is 
-                                    matches.Results[tagKey][tagValue].Add(new Coords(latitude, longitude));
+                                    matches.AddCoordForFeatureAndSubFeature(tagKey, tagValue, latitude, longitude);
                                 }
                             }
                         }

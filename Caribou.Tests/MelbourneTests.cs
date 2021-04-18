@@ -42,16 +42,16 @@
             Assert.AreEqual(0, matches.Results["highway"]["residential"].Count);
         }
 
-        //[TestMethod]
-        //public void ParseMelbourneForKeyValueViaLinq()
-        //{
-        //    var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-        //    Assert.AreEqual(173, matches.Results["amenity"]["restaurant"].Count);
-        //    Assert.AreEqual(-37.8134515, matches.Results["amenity"]["restaurant"][0].Latitude);
-        //    Assert.AreEqual(1, matches.Results["craft"]["jeweller"].Count);
-        //    Assert.AreEqual(144.9658410, matches.Results["craft"]["jeweller"][0].Longitude);
-        //    Assert.AreEqual(0, matches.Results["highway"]["residential"].Count);
-        //}
+        [TestMethod]
+        public void ParseMelbourneForKeyValueViaLinq()
+        {
+            var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
+            Assert.AreEqual(173, matches.Results["amenity"]["restaurant"].Count);
+            Assert.AreEqual(-37.8134515, matches.Results["amenity"]["restaurant"][0].Latitude);
+            Assert.AreEqual(1, matches.Results["craft"]["jeweller"].Count);
+            Assert.AreEqual(144.9658410, matches.Results["craft"]["jeweller"][0].Longitude);
+            Assert.AreEqual(0, matches.Results["highway"]["residential"].Count);
+        }
 
         [TestMethod]
         public void ParseMelbourneForKeyViaXMLReader()
@@ -69,13 +69,13 @@
             Assert.AreEqual(143, CountForKey(matches, "highway"));
         }
 
-        //[TestMethod]
-        //public void ParseMelbourneForKeyViaLinq()
-        //{
-        //    var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(restaraunts, melbourneFile);
-        //    Assert.AreEqual(655, CountForKey(matches, "amenity"));
-        //    Assert.AreEqual(755, CountForKey(matches, "highway"));
-        //}
+        [TestMethod]
+        public void ParseMelbourneForKeyViaLinq()
+        {
+            var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(restaraunts, melbourneFile);
+            Assert.AreEqual(610, CountForKey(matches, "amenity"));
+            Assert.AreEqual(143, CountForKey(matches, "highway"));
+        }
 
         private int CountForKey(ResultsForFeatures matches, string key)
         {
