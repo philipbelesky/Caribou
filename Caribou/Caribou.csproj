@@ -61,10 +61,10 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
-    <Compile Include="Processing\FindNodesViaLinq.cs" />
+    <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\DataCoordsLocation.cs" />
-    <Compile Include="Processing\FindNodesViaXMLDocument.cs" />
-    <Compile Include="Processing\FindNodesViaXMLReader.cs" />
+    <Compile Include="Processing\ParseViaXMLDocument.cs" />
+    <Compile Include="Processing\ParseViaXMLReader.cs" />
     <Compile Include="Processing\LoadAndParseComponent.cs" />
     <Compile Include="Processing\LoadAndParseWorker.cs" />
     <Compile Include="Processing\DataRequestResult.cs" />

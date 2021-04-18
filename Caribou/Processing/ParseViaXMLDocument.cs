@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Xml;
-    public class FindNodesViaXMLDocument
+    public class ParseViaXMLDocument
     {
-        public static ResultsForFeatures FindByFeatures(RequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = RequestedFeature.SearchAllKey;
+            var matchAllKey = DataRequestedFeature.SearchAllKey;
             double latitude = 0.0;
             double longitude = 0.0;
 
@@ -17,11 +17,11 @@
             XmlNode root = doc.DocumentElement;
             GetBounds(ref matches, root); // Add minmax latlon to matches
 
-            foreach (var tagKey in matches.Results.Keys)
+            foreach (var tagKey in matches.Nodes.Keys)
             {
                 XmlNodeList nodeList;
 
-                if (matches.Results[tagKey].ContainsKey(matchAllKey))
+                if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
                 {
                     // If searching for all instances of a key regardless of the value
                     nodeList = root.SelectNodes("/osm/node/tag[@k='" + tagKey + "']");
@@ -30,20 +30,20 @@
                         var tagValue = featureTag.Attributes.GetNamedItem("v").Value;
                         var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
                         var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
-                        matches.AddCoordForFeature(tagKey, tagValue, lat, lon);
+                        matches.AddNodeGivenFeature(tagKey, tagValue, lat, lon);
                     }
                 }
                 else
                 {
                     // If searching for a specific key and value attribute strings
-                    foreach (string tagValue in matches.Results[tagKey].Keys)
+                    foreach (string tagValue in matches.Nodes[tagKey].Keys)
                     {
                         nodeList = root.SelectNodes("/osm/node/tag[@k='" + tagKey + "' and @v='" + tagValue + "']");
                         foreach (XmlNode featureTag in nodeList)
                         {
                             var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
                             var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
-                            matches.AddCoordForFeatureAndSubFeature(tagKey, tagValue, lat, lon);
+                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
                         }
                     }
                 }

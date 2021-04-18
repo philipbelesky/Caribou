@@ -14,10 +14,10 @@
         // These are benchmarks for a large XML case (100mbs)
 
         private string chicagoFile = Properties.Resources.ChicagoOSM;
-        private RequestedFeature[] features = new RequestedFeature[]
+        private DataRequestedFeature[] features = new DataRequestedFeature[]
         {
-            new RequestedFeature("amenity", ""), new RequestedFeature("highway",  ""),
-            new RequestedFeature("amenity", "restaurant"), new RequestedFeature("highway",  "residential")
+            new DataRequestedFeature("amenity", ""), new DataRequestedFeature("highway",  ""),
+            new DataRequestedFeature("amenity", "restaurant"), new DataRequestedFeature("highway",  "residential")
         };
 
         public ChicagoBenchmarks()
@@ -27,19 +27,19 @@
         [Benchmark]
         public void TestParseViaXMLReader()
         {
-            var result = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(features, chicagoFile);
+            var result = Caribou.Processing.ParseViaXMLReader.FindByFeatures(features, chicagoFile);
         }
         
         [Benchmark]
         public void TestParseViaXMLDocument()
         {
-            var result = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(features, chicagoFile);
+            var result = Caribou.Processing.ParseViaXMLDocument.FindByFeatures(features, chicagoFile);
         }
 
         [Benchmark]
         public void TestParseViaLinq()
         {
-            var result = Caribou.Processing.FindNodesViaLinq.FindByFeatures(features, chicagoFile);
+            var result = Caribou.Processing.ParseViaLinq.FindByFeatures(features, chicagoFile);
         }
     }
 }

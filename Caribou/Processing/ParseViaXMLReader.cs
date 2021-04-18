@@ -8,12 +8,12 @@
     using System.Threading.Tasks;
     using System.IO;
 
-    public class FindNodesViaXMLReader
+    public class ParseViaXMLReader
     {
-        public static ResultsForFeatures FindByFeatures(RequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = RequestedFeature.SearchAllKey;
+            var matchAllKey = DataRequestedFeature.SearchAllKey;
             GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
@@ -40,19 +40,19 @@
                         else if (reader.Name == "tag")
                         {
                             tagKey = reader.GetAttribute("k");
-                            if (matches.Results.ContainsKey(tagKey))
+                            if (matches.Nodes.ContainsKey(tagKey))
                             {
                                 tagValue = reader.GetAttribute("v");
 
-                                if (matches.Results[tagKey].ContainsKey(matchAllKey))
+                                if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
                                 {
                                     // If we are searching for all items within a feature then add it regardless
-                                    matches.AddCoordForFeature(tagKey, tagValue, latitude, longitude);
+                                    matches.AddNodeGivenFeature(tagKey, tagValue, latitude, longitude);
                                 } 
-                                else if (matches.Results[tagKey].ContainsKey(tagValue))
+                                else if (matches.Nodes[tagKey].ContainsKey(tagValue))
                                 {
                                     // If searching for a particular key:value only add if there is 
-                                    matches.AddCoordForFeatureAndSubFeature(tagKey, tagValue, latitude, longitude);
+                                    matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, latitude, longitude);
                                 }
                             }
                         }

@@ -10,7 +10,7 @@
     {
         private string xmlFileContents;
         private List<string> debugOutput = new List<string>();
-        private RequestedFeature[] featuresSpecified;
+        private DataRequestedFeature[] featuresSpecified;
         private ResultsForFeatures foundItems;
         private List<Point3d> foundNodes;
         private List<Polyline> foundWays;
@@ -21,7 +21,7 @@
             // Checking for cancellation
             if (CancellationToken.IsCancellationRequested) { return; }
 
-            foundItems = FindNodesViaXMLReader.FindByFeatures(featuresSpecified, xmlFileContents);
+            foundItems = ParseViaXMLReader.FindByFeatures(featuresSpecified, xmlFileContents);
             foundNodes = DataRhinoOutputs.GetNodesFromCoords(foundItems);
             foundWays = DataRhinoOutputs.GetWaysFromCoords(foundItems);
 
@@ -38,9 +38,9 @@
             // TODO: validation of input
 
             // TODO: set below array based on input
-            var featuresSpecified = new RequestedFeature[]
+            var featuresSpecified = new DataRequestedFeature[]
             {
-                new RequestedFeature("amenity", "restaurant" ), new RequestedFeature( "craft", "jeweller" )
+                new DataRequestedFeature("amenity", "restaurant"), new DataRequestedFeature("craft", "jeweller")
             };
         }
 

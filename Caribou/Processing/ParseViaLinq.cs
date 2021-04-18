@@ -5,19 +5,19 @@
     using System.Linq;
     using System.Xml.Linq;
 
-    public class FindNodesViaLinq
+    public class ParseViaLinq
     {
-        public static ResultsForFeatures FindByFeatures(RequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
             var xml = XDocument.Parse(xmlContents);
-            var matchAllKey = RequestedFeature.SearchAllKey;
+            var matchAllKey = DataRequestedFeature.SearchAllKey;
             GetBounds(ref matches, xml); // Add minmax latlon to matches
 
-            foreach (var tagKey in matches.Results.Keys)
+            foreach (var tagKey in matches.Nodes.Keys)
             {
                 System.Collections.Generic.IEnumerable<XElement> results;
-                if (matches.Results[tagKey].ContainsKey(matchAllKey))
+                if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
                 {
                     // If searching for all instances of a key regardless of the value
                     results = from tag in xml.Descendants("tag")
@@ -33,13 +33,13 @@
                         var tagValue = result.Attributes("v").First().Value;
                         var lat = Convert.ToDouble(result.Parent.Attributes("lat").First().Value);
                         var lon = Convert.ToDouble(result.Parent.Attributes("lon").First().Value);
-                        matches.AddCoordForFeature(tagKey, tagValue, lat, lon);
+                        matches.AddNodeGivenFeature(tagKey, tagValue, lat, lon);
                     }
                 }
                 else
                 {
                     // If searching for all instances of a key regardless of the value
-                    foreach (string tagValue in matches.Results[tagKey].Keys)
+                    foreach (string tagValue in matches.Nodes[tagKey].Keys)
                     {
                         results = from tag in xml.Descendants("tag")
                                   where (string)tag.Attribute("k") == tagKey && (string)tag.Attribute("v") == tagValue
@@ -53,7 +53,7 @@
                             }
                             var lat = Convert.ToDouble(result.Attributes("lat").First().Value);
                             var lon = Convert.ToDouble(result.Attributes("lon").First().Value);
-                            matches.AddCoordForFeatureAndSubFeature(tagKey, tagValue, lat, lon);
+                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
                         }
                     }
 

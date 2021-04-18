@@ -12,11 +12,11 @@
         public static List<Point3d> GetNodesFromCoords(ResultsForFeatures foundItems)
         {
             var results = new List<Point3d>();
-            foreach (var featureType in foundItems.Results.Keys)
+            foreach (var featureType in foundItems.Nodes.Keys)
             {
-                foreach (var subfeatureType in foundItems.Results[featureType].Keys)
+                foreach (var subfeatureType in foundItems.Nodes[featureType].Keys)
                 {
-                    foreach (var coord in foundItems.Results[featureType][subfeatureType])
+                    foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
                         results.Add(GetPointFromLatLong(coord));
                     }
@@ -28,7 +28,7 @@
         public static List<Polyline> GetWaysFromCoords(ResultsForFeatures foundItems)
         {
             var results = new List<Polyline>();
-            foreach (var featureType in foundItems.Results.Keys)
+            foreach (var featureType in foundItems.Nodes.Keys)
             {
                 // TODO: implementation
             }
