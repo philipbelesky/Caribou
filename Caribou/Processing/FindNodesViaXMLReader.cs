@@ -32,6 +32,10 @@
                             latitude = Convert.ToDouble(reader.GetAttribute("lat"));
                             longitude = Convert.ToDouble(reader.GetAttribute("lon"));
                         }
+                        else if (reader.Name == "way")
+                        {
+                            reader.Skip();
+                        }
                         else if (reader.Name == "tag")
                         {
                             tagKey = reader.GetAttribute("k");
