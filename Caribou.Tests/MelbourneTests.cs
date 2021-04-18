@@ -9,6 +9,10 @@
     public class MelbourneTests
     {
         private string melbourneFile = Properties.Resources.MelbourneOSM;
+        private (Coords, Coords) boundsLatLon = (
+            new Coords(-37.8164200, 144.9627400), 
+            new Coords(-37.8089200, 144.9710600)
+        );
         private RequestedFeature[] miscBagOfFeaturesAndSubs = new RequestedFeature[]
         {
             new RequestedFeature( "amenity", "restaurant" ), 
@@ -59,6 +63,8 @@
             var matches = Caribou.Processing.FindNodesViaXMLReader.FindByFeatures(restaraunts, melbourneFile);
             Assert.AreEqual(610, CountForKey(matches, "amenity"));
             Assert.AreEqual(143, CountForKey(matches, "highway"));
+            Assert.AreEqual(boundsLatLon, matches.LatLonBounds);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.LatLonBounds.Item1.Latitude);
         }
 
         [TestMethod]
@@ -67,6 +73,8 @@
             var matches = Caribou.Processing.FindNodesViaXMLDocument.FindByFeatures(restaraunts, melbourneFile);
             Assert.AreEqual(610, CountForKey(matches, "amenity"));
             Assert.AreEqual(143, CountForKey(matches, "highway"));
+            Assert.AreEqual(boundsLatLon, matches.LatLonBounds);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.LatLonBounds.Item1.Latitude);
         }
 
         [TestMethod]
@@ -75,6 +83,8 @@
             var matches = Caribou.Processing.FindNodesViaLinq.FindByFeatures(restaraunts, melbourneFile);
             Assert.AreEqual(610, CountForKey(matches, "amenity"));
             Assert.AreEqual(143, CountForKey(matches, "highway"));
+            Assert.AreEqual(boundsLatLon, matches.LatLonBounds);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.LatLonBounds.Item1.Latitude);
         }
 
         private int CountForKey(ResultsForFeatures matches, string key)

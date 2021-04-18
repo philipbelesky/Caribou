@@ -16,6 +16,14 @@
             doc.LoadXml(xmlContents);
             XmlNode root = doc.DocumentElement;
 
+            var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
+            matches.SetLatLonBounds(
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlat").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlon").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlat").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlon").Value)
+            );
+
             foreach (var tagKey in matches.Results.Keys)
             {
                 XmlNodeList nodeList;

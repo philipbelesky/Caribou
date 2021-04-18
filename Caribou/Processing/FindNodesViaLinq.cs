@@ -13,6 +13,14 @@
             var xml = XDocument.Parse(xmlContents);
             var matchAllKey = RequestedFeature.SearchAllKey;
 
+            var boundsElement = (from el in xml.Descendants("bounds") select el).First();
+            matches.SetLatLonBounds(
+                Convert.ToDouble(boundsElement.Attributes("minlat").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("minlon").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value)
+            );
+
             foreach (var tagKey in matches.Results.Keys)
             {
                 System.Collections.Generic.IEnumerable<XElement> results;

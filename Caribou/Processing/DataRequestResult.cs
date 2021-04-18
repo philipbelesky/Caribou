@@ -31,6 +31,7 @@
     public struct ResultsForFeatures
     {
         public Dictionary<string, Dictionary<string, List<Coords>>> Results { get; }
+        public (Coords, Coords) LatLonBounds { get; set; }
 
         public ResultsForFeatures(RequestedFeature[] requestedFeatures)
         {
@@ -42,6 +43,7 @@
                     { requestedFeatures[i].SubFeature, new List<Coords>() }
                 };
             }
+            this.LatLonBounds = (new Coords (0, 0), new Coords(0, 0));
         }
 
         public void AddCoordForFeature(string tagKey, string tagValue, double lat, double lon)
@@ -63,5 +65,9 @@
             this.Results[tagKey][tagValue].Add(new Coords(lat, lon));
         }
 
+        public void SetLatLonBounds(double latMin, double lonMin, double latMax, double lonMax)
+        {
+            this.LatLonBounds = (new Coords(latMin, lonMin), new Coords(latMax, lonMax));
+        }
     }
 }

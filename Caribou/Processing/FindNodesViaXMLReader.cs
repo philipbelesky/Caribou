@@ -17,6 +17,25 @@
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        if (reader.Name == "bounds")
+                        {
+                            matches.SetLatLonBounds(
+                                Convert.ToDouble(reader.GetAttribute("minlat")),
+                                Convert.ToDouble(reader.GetAttribute("minlon")),
+                                Convert.ToDouble(reader.GetAttribute("maxlat")),
+                                Convert.ToDouble(reader.GetAttribute("maxlon"))
+                            );
+                        }
+                    }
+                }
+            }
+
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
+            {
                 // XmlReader is forward-only so need to track the lat/long of the parent element to use if we find a match
                 double latitude = 0.0;
                 double longitude = 0.0;
