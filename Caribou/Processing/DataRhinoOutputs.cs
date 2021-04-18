@@ -37,7 +37,7 @@
             return results;
         }
 
-        private static Point3d GetPointFromLatLong(DataCoordsLocation coord)
+        private static Point3d GetPointFromLatLong(Coord coord)
         {
             return new Point3d(coord.Latitude, coord.Longitude, 0);
         }

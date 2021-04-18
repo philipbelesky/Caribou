@@ -34,8 +34,8 @@
     {
         public ResultsForFeatures(DataRequestResult[] requestedFeatures)
         {
-            this.Nodes = new Dictionary<string, Dictionary<string, List<DataCoordsLocation>>>();
-            this.Ways = new Dictionary<string, Dictionary<string, List<DataCoordsLocation[]>>>();
+            this.Nodes = new Dictionary<string, Dictionary<string, List<Coord>>>();
+            this.Ways = new Dictionary<string, Dictionary<string, List<Coord[]>>>();
             for (int i = 0; i < requestedFeatures.Length; i++)
             {
                 // For each feature initialise its keys and lists (if needed)
@@ -44,60 +44,60 @@
 
                 if (this.Nodes.Keys.Contains(feature))
                 {
-                    this.Nodes[feature][subFeature] = new List<DataCoordsLocation>();
+                    this.Nodes[feature][subFeature] = new List<Coord>();
                 }
                 else
                 {
-                    this.Nodes[feature] = new Dictionary<string, List<DataCoordsLocation>>
+                    this.Nodes[feature] = new Dictionary<string, List<Coord>>
                     {
-                        { subFeature, new List<DataCoordsLocation>() },
+                        { subFeature, new List<Coord>() },
                     };
                 }
 
                 if (this.Ways.Keys.Contains(feature))
                 {
-                    this.Ways[feature][subFeature] = new List<DataCoordsLocation[]>();
+                    this.Ways[feature][subFeature] = new List<Coord[]>();
                 }
                 else
                 {
-                    this.Ways[feature] = new Dictionary<string, List<DataCoordsLocation[]>>
+                    this.Ways[feature] = new Dictionary<string, List<Coord[]>>
                     {
-                        { subFeature, new List<DataCoordsLocation[]>() },
+                        { subFeature, new List<Coord[]>() },
                     };
                 }
             }
 
-            this.LatLonBounds = (new DataCoordsLocation(0, 0), new DataCoordsLocation(0, 0));
+            this.LatLonBounds = (new Coord(0, 0), new Coord(0, 0));
         }
 
-        public Dictionary<string, Dictionary<string, List<DataCoordsLocation>>> Nodes { get; }
+        public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
 
-        public Dictionary<string, Dictionary<string, List<DataCoordsLocation[]>>> Ways { get; }
+        public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
 
-        public (DataCoordsLocation, DataCoordsLocation) LatLonBounds { get; set; }
+        public (Coord, Coord) LatLonBounds { get; set; }
 
         public void AddNodeGivenFeature(string tagKey, string tagValue, double lat, double lon)
         {
             if (this.Nodes[tagKey].ContainsKey(tagValue))
             {
                 // If this particular value is already present in the dictionary (e.g. already added before)
-                this.Nodes[tagKey][tagValue].Add(new DataCoordsLocation(lat, lon));
+                this.Nodes[tagKey][tagValue].Add(new Coord(lat, lon));
             }
             else
             {
-                this.Nodes[tagKey][tagValue] = new List<DataCoordsLocation>() { new DataCoordsLocation(lat, lon) };
+                this.Nodes[tagKey][tagValue] = new List<Coord>() { new Coord(lat, lon) };
             }
         }
 
         // Same as above but without the unecessary check as the feature:subFeature were known/set during init
         public void AddNodeGivenFeatureAndSubFeature(string tagKey, string tagValue, double lat, double lon)
         {
-            this.Nodes[tagKey][tagValue].Add(new DataCoordsLocation(lat, lon));
+            this.Nodes[tagKey][tagValue].Add(new Coord(lat, lon));
         }
 
         public void SetLatLonBounds(double latMin, double lonMin, double latMax, double lonMax)
         {
-            this.LatLonBounds = (new DataCoordsLocation(latMin, lonMin), new DataCoordsLocation(latMax, lonMax));
+            this.LatLonBounds = (new Coord(latMin, lonMin), new Coord(latMax, lonMax));
         }
     }
 }

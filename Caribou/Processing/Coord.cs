@@ -1,14 +1,8 @@
 ﻿namespace Caribou.Processing
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    public readonly struct DataCoordsLocation
+    public readonly struct Coord
     {
-        public DataCoordsLocation(double x, double y)
+        public Coord(double x, double y)
         {
             this.Latitude = x;
             this.Longitude = y;
