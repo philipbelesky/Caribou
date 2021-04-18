@@ -7,11 +7,11 @@
 
     public class ParseViaLinq
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
             var xml = XDocument.Parse(xmlContents);
-            var matchAllKey = DataRequestedFeature.SearchAllKey;
+            var matchAllKey = DataRequestResult.SearchAllKey;
             GetBounds(ref matches, xml); // Add minmax latlon to matches
 
             foreach (var tagKey in matches.Nodes.Keys)
@@ -30,6 +30,7 @@
                         {
                             continue;
                         }
+
                         var tagValue = result.Attributes("v").First().Value;
                         var lat = Convert.ToDouble(result.Parent.Attributes("lat").First().Value);
                         var lon = Convert.ToDouble(result.Parent.Attributes("lon").First().Value);
@@ -51,12 +52,12 @@
                             {
                                 continue;
                             }
+
                             var lat = Convert.ToDouble(result.Attributes("lat").First().Value);
                             var lon = Convert.ToDouble(result.Attributes("lon").First().Value);
                             matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
                         }
                     }
-
                 }
             }
 
@@ -70,8 +71,7 @@
                 Convert.ToDouble(boundsElement.Attributes("minlat").First().Value),
                 Convert.ToDouble(boundsElement.Attributes("minlon").First().Value),
                 Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value),
-                Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value)
-            );
+                Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value));
         }
     }
 }

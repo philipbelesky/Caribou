@@ -1,19 +1,15 @@
 ﻿namespace Caribou.Processing
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Xml;
-    using System.Threading.Tasks;
     using System.IO;
+    using System.Xml;
 
     public class ParseViaXMLReader
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = DataRequestedFeature.SearchAllKey;
+            var matchAllKey = DataRequestResult.SearchAllKey;
             GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
@@ -23,7 +19,7 @@
                 double longitude = 0.0;
                 string tagKey;
                 string tagValue;
-                
+
                 while (reader.Read())
                 {
                     if (reader.IsStartElement())
@@ -48,10 +44,10 @@
                                 {
                                     // If we are searching for all items within a feature then add it regardless
                                     matches.AddNodeGivenFeature(tagKey, tagValue, latitude, longitude);
-                                } 
+                                }
                                 else if (matches.Nodes[tagKey].ContainsKey(tagValue))
                                 {
-                                    // If searching for a particular key:value only add if there is 
+                                    // If searching for a particular key:value only add if there is
                                     matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, latitude, longitude);
                                 }
                             }
@@ -59,6 +55,7 @@
                     }
                 }
             }
+
             return matches;
         }
 
@@ -76,8 +73,7 @@
                                 Convert.ToDouble(reader.GetAttribute("minlat")),
                                 Convert.ToDouble(reader.GetAttribute("minlon")),
                                 Convert.ToDouble(reader.GetAttribute("maxlat")),
-                                Convert.ToDouble(reader.GetAttribute("maxlon"))
-                            );
+                                Convert.ToDouble(reader.GetAttribute("maxlon")));
                         }
                     }
                 }

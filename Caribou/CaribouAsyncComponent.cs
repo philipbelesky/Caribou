@@ -16,19 +16,58 @@
         // This is a base class that can be used by all of a plugin's components to do calculations asynchronously
         // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
         // This implementation is a near-direct copy of that published in [this repository](https://github.com/specklesystems/GrasshopperAsyncComponent/)
-
-        Action<string, double> reportProgress;
         public ConcurrentDictionary<string, double> ProgressReports;
+        public List<WorkerInstance> Workers;
+        public readonly List<CancellationTokenSource> CancellationSources;
+        Action<string, double> reportProgress;
         Action done;
         Timer displayProgressTimer;
         int state;
         int setData;
-        public List<WorkerInstance> Workers;
         List<Task> tasks;
-        public readonly List<CancellationTokenSource> CancellationSources;
+
+        // Pass the constructor parameters up to the main GHBComponent abstract class
+        protected CaribouAsyncComponent(string name, string nickname, string description, string subCategory)
+            : base(name, nickname, description, subCategory)
+        {
+            this.displayProgressTimer = new Timer(333) { AutoReset = false };
+            this.displayProgressTimer.Elapsed += this.DisplayProgress;
+
+            this.reportProgress = (id, value) =>
+            {
+                this.ProgressReports[id] = value;
+                if (!this.displayProgressTimer.Enabled)
+                {
+                    this.displayProgressTimer.Start();
+                }
+            };
+
+            this.done = () =>
+            {
+                Interlocked.Increment(ref this.state);
+                if (this.state == this.Workers.Count && this.setData == 0)
+                {
+                    Interlocked.Exchange(ref this.setData, 1);
+
+                    // We need to reverse the workers list to set the outputs in the same order as the inputs.
+                    this.Workers.Reverse();
+
+                    Rhino.RhinoApp.InvokeOnUiThread((Action)delegate
+                    {
+                        this.ExpireSolution(true);
+                    });
+                }
+            };
+
+            this.ProgressReports = new ConcurrentDictionary<string, double>();
+
+            this.Workers = new List<WorkerInstance>();
+            this.CancellationSources = new List<CancellationTokenSource>();
+            this.tasks = new List<Task>();
+        }
 
         /// <summary>
-        /// Set this property inside the constructor of your derived component.
+        /// Sets this property inside the constructor of your derived component.
         /// </summary>
         public WorkerInstance BaseWorker { get; set; }
 
@@ -37,104 +76,92 @@
         /// </summary>
         public TaskCreationOptions? TaskCreationOptions { get; set; } = null;
 
-        // Pass the constructor parameters up to the main GHBComponent abstract class
-        protected CaribouAsyncComponent(string name, string nickname, string description, string subCategory)
-            : base(name, nickname, description, subCategory)
-        {
-            displayProgressTimer = new Timer(333) { AutoReset = false };
-            displayProgressTimer.Elapsed += DisplayProgress;
-
-            reportProgress = (id, value) =>
-            {
-                ProgressReports[id] = value;
-                if (!displayProgressTimer.Enabled)
-                {
-                    displayProgressTimer.Start();
-                }
-            };
-
-            done = () =>
-            {
-                Interlocked.Increment(ref state);
-                if (state == Workers.Count && setData == 0)
-                {
-                    Interlocked.Exchange(ref setData, 1);
-
-                    // We need to reverse the workers list to set the outputs in the same order as the inputs.
-                    Workers.Reverse();
-
-                    Rhino.RhinoApp.InvokeOnUiThread((Action)delegate
-                    {
-                        ExpireSolution(true);
-                    });
-                }
-            };
-
-            ProgressReports = new ConcurrentDictionary<string, double>();
-
-            Workers = new List<WorkerInstance>();
-            CancellationSources = new List<CancellationTokenSource>();
-            tasks = new List<Task>();
-        }
-
         public virtual void DisplayProgress(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (Workers.Count == 0 || ProgressReports.Values.Count == 0)
+            if (this.Workers.Count == 0 || this.ProgressReports.Values.Count == 0)
             {
                 return;
             }
 
-            if (Workers.Count == 1)
+            if (this.Workers.Count == 1)
             {
-                Message = ProgressReports.Values.Last().ToString("0.00%");
+                this.Message = this.ProgressReports.Values.Last().ToString("0.00%");
             }
             else
             {
                 double total = 0;
-                foreach (var kvp in ProgressReports)
+                foreach (var kvp in this.ProgressReports)
                 {
                     total += kvp.Value;
                 }
 
-                Message = (total / Workers.Count).ToString("0.00%");
+                this.Message = (total / this.Workers.Count).ToString("0.00%");
             }
 
             Rhino.RhinoApp.InvokeOnUiThread((Action)delegate
             {
-                OnDisplayExpired(true);
+                this.OnDisplayExpired(true);
             });
+        }
+
+        public override void AppendAdditionalMenuItems(ToolStripDropDown menu)
+        {
+            base.AppendAdditionalMenuItems(menu);
+            Menu_AppendItem(menu, "Cancel", (s, e) =>
+            {
+                this.RequestCancellation();
+            });
+        }
+
+        public void RequestCancellation()
+        {
+            foreach (var source in this.CancellationSources)
+            {
+                source.Cancel();
+            }
+
+            this.CancellationSources.Clear();
+            this.Workers.Clear();
+            this.ProgressReports.Clear();
+            this.tasks.Clear();
+
+            Interlocked.Exchange(ref this.state, 0);
+            Interlocked.Exchange(ref this.setData, 0);
+            this.Message = "Cancelled";
+            this.OnDisplayExpired(true);
         }
 
         protected override void BeforeSolveInstance()
         {
-            if (state != 0 && setData == 1)
+            if (this.state != 0 && this.setData == 1)
             {
                 return;
             }
 
             Debug.WriteLine("Killing");
 
-            foreach (var source in CancellationSources)
+            foreach (var source in this.CancellationSources)
             {
                 source.Cancel();
             }
 
-            CancellationSources.Clear();
-            Workers.Clear();
-            ProgressReports.Clear();
-            tasks.Clear();
+            this.CancellationSources.Clear();
+            this.Workers.Clear();
+            this.ProgressReports.Clear();
+            this.tasks.Clear();
 
-            Interlocked.Exchange(ref state, 0);
+            Interlocked.Exchange(ref this.state, 0);
         }
 
         protected override void AfterSolveInstance()
         {
-            System.Diagnostics.Debug.WriteLine("After solve instance was called " + state + " ? " + Workers.Count);
+            System.Diagnostics.Debug.WriteLine("After solve instance was called " + this.state + " ? " + this.Workers.Count);
+
             // We need to start all the tasks as close as possible to each other.
-            if (state == 0 && tasks.Count > 0 && setData == 0)
+            if (this.state == 0 && this.tasks.Count > 0 && this.setData == 0)
             {
                 System.Diagnostics.Debug.WriteLine("After solve INVOKATIONM");
-                foreach (var task in tasks)
+                foreach (var task in this.tasks)
                 {
                     task.Start();
                 }
@@ -144,104 +171,77 @@
         protected override void ExpireDownStreamObjects()
         {
             // Prevents the flash of null data until the new solution is ready
-            if (setData == 1)
+            if (this.setData == 1)
             {
                 base.ExpireDownStreamObjects();
             }
         }
 
-        public override void AppendAdditionalMenuItems(ToolStripDropDown menu)
-        {
-            base.AppendAdditionalMenuItems(menu);
-            Menu_AppendItem(menu, "Cancel", (s, e) =>
-            {
-                RequestCancellation();
-            });
-        }
-
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-            if (state == 0)
+            if (this.state == 0)
             {
-                if (BaseWorker == null)
+                if (this.BaseWorker == null)
                 {
-                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Worker class not provided.");
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Worker class not provided.");
                     return;
                 }
 
-                var currentWorker = BaseWorker.Duplicate();
+                var currentWorker = this.BaseWorker.Duplicate();
                 if (currentWorker == null)
                 {
-                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Could not get a worker instance.");
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Could not get a worker instance.");
                     return;
                 }
 
                 // Let the worker collect data.
-                currentWorker.GetData(da, Params);
+                currentWorker.GetData(da, this.Params);
 
                 // Create the task
                 var tokenSource = new CancellationTokenSource();
                 currentWorker.CancellationToken = tokenSource.Token;
                 currentWorker.Id = $"Worker-{da.Iteration}";
 
-                var currentRun = TaskCreationOptions != null
-                  ? new Task(() => currentWorker.DoWork(reportProgress, done), tokenSource.Token, (TaskCreationOptions)TaskCreationOptions)
-                  : new Task(() => currentWorker.DoWork(reportProgress, done), tokenSource.Token);
+                var currentRun = this.TaskCreationOptions != null
+                  ? new Task(() => currentWorker.DoWork(this.reportProgress, this.done), tokenSource.Token, (TaskCreationOptions)this.TaskCreationOptions)
+                  : new Task(() => currentWorker.DoWork(this.reportProgress, this.done), tokenSource.Token);
 
                 // Add cancellation source to our bag
-                CancellationSources.Add(tokenSource);
+                this.CancellationSources.Add(tokenSource);
 
                 // Add the worker to our list
-                Workers.Add(currentWorker);
+                this.Workers.Add(currentWorker);
 
-                tasks.Add(currentRun);
+                this.tasks.Add(currentRun);
 
                 return;
             }
 
-            if (setData == 0)
+            if (this.setData == 0)
             {
                 return;
             }
 
-            if (Workers.Count > 0)
+            if (this.Workers.Count > 0)
             {
-                Interlocked.Decrement(ref state);
-                Workers[state].SetData(da);
+                Interlocked.Decrement(ref this.state);
+                this.Workers[this.state].SetData(da);
             }
 
-            if (state != 0)
+            if (this.state != 0)
             {
                 return;
             }
 
-            CancellationSources.Clear();
-            Workers.Clear();
-            ProgressReports.Clear();
-            tasks.Clear();
+            this.CancellationSources.Clear();
+            this.Workers.Clear();
+            this.ProgressReports.Clear();
+            this.tasks.Clear();
 
-            Interlocked.Exchange(ref setData, 0);
+            Interlocked.Exchange(ref this.setData, 0);
 
-            Message = "Done";
-            OnDisplayExpired(true);
-        }
-
-        public void RequestCancellation()
-        {
-            foreach (var source in CancellationSources)
-            {
-                source.Cancel();
-            }
-
-            CancellationSources.Clear();
-            Workers.Clear();
-            ProgressReports.Clear();
-            tasks.Clear();
-
-            Interlocked.Exchange(ref state, 0);
-            Interlocked.Exchange(ref setData, 0);
-            Message = "Cancelled";
-            OnDisplayExpired(true);
+            this.Message = "Done";
+            this.OnDisplayExpired(true);
         }
     }
 }

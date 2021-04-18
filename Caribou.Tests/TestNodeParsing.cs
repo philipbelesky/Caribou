@@ -12,7 +12,7 @@
         private int allHighways = 143;
         private int allAmenitiesRestaurants = 173;
         private int allAmenitiesWorship = 2;
-        private int allHighwaysResidential = 0;
+        private int allHighwaysResidential;
         private double firstWorkshopLon = 144.963903;
         private double firstRestaurantLat = -37.8134515;
 

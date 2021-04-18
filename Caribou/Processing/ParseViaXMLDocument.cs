@@ -3,14 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Xml;
+
     public class ParseViaXMLDocument
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestedFeature[] featuresSpecified, string xmlContents)
+        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = DataRequestedFeature.SearchAllKey;
-            double latitude = 0.0;
-            double longitude = 0.0;
+            var matchAllKey = DataRequestResult.SearchAllKey;
+            double lat = 0.0;
+            double lon = 0.0;
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlContents);
@@ -28,8 +29,8 @@
                     foreach (XmlNode featureTag in nodeList)
                     {
                         var tagValue = featureTag.Attributes.GetNamedItem("v").Value;
-                        var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
-                        var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+                        lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
+                        lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
                         matches.AddNodeGivenFeature(tagKey, tagValue, lat, lon);
                     }
                 }
@@ -41,8 +42,8 @@
                         nodeList = root.SelectNodes("/osm/node/tag[@k='" + tagKey + "' and @v='" + tagValue + "']");
                         foreach (XmlNode featureTag in nodeList)
                         {
-                            var lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
-                            var lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+                            lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
+                            lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
                             matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
                         }
                     }
@@ -59,8 +60,7 @@
                 Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlat").Value),
                 Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlon").Value),
                 Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlat").Value),
-                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlon").Value)
-            );
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlon").Value));
         }
     }
 }

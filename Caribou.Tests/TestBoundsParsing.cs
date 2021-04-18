@@ -8,9 +8,9 @@
     [TestClass]
     public class TestBoundsParsing : MelbourneCase
     {
-        private (Coords, Coords) boundsLatLon = (
-            new Coords(-37.8164200, 144.9627400), 
-            new Coords(-37.8089200, 144.9710600)
+        private (DataCoordsLocation, DataCoordsLocation) boundsLatLon = (
+            new DataCoordsLocation(-37.8164200, 144.9627400), 
+            new DataCoordsLocation(-37.8089200, 144.9710600)
         );
         [TestMethod]
         public void ParseBoundsViaXMLReader()

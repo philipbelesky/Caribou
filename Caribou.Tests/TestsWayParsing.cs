@@ -10,7 +10,7 @@
     {
         private int allHighways = 615;
         private int allAmenities = 45;
-        private int allAmenitiesRestaurants = 0;
+        private int allAmenitiesRestaurants;
         private int allAmenitiesWorship = 7;
         private int allHighwaysResidential = 5;
         private int CountWaysFoundForKey(ResultsForFeatures matches, string key)
@@ -58,18 +58,12 @@
         public void ParseWaysGivenKeyValueViaXMLDocument()
         {
             var matches = ParseViaXMLDocument.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-
         }
 
         [TestMethod]
         public void ParseWaysGivenKeyValueViaLinq()
         {
             var matches = ParseViaLinq.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-            Assert.AreEqual(173, matches.Nodes["amenity"]["restaurant"].Count);
-            Assert.AreEqual(-37.8134515, matches.Nodes["amenity"]["restaurant"][0].Latitude);
-            Assert.AreEqual(1, matches.Nodes["craft"]["jeweller"].Count);
-            Assert.AreEqual(144.9658410, matches.Nodes["craft"]["jeweller"][0].Longitude);
-            Assert.AreEqual(0, matches.Nodes["highway"]["residential"].Count);
         }
     }
 }

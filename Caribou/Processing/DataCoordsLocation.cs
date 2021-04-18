@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Processing
+﻿namespace Caribou.Processing
 {
-    public readonly struct Coords
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    public readonly struct DataCoordsLocation
     {
-        public Coords(double x, double y)
+        public DataCoordsLocation(double x, double y)
         {
-            Latitude = x;
-            Longitude = y;
+            this.Latitude = x;
+            this.Longitude = y;
         }
 
         public double Latitude { get; }
+
         public double Longitude { get; }
-        public override string ToString() => $"({Latitude}, {Longitude})";
+
+        public override string ToString() => $"({this.Latitude}, {this.Longitude})";
     }
 }

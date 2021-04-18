@@ -10,19 +10,19 @@ namespace Caribou.Tests
 
     public class MelbourneCase
     {
-        protected string melbourneFile = Properties.Resources.MelbourneOSM;
+        protected readonly string melbourneFile = Properties.Resources.MelbourneOSM;
 
-        protected DataRequestedFeature[] restarauntsAndHighways = new DataRequestedFeature[]
+        protected readonly DataRequestResult[] restarauntsAndHighways = new DataRequestResult[]
         {
-            new DataRequestedFeature("amenity", ""), // 610 nodes 45 ways
-            new DataRequestedFeature("highway",  "") // 143 nodes, 615 ways
+            new DataRequestResult("amenity", ""), // 610 nodes 45 ways
+            new DataRequestResult("highway",  "") // 143 nodes, 615 ways
         };
 
-        protected DataRequestedFeature[] miscBagOfFeaturesAndSubs = new DataRequestedFeature[]
+        protected readonly DataRequestResult[] miscBagOfFeaturesAndSubs = new DataRequestResult[]
         {
-            new DataRequestedFeature( "amenity", "restaurant" ), // 173 nodes; 0 ways
-            new DataRequestedFeature( "amenity", "place_of_worship" ), // 2 node; 7 ways
-            new DataRequestedFeature( "highway", "residential" ) // 0 nodes; 5 ways
+            new DataRequestResult( "amenity", "restaurant" ), // 173 nodes; 0 ways
+            new DataRequestResult( "amenity", "place_of_worship" ), // 2 node; 7 ways
+            new DataRequestResult( "highway", "residential" ) // 0 nodes; 5 ways
         };
 
     }
