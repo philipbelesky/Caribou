@@ -14,25 +14,7 @@
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
             var matchAllKey = RequestedFeature.SearchAllKey;
-
-            using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
-            {
-                while (reader.Read())
-                {
-                    if (reader.IsStartElement())
-                    {
-                        if (reader.Name == "bounds")
-                        {
-                            matches.SetLatLonBounds(
-                                Convert.ToDouble(reader.GetAttribute("minlat")),
-                                Convert.ToDouble(reader.GetAttribute("minlon")),
-                                Convert.ToDouble(reader.GetAttribute("maxlat")),
-                                Convert.ToDouble(reader.GetAttribute("maxlon"))
-                            );
-                        }
-                    }
-                }
-            }
+            GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {
@@ -78,6 +60,28 @@
                 }
             }
             return matches;
+        }
+
+        private static void GetBounds(ref ResultsForFeatures matches, string xmlContents)
+        {
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        if (reader.Name == "bounds")
+                        {
+                            matches.SetLatLonBounds(
+                                Convert.ToDouble(reader.GetAttribute("minlat")),
+                                Convert.ToDouble(reader.GetAttribute("minlon")),
+                                Convert.ToDouble(reader.GetAttribute("maxlat")),
+                                Convert.ToDouble(reader.GetAttribute("maxlon"))
+                            );
+                        }
+                    }
+                }
+            }
         }
     }
 }

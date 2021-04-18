@@ -15,14 +15,7 @@
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlContents);
             XmlNode root = doc.DocumentElement;
-
-            var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
-            matches.SetLatLonBounds(
-                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlat").Value),
-                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlon").Value),
-                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlat").Value),
-                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlon").Value)
-            );
+            GetBounds(ref matches, root); // Add minmax latlon to matches
 
             foreach (var tagKey in matches.Results.Keys)
             {
@@ -57,6 +50,17 @@
             }
 
             return matches;
+        }
+
+        private static void GetBounds(ref ResultsForFeatures matches, XmlNode root)
+        {
+            var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
+            matches.SetLatLonBounds(
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlat").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("minlon").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlat").Value),
+                Convert.ToDouble(boundsElement.Attributes.GetNamedItem("maxlon").Value)
+            );
         }
     }
 }

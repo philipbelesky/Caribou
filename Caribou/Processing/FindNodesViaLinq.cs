@@ -12,14 +12,7 @@
             var matches = new ResultsForFeatures(featuresSpecified); // Output
             var xml = XDocument.Parse(xmlContents);
             var matchAllKey = RequestedFeature.SearchAllKey;
-
-            var boundsElement = (from el in xml.Descendants("bounds") select el).First();
-            matches.SetLatLonBounds(
-                Convert.ToDouble(boundsElement.Attributes("minlat").First().Value),
-                Convert.ToDouble(boundsElement.Attributes("minlon").First().Value),
-                Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value),
-                Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value)
-            );
+            GetBounds(ref matches, xml); // Add minmax latlon to matches
 
             foreach (var tagKey in matches.Results.Keys)
             {
@@ -68,6 +61,17 @@
             }
 
             return matches;
+        }
+
+        private static void GetBounds(ref ResultsForFeatures matches, XDocument xml)
+        {
+            var boundsElement = (from el in xml.Descendants("bounds") select el).First();
+            matches.SetLatLonBounds(
+                Convert.ToDouble(boundsElement.Attributes("minlat").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("minlon").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value),
+                Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value)
+            );
         }
     }
 }
