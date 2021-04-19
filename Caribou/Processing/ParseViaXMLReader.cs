@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Processing
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Xml;
 
@@ -10,15 +11,17 @@
         {
             var matches = new ResultsForFeatures(featuresSpecified); // Output
             var matchAllKey = DataRequestResult.SearchAllKey;
+            var allNodes = new Dictionary<string, Coord>(); // Dict used to lookup a way's nodes
             GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {
                 // XmlReader is forward-only so need to track the lat/long of the parent element to use if we find a match
-                double latitude = 0.0;
-                double longitude = 0.0;
-                string tagKey;
+                string currentNodeId = ""; // Current node; need to track it for when parsing inside-nodes
+                string tagKey; 
                 string tagValue;
+                bool inAWay = false; // Need to keep track of when parsing inside Ways so we know wether to add tag info to node or way lists
+                List<Coord> wayNodes = new List<Coord>(); // If parsing inside Ways need to track the different nodes that make it up
 
                 while (reader.Read())
                 {
@@ -26,30 +29,55 @@
                     {
                         if (reader.Name == "node")
                         {
-                            latitude = Convert.ToDouble(reader.GetAttribute("lat"));
-                            longitude = Convert.ToDouble(reader.GetAttribute("lon"));
+                            inAWay = false;
+                            currentNodeId = reader.GetAttribute("id");
+                            allNodes[currentNodeId] = new Coord(
+                                Convert.ToDouble(reader.GetAttribute("lat")),
+                                Convert.ToDouble(reader.GetAttribute("lon"))
+                            );
                         }
                         else if (reader.Name == "way")
                         {
-                            reader.Skip();
+                            inAWay = true;
+                        }
+                        else if (reader.Name == "nd")
+                        {
+                            wayNodes.Add(allNodes[reader.GetAttribute("ref")]);
                         }
                         else if (reader.Name == "tag")
                         {
                             tagKey = reader.GetAttribute("k");
-                            if (matches.Nodes.ContainsKey(tagKey))
+                            if (matches.PrimaryFeaturesToFind.Contains(tagKey))
                             {
                                 tagValue = reader.GetAttribute("v");
+                                if (inAWay) {
+                                    // Parsing a collections of nodes refrences by a way out
+                                    if (matches.Ways[tagKey].ContainsKey(matchAllKey))
+                                    {
+                                        matches.AddWayGivenFeature(tagKey, tagValue, wayNodes);
+                                    }
+                                    else if (matches.Ways[tagKey].ContainsKey(tagValue))
+                                    {
+                                        matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, wayNodes);
+                                    }
+                                    inAWay = false;
+                                    wayNodes.Clear();
+                                } 
+                                else
+                                {
+                                    // Parsing a node out
+                                    if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
+                                    {
+                                        // If we are searching for all items within a feature then add it regardless
+                                        matches.AddNodeGivenFeature(tagKey, tagValue, allNodes[currentNodeId]);
+                                    }
+                                    else if (matches.Nodes[tagKey].ContainsKey(tagValue))
+                                    {
+                                        // If searching for a particular key:value only add if there is
+                                        matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, allNodes[currentNodeId]);
+                                    }
+                                }
 
-                                if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
-                                {
-                                    // If we are searching for all items within a feature then add it regardless
-                                    matches.AddNodeGivenFeature(tagKey, tagValue, latitude, longitude);
-                                }
-                                else if (matches.Nodes[tagKey].ContainsKey(tagValue))
-                                {
-                                    // If searching for a particular key:value only add if there is
-                                    matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, latitude, longitude);
-                                }
                             }
                         }
                     }

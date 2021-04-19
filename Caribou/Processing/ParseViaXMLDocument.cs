@@ -31,7 +31,7 @@
                         var tagValue = featureTag.Attributes.GetNamedItem("v").Value;
                         lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
                         lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
-                        matches.AddNodeGivenFeature(tagKey, tagValue, lat, lon);
+                        matches.AddNodeGivenFeature(tagKey, tagValue, new Coord(lat, lon));
                     }
                 }
                 else
@@ -44,7 +44,7 @@
                         {
                             lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
                             lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
-                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
+                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, new Coord(lat, lon));
                         }
                     }
                 }

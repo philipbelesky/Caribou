@@ -7,11 +7,11 @@
 
     public class LoadAndParseComponent : CaribouAsyncComponent
     {
-        public LoadAndParseComponent() : base(
-         "OpenStreetMap", "OSM", "Load and parse data from an OSM file based on its key", "OSM")
-        {
-            BaseWorker = new LoadAndParseWorker();
-        }
+        public LoadAndParseComponent() 
+            : base("OpenStreetMap", "OSM", "Load and parse data from an OSM file based on its key", "OSM")
+            {
+                this.BaseWorker = new LoadAndParseWorker();
+            }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {

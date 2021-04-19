@@ -34,7 +34,7 @@
                         var tagValue = result.Attributes("v").First().Value;
                         var lat = Convert.ToDouble(result.Parent.Attributes("lat").First().Value);
                         var lon = Convert.ToDouble(result.Parent.Attributes("lon").First().Value);
-                        matches.AddNodeGivenFeature(tagKey, tagValue, lat, lon);
+                        matches.AddNodeGivenFeature(tagKey, tagValue, new Coord(lat, lon));
                     }
                 }
                 else
@@ -55,7 +55,7 @@
 
                             var lat = Convert.ToDouble(result.Attributes("lat").First().Value);
                             var lon = Convert.ToDouble(result.Attributes("lon").First().Value);
-                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, lat, lon);
+                            matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, new Coord(lat, lon));
                         }
                     }
                 }

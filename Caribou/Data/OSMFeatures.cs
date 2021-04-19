@@ -61,7 +61,7 @@ namespace Caribou.Data
             new Feature("office", "Office", "A place of business for administrative or professional work. Classified by the type of worker, e.g. architects, educators, engineers, or lawyers.", officeSubFeatures),
             new Feature("place", "Place", "A type of populated settlement, such as town, village, suburb, as well as unoccupied but identifiable areas at a variety of scales. (e.g. an ocean or a plot of land).", placeSubFeatures),
             new Feature("power", "Power", "Systems and things used to generate and distribute elecctrical power, such as generators, cables, and pylons.", powerSubFeatures),
-            new Feature("public_transport", "Public Transport", "Features that relate to public transport, such as bus stops and train stations."), public_transportSubFeatures,
+            new Feature("public_transport", "Public Transport", "Features that relate to public transport, such as bus stops and train stations.", public_transportSubFeatures),
             new Feature("railway", "Railway", "Linear tracks and their features for various types of rail-based transport, e.g. subway lines, tram lines, train platforms, level crossings, and subway entrances.", railwaySubFeatures),
             new Feature("route", "Route", "A customary or regular line of passage or travel of various different types. Includes: ferry routes, hiking routes, a sequences of railways.", routeSubFeatures),
             new Feature("shop", "Shop", "A business that has stocked goods for sale. Classified by the type of good (e.g. butcher, jetskis) or the type of building (e.g. mall)", shopSubFeatures),

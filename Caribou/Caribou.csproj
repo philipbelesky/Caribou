@@ -62,13 +62,10 @@
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
-    <Compile Include="Processing\Coord.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
     <Compile Include="Processing\ParseViaXMLReader.cs" />
-    <Compile Include="Processing\LoadAndParseComponent.cs" />
-    <Compile Include="Processing\LoadAndParseWorker.cs" />
-    <Compile Include="Processing\DataRequestResult.cs" />
-    <Compile Include="Processing\DataRhinoOutputs.cs" />
+    <Compile Include="Components\LoadAndParseComponent.cs" />
+    <Compile Include="Components\LoadAndParseWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -78,6 +75,11 @@
     <Compile Include="CaribouAsyncComponent.cs" />
     <Compile Include="WorkerInstance.cs" />
     <Compile Include="CaribouWorker.cs" />
+    <Compile Include="Data\Coord.cs" />
+    <Compile Include="Data\DataRequestResult.cs" />
+    <Compile Include="Data\Feature.cs" />
+    <Compile Include="Data\OSMFeatures.cs" />
+    <Compile Include="Data\DataRhinoOutputs.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grasshopper">
@@ -120,6 +122,7 @@
     <None Include="Resources\icons_icon_plugin.png" />
     <None Include="Resources\icons_icon_test.png" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
