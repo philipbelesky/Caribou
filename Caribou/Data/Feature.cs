@@ -8,12 +8,12 @@ namespace Caribou.Data
 {
     public struct Feature
     {
-        public Feature(string id, string name, string explanation)
+        public Feature(string id, string name, string explanation, List<Feature> subFeatures = null)
         {
             this.Id = id;
             this.Name = name;
             this.Explanation = explanation;
-            this.SubFeatures = new List<Feature>();
+            this.SubFeatures = subFeatures;
         }
 
         public string Id { get; }
