@@ -51,7 +51,6 @@
         public void ParseWaysGivenKeyValueViaXMLReader()
         {
             var matches = ParseViaXMLReader.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-
         }
 
         [TestMethod]
