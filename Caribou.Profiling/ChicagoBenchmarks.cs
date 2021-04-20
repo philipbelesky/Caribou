@@ -14,10 +14,10 @@
         // These are benchmarks for a large XML case (100mbs)
 
         private string chicagoFile = Properties.Resources.ChicagoOSM;
-        private DataRequestResult[] features = new DataRequestResult[]
+        private FeatureRequest[] features = new FeatureRequest[]
         {
-            new DataRequestResult("amenity", ""), new DataRequestResult("highway",  ""),
-            new DataRequestResult("amenity", "restaurant"), new DataRequestResult("highway",  "residential")
+            new FeatureRequest("amenity", ""), new FeatureRequest("highway",  ""),
+            new FeatureRequest("amenity", "restaurant"), new FeatureRequest("highway",  "residential")
         };
 
         public ChicagoBenchmarks()

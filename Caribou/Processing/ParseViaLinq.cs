@@ -4,14 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
+    using Caribou.Data;
 
     public class ParseViaLinq
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
+        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new ResultsForFeatures(featuresSpecified); // Output
+            var matches = new RequestResults(featuresSpecified); // Output
             var xml = XDocument.Parse(xmlContents);
-            var matchAllKey = DataRequestResult.SearchAllKey;
+            var matchAllKey = FeatureRequest.SearchAllKey;
             GetBounds(ref matches, xml); // Add minmax latlon to matches
 
             foreach (var tagKey in matches.Nodes.Keys)
@@ -64,7 +65,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref ResultsForFeatures matches, XDocument xml)
+        private static void GetBounds(ref RequestResults matches, XDocument xml)
         {
             var boundsElement = (from el in xml.Descendants("bounds") select el).First();
             matches.SetLatLonBounds(

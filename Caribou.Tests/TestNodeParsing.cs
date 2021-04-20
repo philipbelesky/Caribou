@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Caribou.Data;
     using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,7 +17,7 @@
         private double firstWorkshopLon = 144.963903;
         private double firstRestaurantLat = -37.8134515;
 
-        private int CountNodesFoundForKey(ResultsForFeatures matches, string key)
+        private int CountNodesFoundForKey(RequestResults matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Nodes[key].Keys)

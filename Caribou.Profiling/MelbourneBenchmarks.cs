@@ -14,10 +14,10 @@
         // These are benchmarks for a medium sized XML case (10mbs)
 
         private string melbourneFile = Properties.Resources.MelbourneOSM;
-        private DataRequestResult[] features = new DataRequestResult[]
+        private FeatureRequest[] features = new FeatureRequest[]
         {
-            new DataRequestResult("amenity", ""), new DataRequestResult("highway",  ""),
-            new DataRequestResult("amenity", "restaurant"), new DataRequestResult("highway",  "residential")
+            new FeatureRequest("amenity", ""), new FeatureRequest("highway",  ""),
+            new FeatureRequest("amenity", "restaurant"), new FeatureRequest("highway",  "residential")
         };
 
         public MelbourneBenchmarks()

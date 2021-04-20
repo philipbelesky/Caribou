@@ -16,13 +16,13 @@
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("OSM Content", "C", "The contents of an XML OSM file (use the output of a Read File component)", GH_ParamAccess.item);
+            pManager.AddTextParameter("OSM Features", "F", "A list of features and subfeatures to extract from the OSM file, in a 'key:value' format separated by newlines or commas", GH_ParamAccess.list);
         }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddPointParameter("Nodes", "N", "Notes; e.g. points that describe a location of interest", GH_ParamAccess.list);
             pManager.AddCurveParameter("Ways", "W", "Ways; e.g. nodes linked in a linear order via a Polyline", GH_ParamAccess.list);
-            // TODO: output the found keys/values? Associate them with the items via index?
         }
 
         public override GH_Exposure Exposure => GH_Exposure.primary;

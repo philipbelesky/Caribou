@@ -5,14 +5,14 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Caribou.Data;
     using Rhino;
     using Rhino.Geometry;
 
-    public class DataRhinoOutputs
+    public class TranslateToXY
     {
         private UnitSystem docUnits = RhinoDoc.ActiveDoc.ModelUnitSystem;
-
-        public static List<Point3d> GetNodesFromCoords(ResultsForFeatures foundItems)
+        public static List<Point3d> NodePointsFromCoords(RequestResults foundItems)
         {
             var results = new List<Point3d>();
             foreach (var featureType in foundItems.Nodes.Keys)
@@ -29,7 +29,7 @@
             return results;
         }
 
-        public static List<Polyline> GetWaysFromCoords(ResultsForFeatures foundItems)
+        public static List<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
         {
             var linePoints = new List<Point3d>();
             var results = new List<Polyline>();

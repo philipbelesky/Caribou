@@ -1,46 +1,24 @@
-﻿namespace Caribou.Processing
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Caribou.Processing;
+
+namespace Caribou.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    public readonly struct DataRequestResult
-    {
-        // A specific key:value pair represent feature/subfeatures to search for in an OSM file
-        // Setup as a struct rather than dict for easier use of a specific hardcoded key to mean "all subfeatures"
-        public const string SearchAllKey = "__ALL__"; // magic value; represents finding all subfeatures
-
-        public DataRequestResult(string feature, string subFeature)
-        {
-            this.Feature = feature;
-            this.SubFeature = subFeature; // "" means to not search by subfeature
-            if (string.IsNullOrEmpty(this.SubFeature))
-            {
-                this.SubFeature = SearchAllKey;
-            }
-        }
-
-        public string Feature { get; }
-
-        public string SubFeature { get; }
-
-        public override string ToString() => $"({this.Feature}, {this.SubFeature})";
-    }
-
     // A two-tier dictionary array organised by feature:subfeature and storing results from the OSM parse
-    public struct ResultsForFeatures
+    public struct RequestResults
     {
-        public ResultsForFeatures(DataRequestResult[] requestedFeatures)
+        public RequestResults(List<FeatureRequest> requestedFeatures)
         {
             this.Nodes = new Dictionary<string, Dictionary<string, List<Coord>>>();
             this.Ways = new Dictionary<string, Dictionary<string, List<List<Coord>>>>();
-            for (int i = 0; i < requestedFeatures.Length; i++)
+            foreach (var requestedFeature in requestedFeatures)
             {
                 // For each feature initialise its keys and lists (if needed)
-                var feature = requestedFeatures[i].Feature;
-                var subFeature = requestedFeatures[i].SubFeature;
+                var feature = requestedFeature.PimraryFeature;
+                var subFeature = requestedFeature.SubFeature;
 
                 if (this.Nodes.Keys.Contains(feature))
                 {
@@ -49,9 +27,9 @@
                 else
                 {
                     this.Nodes[feature] = new Dictionary<string, List<Coord>>
-                    {
-                        { subFeature, new List<Coord>() },
-                    };
+                {
+                    { subFeature, new List<Coord>() },
+                };
                 }
 
                 if (this.Ways.Keys.Contains(feature))
@@ -61,9 +39,9 @@
                 else
                 {
                     this.Ways[feature] = new Dictionary<string, List<List<Coord>>>
-                    {
-                        { subFeature, new List<List<Coord>>() },
-                    };
+                {
+                    { subFeature, new List<List<Coord>>() },
+                };
                 }
             }
 
@@ -121,4 +99,5 @@
             this.LatLonBounds = (new Coord(latMin, lonMin), new Coord(latMax, lonMax));
         }
     }
+
 }

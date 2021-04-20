@@ -3,15 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using Caribou.Data;
     using Grasshopper.Kernel;
     using Rhino.Geometry;
 
     public class LoadAndParseWorker : WorkerInstance
     {
         private string xmlFileContents;
+        private List<string> requestedFeaturesRaw;
+        private List<FeatureRequest> requestedFeatures;
         private List<string> debugOutput = new List<string>();
-        private DataRequestResult[] featuresSpecified;
-        private ResultsForFeatures foundItems;
+        private RequestResults foundItems;
         private List<Point3d> foundNodes;
         private List<Polyline> foundWays;
 
@@ -27,10 +29,19 @@
             {
                 return;
             }
+            this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedFeatures, this.xmlFileContents);
 
-            this.foundItems = ParseViaXMLReader.FindByFeatures(this.featuresSpecified, this.xmlFileContents);
-            this.foundNodes = DataRhinoOutputs.GetNodesFromCoords(this.foundItems);
-            this.foundWays = DataRhinoOutputs.GetWaysFromCoords(this.foundItems);
+            if (this.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+            //this.foundNodes = TranslateToXY.NodePointsFromCoords(this.foundItems);
+
+            if (this.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+            //this.foundWays = TranslateToXY.WayPolylinesFromCoords(this.foundItems);
 
             done();
         }
@@ -46,14 +57,17 @@
 
             da.GetData(0, ref this.xmlFileContents);
 
-            // TODO: validation of input
-
-            // TODO: set below array based on input
-            var featuresSpecified = new DataRequestResult[]
+            var requestedFeaturesRaw = new List<string>();
+            da.GetDataList(1, requestedFeaturesRaw);
+            if (requestedFeaturesRaw.Count == 0)
             {
-                new DataRequestResult("amenity", "restaurant"),
-                new DataRequestResult("craft", "jeweller"),
-            };
+                // TODO: Raise error/remark if empty
+            } 
+            else
+            {
+                this.requestedFeatures = FeatureRequest.ParseFeatureRequestFromGrasshopper(requestedFeaturesRaw);
+            }            
+            // TODO: raise a remark or warning if they key:value is not predefined?
         }
 
         public override void SetData(IGH_DataAccess da)

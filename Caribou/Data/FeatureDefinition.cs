@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Caribou.Data
 {
-    public struct Feature
+    public struct FeatureDefinition
     {
-        public Feature(string id, string name, string explanation, List<Feature> subFeatures = null)
+        public FeatureDefinition(string id, string name, string explanation, List<FeatureDefinition> subFeatures = null)
         {
             this.Id = id;
             this.Name = name;
             this.Explanation = explanation;
             this.SubFeatures = subFeatures;
         }
-
         public string Id { get; }
         public string Name { get; }
         public string Explanation { get; }
-        public List<Feature> SubFeatures { get; }
+        public List<FeatureDefinition> SubFeatures { get; }
 
         public override string ToString() => $"({this.Name}, {this.Explanation})";
+
     }
 }

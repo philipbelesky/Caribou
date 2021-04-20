@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Tests
 {
     using System.Collections.Generic;
+    using Caribou.Data;
     using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Rhino.Geometry;

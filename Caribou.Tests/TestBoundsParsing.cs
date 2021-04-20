@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Caribou.Data;
     using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

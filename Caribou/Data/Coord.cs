@@ -1,4 +1,4 @@
-﻿namespace Caribou.Processing
+﻿namespace Caribou.Data
 {
     public readonly struct Coord
     {

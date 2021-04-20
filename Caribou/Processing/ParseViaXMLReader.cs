@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Xml;
+    using Caribou.Data;
 
     public class ParseViaXMLReader
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
+        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = DataRequestResult.SearchAllKey;
+            var matches = new RequestResults(featuresSpecified); // Output
+            var matchAllKey = FeatureRequest.SearchAllKey;
             var allNodes = new Dictionary<string, Coord>(); // Dict used to lookup a way's nodes
             GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
@@ -87,7 +88,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref ResultsForFeatures matches, string xmlContents)
+        private static void GetBounds(ref RequestResults matches, string xmlContents)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {

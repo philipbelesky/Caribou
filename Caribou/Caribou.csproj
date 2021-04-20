@@ -61,6 +61,7 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
+    <Compile Include="Data\RequestResult.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
     <Compile Include="Processing\ParseViaXMLReader.cs" />
@@ -76,10 +77,10 @@
     <Compile Include="WorkerInstance.cs" />
     <Compile Include="CaribouWorker.cs" />
     <Compile Include="Data\Coord.cs" />
-    <Compile Include="Data\DataRequestResult.cs" />
-    <Compile Include="Data\Feature.cs" />
+    <Compile Include="Data\FeatureRequest.cs" />
+    <Compile Include="Data\FeatureDefinition.cs" />
     <Compile Include="Data\OSMFeatures.cs" />
-    <Compile Include="Data\DataRhinoOutputs.cs" />
+    <Compile Include="Processing\TranslateToXY.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grasshopper">

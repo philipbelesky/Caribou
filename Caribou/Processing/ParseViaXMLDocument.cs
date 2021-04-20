@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Xml;
+    using Caribou.Data;
 
     public class ParseViaXMLDocument
     {
-        public static ResultsForFeatures FindByFeatures(DataRequestResult[] featuresSpecified, string xmlContents)
+        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new ResultsForFeatures(featuresSpecified); // Output
-            var matchAllKey = DataRequestResult.SearchAllKey;
+            var matches = new RequestResults(featuresSpecified); // Output
+            var matchAllKey = FeatureRequest.SearchAllKey;
             double lat = 0.0;
             double lon = 0.0;
 
@@ -53,7 +54,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref ResultsForFeatures matches, XmlNode root)
+        private static void GetBounds(ref RequestResults matches, XmlNode root)
         {
             var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
             matches.SetLatLonBounds(
