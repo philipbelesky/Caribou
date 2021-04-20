@@ -22,7 +22,7 @@
                 string tagKey; 
                 string tagValue;
                 bool inAWay = false; // Need to keep track of when parsing inside Ways so we know wether to add tag info to node or way lists
-                List<Coord> wayNodes = new List<Coord>(); // If parsing inside Ways need to track the different nodes that make it up
+                List<string> wayNodesIds = new List<string>(); // If parsing inside Ways need to track the different nodes that make it up
 
                 while (reader.Read())
                 {
@@ -30,6 +30,7 @@
                     {
                         if (reader.Name == "node")
                         {
+                            wayNodesIds.Clear();
                             inAWay = false;
                             currentNodeId = reader.GetAttribute("id");
                             allNodes[currentNodeId] = new Coord(
@@ -39,11 +40,12 @@
                         }
                         else if (reader.Name == "way")
                         {
+                            wayNodesIds.Clear();
                             inAWay = true;
                         }
                         else if (reader.Name == "nd")
                         {
-                            wayNodes.Add(allNodes[reader.GetAttribute("ref")]);
+                            wayNodesIds.Add(reader.GetAttribute("ref"));
                         }
                         else if (reader.Name == "tag")
                         {
@@ -52,17 +54,22 @@
                             {
                                 tagValue = reader.GetAttribute("v");
                                 if (inAWay) {
-                                    // Parsing a collections of nodes refrences by a way out
+                                    // Parsing a collections of nodes references by a way out
+                                    var ndsForWay = new Coord[wayNodesIds.Count];
+                                    for (int i = 0; i < wayNodesIds.Count; i++)
+                                    {
+                                        ndsForWay[i] = allNodes[wayNodesIds[i]];
+                                    }
+
                                     if (matches.Ways[tagKey].ContainsKey(matchAllKey))
                                     {
-                                        matches.AddWayGivenFeature(tagKey, tagValue, wayNodes);
+                                        matches.AddWayGivenFeature(tagKey, tagValue, ndsForWay);
                                     }
                                     else if (matches.Ways[tagKey].ContainsKey(tagValue))
                                     {
-                                        matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, wayNodes);
+                                        matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, ndsForWay);
                                     }
                                     inAWay = false;
-                                    wayNodes.Clear();
                                 } 
                                 else
                                 {
