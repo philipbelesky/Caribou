@@ -61,6 +61,8 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
+    <Compile Include="Components\SpecifyFeaturesComponent.cs" />
+    <Compile Include="Components\SpecifyTagValuesComponent.cs" />
     <Compile Include="Data\RequestResult.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
