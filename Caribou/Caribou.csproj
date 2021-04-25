@@ -64,6 +64,7 @@
     <Compile Include="Components\SpecifyFeaturesComponent.cs" />
     <Compile Include="Components\SpecifyTagValuesComponent.cs" />
     <Compile Include="Data\RequestResult.cs" />
+    <Compile Include="Processing\GetRhinoCoordinateSystem.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
     <Compile Include="Processing\ParseViaXMLReader.cs" />
@@ -98,6 +99,9 @@
       <Version>3.3.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="ProjNET4GeoAPI">
+      <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="RhinoCommon">
       <Version>7.0.20314.3001</Version>

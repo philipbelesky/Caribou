@@ -29,6 +29,15 @@
           "Microsoft.NetFramework.Analyzers": "[3.3.0]"
         }
       },
+      "ProjNET4GeoAPI": {
+        "type": "Direct",
+        "requested": "[1.4.1, )",
+        "resolved": "1.4.1",
+        "contentHash": "Gw1fW7vQpGB23XZJepG9Cvo2bjpPKuddmsb8+Bwap6KYJdEYWwqHIr+6YP3e391h0ksf6t8mzvj3FA0U/7hUfA==",
+        "dependencies": {
+          "GeoAPI.CoordinateSystems": "1.7.5"
+        }
+      },
       "RhinoCommon": {
         "type": "Direct",
         "requested": "[7.0.20314.3001, )",
@@ -40,6 +49,19 @@
         "requested": "[1.1.118, )",
         "resolved": "1.1.118",
         "contentHash": "Onx6ovGSqXSK07n/0eM3ZusiNdB6cIlJdabQhWGgJp3Vooy9AaLS/tigeybOJAobqbtggTamoWndz72JscZBvw=="
+      },
+      "GeoAPI.CoordinateSystems": {
+        "type": "Transitive",
+        "resolved": "1.7.5",
+        "contentHash": "JBcvkeQFjCW9NTfkII5WiJNmnv0ZtYA/VTVljbIqDFWBJ8kHwu2UHd2MVStD/VVHVnLoyNcDIapsuTENdlyF3g==",
+        "dependencies": {
+          "GeoAPI.Core": "1.7.5"
+        }
+      },
+      "GeoAPI.Core": {
+        "type": "Transitive",
+        "resolved": "1.7.5",
+        "contentHash": "Dy/YkgZ1szgx+xbVWqMi+4++Fm6v3szbVdei1LKPRZ3meSvgNSMZxqhar5IAeaTj5LcUHLtLGdfyUtkjnYbg3A=="
       },
       "Microsoft.CodeAnalysis.VersionCheckAnalyzer": {
         "type": "Transitive",

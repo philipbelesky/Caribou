@@ -4,6 +4,10 @@
     using Caribou.Data;
     using Rhino;
     using Rhino.Geometry;
+    using ProjNet.CoordinateSystems.Transformations;
+    using GeoAPI.CoordinateSystems.Transformations;
+    using System;
+    using ProjNet.CoordinateSystems;
 
     public class TranslateToXY
     {
@@ -11,7 +15,8 @@
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
-            var distanceForLatLon = GetDistanceForLatLong(foundItems.extentsMin, foundItems.extentsMax, unitScale);
+            var unitName = RhinoDoc.ActiveDoc.ModelUnitSystem.ToString();
+            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale, unitName);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
@@ -19,7 +24,7 @@
                 {
                     foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
-                        results.Add(GetPointFromLatLong(coord, foundItems.extentsMin, distanceForLatLon));
+                        results.Add(GetPointFromLatLong(coord, unitTrans));
                     }
                 }
             }
@@ -29,10 +34,8 @@
 
         public static List<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
         {
-            var linePoints = new List<Point3d>();
+            List<Point3d> linePoints;
             var results = new List<Polyline>();
-            var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
-            var distanceForLatLon = GetDistanceForLatLong(foundItems.extentsMin, foundItems.extentsMax, unitScale);
 
             foreach (var featureType in foundItems.Ways.Keys)
             {
@@ -43,7 +46,7 @@
                         linePoints = new List<Point3d>();
                         foreach (var coord in wayCoords)
                         {
-                            linePoints.Add(GetPointFromLatLong(coord, foundItems.extentsMin, distanceForLatLon));
+                            //linePoints.Add(GetPointFromLatLong(coord, foundItems.extentsMin));
                         }
 
                         results.Add(new Polyline(linePoints));
@@ -54,30 +57,30 @@
             return results;
         }
 
-        public static (double, double) GetDistanceForLatLong(Coord minLatLon, Coord maxLatLon, double unitScale)
+        //public static (double, double) GetDistanceForLatLong(Coord minLatLon, Coord maxLatLon, double unitScale)
+        //{
+        //    double earthRadius = 6371000.0;
+        //    double centerLat = minLatLon.Latitude + (maxLatLon.Latitude * 0.5);
+
+        //    double a = System.Math.Cos(centerLat * System.Math.PI / 180);
+        //    double distanceForLatDegree = (System.Math.PI * a * earthRadius) / 180;
+        //    double distanceForLonDegree = (System.Math.PI * earthRadius) / 180;
+
+        //    return (distanceForLatDegree * unitScale, distanceForLonDegree * unitScale);
+        //}
+
+        public static Point3d GetPointFromLatLong(Coord ptCoord, ICoordinateTransformation transformation)
         {
-            double earthRadius = 6371000.0;
-            double centerLat = minLatLon.Latitude + (maxLatLon.Latitude * 0.5);
-
-            double a = System.Math.Cos(centerLat * System.Math.PI / 180);
-            double distanceForLatDegree = (System.Math.PI * a * earthRadius) / 180;
-            double distanceForLonDegree = (System.Math.PI * earthRadius) / 180;
-
-            return (distanceForLatDegree * unitScale, distanceForLonDegree * unitScale);
+            double[] latLonCoord = new double[] { ptCoord.Latitude, ptCoord.Longitude };
+            var xy = GetXYFromLatLon(latLonCoord, transformation);
+  
+            return new Point3d(xy[0], xy[1], 0);
         }
 
-        public static Point3d GetPointFromLatLong(Coord ptCoord, Coord minLatlLon, (double, double) distanceForLatLon)
+        //// Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
+        public static double[] GetXYFromLatLon(double[] latlonCoord, ICoordinateTransformation transformation)
         {
-            var xy = GetXYFromLatLon(ptCoord.Latitude, ptCoord.Longitude, minLatlLon, distanceForLatLon);
-            return new Point3d(xy.Item1, xy.Item2, 0);
-        }
-
-        // Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
-        public static (double, double) GetXYFromLatLon(double lat, double lon, Coord minLatlLon, (double, double) distanceForLatLon)
-        {
-            var y = (lat - minLatlLon.Latitude) * distanceForLatLon.Item1;
-            var x = (lon - minLatlLon.Longitude) * distanceForLatLon.Item2;
-            return (x, y);
+            return transformation.MathTransform.Transform(latlonCoord);
         }
     }
 }
