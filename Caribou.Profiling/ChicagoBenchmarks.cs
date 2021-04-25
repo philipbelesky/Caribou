@@ -8,13 +8,14 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using Caribou.Processing;
+    using Caribou.Data;
 
     public class ChicagoBenchmarks
     {
         // These are benchmarks for a large XML case (100mbs)
 
         private string chicagoFile = Properties.Resources.ChicagoOSM;
-        private FeatureRequest[] features = new FeatureRequest[]
+        private List<FeatureRequest> features = new List<FeatureRequest>()
         {
             new FeatureRequest("amenity", ""), new FeatureRequest("highway",  ""),
             new FeatureRequest("amenity", "restaurant"), new FeatureRequest("highway",  "residential")

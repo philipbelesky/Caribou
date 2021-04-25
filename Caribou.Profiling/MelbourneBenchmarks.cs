@@ -8,13 +8,14 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using Caribou.Processing;
+    using Caribou.Data;
 
     public class MelbourneBenchmarks
     {
         // These are benchmarks for a medium sized XML case (10mbs)
 
         private string melbourneFile = Properties.Resources.MelbourneOSM;
-        private FeatureRequest[] features = new FeatureRequest[]
+        private List<FeatureRequest> features = new List<FeatureRequest>()
         {
             new FeatureRequest("amenity", ""), new FeatureRequest("highway",  ""),
             new FeatureRequest("amenity", "restaurant"), new FeatureRequest("highway",  "residential")
