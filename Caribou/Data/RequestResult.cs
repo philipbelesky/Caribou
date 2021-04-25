@@ -46,15 +46,13 @@ namespace Caribou.Data
             }
 
             this.PrimaryFeaturesToFind = this.Nodes.Keys.ToList();
-            this.LatLonBounds = (new Coord(0, 0), new Coord(0, 0));
         }
 
         public List<string> PrimaryFeaturesToFind { get; }
         public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
-
         public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
-
-        public (Coord, Coord) LatLonBounds { get; set; }
+        public Coord extentsMin { get; set; }
+        public Coord extentsMax { get; set; }
 
         public void AddNodeGivenFeature(string feature, string subFeature, Coord coord)
         {
@@ -98,7 +96,8 @@ namespace Caribou.Data
 
         public void SetLatLonBounds(double latMin, double lonMin, double latMax, double lonMax)
         {
-            this.LatLonBounds = (new Coord(latMin, lonMin), new Coord(latMax, lonMax));
+            this.extentsMin = new Coord(latMin, lonMin);
+            this.extentsMax = new Coord(latMax, lonMax);
         }
     }
 

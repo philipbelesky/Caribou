@@ -11,6 +11,7 @@
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
+            var distanceForLatLon = GetDistanceForLatLong(foundItems.extentsMin, foundItems.extentsMax, unitScale);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
@@ -18,7 +19,7 @@
                 {
                     foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
-                        results.Add(GetPointFromLatLong(coord, unitScale));
+                        results.Add(GetPointFromLatLong(coord, foundItems.extentsMin, distanceForLatLon));
                     }
                 }
             }
@@ -31,6 +32,7 @@
             var linePoints = new List<Point3d>();
             var results = new List<Polyline>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
+            var distanceForLatLon = GetDistanceForLatLong(foundItems.extentsMin, foundItems.extentsMax, unitScale);
 
             foreach (var featureType in foundItems.Ways.Keys)
             {
@@ -41,7 +43,7 @@
                         linePoints = new List<Point3d>();
                         foreach (var coord in wayCoords)
                         {
-                            linePoints.Add(GetPointFromLatLong(coord, unitScale));
+                            linePoints.Add(GetPointFromLatLong(coord, foundItems.extentsMin, distanceForLatLon));
                         }
 
                         results.Add(new Polyline(linePoints));
@@ -52,16 +54,30 @@
             return results;
         }
 
-        public static Point3d GetPointFromLatLong(Coord coord, double unitScale)
+        public static (double, double) GetDistanceForLatLong(Coord minLatLon, Coord maxLatLon, double unitScale)
         {
-            var latlonprimitive = GetXYFromLatLong(coord.Latitude, coord.Longitude, unitScale);
-            return new Point3d(latlonprimitive.Item1, latlonprimitive.Item2, 0);
+            double earthRadius = 6371000.0;
+            double centerLat = minLatLon.Latitude + (maxLatLon.Latitude * 0.5);
+
+            double a = System.Math.Cos(centerLat * System.Math.PI / 180);
+            double distanceForLatDegree = (System.Math.PI * a * earthRadius) / 180;
+            double distanceForLonDegree = (System.Math.PI * earthRadius) / 180;
+
+            return (distanceForLatDegree * unitScale, distanceForLonDegree * unitScale);
+        }
+
+        public static Point3d GetPointFromLatLong(Coord ptCoord, Coord minLatlLon, (double, double) distanceForLatLon)
+        {
+            var xy = GetXYFromLatLon(ptCoord.Latitude, ptCoord.Longitude, minLatlLon, distanceForLatLon);
+            return new Point3d(xy.Item1, xy.Item2, 0);
         }
 
         // Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
-        public static (double, double) GetXYFromLatLong(double lat, double lon, double unitScale)
+        public static (double, double) GetXYFromLatLon(double lat, double lon, Coord minLatlLon, (double, double) distanceForLatLon)
         {
-            return (lat * unitScale, lon * unitScale);
+            var y = (lat - minLatlLon.Latitude) * distanceForLatLon.Item1;
+            var x = (lon - minLatlLon.Longitude) * distanceForLatLon.Item2;
+            return (x, y);
         }
     }
 }

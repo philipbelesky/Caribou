@@ -35,13 +35,13 @@
             {
                 return;
             }
-            //this.foundNodes = TranslateToXY.NodePointsFromCoords(this.foundItems);
+            this.foundNodes = TranslateToXY.NodePointsFromCoords(this.foundItems);
 
             if (this.CancellationToken.IsCancellationRequested)
             {
                 return;
             }
-            //this.foundWays = TranslateToXY.WayPolylinesFromCoords(this.foundItems);
+            this.foundWays = TranslateToXY.WayPolylinesFromCoords(this.foundItems);
 
             done();
         }

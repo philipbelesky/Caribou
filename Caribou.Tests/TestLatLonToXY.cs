@@ -9,27 +9,37 @@
     [TestClass]
     public class TestLatLonToXY
     {
-        [TestMethod]
-        public void TranslateLatLonToXY()
-        {
-            var mScale = 1.0;
-            var mmScale = 1000.0;
-            var testA = new Coord(-37.8161790, 144.9666110);
-            var testB = new Coord(-37.8149890, 144.9658410);
+        private double mScale = 1.0;
+        private double mmScale = 1000.0;
+        private Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // melbourne.xml
+        private Coord testMaxBounds = new Coord(-37.8089200, 144.9710600); // melbourne.xml
 
-            var result1 = TranslateToXY.GetXYFromLatLong(testA.Latitude, testA.Longitude, mScale);
+        [TestMethod]
+        public void TranslateLatLonToXYA()
+        {
+            var pt = new Coord(-37.8161790, 144.9666110); // nodeID 2102129133
+            var d = TranslateToXY.GetDistanceForLatLong(testMinBounds, testMaxBounds, mScale);
+
+            var result1 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
             Assert.AreEqual(result1.Item1, 340.052469);
             Assert.AreEqual(result1.Item2, 26.797977);
 
-            var result2 = TranslateToXY.GetXYFromLatLong(testA.Latitude, testA.Longitude, mmScale);
+            var result2 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
             Assert.AreEqual(result2.Item1, 340052.469047);
-            Assert.AreEqual(result2.Item2, 26797.977322);
+            Assert.AreEqual(result2.Item2, 26797.977322); 
+        }
 
-            var result3 = TranslateToXY.GetXYFromLatLong(testB.Latitude, testB.Longitude, mScale);
+        [TestMethod]
+        public void TranslateLatLonToXYB()
+        {
+            var pt = new Coord(-37.8149890, 144.9658410); // nodeID 3877497258
+            var d = TranslateToXY.GetDistanceForLatLong(testMinBounds, testMaxBounds, mScale);
+
+            var result3 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
             Assert.AreEqual(result3.Item1, 272.410929);
             Assert.AreEqual(result3.Item2, 159.11994);
 
-            var result4 = TranslateToXY.GetXYFromLatLong(testB.Latitude, testB.Longitude, mmScale);
+            var result4 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
             Assert.AreEqual(result4.Item1, 272410.929093);
             Assert.AreEqual(result4.Item2, 159119.940029);
         }
