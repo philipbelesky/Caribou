@@ -5,7 +5,6 @@
     using Rhino;
     using Rhino.Geometry;
     using ProjNet.CoordinateSystems.Transformations;
-    using GeoAPI.CoordinateSystems.Transformations;
     using System;
     using ProjNet.CoordinateSystems;
 
@@ -16,7 +15,7 @@
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
             var unitName = RhinoDoc.ActiveDoc.ModelUnitSystem.ToString();
-            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale, unitName);
+            //var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale, unitName);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
@@ -24,7 +23,7 @@
                 {
                     foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
-                        results.Add(GetPointFromLatLong(coord, unitTrans));
+                        //results.Add(GetPointFromLatLong(coord, unitTrans));
                     }
                 }
             }
@@ -71,16 +70,16 @@
 
         public static Point3d GetPointFromLatLong(Coord ptCoord, ICoordinateTransformation transformation)
         {
-            double[] latLonCoord = new double[] { ptCoord.Latitude, ptCoord.Longitude };
-            var xy = GetXYFromLatLon(latLonCoord, transformation);
+            double[] longLatWGS = new double[] { ptCoord.Longitude, ptCoord.Latitude }; // Note: LONG then LAT
+            var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation);
   
-            return new Point3d(xy[0], xy[1], 0);
+            return new Point3d(eastNorthUTM[1], eastNorthUTM[0], 0);
         }
 
         //// Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
-        public static double[] GetXYFromLatLon(double[] latlonCoord, ICoordinateTransformation transformation)
+        public static double[] GetXYFromLatLon(double[] longLatWGS, ICoordinateTransformation transformation)
         {
-            return transformation.MathTransform.Transform(latlonCoord);
+            return transformation.MathTransform.Transform(longLatWGS);
         }
     }
 }
