@@ -13,54 +13,42 @@
 
     public static class GetRhinoCoordinateSystem
     {
-        //public static ICoordinateTransformation GetTransformation(Coord min, double unitScale, string unitName)
-        //{
-        //    // Setup our FROM coordinate system (WSG84 per OSM)
-        //    GeographicCoordinateSystem wgsCS;
-        //    wgsCS = ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84;
+        public static ICoordinateTransformation GetTransformation(Coord min, double unitScale, string unitName)
+        {
+            // Customise our TO coordinate system's units given Rhino doc
+            var unitForCS = new LinearUnit(unitScale, unitName, string.Empty, 0, string.Empty, string.Empty, string.Empty);
 
-        //    // Customise our TO coordinate system's units given Rhino doc
-        //    var unitForCS = new LinearUnit(unitScale, unitName, string.Empty, 0, string.Empty, string.Empty, string.Empty);
- 
-        //    // Customise our TO coordinate system's origin given bounds of OSM file
-        //    var latitudeOfOrigin = min.Latitude;
-        //    var centralMeridian = min.Longitude;
-        //    int utmZone = GetUTMZone(min.Latitude, min.Longitude);
+            // Customise our TO coordinate system's origin given bounds of OSM file
+            int utmZone = GetUTMZone(min.Latitude, min.Longitude);
+            var latitudeOfOrigin = 0; // min.Latitude; TODO: use bounds
+            var centralMeridian = (utmZone * 6) - 183; 
+            var zoneIsNorth = min.Latitude > 0.0;
 
-        //    // Setup our TO coordinate system (UTM but with modified units/origin to match Rhino)
-        //    ProjectedCoordinateSystem utmCS;
-        //    utmCS = MakeCustomisedUTM(latitudeOfOrigin, centralMeridian, utmZone, wgsCS, unitForCS);
+            // Setup our TO coordinate system (UTM but with modified units/origin to match Rhino)
+            var pcs_UTM = AlterStandardWGS(utmZone, zoneIsNorth, centralMeridian, latitudeOfOrigin);
 
-        //    CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
-        //    ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(wgsCS, utmCS);
+            CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
+            ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(pcs_UTM.GeographicCoordinateSystem, pcs_UTM);
 
-        //    return trans;
-        //}
+            return trans;
+        }
 
-        //private static ProjectedCoordinateSystem MakeCustomisedUTM(double latitudeOfOrigin, double centralMeridian, int zone, GeographicCoordinateSystem geoCS, LinearUnit units)
-        //{
-        //    var zoneIsNorth = latitudeOfOrigin > 0.0;
-        //    CoordinateSystemFactory cFac = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+        private static IProjectedCoordinateSystem AlterStandardWGS(int utmZone, bool zoneIsNorth, int centralMeridian, int latitudeOfOrigin)
+        {
+            IProjectedCoordinateSystem pcs_UTM = ProjectedCoordinateSystem.WGS84_UTM(utmZone, zoneIsNorth);
+            GeoAPI.CoordinateSystems.ICoordinateSystemFactory cFac = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
 
-        //    // Adapted from https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/34628b210ee1681d5d8cc8602f634e700a8058cf/src/ProjNet/CoordinateSystems/ProjectedCoordinateSystem.cs
-        //    var pInfo = new List<ProjectionParameter>();
-        //    pInfo.Add(new ProjectionParameter("latitude_of_origin", latitudeOfOrigin));
-        //    pInfo.Add(new ProjectionParameter("central_meridian", centralMeridian));
-        //    pInfo.Add(new ProjectionParameter("scale_factor", 0.9996));
-        //    pInfo.Add(new ProjectionParameter("false_easting", 500000));
-        //    pInfo.Add(new ProjectionParameter("false_northing", zoneIsNorth ? 0 : 10000000));
+            var pInfo = new List<ProjectionParameter>();
+            pInfo.Add(new ProjectionParameter("latitude_of_origin", latitudeOfOrigin));
+            pInfo.Add(new ProjectionParameter("central_meridian", centralMeridian));
+            pInfo.Add(new ProjectionParameter("scale_factor", 0.9996));
+            pInfo.Add(new ProjectionParameter("false_easting", 500000));
+            pInfo.Add(new ProjectionParameter("false_northing", zoneIsNorth ? 0 : 10000000));
+            IProjection projection = cFac.CreateProjection("UTM", "Transverse_Mercator", pInfo);
 
-        //    IProjection projection = cFac.CreateProjection("Transverse_Mercator", "Transverse_Mercator", pInfo);
-        //    ProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem(
-        //        "" + "UTM WGS84",
-        //        geoCS, 
-        //        projection, 
-        //        units,
-        //        new AxisInfo("East", AxisOrientationEnum.East), 
-        //        new AxisInfo("North", AxisOrientationEnum.North));
-
-        //    return coordsys;
-        //}
+            pcs_UTM.Projection = projection;
+            return pcs_UTM;
+        }
 
         public static int GetUTMZone(double lat, double lon)
         {

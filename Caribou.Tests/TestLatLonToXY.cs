@@ -51,18 +51,18 @@
             Assert.AreEqual(expectedXY[1], result[1], tolerance);
         }
 
-        //[TestMethod]
-        //public void TranslateLatLonToXYWithoutBounds()
-        //{
-        //    var pt = new double[] { -37.8161790, 144.9666110 }; // nodeID 2102129133
-        //    var expectedXY = new double[] { 3894941.5147579345, -15056535.280682813 };
-        //    var bounds = new Coord(-37, 144);
+        [TestMethod]
+        public void TranslateLatLonToXYWithoutBoundsSHemisphere()
+        {
+            var pt = new double[] { 144.9710600, -37.8089200 }; // LON - LAT
+            var expectedXY = new double[] { 321393.91, 5813446.27 }; // East-North
+            var bounds = new Coord(-37.8, 144.9);
 
-        //    var transformation = GetRhinoCoordinateSystem.MostSimpleExample(bounds);
-        //    var result = TranslateToXY.GetXYFromLatLon(pt, transformation);
-        //    Assert.AreEqual(expectedXY[0], result[0]);
-        //    Assert.AreEqual(expectedXY[1], result[1]);
-        //}
+            var transformation = GetRhinoCoordinateSystem.GetTransformation(bounds, mScale, "m");
+            var result = TranslateToXY.GetXYFromLatLon(pt, transformation);
+            Assert.AreEqual(expectedXY[0], result[0], tolerance);
+            Assert.AreEqual(expectedXY[1], result[1], tolerance);
+        }
 
         //[TestMethod]
         //public void TranslateLatLonToXYm()
