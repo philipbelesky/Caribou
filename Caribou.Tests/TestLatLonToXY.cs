@@ -9,6 +9,7 @@
     [TestClass]
     public class TestLatLonToXY
     {
+        private double tolerance = 0.001;
         private double mScale = 1.0;
         private double mmScale = 1000.0;
         private Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // melbourne.xml
@@ -29,25 +30,25 @@
         [TestMethod]
         public void TranslateLatLonToXYProvidedNHemisphere()
         {
-            var pt = new double[] { 4.296545, 50.880324 }; // LONG-LAT
-            var expectedXY = new double[] { 591210.304913748, 5637317.31895618 }; // X-Y
+            var pt = new double[] { 4.296545, 50.880324 }; // LON - LAT
+            var expectedXY = new double[] { 591210.304913748, 5637317.31895618 }; // East-North
             var bounds = new Coord( 50.1, 4.1);
             var result = GetRhinoCoordinateSystem.MostSimpleExample(bounds, pt);
 
-            Assert.AreEqual(expectedXY[0], result[0], 0.0001);
-            Assert.AreEqual(expectedXY[1], result[1], 0.0001);
+            Assert.AreEqual(expectedXY[0], result[0], tolerance);
+            Assert.AreEqual(expectedXY[1], result[1], tolerance);
         }
 
         [TestMethod]
         public void TranslateLatLonToXYProvidedSHemisphere()
         {
-            var pt = new double[] { 144.9710600, -37.8089200 }; // LONG-LAT
-            var expectedXY = new double[] { 3894936.459223728, -15057560.845605332 }; // X-Y
+            var pt = new double[] { 144.9710600, -37.8089200 }; // LON - LAT
+            var expectedXY = new double[] { 321393.91, 5813446.27 }; // East-North
             var bounds = new Coord(-37.8, 144.9);
             var result = GetRhinoCoordinateSystem.MostSimpleExample(bounds, pt);
 
-            Assert.AreEqual(expectedXY[0], result[0], 0.0001);
-            Assert.AreEqual(expectedXY[1], result[1], 0.0001);
+            Assert.AreEqual(expectedXY[0], result[0], tolerance);
+            Assert.AreEqual(expectedXY[1], result[1], tolerance);
         }
 
         //[TestMethod]

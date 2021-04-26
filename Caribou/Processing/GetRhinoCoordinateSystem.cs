@@ -8,6 +8,8 @@
     using ProjNet.Converters.WellKnownText;
     using ProjNet.CoordinateSystems;
     using ProjNet.CoordinateSystems.Transformations;
+    using GeoAPI.CoordinateSystems;
+    using GeoAPI.CoordinateSystems.Transformations;
 
     public static class GetRhinoCoordinateSystem
     {
@@ -82,19 +84,20 @@
 
         // Just here to be unit tested against as a working example
         // Note fromPointLongLat order
-        public static double[] MostSimpleExample(Coord min, double[] fromPointLongLat)
-        {
+        public static double[] MostSimpleExample(Coord min, double[] fromPointLonLat)
+        { 
             // See https://github.com/bozhink/ProcessingTools/blob/d83a57e955e6bae815bbfe7d886d109b08abd136/src/ProcessingTools/Infrastructure/Geo/Transformers/UtmCoordianesTransformer.cs
             int utmZone = GetUTMZone(min.Latitude, min.Longitude);
             bool zoneIsNorth = min.Latitude > 0.0;
 
-            ProjNet.CoordinateSystems.ICoordinateSystem gcs_WGS84 = GeographicCoordinateSystem.WGS84;
+            ICoordinateSystem gcs_WGS84 = GeographicCoordinateSystem.WGS84;
             IProjectedCoordinateSystem pcs_UTM31N = ProjectedCoordinateSystem.WGS84_UTM(utmZone, zoneIsNorth);
 
             CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
             ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(gcs_WGS84, pcs_UTM31N);
 
-            double[] toPoint = trans.MathTransform.Transform(fromPointLongLat);
+            // Seemingly contra to documentation the transformation here only works if in LON-LAT order
+            double[] toPoint = trans.MathTransform.Transform(fromPointLonLat);
             return toPoint;
         }
     }

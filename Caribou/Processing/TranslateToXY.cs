@@ -7,6 +7,7 @@
     using ProjNet.CoordinateSystems.Transformations;
     using System;
     using ProjNet.CoordinateSystems;
+    using GeoAPI.CoordinateSystems.Transformations;
 
     public class TranslateToXY
     {
@@ -70,16 +71,15 @@
 
         public static Point3d GetPointFromLatLong(Coord ptCoord, ICoordinateTransformation transformation)
         {
-            double[] longLatWGS = new double[] { ptCoord.Longitude, ptCoord.Latitude }; // Note: LONG then LAT
-            var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation);
-  
-            return new Point3d(eastNorthUTM[1], eastNorthUTM[0], 0);
+            double[] longLatWGS = new double[] { ptCoord.Latitude, ptCoord.Longitude }; // Note: LONG then LAT
+            var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation); // Returns in Y-X
+            return new Point3d(eastNorthUTM[0], eastNorthUTM[1], 0);
         }
 
-        //// Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
-        public static double[] GetXYFromLatLon(double[] longLatWGS, ICoordinateTransformation transformation)
+        // Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
+        public static double[] GetXYFromLatLon(double[] latLon, ICoordinateTransformation transformation)
         {
-            return transformation.MathTransform.Transform(longLatWGS);
+            return transformation.MathTransform.Transform(latLon);
         }
     }
 }
