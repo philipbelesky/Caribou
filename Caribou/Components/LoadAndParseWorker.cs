@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Threading;
     using Caribou.Data;
+    using Grasshopper;
     using Grasshopper.Kernel;
+    using Grasshopper.Kernel.Data;
     using Rhino.Geometry;
 
     public class LoadAndParseWorker : WorkerInstance
@@ -14,8 +16,9 @@
         private List<FeatureRequest> requestedFeatures;
         private List<string> debugOutput = new List<string>();
         private RequestResults foundItems;
-        private List<Point3d> foundNodes;
-        private List<Polyline> foundWays;
+        private DataTree<Point3d> foundNodes;
+        private DataTree<Polyline> foundWays;
+        private DataTree<string> foundElementsReport;
 
         public LoadAndParseWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -26,28 +29,25 @@
         {
             // Checking for cancellation
             if (this.CancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
 
             // Extra LatLon coords from XML tag that match the specified feature/subfeature
             this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedFeatures, this.xmlFileContents);
 
             if (this.CancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
 
-            // Translate OSM nodes to Rhino points 
+            // Translate OSM nodes to Rhino points
             this.foundNodes = TranslateToXYManually.NodePointsFromCoords(this.foundItems);
 
             if (this.CancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
 
             // Translate OSM ways to Rhino polylines
             this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.foundItems);
+
+            // Create output tree path for featues
+            this.foundElementsReport = this.foundItems.ReportFoundFeatures(false);
 
             done();
         }
@@ -89,9 +89,7 @@
             }
             else
             {
-                var parseResults = FeatureRequest.ParseFeatureRequestFromGrasshopper(requestedFeaturesRaw);
-                this.requestedFeatures = parseResults.Item1;
-                this.RuntimeMessages.AddRange(parseResults.Item2);
+                this.requestedFeatures = FeatureRequest.ParseFeatureRequestFromGrasshopper(requestedFeaturesRaw);
             }
         }
 
@@ -102,11 +100,12 @@
                 return;
             }
 
-            da.SetDataList(0, this.foundNodes);
-            da.SetDataList(1, this.foundWays);
+            da.SetDataTree(0, this.foundNodes);
+            da.SetDataTree(1, this.foundWays);
+            da.SetDataTree(2, this.foundElementsReport);
 
             // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
-            da.SetDataList(2, this.debugOutput);
+            da.SetDataList(3, this.debugOutput);
         }
     }
 }

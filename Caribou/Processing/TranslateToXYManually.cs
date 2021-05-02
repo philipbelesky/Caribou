@@ -5,57 +5,88 @@
     using Rhino;
     using Rhino.Geometry;
     using System;
+    using Grasshopper;
+    using Grasshopper.Kernel.Data;
 
     public static class TranslateToXYManually
     {
-        public static List<Point3d> NodePointsFromCoords(RequestResults foundItems)
+        public static DataTree<Point3d> NodePointsFromCoords(RequestResults foundItems)
         {
-            var results = new List<Point3d>();
+            var results = new DataTree<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
-            Coord lengthPerDegree = GetDegreesPerAxis(foundItems.extentsMin, foundItems.extentsMax, unitScale);
+            Coord lengthPerDegree = GetDegreesPerAxis(foundItems.ExtentsMin, foundItems.ExtentsMax, unitScale);
 
+            var i = 0;
             foreach (var featureType in foundItems.Nodes.Keys)
             {
+                var j = 0;
                 foreach (var subfeatureType in foundItems.Nodes[featureType].Keys)
                 {
+                    if (subfeatureType == FeatureRequest.SearchAllKey)
+                    {
+                        continue;
+                    }
+
+                    GH_Path subfeaturePath = new GH_Path(i, j);
+                    results.EnsurePath(subfeaturePath);
+                    j++;
+
                     foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
-                        results.Add(GetPointFromLatLong(coord, lengthPerDegree, foundItems.extentsMin));
+                        var pt = GetPointFromLatLong(coord, lengthPerDegree, foundItems.ExtentsMin);
+                        results.Add(pt, subfeaturePath);
                     }
                 }
+
+                i++;
             }
 
             return results;
         }
 
-        public static List<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
+        public static DataTree<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
         {
             List<Point3d> linePoints;
-            var results = new List<Polyline>();
+            var results = new DataTree<Polyline>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem);
-            Coord lengthPerDegree = GetDegreesPerAxis(foundItems.extentsMin, foundItems.extentsMax, unitScale);
+            Coord lengthPerDegree = GetDegreesPerAxis(foundItems.ExtentsMin, foundItems.ExtentsMax, unitScale);
 
+            var i = 0;
             foreach (var featureType in foundItems.Ways.Keys)
             {
+                var j = 0;
                 foreach (var subfeatureType in foundItems.Ways[featureType].Keys)
                 {
+                    if (subfeatureType == FeatureRequest.SearchAllKey)
+                    {
+                        continue;
+                    }
+
+                    GH_Path subfeaturePath = new GH_Path(i, j);
+                    results.EnsurePath(subfeaturePath);
+                    j++;
+
                     foreach (var wayCoords in foundItems.Ways[featureType][subfeatureType])
                     {
                         linePoints = new List<Point3d>();
                         foreach (var coord in wayCoords)
                         {
-                            linePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, foundItems.extentsMin));
+                            linePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, foundItems.ExtentsMin));
                         }
 
-                        results.Add(new Polyline(linePoints));
+                        var crv = new Polyline(linePoints);
+                        results.Add(crv, subfeaturePath);
                     }
                 }
+
+                i++;
             }
 
             return results;
         }
 
-        public static Coord GetDegreesPerAxis(Coord min, Coord max, double unitScale) { 
+        public static Coord GetDegreesPerAxis(Coord min, Coord max, double unitScale)
+        {
             // Thanks to Elk for this code!
             double meanEarthRadius = 6371000;
 

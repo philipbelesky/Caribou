@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Grasshopper.Kernel;
 
     public readonly struct FeatureRequest
     {
@@ -22,10 +19,11 @@
                 this.SubFeature = SearchAllKey;
             }
         }
-        public static Tuple<List<FeatureRequest>, List<(GH_RuntimeMessageLevel, string)>> ParseFeatureRequestFromGrasshopper(List<string> ghInput)
+
+        public static List<FeatureRequest> ParseFeatureRequestFromGrasshopper(List<string> ghInput)
         {
             var requestedFeatures = new List<FeatureRequest>();
-            var requestMessages = new List<(GH_RuntimeMessageLevel, string)>();
+            //var requestMessages = new List<(GH_RuntimeMessageLevel, string)>(); // TODO: return these properly
             var cleanedGhInput = new List<string>();
 
             // If a multiline string has been provided via a Panel component without multiline input enabled
@@ -66,13 +64,12 @@
                 if (!requestedFeatures.Contains(requestedFeature))
                 {
                     requestedFeatures.Add(requestedFeature);
-                } else
-                {
-                    requestMessages.Add((GH_RuntimeMessageLevel.Remark, $"Found a duplicate request: {requestedFeature}"));
-                }
+                } 
             }
-            return new Tuple<List<FeatureRequest>, List<(GH_RuntimeMessageLevel, string)>>(requestedFeatures, requestMessages);
+
+            return requestedFeatures;
         }
+
 
         public string PimraryFeature { get; }
 

@@ -16,6 +16,8 @@
         {
             this.Nodes = new Dictionary<string, Dictionary<string, List<Coord>>>();
             this.Ways = new Dictionary<string, Dictionary<string, List<Coord[]>>>();
+            this.requestedFeatures = requestedFeatures;
+
             foreach (var requestedFeature in requestedFeatures)
             {
                 // For each feature initialise its keys and lists (if needed)
@@ -51,6 +53,7 @@
         }
 
         public List<string> PrimaryFeaturesToFind { get; }
+        public List<FeatureRequest> requestedFeatures { get; }
         public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
         public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
         public Coord ExtentsMin { get; set; }
@@ -65,7 +68,7 @@
             }
             else
             {
-                this.Nodes[feature][subFeature] = new List<Coord>(); 
+                this.Nodes[feature][subFeature] = new List<Coord>();
                 this.Nodes[feature][subFeature].Add(coord);
             }
         }
@@ -101,6 +104,40 @@
             this.ExtentsMin = new Coord(latMin, lonMin);
             this.ExtentsMax = new Coord(latMax, lonMax);
         }
-    }
 
+        public DataTree<string> ReportFoundFeatures(bool includeCounts)
+        {
+            var results = new DataTree<string>();
+
+            var i = 0;
+            foreach (var featureType in this.requestedFeatures)
+            {
+                //string name;
+                //GH_Path subfeaturePath = new GH_Path(i);
+                //results.EnsurePath(subfeaturePath);
+
+                //if (featureType.SubFeature == FeatureRequest.SearchAllKey)
+                //{
+                //    name = $"{featureType}:unspecified";
+                //}
+                //else
+                //{
+                //    name = $"{featureType}:{subfeatureType}";
+                //}
+
+                //if (includeCounts) // TODO: wire up to menu toggle
+                //{
+                //    var nodeCount = this.Nodes[featureType][subfeatureType].Count.ToString();
+                //    var wayCount = this.Ways[featureType][subfeatureType].Count.ToString();
+                //    name = name.PadRight(20, ' '); // pad string so the counts are easy to read
+                //    name += $" {nodeCount.PadLeft(5)} nodes {wayCount.PadLeft(5)} ways";
+                //}
+
+                //results.Add(name, subfeaturePath);
+                i++;
+            }
+
+            return results;
+        }
+    }
 }
