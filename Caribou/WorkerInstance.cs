@@ -11,6 +11,10 @@
     /// </summary>
     public abstract class WorkerInstance
     {
+        // This is a class that enables a particular computation to be preformed asynchronously by components using CaribouAsyncComponent 
+        // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
+        // This implementation is a near-direct copy of that published in [this repository](https://github.com/specklesystems/GrasshopperAsyncComponent/)
+
         /// <summary>
         /// The parent component. Useful for passing state back to the host component.
         /// </summary>
@@ -26,6 +30,7 @@
         /// </summary>
         public string Id { get; set; }
 
+        // Note that inheritors should provide parents using this constructor so state can be passed back up
         protected WorkerInstance(GH_Component parent)
         {
             Parent = parent;

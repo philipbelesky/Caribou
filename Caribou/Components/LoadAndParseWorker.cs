@@ -17,8 +17,8 @@
         private List<Point3d> foundNodes;
         private List<Polyline> foundWays;
 
-        public LoadAndParseWorker()
-            : base(null)
+        public LoadAndParseWorker(GH_Component parent)
+            : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
         {
         }
 
@@ -52,7 +52,7 @@
             done();
         }
 
-        public override WorkerInstance Duplicate() => new LoadAndParseWorker();
+        public override WorkerInstance Duplicate() => new LoadAndParseWorker(this.Parent);
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
@@ -67,8 +67,8 @@
             if (rawDataContensts.Count > 1)
             {
                 xmlFileContents = string.Join("", rawDataContensts);
-                // this.Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark,
-                //    "OSM file content was provided as a list of strings. When using the Read File component you should turn OFF Per-File parsing. If you are trying to read multiple OSM files at once, this is not supported.");
+                Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark,
+                    "OSM file content was provided as a list of strings. When using the Read File component you should turn OFF Per-File parsing via the right-click menu. If you are trying to read multiple OSM files at once, this is not supported.");
             }
             else
             {

@@ -79,7 +79,6 @@
     </Compile>
     <Compile Include="CaribouAsyncComponent.cs" />
     <Compile Include="WorkerInstance.cs" />
-    <Compile Include="CaribouWorker.cs" />
     <Compile Include="Data\Coord.cs" />
     <Compile Include="Data\FeatureRequest.cs" />
     <Compile Include="Data\FeatureDefinition.cs" />
