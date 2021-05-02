@@ -50,11 +50,24 @@
         /// <param name="done">Call this when everything is <b>done</b>. It will tell the parent component that you're ready to <see cref="SetData(IGH_DataAccess)"/>.</param>
         public abstract void DoWork(Action<string, double> reportProgress, Action done);
 
+        // Per issues #11 and #14 in https://github.com/specklesystems/GrasshopperAsyncComponent/ this helps prevent messages vanishing
+        protected List<(GH_RuntimeMessageLevel, string)> RuntimeMessages { get; set; } = new List<(GH_RuntimeMessageLevel, string)>();
+
+        // As per RuntimeMessages, we need to write out any messages passed up
         /// <summary>
         /// Write your data setting logic here. <b>Do not call this function directly from this class. It will be invoked by the parent <see cref="CaribouAsyncComponent"/> after you've called `Done` in the <see cref="DoWork(Action{string}, Action{string, GH_RuntimeMessageLevel}, Action)"/> function.</b>
         /// </summary>
         /// <param name="da"></param>
-        public abstract void SetData(IGH_DataAccess da);
+        public void SetData(IGH_DataAccess da)
+        {
+            WorkerSetData(da); // Worker must implement a custom SetData as per below
+            foreach (var (level, message) in RuntimeMessages)
+            {
+                Parent.AddRuntimeMessage(level, message); // Report any messages done by the worker instance
+            }
+        }
+        
+        protected abstract void WorkerSetData(IGH_DataAccess da);
 
         /// <summary>
         /// Write your data collection logic here. <b>Do not call this method directly. It will be invoked by the parent <see cref="CaribouAsyncComponent"/>.</b>

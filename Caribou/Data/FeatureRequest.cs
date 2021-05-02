@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Grasshopper.Kernel;
 
     public readonly struct FeatureRequest
     {
@@ -21,9 +22,10 @@
                 this.SubFeature = SearchAllKey;
             }
         }
-        public static List<FeatureRequest> ParseFeatureRequestFromGrasshopper(List<string> ghInput)
+        public static Tuple<List<FeatureRequest>, List<(GH_RuntimeMessageLevel, string)>> ParseFeatureRequestFromGrasshopper(List<string> ghInput)
         {
             var requestedFeatures = new List<FeatureRequest>();
+            var requestMessages = new List<(GH_RuntimeMessageLevel, string)>();
             var cleanedGhInput = new List<string>();
 
             // If a multiline string has been provided via a Panel component without multiline input enabled
@@ -39,7 +41,7 @@
                 }
             }
 
-            foreach(string inputString in cleanedGhInput)
+            foreach (string inputString in cleanedGhInput)
             {
                 string feature;
                 string subFeature;
@@ -57,7 +59,6 @@
                 {
                     feature = inputString.Trim().Split(':')[0];
                     subFeature = FeatureRequest.SearchAllKey;
-
                 }
 
                 var requestedFeature = new FeatureRequest(feature, subFeature);
@@ -65,9 +66,12 @@
                 if (!requestedFeatures.Contains(requestedFeature))
                 {
                     requestedFeatures.Add(requestedFeature);
+                } else
+                {
+                    requestMessages.Add((GH_RuntimeMessageLevel.Remark, $"Found a duplicate request: {requestedFeature}"));
                 }
             }
-            return requestedFeatures;
+            return new Tuple<List<FeatureRequest>, List<(GH_RuntimeMessageLevel, string)>>(requestedFeatures, requestMessages);
         }
 
         public string PimraryFeature { get; }
