@@ -51,6 +51,7 @@
     <Compile Include="TestBoundsParsing.cs" />
     <Compile Include="TestInputHandling.cs" />
     <Compile Include="TestLatLonToXY.cs" />
+    <Compile Include="TestLatLonViaLibToXY.cs" />
     <Compile Include="TestNodeParsing.cs" />
     <Compile Include="TestsWayParsing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,109 +9,52 @@
     [TestClass]
     public class TestLatLonToXY
     {
-        private double mScale = 1.0;
-        private double mmScale = 0.001;
-        private Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // melbourne.xml
-        private Coord testMaxBounds = new Coord(-37.8089200, 144.9710600); // melbourne.xml
+        private readonly double mScale = 1.0;
+        private readonly double mmScale = 1000;
+        private double[] result;
+        private readonly Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // simple.xml
+        private readonly Coord testMaxBounds = new Coord(-37.8089200, 144.9710600); // simple.xml
 
-        [TestMethod]
-        public void GetUTMZones()
+        private readonly Coord simpleAmenityNode = new Coord(-37.8134515, 144.9689196);
+        private readonly double[] expectedAmenityNode = new double[] { 542.854104293, 330.082139745, 0 };
+
+        private readonly Coord simpleCraftNode = new Coord(-37.8149890, 144.9658410);
+        private readonly double[] expectedCraftNode = new double[] { 272.410929093, 159.119940029, 0 };
+
+        // This is to avoid using RhinoCommon; it replaces GetPointFromLatLong in TranslateToXYManually
+        private static double[] MockGetPointFromLatLong(Coord ptCoord, Coord degreesPerCoord, Coord minExtends)
         {
-            int zone;
-            zone = GetRhinoCoordinateSystem.GetUTMZone(-37.8, 144.9);
-            Assert.AreEqual(55, zone);
-            zone = GetRhinoCoordinateSystem.GetUTMZone(0.1, 6.1);
-            Assert.AreEqual(32, zone);
-            zone = GetRhinoCoordinateSystem.GetUTMZone(-80.1, -60.1);
-            Assert.AreEqual(20, zone);
+            var x = (ptCoord.Longitude - minExtends.Longitude) * degreesPerCoord.Latitude;
+            var y = (ptCoord.Latitude - minExtends.Latitude) * degreesPerCoord.Longitude;
+            return new double[] { x, y, 0 };
         }
 
         [TestMethod]
-        public void TranslateLatLonToXYProvidedNHemisphere()
+        public void TranslateLatLonToXYInM()
         {
-            var pt = new double[] { 4.296545, 50.880324 }; // LON - LAT
-            var expectedXY = new double[] { 591210.304913748, 5637317.31895618 }; // East-North
-            var bounds = new Coord( 50.1, 4.1);
-            var result = GetRhinoCoordinateSystem.MostSimpleExample(bounds, pt);
+            var lengthPerDegree = TranslateToXYManually.GetDegreesPerAxis(testMinBounds, testMaxBounds, mScale);
+            
+            result = MockGetPointFromLatLong(simpleAmenityNode, lengthPerDegree, testMinBounds);
+            Assert.AreEqual(expectedAmenityNode[0] * mScale, result[0], 0.01);
+            Assert.AreEqual(expectedAmenityNode[1] * mScale, result[1], 0.01);
 
-            Assert.AreEqual(expectedXY[0], result[0], 0.01);
-            Assert.AreEqual(expectedXY[1], result[1], 0.01);
+            result = MockGetPointFromLatLong(simpleCraftNode, lengthPerDegree, testMinBounds);
+            Assert.AreEqual(expectedCraftNode[0] * mScale, result[0], 0.01);
+            Assert.AreEqual(expectedCraftNode[1] * mScale, result[1], 0.01);
         }
 
         [TestMethod]
-        public void TranslateLatLonToXYProvidedSHemisphere()
+        public void TranslateLatLonToXYInMM()
         {
-            var pt = new double[] { 144.9710600, -37.8089200 }; // LON - LAT
-            var expectedXY = new double[] { 321393.91, 5813446.27 }; // East-North
-            var bounds = new Coord(-37.8, 144.9);
-            var result = GetRhinoCoordinateSystem.MostSimpleExample(bounds, pt);
+            var lengthPerDegree = TranslateToXYManually.GetDegreesPerAxis(testMinBounds, testMaxBounds, mmScale);
 
-            Assert.AreEqual(expectedXY[0], result[0], 0.01);
-            Assert.AreEqual(expectedXY[1], result[1], 0.01);
+            result = MockGetPointFromLatLong(simpleAmenityNode, lengthPerDegree, testMinBounds);
+            Assert.AreEqual(expectedAmenityNode[0] * mmScale, result[0], 0.01);
+            Assert.AreEqual(expectedAmenityNode[1] * mmScale, result[1], 0.01);
+
+            result = MockGetPointFromLatLong(simpleCraftNode, lengthPerDegree, testMinBounds);
+            Assert.AreEqual(expectedCraftNode[0] * mmScale, result[0], 0.01);
+            Assert.AreEqual(expectedCraftNode[1] * mmScale, result[1], 0.01);
         }
-
-        [TestMethod]
-        public void TranslateLatLonToXYWithoutBoundsSHemisphereM()
-        {
-            var pt = new double[] { 144.9710600, -37.8089200 }; // LON - LAT
-            var expectedXY = new double[] { 321393.91, 5813446.27 }; // East-North
-            var bounds = new Coord(-37.8, 144.9);
-
-            var transformation = GetRhinoCoordinateSystem.GetTransformation(bounds, mScale);
-            var result = TranslateToXY.GetXYFromLatLon(pt, transformation); 
-            Assert.AreEqual(expectedXY[0], result[0], 0.01); // If origin not changed: 321393.90983082756, 5813446.2700856943
-            Assert.AreEqual(expectedXY[1], result[1], 0.01);
-        }
-
-        [TestMethod]
-        public void TranslateLatLonToXYWithoutBoundsSHemisphereMM()
-        {
-            var pt = new double[] { 144.9710600, -37.8089200 }; // LON - LAT
-            var expectedXY = new double[] { 321393000.91, 5813446000.27 }; // East-North
-            var bounds = new Coord(-37.8, 144.9);
-
-            var transformation = GetRhinoCoordinateSystem.GetTransformation(bounds, mmScale);
-            var result = TranslateToXY.GetXYFromLatLon(pt, transformation);
-            Assert.AreEqual(expectedXY[0], result[0], 1000); // If origin not changed: 321393.90983082756, 5813446.2700856943
-            Assert.AreEqual(expectedXY[1], result[1], 1000);
-        }
-
-
-        //[TestMethod]
-        //public void TranslateLatLonToXYm()
-        //{
-        //    var pt = new double[] { -37.8161790, 144.9666110 }; // nodeID 2102129133
-        //    var expectedPT = new double[] { 340.052469, 26.797977 };
-        //    var transformation = GetRhinoCoordinateSystem.GetTransformation(testMinBounds, mScale, "m");
-        //    var result = TranslateToXY.GetXYFromLatLon(pt, transformation);
-        //    Assert.AreEqual(expectedPT[0], result[0]);
-        //    Assert.AreEqual(expectedPT[1], result[1]);
-        //}
-
-        //[TestMethod]
-        //public void TranslateLatLonToXYmm()
-        //{
-        //    var pt = new double[] { -37.8161790, 144.9666110 }; // nodeID 2102129133
-        //    var expectedPT = new double[] { 340052.469047, 26797.977322 };
-        //    var transformation = GetRhinoCoordinateSystem.GetTransformation(testMinBounds, mmScale, "mm");
-        //    var result = TranslateToXY.GetXYFromLatLon(pt, transformation);
-        //    Assert.AreEqual(expectedPT[0], result[0]);
-        //    Assert.AreEqual(expectedPT[1], result[1]);
-        //}
-
-        //[TestMethod]
-        //public void TranslateLatLonToXYB()
-        //{
-        //    var pt = new Coord(-37.8149890, 144.9658410); // nodeID 3877497258
-        //    var d = TranslateToXY.GetDistanceForLatLong(testMinBounds, testMaxBounds, mScale);
-
-        //    var result3 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
-        //    Assert.AreEqual(result3.Item1, 272.410929);
-        //    Assert.AreEqual(result3.Item2, 159.11994);
-
-        //    var result4 = TranslateToXY.GetXYFromLatLon(pt.Latitude, pt.Longitude, testMinBounds, d);
-        //    Assert.AreEqual(result4.Item1, 272410.929093);
-        //    Assert.AreEqual(result4.Item2, 159119.940029);
-        //}
     }
 }

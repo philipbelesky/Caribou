@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API 0.7.56.1004 6cd3eaec">
+<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+<meta osm_base="2020-07-23T08:46:02Z"/>
+  <bounds minlat="-37.8164200" minlon="144.9627400" maxlat="-37.8089200" maxlon="144.9710600"/>
+  <node id="4795887585" lat="-37.8134515" lon="144.9689196" version="1" timestamp="2017-04-15T22:43:13Z" changeset="47826499" uid="4633898" user="monena41">
+    <tag k="email" v="info@sezar.com.au"/>
+    <tag k="amenity" v="restaurant"/>
+    <tag k="name" v="Sezar"/>
+  </node>
+  <node id="3877497258" lat="-37.8149890" lon="144.9658410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+    <tag k="craft" v="jeweller"/>
+    <tag k="name" v="Your Jeweller"/>
+  </node>
+  <node id="612015887" lat="-37.8154598" lon="144.9630487" version="3" timestamp="2018-12-28T04:33:46Z" changeset="65831015" uid="2506908" user="philam48"/>
+  <node id="612015888" lat="-37.8153878" lon="144.9632926" version="4" timestamp="2018-12-28T04:33:46Z" changeset="65831015" uid="2506908" user="philam48"/>
+  <node id="612015894" lat="-37.8155816" lon="144.9633785" version="5" timestamp="2019-09-16T22:47:51Z" changeset="74552383" uid="2506908" user="philam48"/>
+  <node id="6933068165" lat="-37.8156632" lon="144.9634139" version="1" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48"/>
+  <way id="48162018" version="3" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48">
+    <nd ref="612015887"/>
+    <nd ref="612015888"/>
+    <nd ref="612015894"/>
+    <nd ref="6933068165"/>
+    <tag k="building" v="yes"/>
+    <tag k="name" v="Equitable House"/>
+  </way>
+</osm>

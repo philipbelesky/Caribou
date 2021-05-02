@@ -9,14 +9,14 @@
     using ProjNet.CoordinateSystems;
     using GeoAPI.CoordinateSystems.Transformations;
 
-    public class TranslateToXY
+    public class TranslateToXYViaLib
     {
-        public static List<Point3d> NodePointsFromCoords(RequestResults foundItems)
+        public static List<Point3d> NodePointsFromCoordsViaLib(RequestResults foundItems)
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
             var unitName = RhinoDoc.ActiveDoc.ModelUnitSystem.ToString();
-            //var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale, unitName);
+            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
@@ -24,7 +24,27 @@
                 {
                     foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
                     {
-                        //results.Add(GetPointFromLatLong(coord, unitTrans));
+                        results.Add(GetPointFromLatLongViaLib(coord, unitTrans));
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public static List<Point3d> NodePointsFromCoords(RequestResults foundItems)
+        {
+            var results = new List<Point3d>();
+            var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
+            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale);
+
+            foreach (var featureType in foundItems.Nodes.Keys)
+            {
+                foreach (var subfeatureType in foundItems.Nodes[featureType].Keys)
+                {
+                    foreach (var coord in foundItems.Nodes[featureType][subfeatureType])
+                    {
+                        results.Add(GetPointFromLatLongViaLib(coord, unitTrans));
                     }
                 }
             }
@@ -57,19 +77,7 @@
             return results;
         }
 
-        //public static (double, double) GetDistanceForLatLong(Coord minLatLon, Coord maxLatLon, double unitScale)
-        //{
-        //    double earthRadius = 6371000.0;
-        //    double centerLat = minLatLon.Latitude + (maxLatLon.Latitude * 0.5);
-
-        //    double a = System.Math.Cos(centerLat * System.Math.PI / 180);
-        //    double distanceForLatDegree = (System.Math.PI * a * earthRadius) / 180;
-        //    double distanceForLonDegree = (System.Math.PI * earthRadius) / 180;
-
-        //    return (distanceForLatDegree * unitScale, distanceForLonDegree * unitScale);
-        //}
-
-        public static Point3d GetPointFromLatLong(Coord ptCoord, ICoordinateTransformation transformation)
+        public static Point3d GetPointFromLatLongViaLib(Coord ptCoord, ICoordinateTransformation transformation)
         {
             double[] longLatWGS = new double[] { ptCoord.Latitude, ptCoord.Longitude }; // Note: LONG then LAT
             var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation); // Returns in Y-X

@@ -29,19 +29,25 @@
             {
                 return;
             }
+
+            // Extra LatLon coords from XML tag that match the specified feature/subfeature
             this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedFeatures, this.xmlFileContents);
 
             if (this.CancellationToken.IsCancellationRequested)
             {
                 return;
             }
-            this.foundNodes = TranslateToXY.NodePointsFromCoords(this.foundItems);
+
+            // Translate OSM nodes to Rhino points 
+            this.foundNodes = TranslateToXYManually.NodePointsFromCoords(this.foundItems);
 
             if (this.CancellationToken.IsCancellationRequested)
             {
                 return;
             }
-            this.foundWays = TranslateToXY.WayPolylinesFromCoords(this.foundItems);
+
+            // Translate OSM ways to Rhino polylines
+            this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.foundItems);
 
             done();
         }
@@ -55,7 +61,19 @@
                 return;
             }
 
-            da.GetData(0, ref this.xmlFileContents);
+            var rawDataContensts = new List<string>();
+            da.GetDataList(0, rawDataContensts);
+            // To account for files being provided in per-line mode we just concat them
+            if (rawDataContensts.Count > 1)
+            {
+                xmlFileContents = string.Join("", rawDataContensts);
+                // this.Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark,
+                //    "OSM file content was provided as a list of strings. When using the Read File component you should turn OFF Per-File parsing. If you are trying to read multiple OSM files at once, this is not supported.");
+            }
+            else
+            {
+                xmlFileContents = rawDataContensts[0];
+            }
 
             var requestedFeaturesRaw = new List<string>();
             da.GetDataList(1, requestedFeaturesRaw);
