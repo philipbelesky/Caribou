@@ -58,7 +58,7 @@
             var bounds = new Coord(-37.8, 144.9); // 0 lat to test against absolute ref
 
             var transformation = GetRhinoCoordinateSystem.GetTransformation(testMinBounds, mScale, true);
-            var result = TranslateToXYViaLib.GetXYFromLatLon(pt, transformation); 
+            var result = TranslateToXYViaLib.GetXYFromLatLon(pt, transformation);
             Assert.AreEqual(expectedXY[0], result[0], 0.01); // If origin not changed: 321393.90983082756, 5813446.2700856943
             Assert.AreEqual(expectedXY[1], result[1], 0.01);
         }

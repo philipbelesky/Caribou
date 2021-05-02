@@ -33,7 +33,7 @@
         public void TranslateLatLonToXYInM()
         {
             var lengthPerDegree = TranslateToXYManually.GetDegreesPerAxis(testMinBounds, testMaxBounds, mScale);
-            
+
             result = MockGetPointFromLatLong(simpleAmenityNode, lengthPerDegree, testMinBounds);
             Assert.AreEqual(expectedAmenityNode[0] * mScale, result[0], 0.01);
             Assert.AreEqual(expectedAmenityNode[1] * mScale, result[1], 0.01);

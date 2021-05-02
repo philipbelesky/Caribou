@@ -11,7 +11,7 @@
     /// </summary>
     public abstract class WorkerInstance
     {
-        // This is a class that enables a particular computation to be preformed asynchronously by components using CaribouAsyncComponent 
+        // This is a class that enables a particular computation to be preformed asynchronously by components using CaribouAsyncComponent
         // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
         // This implementation is a near-direct copy of that published in [this repository](https://github.com/specklesystems/GrasshopperAsyncComponent/)
 
@@ -66,7 +66,7 @@
                 Parent.AddRuntimeMessage(level, message); // Report any messages done by the worker instance
             }
         }
-        
+
         protected abstract void WorkerSetData(IGH_DataAccess da);
 
         /// <summary>

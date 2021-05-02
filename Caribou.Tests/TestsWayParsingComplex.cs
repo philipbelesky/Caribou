@@ -17,9 +17,9 @@
         private int allHighwaysResidential = 5;
         private int allBuildingsRetail = 19;
         private double firstAmenityWorshipFirstNodeLat = -37.8164641;
-        private double firstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed 
+        private double firstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed
         private double firstHighwayResidentialFirstNodeLon = 144.9735701;
-        private double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed 
+        private double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
 
         private int CountWaysFoundForKey(RequestResults matches, string key)
         {

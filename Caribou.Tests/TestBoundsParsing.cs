@@ -10,7 +10,7 @@
     public class TestBoundsParsing : MelbourneCase
     {
         private (Coord, Coord) boundsLatLon = (
-            new Coord(-37.8164200, 144.9627400), 
+            new Coord(-37.8164200, 144.9627400),
             new Coord(-37.8089200, 144.9710600)
         );
 

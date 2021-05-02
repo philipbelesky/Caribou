@@ -18,9 +18,9 @@
             // Customise our TO coordinate system's origin given bounds of OSM file
             var zoneIsNorth = min.Latitude > 0.0;
             int utmZone = GetUTMZone(min.Latitude, min.Longitude);
-            var latitudeOfOrigin = useUTMBounds ? 0 : min.Latitude; 
+            var latitudeOfOrigin = useUTMBounds ? 0 : min.Latitude;
             var centralMeridian = useUTMBounds ? (utmZone * 6) - 183 : min.Longitude; // UTMBounds mostly for testing
-            
+
             // Setup our TO coordinate system (UTM but with modified units/origin to match Rhino)
             var pcs_UTM = AlterStandardWGS(utmZone, zoneIsNorth, centralMeridian, latitudeOfOrigin, unitScale, useUTMBounds);
 
@@ -79,7 +79,7 @@
         // Just here to be unit tested against as a working example
         // Note fromPointLongLat order
         public static double[] MostSimpleExample(Coord min, double[] fromPointLonLat)
-        { 
+        {
             // See https://github.com/bozhink/ProcessingTools/blob/d83a57e955e6bae815bbfe7d886d109b08abd136/src/ProcessingTools/Infrastructure/Geo/Transformers/UtmCoordianesTransformer.cs
             int utmZone = GetUTMZone(min.Latitude, min.Longitude);
             bool zoneIsNorth = min.Latitude > 0.0;

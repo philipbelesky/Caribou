@@ -19,7 +19,7 @@
             {
                 // XmlReader is forward-only so need to track the lat/long of the parent element to use if we find a match
                 string currentNodeId = ""; // Current node; need to track it for when parsing inside-nodes
-                string tagKey; 
+                string tagKey;
                 string tagValue;
                 bool inAWay = false; // Need to keep track of when parsing inside Ways so we know wether to add tag info to node or way lists
                 List<string> wayNodesIds = new List<string>(); // If parsing inside Ways need to track the different nodes that make it up
@@ -70,7 +70,7 @@
                                         matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, ndsForWay);
                                     }
                                     inAWay = false;
-                                } 
+                                }
                                 else
                                 {
                                     // Parsing a node out

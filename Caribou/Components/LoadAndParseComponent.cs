@@ -10,7 +10,7 @@
     {
         public bool addCountsToFeatureReporting = true;
 
-        public LoadAndParseComponent() 
+        public LoadAndParseComponent()
             : base("OpenStreetMap", "OSM", "Load and parse data from an OSM file based on its key", "OSM")
             {
                 this.BaseWorker = new LoadAndParseWorker(this);

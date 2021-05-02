@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caribou.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Caribou.Tests
+﻿namespace Caribou.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Caribou.Data;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class TestInputHandling
     {
@@ -23,8 +23,8 @@ namespace Caribou.Tests
         [TestMethod]
         public void TestTripleExampleNewLine()
         {
-            var input = new List<string>() { 
-                "amenity:restaurant", 
+            var input = new List<string>() {
+                "amenity:restaurant",
                 "highway:residential",
                 "waterway"
             };

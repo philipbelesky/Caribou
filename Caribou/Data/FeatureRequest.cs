@@ -52,7 +52,7 @@
                 {
                     feature = inputString.Trim().Split(':')[0];
                     subFeature = inputString.Trim().Split(':')[1];
-                } 
+                }
                 else
                 {
                     feature = inputString.Trim().Split(':')[0];
@@ -64,7 +64,7 @@
                 if (!requestedFeatures.Contains(requestedFeature))
                 {
                     requestedFeatures.Add(requestedFeature);
-                } 
+                }
             }
 
             return requestedFeatures;
