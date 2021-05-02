@@ -50,43 +50,44 @@
                         else if (reader.Name == "tag")
                         {
                             tagKey = reader.GetAttribute("k");
-                            if (matches.PrimaryFeaturesToFind.Contains(tagKey))
+                            if (!matches.PrimaryFeaturesToFind.Contains(tagKey))
                             {
-                                tagValue = reader.GetAttribute("v");
-                                if (inAWay) {
-                                    // Parsing a collections of nodes references by a way out
-                                    var ndsForWay = new Coord[wayNodesIds.Count];
-                                    for (int i = 0; i < wayNodesIds.Count; i++)
-                                    {
-                                        ndsForWay[i] = allNodes[wayNodesIds[i]];
-                                    }
-
-                                    if (matches.Ways[tagKey].ContainsKey(matchAllKey))
-                                    {
-                                        matches.AddWayGivenFeature(tagKey, tagValue, ndsForWay);
-                                    }
-                                    else if (matches.Ways[tagKey].ContainsKey(tagValue))
-                                    {
-                                        matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, ndsForWay);
-                                    }
-                                    inAWay = false;
-                                }
-                                else
-                                {
-                                    // Parsing a node out
-                                    if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
-                                    {
-                                        // If we are searching for all items within a feature then add it regardless
-                                        matches.AddNodeGivenFeature(tagKey, tagValue, allNodes[currentNodeId]);
-                                    }
-                                    else if (matches.Nodes[tagKey].ContainsKey(tagValue))
-                                    {
-                                        // If searching for a particular key:value only add if there is
-                                        matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, allNodes[currentNodeId]);
-                                    }
-                                }
-
+                                continue;
                             }
+
+                            tagValue = reader.GetAttribute("v");
+                            if (inAWay) {
+                                // Parsing a collections of nodes references by a way out
+                                var ndsForWay = new Coord[wayNodesIds.Count];
+                                for (int i = 0; i < wayNodesIds.Count; i++)
+                                {
+                                    ndsForWay[i] = allNodes[wayNodesIds[i]];
+                                }
+
+                                if (matches.Ways[tagKey].ContainsKey(matchAllKey))
+                                {
+                                    matches.AddWayGivenFeature(tagKey, tagValue, ndsForWay);
+                                }
+                                else if (matches.Ways[tagKey].ContainsKey(tagValue))
+                                {
+                                    matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, ndsForWay);
+                                }
+                            }
+                            else
+                            {
+                                // Parsing a node out
+                                if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
+                                {
+                                    // If we are searching for all items within a feature then add it regardless
+                                    matches.AddNodeGivenFeature(tagKey, tagValue, allNodes[currentNodeId]);
+                                }
+                                else if (matches.Nodes[tagKey].ContainsKey(tagValue))
+                                {
+                                    // If searching for a particular key:value only add if there is
+                                    matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, allNodes[currentNodeId]);
+                                }
+                            }
+
                         }
                     }
                 }

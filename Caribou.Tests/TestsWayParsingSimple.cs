@@ -15,7 +15,7 @@
 
         private int allAmenitiesRestaurants = 0;
         private int allCraftJewellers = 1;
-        private int allBuildingsRetail = 1;
+        private int allBuildingsRetail = 0;
 
         private int CountWaysFoundForKey(RequestResults matches, string key)
         {

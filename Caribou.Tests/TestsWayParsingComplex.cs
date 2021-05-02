@@ -68,11 +68,13 @@
             Assert.AreEqual(allBuildingsRetail, matches.Ways["building"]["retail"].Count);
 
             Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][0].Latitude);
-            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][-1].Latitude);
-            Assert.AreEqual(firstAmenityWorksipLastNodeLat, matches.Ways["amenity"]["place_of_worship"][0][-2].Latitude);
+            var itemCountA = matches.Ways["amenity"]["place_of_worship"][0].Length;
+            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][itemCountA - 1].Latitude);
+            Assert.AreEqual(firstAmenityWorksipLastNodeLat, matches.Ways["amenity"]["place_of_worship"][0][itemCountA - 2].Latitude);
             Assert.AreEqual(allHighwaysResidential, matches.Ways["highway"]["residential"].Count);
-            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, matches.Ways["highway"]["residential"][0][-1].Latitude);
-            Assert.AreEqual(firstHighwayResidentialLastNodeLon, matches.Ways["highway"]["residential"][0][-2].Latitude);
+            var itemCountB = matches.Ways["highway"]["residential"][0].Length;
+            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, matches.Ways["highway"]["residential"][0][0].Longitude);
+            Assert.AreEqual(firstHighwayResidentialLastNodeLon, matches.Ways["highway"]["residential"][0][itemCountB - 1].Longitude);
 
         }
 
@@ -89,7 +91,7 @@
             Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][-1].Latitude);
             Assert.AreEqual(firstAmenityWorksipLastNodeLat, matches.Ways["amenity"]["place_of_worship"][0][-2].Latitude);
             Assert.AreEqual(allHighwaysResidential, matches.Ways["highway"]["residential"].Count);
-            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, matches.Ways["highway"]["residential"][0][-1].Latitude);
+            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, matches.Ways["highway"]["residential"][0][1].Latitude);
             Assert.AreEqual(firstHighwayResidentialLastNodeLon, matches.Ways["highway"]["residential"][0][-2].Latitude);
         }
 

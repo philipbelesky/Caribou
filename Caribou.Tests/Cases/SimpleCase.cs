@@ -24,7 +24,7 @@ namespace Caribou.Tests
         {
             new FeatureRequest( "amenity", "restaurant" ), // 1 nodes; 0 ways
             new FeatureRequest( "craft", "jeweller" ), // 1 nodes; 1 way
-            new FeatureRequest( "building", "retail" ) // // 2 nodes 1 ways
+            new FeatureRequest( "building", "retail" ) // // 2 nodes 0 ways
         };
     }
 }
