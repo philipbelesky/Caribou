@@ -74,7 +74,7 @@
         /// <summary>
         /// Optional: if you have opinions on how the default system task scheduler should treat your workers, set it here.
         /// </summary>
-        public TaskCreationOptions? TaskCreationOptions { get; set; } = null;
+        public TaskCreationOptions? TaskCreationOptions { get; set; }
 
         public virtual void DisplayProgress(object sender, System.Timers.ElapsedEventArgs e)
         {

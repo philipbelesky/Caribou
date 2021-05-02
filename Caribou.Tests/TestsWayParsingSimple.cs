@@ -9,15 +9,15 @@
     [TestClass]
     public class TestsWayParsingSimple : SimpleCase
     {
-        private int allCrafts = 2;
-        private int allAmenities = 0;
-        private int allBuildings = 1;
+        const int allCrafts = 2;
+        const int allAmenities = 0;
+        const int allBuildings = 1;
 
-        private int allAmenitiesRestaurants = 0;
-        private int allCraftJewellers = 1;
-        private int allBuildingsRetail = 0;
+        const int allAmenitiesRestaurants = 0;
+        const int allCraftJewellers = 1;
+        const int allBuildingsRetail = 0;
 
-        private int CountWaysFoundForKey(RequestResults matches, string key)
+        private static int CountWaysFoundForKey(RequestResults matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Ways[key].Keys)

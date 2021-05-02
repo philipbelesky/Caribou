@@ -5,7 +5,7 @@
     using System.Xml;
     using Caribou.Data;
 
-    public class ParseViaXMLDocument
+    public static class ParseViaXMLDocument
     {
         public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {

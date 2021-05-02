@@ -9,17 +9,15 @@
     [TestClass]
     public class TestNodeParsingSimple : SimpleCase
     {
-        private int allCrafts = 2;
-        private int allAmenities = 1;
-        private int allBuildings = 2;
+        const int allCrafts = 2;
+        const int allAmenities = 1;
+        const int allBuildings = 2;
+        const int allAmenitiesRestaurants = 1;
+        const int allCraftJewellers = 1;
+        const int allBuildingsRetail = 2;
+        const double firstRestaurantLat = -37.8134515;
 
-        private int allAmenitiesRestaurants = 1;
-        private int allCraftJewellers = 1;
-        private int allBuildingsRetail = 2;
-
-        private double firstRestaurantLat = -37.8134515;
-
-        private int CountNodesFoundForKey(RequestResults matches, string key)
+        private static int CountNodesFoundForKey(RequestResults matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Nodes[key].Keys)

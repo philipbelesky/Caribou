@@ -10,7 +10,7 @@
 
     public class SpecifyTagValuesComponent : CaribouComponent
     {
-        public SpecifyTagValuesComponent() : base ("Specify tags and values to extract", "Set Tags", "TODO", "OSM") { }
+        public SpecifyTagValuesComponent() : base("Specify tags and values to extract", "Set Tags", "TODO", "OSM") { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
@@ -24,7 +24,6 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-
         }
 
         public override Guid ComponentGuid => new Guid("19eb5d29-d1d1-43bf-aa40-8d9694c03481");

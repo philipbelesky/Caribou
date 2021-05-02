@@ -23,16 +23,16 @@
         public static List<FeatureRequest> ParseFeatureRequestFromGrasshopper(List<string> ghInput)
         {
             var requestedFeatures = new List<FeatureRequest>();
-            //var requestMessages = new List<(GH_RuntimeMessageLevel, string)>(); // TODO: return these properly
+            // var requestMessages = new List<(GH_RuntimeMessageLevel, string)>(); // TODO: return these properly
             var cleanedGhInput = new List<string>();
 
             // If a multiline string has been provided via a Panel component without multiline input enabled
-            foreach(string inputString in ghInput)
+            foreach (string inputString in ghInput)
             {
                 string[] lines = inputString.Split(
                     new[] { "\r\n", "\r", "\n", "," }, // Split on new lines and on commas
-                    StringSplitOptions.None
-                );
+                    StringSplitOptions.None);
+
                 for (var i = 0; i < lines.Length; i++)
                 {
                     cleanedGhInput.Add(lines[i].Trim().ToLower());
@@ -43,7 +43,7 @@
             {
                 string feature;
                 string subFeature;
-                if (inputString == "")
+                if (inputString.Length == 0)
                 {
                     continue;
                 }
@@ -69,7 +69,6 @@
 
             return requestedFeatures;
         }
-
 
         public string PimraryFeature { get; }
 

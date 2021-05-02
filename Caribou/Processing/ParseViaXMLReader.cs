@@ -6,7 +6,7 @@
     using System.Xml;
     using Caribou.Data;
 
-    public class ParseViaXMLReader
+    public static class ParseViaXMLReader
     {
         public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {
@@ -35,8 +35,7 @@
                             currentNodeId = reader.GetAttribute("id");
                             allNodes[currentNodeId] = new Coord(
                                 Convert.ToDouble(reader.GetAttribute("lat")),
-                                Convert.ToDouble(reader.GetAttribute("lon"))
-                            );
+                                Convert.ToDouble(reader.GetAttribute("lon")));
                         }
                         else if (reader.Name == "way")
                         {
@@ -56,7 +55,8 @@
                             }
 
                             tagValue = reader.GetAttribute("v");
-                            if (inAWay) {
+                            if (inAWay)
+                            {
                                 // Parsing a collections of nodes references by a way out
                                 var ndsForWay = new Coord[wayNodesIds.Count];
                                 for (int i = 0; i < wayNodesIds.Count; i++)
@@ -87,7 +87,6 @@
                                     matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, allNodes[currentNodeId]);
                                 }
                             }
-
                         }
                     }
                 }

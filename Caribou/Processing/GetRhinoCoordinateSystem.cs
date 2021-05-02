@@ -1,15 +1,12 @@
 ﻿namespace Caribou.Processing
 {
     using System;
-    using Caribou.Data;
-    using ProjNet.CoordinateSystems.Transformations;
-    using ProjNet.CoordinateSystems;
     using System.Collections.Generic;
-    using ProjNet.Converters.WellKnownText;
-    using ProjNet.CoordinateSystems;
-    using ProjNet.CoordinateSystems.Transformations;
+    using Caribou.Data;
     using GeoAPI.CoordinateSystems;
     using GeoAPI.CoordinateSystems.Transformations;
+    using ProjNet.CoordinateSystems;
+    using ProjNet.CoordinateSystems.Transformations;
 
     public static class GetRhinoCoordinateSystem
     {
@@ -49,6 +46,7 @@
                 pInfo.Add(new ProjectionParameter("false_easting", 0));
                 pInfo.Add(new ProjectionParameter("false_northing", zoneIsNorth ? 0 : 10000000));
             }
+
             IProjection projection = cFac.CreateProjection("UTM", "Transverse_Mercator", pInfo);
 
             pcs_UTM.Projection = projection;
@@ -62,6 +60,7 @@
             {
                 return 32;
             }
+
             if (lat >= 72 && lat < 84)
             {
                 if (lon >= 0 && lon < 9)
@@ -73,6 +72,7 @@
                 if (lon >= 33 && lon < 42)
                     return 37;
             }
+
             return (int)Math.Ceiling((lon + 180) / 6);
         }
 

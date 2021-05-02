@@ -8,7 +8,7 @@
 
     public class LoadAndParseComponent : CaribouAsyncComponent
     {
-        public bool addCountsToFeatureReporting = true;
+        public bool AddCountsToFeatureReporting = true;
 
         public LoadAndParseComponent()
             : base("OpenStreetMap", "OSM", "Load and parse data from an OSM file based on its key", "OSM")
@@ -32,13 +32,13 @@
         protected override void AppendAdditionalComponentMenuItems(ToolStripDropDown menu)
         {
             base.AppendAdditionalComponentMenuItems(menu);
-            Menu_AppendItem(menu, "Report quantities", ToggleQuantityReporting, true, addCountsToFeatureReporting);
+            Menu_AppendItem(menu, "Report quantities", ToggleQuantityReporting, true, AddCountsToFeatureReporting);
             Menu_AppendSeparator(menu);
         }
 
         private void ToggleQuantityReporting(object sender, EventArgs e)
         {
-            this.addCountsToFeatureReporting = !this.addCountsToFeatureReporting;
+            this.AddCountsToFeatureReporting = !this.AddCountsToFeatureReporting;
             ExpireSolution(true);
         }
 

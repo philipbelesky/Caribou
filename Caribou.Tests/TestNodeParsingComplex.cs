@@ -9,17 +9,17 @@
     [TestClass]
     public class TestNodeParsingComplex : MelbourneCase
     {
-        private int allAmenities = 610;
-        private int allHighways = 143;
-        private int allBuildings = 140;
-        private int allAmenitiesRestaurants = 173;
-        private int allAmenitiesWorship = 2;
-        private int allHighwaysResidential;
-        private int allBuildingsRetail = 130;
-        private double firstWorkshopLon = 144.963903;
-        private double firstRestaurantLat = -37.8134515;
+        const int allAmenities = 610;
+        const int allHighways = 143;
+        const int allBuildings = 140;
+        const int allAmenitiesRestaurants = 173;
+        const int allAmenitiesWorship = 2;
+        const int allHighwaysResidential = 0;
+        const int allBuildingsRetail = 130;
+        const double firstWorkshopLon = 144.963903;
+        const double firstRestaurantLat = -37.8134515;
 
-        private int CountNodesFoundForKey(RequestResults matches, string key)
+        private static int CountNodesFoundForKey(RequestResults matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Nodes[key].Keys)

@@ -2,14 +2,11 @@
 {
     using System.Collections.Generic;
     using Caribou.Data;
+    using GeoAPI.CoordinateSystems.Transformations;
     using Rhino;
     using Rhino.Geometry;
-    using ProjNet.CoordinateSystems.Transformations;
-    using System;
-    using ProjNet.CoordinateSystems;
-    using GeoAPI.CoordinateSystems.Transformations;
 
-    public class TranslateToXYViaLib
+    public static class TranslateToXYViaLib
     {
         public static List<Point3d> NodePointsFromCoordsViaLib(RequestResults foundItems)
         {

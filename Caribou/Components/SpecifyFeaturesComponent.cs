@@ -10,7 +10,7 @@
 
     public class SpecifyFeaturesComponent : CaribouComponent
     {
-        public SpecifyFeaturesComponent() : base ("Specify features and subfeatures to extract", "Set Features", "TODO", "OSM") { }
+        public SpecifyFeaturesComponent() : base("Specify features and subfeatures to extract", "Set Features", "TODO", "OSM") { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
@@ -24,7 +24,6 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-
         }
 
         public override Guid ComponentGuid => new Guid("cc8d82ba-f381-46ee-8014-7e2d1bff824c");

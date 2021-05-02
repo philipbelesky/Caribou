@@ -1,12 +1,12 @@
 ﻿namespace Caribou.Processing
 {
+    using System;
     using System.Collections.Generic;
     using Caribou.Data;
-    using Rhino;
-    using Rhino.Geometry;
-    using System;
     using Grasshopper;
     using Grasshopper.Kernel.Data;
+    using Rhino;
+    using Rhino.Geometry;
 
     public static class TranslateToXYManually
     {

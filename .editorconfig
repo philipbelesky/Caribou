@@ -33,6 +33,7 @@ dotnet_diagnostic.CA1404.severity = warning
 dotnet_diagnostic.CA1405.severity = warning
 dotnet_diagnostic.CA1410.severity = warning
 dotnet_diagnostic.CA1415.severity = warning
+dotnet_diagnostic.CA1815.severity = suggestion
 dotnet_diagnostic.CA1821.severity = warning
 dotnet_diagnostic.CA1900.severity = warning
 dotnet_diagnostic.CA1901.severity = warning

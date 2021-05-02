@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Data
+﻿namespace Caribou.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public static class OSMFeatures
     {
+#pragma warning disable SA1310 // Field names should not contain underscore
         private static List<FeatureDefinition> aerialwaySubFeatures = new List<FeatureDefinition>();
         private static List<FeatureDefinition> aerowaySubFeatures = new List<FeatureDefinition>();
         private static List<FeatureDefinition> amenitySubFeatures = new List<FeatureDefinition>();
@@ -37,6 +38,7 @@ namespace Caribou.Data
         private static List<FeatureDefinition> tourismSubFeatures = new List<FeatureDefinition>();
         private static List<FeatureDefinition> waterSubFeatures = new List<FeatureDefinition>();
         private static List<FeatureDefinition> waterwaySubFeatures = new List<FeatureDefinition>();
+#pragma warning restore SA1310 // Field names should not contain underscore
 
         // From https://wiki.openstreetmap.org/wiki/Map_features
         public static readonly List<FeatureDefinition> PrimaryFeatures = new List<FeatureDefinition>()
@@ -69,6 +71,7 @@ namespace Caribou.Data
             new FeatureDefinition("telecom", "Telecom", "Places and things that create telecommunication systems, such as exchanges and data centers.", telecomSubFeatures),
             new FeatureDefinition("tourism", "Tourism", "Places and things of specific interest to tourists, such as different types of sights (e.g. zoos, galleries); forms of accomodation (e.g. hotels, hostels); and info centerss.", tourismSubFeatures),
             new FeatureDefinition("water", "Water", "Describes an area or body of water, such as lakes, reservoirs and ponds.", waterSubFeatures),
-            new FeatureDefinition("waterway", "Waterway", "Describes linear water features, such as rivers, streams, drains, and ditches. Also includes related features, such as waterfalls and locks. Nominally aligned in the direction of the water flow.", waterwaySubFeatures),    };
+            new FeatureDefinition("waterway", "Waterway", "Describes linear water features, such as rivers, streams, drains, and ditches. Also includes related features, such as waterfalls and locks. Nominally aligned in the direction of the water flow.", waterwaySubFeatures),
+        };
     }
 }

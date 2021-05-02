@@ -16,7 +16,7 @@
         {
             this.Nodes = new Dictionary<string, Dictionary<string, List<Coord>>>();
             this.Ways = new Dictionary<string, Dictionary<string, List<Coord[]>>>();
-            this.requestedFeatures = requestedFeatures;
+            this.RequestedFeatures = requestedFeatures;
 
             foreach (var requestedFeature in requestedFeatures)
             {
@@ -53,7 +53,7 @@
         }
 
         public List<string> PrimaryFeaturesToFind { get; }
-        public List<FeatureRequest> requestedFeatures { get; }
+        public List<FeatureRequest> RequestedFeatures { get; }
         public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
         public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
         public Coord ExtentsMin { get; set; }
@@ -110,7 +110,7 @@
             var results = new DataTree<string>();
 
             var i = 0;
-            foreach (var featureType in this.requestedFeatures)
+            foreach (var featureType in this.RequestedFeatures)
             {
                 //string name;
                 //GH_Path subfeaturePath = new GH_Path(i);

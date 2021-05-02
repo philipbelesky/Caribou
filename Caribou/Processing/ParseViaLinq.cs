@@ -6,7 +6,7 @@
     using System.Xml.Linq;
     using Caribou.Data;
 
-    public class ParseViaLinq
+    public static class ParseViaLinq
     {
         public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
         {
