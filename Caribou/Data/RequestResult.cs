@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caribou.Processing;
-
-namespace Caribou.Data
+﻿namespace Caribou.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Caribou.Processing;
+    using Grasshopper;
+    using Grasshopper.Kernel.Data;
+
     // A two-tier dictionary array organised by feature:subfeature and storing results from the OSM parse
     public class RequestResults
     {
@@ -51,8 +53,8 @@ namespace Caribou.Data
         public List<string> PrimaryFeaturesToFind { get; }
         public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
         public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
-        public Coord extentsMin { get; set; }
-        public Coord extentsMax { get; set; }
+        public Coord ExtentsMin { get; set; }
+        public Coord ExtentsMax { get; set; }
 
         public void AddNodeGivenFeature(string feature, string subFeature, Coord coord)
         {
@@ -96,8 +98,8 @@ namespace Caribou.Data
 
         public void SetLatLonBounds(double latMin, double lonMin, double latMax, double lonMax)
         {
-            this.extentsMin = new Coord(latMin, lonMin);
-            this.extentsMax = new Coord(latMax, lonMax);
+            this.ExtentsMin = new Coord(latMin, lonMin);
+            this.ExtentsMax = new Coord(latMax, lonMax);
         }
     }
 

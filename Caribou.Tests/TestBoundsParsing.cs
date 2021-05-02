@@ -18,27 +18,27 @@
         public void ParseBoundsViaXMLReader()
         {
             var matches = Caribou.Processing.ParseViaXMLReader.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.extentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.extentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.extentsMin.Latitude);
+            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
+            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
         }
 
         [TestMethod]
         public void ParseBoundsViaXMLDocument()
         {
             var matches = Caribou.Processing.ParseViaXMLDocument.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.extentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.extentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.extentsMin.Latitude);
+            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
+            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
         }
 
         [TestMethod]
         public void ParseBoundsViaLinq()
         {
             var matches = Caribou.Processing.ParseViaLinq.FindByFeatures(miscBagOfFeaturesAndSubs, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.extentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.extentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.extentsMin.Latitude);
+            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
+            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
+            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
         }
     }
 }

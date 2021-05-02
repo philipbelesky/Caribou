@@ -16,7 +16,7 @@
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
             var unitName = RhinoDoc.ActiveDoc.ModelUnitSystem.ToString();
-            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale);
+            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.ExtentsMin, unitScale);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
@@ -36,7 +36,7 @@
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
-            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.extentsMin, unitScale);
+            var unitTrans = GetRhinoCoordinateSystem.GetTransformation(foundItems.ExtentsMin, unitScale);
 
             foreach (var featureType in foundItems.Nodes.Keys)
             {
