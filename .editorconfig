@@ -3,6 +3,8 @@
 # GrasshopperBootstrap Rules
 # Description: The standard Microsoft reccomended rules with overrides especially relevant to plugin development.
 
+end_of_line = lf
+
 # Code files
 [*.{cs,vb}]
 
