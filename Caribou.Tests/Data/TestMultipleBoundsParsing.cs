@@ -9,7 +9,7 @@
     {
         private Coord expectedMinBounds = new Coord(-37.9164200, 144.9127400); // Lowest left
         private Coord expectedMaxBounds = new Coord(-37.2164200, 144.9710600); // Highest right
-        private RequestHandler results = new RequestHandler(new OSMXMLs(new List<string>() {
+        private RequestHandler results = new RequestHandler(new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM,
             Properties.Resources.SimpleOSM,
         }, ref msgs), mainFeatures);

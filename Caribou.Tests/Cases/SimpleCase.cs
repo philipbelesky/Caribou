@@ -12,7 +12,7 @@
     public class SimpleCase
     {
         protected static MessagesWrapper messages = new MessagesWrapper();
-        protected static OSMXMLs OSMXMLs = new OSMXMLs(new List<string>() {
+        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.SimpleOSM
         }, ref messages);
 

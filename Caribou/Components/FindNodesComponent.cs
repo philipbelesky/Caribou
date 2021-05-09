@@ -6,13 +6,13 @@
     using Grasshopper.Kernel;
     using Rhino.Geometry;
 
-    /// <summary>Identifies and outputs all OSM node-type items that contain any of the specified features.</summary>
+    /// <summary>Identifies and outputs all OSM node-type items that contain any of the requested metadata. Logic in worker.</summary>
     public class FindNodesComponent : CaribouAsyncComponent
     {
         public FindNodesComponent()
             : base("OpenStreetMap", "OSM", "Load and parse node (e.g. point) data from an OSM file based on its metadata", "OSM")
         {
-            this.BaseWorker = new LoadAndParseNodesWorker(this);
+            this.BaseWorker = new ParseNodesWorker(this);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)

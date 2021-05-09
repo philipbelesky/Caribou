@@ -6,8 +6,8 @@
     [TestClass]
     public class TestSingleBoundsParsing : MelbourneCase
     {
-        private Coord expectedMinBounds = new Coord(-37.8164200, 144.9627400);
-        private Coord expectedMaxBounds = new Coord(-37.8089200, 144.9710600);
+        private Coord expectedMinBounds = new Coord(-37.8164200, 144.9127400);
+        private Coord expectedMaxBounds = new Coord(-37.2164200, 144.9710600);
         private RequestHandler results = new RequestHandler(OSMXMLs, mainFeatures);
 
         [TestMethod]

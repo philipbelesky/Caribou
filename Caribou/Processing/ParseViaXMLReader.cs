@@ -6,93 +6,105 @@
     using System.Xml;
     using Caribou.Data;
 
+    /// <summary>
+    /// Methods for parsing an XML file and extracting data that use XMLReader-based methods
+    /// </summary>
     public static class ParseViaXMLReader
     {
-        public static void FindItemsByTag(ref RequestHandler request)
+        public static void FindItemsByTag(ref RequestHandler request, string typeToFind)
         {
             GetBounds(ref request);
 
-            //var matches = new RequestHandler(featuresSpecified); // Output
-            //var matchAllKey = ParseRequest.SearchAllKey;
-            //var allNodes = new Dictionary<string, Coord>(); // Dict used to lookup a way's nodes
-            //
+            foreach (string providedXML in request.XmlCollection.ProvidedXMLs)
+            {
+                using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
+                {
+                    if (typeToFind == "way")
+                    {
+                        FindWaysInXML(reader, ref request);
+                    }
+                    if (typeToFind == "node")
+                    {
+                        FindNodesInXML(reader, ref request);
+                    }
+                }
+            }
+        }
 
-            //using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
-            //{
-            //    // XmlReader is forward-only so need to track the lat/long of the parent element to use if we find a match
-            //    string currentNodeId = ""; // Current node; need to track it for when parsing inside-nodes
-            //    string tagKey;
-            //    string tagValue;
-            //    bool inAWay = false; // Need to keep track of when parsing inside Ways so we know wether to add tag info to node or way lists
-            //    List<string> wayNodesIds = new List<string>(); // If parsing inside Ways need to track the different nodes that make it up
+        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request)
+        {
+            string currentNodeId = "";
+            double currentLat = 0;
+            double currentLon = 0;
+            var currentNodeMetaData = new Dictionary<string, string>();
 
-            //    while (reader.Read())
-            //    {
-            //        if (reader.IsStartElement())
-            //        {
-            //            if (reader.Name == "node")
-            //            {
-            //                wayNodesIds.Clear();
-            //                inAWay = false;
-            //                currentNodeId = reader.GetAttribute("id");
-            //                allNodes[currentNodeId] = new Coord(
-            //                    Convert.ToDouble(reader.GetAttribute("lat")),
-            //                    Convert.ToDouble(reader.GetAttribute("lon")));
-            //            }
-            //            else if (reader.Name == "way")
-            //            {
-            //                wayNodesIds.Clear();
-            //                inAWay = true;
-            //            }
-            //            else if (reader.Name == "nd")
-            //            {
-            //                wayNodesIds.Add(reader.GetAttribute("ref"));
-            //            }
-            //            else if (reader.Name == "tag")
-            //            {
-            //                tagKey = reader.GetAttribute("k");
-            //                if (!matches.PrimaryFeaturesToFind.Contains(tagKey))
-            //                {
-            //                    continue;
-            //                }
+            // Loop (linearly) through all tags. Keep track of each node's metadata and coords while looping through its tags.
+            // When encountering the next node add the tracked data.
+            while (reader.Read())
+            {
+                if (reader.IsStartElement())
+                {
+                    if (reader.Name == "node")
+                    {
+                        request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
+                        currentNodeMetaData.Clear();
+                        currentNodeId = reader.GetAttribute("id");
+                        currentLat = Convert.ToDouble(reader.GetAttribute("lat"));
+                        currentLon = Convert.ToDouble(reader.GetAttribute("lon")); 
+                    }
+                    else if (reader.Name == "tag")
+                    {
+                        currentNodeMetaData[reader.GetAttribute("k")] = reader.GetAttribute("v");
+                    }
+                    else if (reader.Name == "way")
+                    {
+                        request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
+                        break;
+                    }
+                }
+            }
+        }
 
-            //                tagValue = reader.GetAttribute("v");
-            //                if (inAWay)
-            //                {
-            //                    // Parsing a collections of nodes references by a way out
-            //                    var ndsForWay = new Coord[wayNodesIds.Count];
-            //                    for (int i = 0; i < wayNodesIds.Count; i++)
-            //                    {
-            //                        ndsForWay[i] = allNodes[wayNodesIds[i]];
-            //                    }
+        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request)
+        {
+            string currentWayId = "";
+            var currentWayMetaData = new Dictionary<string, string>();
+            var currentWayNodes = new List<Coord>();
+            var allNodes = new Dictionary<string, Coord>();
 
-            //                    if (matches.Ways[tagKey].ContainsKey(matchAllKey))
-            //                    {
-            //                        matches.AddWayGivenFeature(tagKey, tagValue, ndsForWay);
-            //                    }
-            //                    else if (matches.Ways[tagKey].ContainsKey(tagValue))
-            //                    {
-            //                        matches.AddWayGivenFeatureAndSubFeature(tagKey, tagValue, ndsForWay);
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    // Parsing a node out
-            //                    if (matches.Nodes[tagKey].ContainsKey(matchAllKey))
-            //                    {
-            //                        // If we are searching for all items within a feature then add it regardless
-            //                        matches.AddNodeGivenFeature(tagKey, tagValue, allNodes[currentNodeId]);
-            //                    }
-            //                    else if (matches.Nodes[tagKey].ContainsKey(tagValue))
-            //                    {
-            //                        // If searching for a particular key:value only add if there is
-            //                        matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, allNodes[currentNodeId]);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            while (reader.Read())
+            {
+                if (reader.IsStartElement())
+                {
+                    if (reader.Name == "way")
+                    {
+                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); // If finished looping over a prior node
+                        currentWayId = reader.GetAttribute("id");
+                        currentWayMetaData.Clear();
+                        currentWayNodes.Clear();
+                    }
+                    else if (reader.Name == "node")
+                    {
+                        var nodeId = reader.GetAttribute("id");
+                        allNodes[nodeId] = new Coord(
+                            Convert.ToDouble(reader.GetAttribute("lat")), Convert.ToDouble(reader.GetAttribute("lon")));
+                    }
+                    else if (reader.Name == "nd")
+                    {
+                        var ndId = reader.GetAttribute("id");
+                        currentWayNodes.Add(allNodes[ndId]);
+                    }
+                    else if (reader.Name == "tag")
+                    {
+                        currentWayMetaData[reader.GetAttribute("k")] = reader.GetAttribute("v");
+                    }
+                    else if (reader.Name == "relation")
+                    {
+                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
+                        break;
+                    }
+                }
+            }
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
@@ -114,6 +126,7 @@
                             if (reader.Name == "bounds")
                             {
                                 CheckBounds(reader, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
+                                break;
                             }
                         }
                     }

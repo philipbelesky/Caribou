@@ -6,7 +6,8 @@
     using Caribou.Components;
 
     /// <summary>
-    /// A wrapper around a list of OSMMetaData items that are parsed from the provided raw key:value or key pairs
+    /// A wrapper around a list of OSMMetaData items. These are requested metadata tags to find.
+    /// They are parsed from the provided raw key:value or key pairs (e.g. Grasshopper input).
     /// </summary>
     public struct ParseRequest
     {

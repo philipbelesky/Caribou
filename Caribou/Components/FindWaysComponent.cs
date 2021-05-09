@@ -6,13 +6,13 @@
     using Grasshopper.Kernel;
     using Rhino.Geometry;
 
-    /// <summary>Identifies and outputs all OSM way-type items that contain any of the specified features.</summary>
+    /// <summary>Identifies and outputs all OSM way-type items that contain any of the requested metadata. Logic in worker.</summary>
     public class FindWaysComponent : CaribouAsyncComponent
     {
         public FindWaysComponent()
             : base("OpenStreetMap", "OSM", "Load and parse way (e.g. polyline) data from an OSM file based on its metadata", "OSM")
         {
-            this.BaseWorker = new LoadAndParseWaysWorker(this);
+            this.BaseWorker = new ParseWaysWorker(this);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)

@@ -7,8 +7,10 @@
     using System.Threading.Tasks;
 #pragma warning disable SA1310 // Field names should not contain underscore
 
-    /// <summary>A predefined list of major/common feature and subfeature pairings specified on the
-    /// [OSM wiki](https://wiki.openstreetmap.org/wiki/Map_features).</summary>
+    /// <summary>
+    /// A predefined list of major/common feature and subfeature pairings specified on the
+    /// [OSM wiki](https://wiki.openstreetmap.org/wiki/Map_features).
+    /// </summary>
     public static class OSMDefinedFeatures
     {
         public static readonly Dictionary<string, OSMMetaData> Primary = new Dictionary<string, OSMMetaData>()

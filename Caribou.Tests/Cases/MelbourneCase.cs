@@ -12,7 +12,7 @@
     public class MelbourneCase
     {
         protected static MessagesWrapper msgs = new MessagesWrapper();
-        protected static OSMXMLs OSMXMLs = new OSMXMLs(new List<string>() {
+        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM
         }, ref msgs);
 

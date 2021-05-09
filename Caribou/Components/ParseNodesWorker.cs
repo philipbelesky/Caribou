@@ -11,16 +11,21 @@
     using Rhino.Geometry;
 
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
-    public class LoadAndParseNodesWorker : BaseLoadAndParseWorker
+    public class ParseNodesWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Point> foundNodes;
 
-        public LoadAndParseNodesWorker(GH_Component parent)
+        public ParseNodesWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
         {
         }
 
-        public override WorkerInstance Duplicate() => new LoadAndParseNodesWorker(this.Parent);
+        public override WorkerInstance Duplicate() => new ParseNodesWorker(this.Parent);
+
+        public override void ExtractCoordsForComponentType()
+        {
+            ParseViaXMLReader.FindItemsByTag(ref this.result, "node");
+        }
 
         public override void MakeGeometryForComponentType()
         {

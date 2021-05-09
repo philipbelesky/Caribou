@@ -11,15 +11,17 @@
     using Grasshopper.Kernel.Types;
     using Rhino.Geometry;
 
-    /// <summary>The 'work' of a component that conforms to the asynchronous class features provided by WorkerInstance.
-    /// Inherited by the workers that parse for specific geometries and provides their shared methods and parameters.</summary>
+    /// <summary>
+    /// Shared logic for doing the 'work' of each parsing component.
+    /// Conforms  to the asynchronous class features provided by WorkerInstance.
+    /// </summary>
     public abstract class BaseLoadAndParseWorker : WorkerInstance
     {
         // Inputs
         protected List<string> providedXMLsRaw;
         protected List<string> requestedMetaDataRaw;
         // Parsed Inputs
-        protected OSMXMLs providedXMLs;
+        protected OSMXMLFiles providedXMLs;
         protected ParseRequest requestedMetaData;
         // Outputs
         protected RequestHandler result;
@@ -39,8 +41,7 @@
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            // Extract LatLon coords from XML tag that match the specified feature/subfeature
-            ParseViaXMLReader.FindItemsByTag(ref result);
+            this.ExtractCoordsForComponentType();
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
@@ -68,9 +69,14 @@
             done();
         }
 
-        public abstract void MakeGeometryForComponentType(); // Generate type-specific geometry (e.g. way or node)
+        // Parse the XML to extract component specific results
+        public abstract void ExtractCoordsForComponentType();
 
-        public abstract void MakeTreeForComponentType(); // Generate type-specific tree (e.g. way or node)
+        // Generate type-specific geometry (e.g. way or node)
+        public abstract void MakeGeometryForComponentType();
+
+        // Generate type-specific tree (e.g. way or node)
+        public abstract void MakeTreeForComponentType();
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
@@ -82,7 +88,7 @@
             // PARSE XML Data
             this.providedXMLsRaw = new List<string>();
             da.GetDataList(0, this.providedXMLsRaw);
-            this.providedXMLs = new OSMXMLs(this.providedXMLsRaw, ref parseMessages);
+            this.providedXMLs = new OSMXMLFiles(this.providedXMLsRaw, ref parseMessages);
 
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();

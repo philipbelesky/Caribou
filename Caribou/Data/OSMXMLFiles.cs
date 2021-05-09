@@ -6,11 +6,11 @@
     /// <summary>
     /// A wrapper around a list of strings representing the XML files that are provided
     /// </summary>
-    public struct OSMXMLs
+    public struct OSMXMLFiles
     {
         public List<string> ProvidedXMLs;
 
-        public OSMXMLs(List<string> ghInput, ref MessagesWrapper messages)
+        public OSMXMLFiles(List<string> ghInput, ref MessagesWrapper messages)
         {
 
             // When provided with a list of strings it can either be a request to parse multiple files, OR it 

@@ -6,9 +6,12 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    /// <summary>A key:value pairing that might be found within a node/way's tag in an OSM XML file.
-    /// Applies to both keys and values (and thus features and subfeatures). E.g. if amenity=restaurant, then
-    /// both "amenity" and "restaurant" are OSMMetaData items, with the later having the former is its Key.</summary>
+    /// <summary>
+    /// A key or key:value pairing that might be found within a node or way's tags in an OSM XML file.
+    /// Applies to both features:subfeatures and arbitrary key:values. E.g. if amenity=restaurant, then
+    /// both "amenity" and "restaurant" are OSMMetaData items, with the later having the former is its Key.
+    /// (This is because it is possible to search for all items with a key regardless of values (e.g. all buildings).
+    /// </summary>
     public class OSMMetaData : IEquatable<OSMMetaData>
     {
         // Constructing from Grasshopper data
