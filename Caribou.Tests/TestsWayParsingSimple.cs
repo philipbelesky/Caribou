@@ -17,7 +17,7 @@
         const int allCraftJewellers = 1;
         const int allBuildingsRetail = 0;
 
-        private static int CountWaysFoundForKey(RequestResults matches, string key)
+        private static int CountWaysFoundForKey(RequestHandler matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Ways[key].Keys)

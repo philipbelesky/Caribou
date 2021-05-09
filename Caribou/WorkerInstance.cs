@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading;
+    using Caribou.Components;
     using Grasshopper.Kernel;
 
     /// <summary>
@@ -51,7 +52,7 @@
         public abstract void DoWork(Action<string, double> reportProgress, Action done);
 
         // Per issues #11 and #14 in https://github.com/specklesystems/GrasshopperAsyncComponent/ this helps prevent messages vanishing
-        protected List<(GH_RuntimeMessageLevel, string)> RuntimeMessages { get; set; } = new List<(GH_RuntimeMessageLevel, string)>();
+        protected MessagesWrapper RuntimeMessages { get; set; } = new MessagesWrapper();
 
         // As per RuntimeMessages, we need to write out any messages passed up
         /// <summary>
@@ -61,7 +62,7 @@
         public void SetData(IGH_DataAccess da)
         {
             WorkerSetData(da); // Worker must implement a custom SetData as per below
-            foreach (var (level, message) in RuntimeMessages)
+            foreach (var (level, message) in RuntimeMessages.Messages)
             {
                 Parent.AddRuntimeMessage(level, message); // Report any messages done by the worker instance
             }

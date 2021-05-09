@@ -21,7 +21,7 @@
         private double firstHighwayResidentialFirstNodeLon = 144.9735701;
         private double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
 
-        private int CountWaysFoundForKey(RequestResults matches, string key)
+        private int CountWaysFoundForKey(RequestHandler matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Ways[key].Keys)

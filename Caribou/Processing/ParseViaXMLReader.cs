@@ -8,10 +8,10 @@
 
     public static class ParseViaXMLReader
     {
-        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
+        public static RequestHandler FindByFeatures(List<ParseRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new RequestResults(featuresSpecified); // Output
-            var matchAllKey = FeatureRequest.SearchAllKey;
+            var matches = new RequestHandler(featuresSpecified); // Output
+            var matchAllKey = ParseRequest.SearchAllKey;
             var allNodes = new Dictionary<string, Coord>(); // Dict used to lookup a way's nodes
             GetBounds(ref matches, xmlContents); // Add minmax latlon to matches
 
@@ -95,7 +95,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref RequestResults matches, string xmlContents)
+        private static void GetBounds(ref RequestHandler matches, string xmlContents)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlContents)))
             {

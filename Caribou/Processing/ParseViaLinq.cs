@@ -8,11 +8,11 @@
 
     public static class ParseViaLinq
     {
-        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
+        public static RequestHandler FindByFeatures(List<ParseRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new RequestResults(featuresSpecified); // Output
+            var matches = new RequestHandler(featuresSpecified); // Output
             var xml = XDocument.Parse(xmlContents);
-            var matchAllKey = FeatureRequest.SearchAllKey;
+            var matchAllKey = ParseRequest.SearchAllKey;
             GetBounds(ref matches, xml); // Add minmax latlon to matches
 
             foreach (var tagKey in matches.Nodes.Keys)
@@ -65,7 +65,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref RequestResults matches, XDocument xml)
+        private static void GetBounds(ref RequestHandler matches, XDocument xml)
         {
             var boundsElement = (from el in xml.Descendants("bounds") select el).First();
             matches.SetLatLonBounds(

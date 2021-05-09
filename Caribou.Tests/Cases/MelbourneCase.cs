@@ -13,20 +13,20 @@ namespace Caribou.Tests
     {
         protected readonly string melbourneFile = Properties.Resources.MelbourneOSM;
 
-        protected readonly List<FeatureRequest> mainFeatures = new List<FeatureRequest>()
+        protected readonly List<ParseRequest> mainFeatures = new List<ParseRequest>()
         {
-            new FeatureRequest("amenity", ""), // 610 nodes 45 ways
-            new FeatureRequest("highway",  ""), // 143 nodes, 615 ways
-            new FeatureRequest("building",  "") // 140 nodes, 466 ways
+            new ParseRequest("amenity", ""), // 610 nodes 45 ways
+            new ParseRequest("highway",  ""), // 143 nodes, 615 ways
+            new ParseRequest("building",  "") // 140 nodes, 466 ways
         };
 
-        protected readonly List<FeatureRequest> miscSubFeatures = new List<FeatureRequest>()
+        protected readonly List<ParseRequest> miscSubFeatures = new List<ParseRequest>()
         {
-            new FeatureRequest( "amenity", "restaurant" ), // 173 nodes; 0 ways
-            new FeatureRequest( "amenity", "place_of_worship" ), // 2 node; 7 ways
-            new FeatureRequest( "highway", "residential" ), // 0 nodes; 5 ways
-            new FeatureRequest( "highway", "residential" ), // 0 nodes; 5 ways
-            new FeatureRequest( "building", "retail" ) // // 130 nodes 19 ways
+            new ParseRequest( "amenity", "restaurant" ), // 173 nodes; 0 ways
+            new ParseRequest( "amenity", "place_of_worship" ), // 2 node; 7 ways
+            new ParseRequest( "highway", "residential" ), // 0 nodes; 5 ways
+            new ParseRequest( "highway", "residential" ), // 0 nodes; 5 ways
+            new ParseRequest( "building", "retail" ) // // 130 nodes 19 ways
         };
     }
 }

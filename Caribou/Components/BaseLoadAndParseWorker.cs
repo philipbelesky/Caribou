@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using Caribou.Components;
     using Caribou.Data;
     using Grasshopper;
     using Grasshopper.Kernel;
@@ -13,14 +14,15 @@
     /// Inherited by the workers that parse for specific geometries and provides their shared methods and parameters.</summary>
     public abstract class BaseLoadAndParseWorker : WorkerInstance
     {
-        private string xmlFileContents;
-        private List<string> requestedFeaturesRaw;
-        private List<FeatureRequest> requestedFeatures;
-        private List<string> debugOutput = new List<string>();
-        private RequestResults foundItems;
-        private DataTree<Point3d> foundNodes;
-        private DataTree<Polyline> foundWays;
-        private DataTree<string> foundElementsReport;
+        // Inputs
+        protected List<string> providedXMLsRaw;
+        protected List<string> requestedMetaDataRaw;
+        // Parsed Inputs
+        protected OSMXMLs providedXMLs;
+        protected ParseRequest requestedMetaData;
+        // Outputs
+        protected RequestHandler foundOSMItems;
+        protected List<string> debugOutput = new List<string>();
 
         public BaseLoadAndParseWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -34,7 +36,7 @@
                 return;
 
             // Extra LatLon coords from XML tag that match the specified feature/subfeature
-            this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedFeatures, this.xmlFileContents);
+            this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedMetaData, this.providedXMLsRaw);
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
@@ -56,56 +58,22 @@
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
+            var parseMessages = new MessagesWrapper();
+
             if (this.CancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
 
             // PARSE XML Data
-            var rawDataContensts = new List<string>();
-            da.GetDataList(0, rawDataContensts);
-            // To account for files being provided in per-line mode we just concat them
-            if (rawDataContensts.Count > 1)
-            {
-                xmlFileContents = string.Join("", rawDataContensts);
-                RuntimeMessages.Add((GH_RuntimeMessageLevel.Remark,
-                    "OSM file content was provided as a list of per-line strings. \n" +
-                    "When using the Read File component you should turn OFF Per-File parsing via the right-click menu. \n" +
-                    "If you are trying to read multiple OSM files at once, please use separate components to do so."));
-            }
-            else
-            {
-                xmlFileContents = rawDataContensts[0];
-            }
+            this.providedXMLsRaw = new List<string>();
+            da.GetDataList(0, this.providedXMLsRaw);
+            this.providedXMLs = new OSMXMLs(this.providedXMLsRaw, ref parseMessages);
 
             // PARSE Feature Keys
-            var requestedFeaturesRaw = new List<string>();
-            da.GetDataList(1, requestedFeaturesRaw);
-            if (requestedFeaturesRaw.Count == 0)
-            {
-                RuntimeMessages.Add((GH_RuntimeMessageLevel.Warning, "No feature keys provided. Please provide them via:\n" +
-                    "- Via text parameters 'key:value' format separated by commas or newlines" +
-                    "- Via one of the Specify components."));
-            }
-            else
-            {
-                this.requestedFeatures = FeatureRequest.ParseFeatureRequestFromGrasshopper(requestedFeaturesRaw);
-            }
-        }
+            this.requestedMetaDataRaw = new List<string>();
+            da.GetDataList(1, this.requestedMetaDataRaw);
+            this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw, ref parseMessages);
 
-        protected override void WorkerSetData(IGH_DataAccess da)
-        {
-            if (this.CancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
-
-            da.SetDataTree(0, this.foundNodes);
-            da.SetDataTree(1, this.foundWays);
-            da.SetDataTree(2, this.foundElementsReport);
-
-            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
-            da.SetDataList(3, this.debugOutput);
+            this.RuntimeMessages.Messages.AddRange(parseMessages.Messages);
         }
     }
 }

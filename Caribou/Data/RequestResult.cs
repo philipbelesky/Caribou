@@ -3,16 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Caribou.Processing;
     using Grasshopper;
-    using Grasshopper.Kernel.Data;
 
-    // A two-tier dictionary array organised by feature:subfeature and storing results from the OSM parse
+    /// <summary>
+    /// A general-purpose wrapper around the 
+    /// </summary>
     public class RequestResults
     {
-        public RequestResults(List<FeatureRequest> requestedFeatures)
+        public RequestResults(List<ParseRequest> requestedFeatures)
         {
             this.Nodes = new Dictionary<string, Dictionary<string, List<Coord>>>();
             this.Ways = new Dictionary<string, Dictionary<string, List<Coord[]>>>();
@@ -53,7 +51,7 @@
         }
 
         public List<string> PrimaryFeaturesToFind { get; }
-        public List<FeatureRequest> RequestedFeatures { get; }
+        public List<ParseRequest> RequestedFeatures { get; }
         public Dictionary<string, Dictionary<string, List<Coord>>> Nodes { get; }
         public Dictionary<string, Dictionary<string, List<Coord[]>>> Ways { get; }
         public Coord ExtentsMin { get; set; }

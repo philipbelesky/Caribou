@@ -10,7 +10,7 @@
 
     public static class TranslateToXYManually
     {
-        public static DataTree<Point3d> NodePointsFromCoords(RequestResults foundItems)
+        public static DataTree<Point3d> NodePointsFromCoords(RequestHandler foundItems)
         {
             var results = new DataTree<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
@@ -22,7 +22,7 @@
                 var j = 0;
                 foreach (var subfeatureType in foundItems.Nodes[featureType].Keys)
                 {
-                    if (subfeatureType == FeatureRequest.SearchAllKey)
+                    if (subfeatureType == ParseRequest.SearchAllKey)
                     {
                         continue;
                     }
@@ -44,7 +44,7 @@
             return results;
         }
 
-        public static DataTree<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
+        public static DataTree<Polyline> WayPolylinesFromCoords(RequestHandler foundItems)
         {
             List<Point3d> linePoints;
             var results = new DataTree<Polyline>();
@@ -57,7 +57,7 @@
                 var j = 0;
                 foreach (var subfeatureType in foundItems.Ways[featureType].Keys)
                 {
-                    if (subfeatureType == FeatureRequest.SearchAllKey)
+                    if (subfeatureType == ParseRequest.SearchAllKey)
                     {
                         continue;
                     }

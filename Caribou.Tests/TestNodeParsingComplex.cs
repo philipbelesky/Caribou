@@ -19,7 +19,7 @@
         const double firstWorkshopLon = 144.963903;
         const double firstRestaurantLat = -37.8134515;
 
-        private static int CountNodesFoundForKey(RequestResults matches, string key)
+        private static int CountNodesFoundForKey(RequestHandler matches, string key)
         {
             var matchesCount = 0;
             foreach (var matchedSubFeature in matches.Nodes[key].Keys)

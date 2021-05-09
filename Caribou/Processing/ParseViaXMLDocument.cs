@@ -7,10 +7,10 @@
 
     public static class ParseViaXMLDocument
     {
-        public static RequestResults FindByFeatures(List<FeatureRequest> featuresSpecified, string xmlContents)
+        public static RequestHandler FindByFeatures(List<ParseRequest> featuresSpecified, string xmlContents)
         {
-            var matches = new RequestResults(featuresSpecified); // Output
-            var matchAllKey = FeatureRequest.SearchAllKey;
+            var matches = new RequestHandler(featuresSpecified); // Output
+            var matchAllKey = ParseRequest.SearchAllKey;
             double lat = 0.0;
             double lon = 0.0;
 
@@ -54,7 +54,7 @@
             return matches;
         }
 
-        private static void GetBounds(ref RequestResults matches, XmlNode root)
+        private static void GetBounds(ref RequestHandler matches, XmlNode root)
         {
             var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
             matches.SetLatLonBounds(

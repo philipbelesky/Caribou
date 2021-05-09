@@ -8,7 +8,7 @@
 
     public static class TranslateToXYViaLib
     {
-        public static List<Point3d> NodePointsFromCoordsViaLib(RequestResults foundItems)
+        public static List<Point3d> NodePointsFromCoordsViaLib(RequestHandler foundItems)
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
@@ -29,7 +29,7 @@
             return results;
         }
 
-        public static List<Point3d> NodePointsFromCoords(RequestResults foundItems)
+        public static List<Point3d> NodePointsFromCoords(RequestHandler foundItems)
         {
             var results = new List<Point3d>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.None, RhinoDoc.ActiveDoc.ModelUnitSystem);
@@ -49,7 +49,7 @@
             return results;
         }
 
-        public static List<Polyline> WayPolylinesFromCoords(RequestResults foundItems)
+        public static List<Polyline> WayPolylinesFromCoords(RequestHandler foundItems)
         {
             List<Point3d> linePoints;
             var results = new List<Polyline>();

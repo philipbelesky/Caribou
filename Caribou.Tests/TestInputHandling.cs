@@ -15,9 +15,9 @@
         public void TestSingleExample()
         {
             var input = new List<string>() { "amenity:restaurant" };
-            var results = FeatureRequest.ParseFeatureRequestFromGrasshopper(input);
-            Assert.AreEqual(results[0], new FeatureRequest("amenity", "restaurant"));
-            Assert.AreNotEqual(results[0], new FeatureRequest("amenity", "zz"));
+            var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
+            Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
+            Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
         }
 
         [TestMethod]
@@ -28,11 +28,11 @@
                 "highway:residential",
                 "waterway"
             };
-            var results = FeatureRequest.ParseFeatureRequestFromGrasshopper(input);
-            Assert.AreEqual(results[0], new FeatureRequest("amenity", "restaurant"));
-            Assert.AreNotEqual(results[0], new FeatureRequest("amenity", "zz"));
-            Assert.AreEqual(results[1], new FeatureRequest("highway", "residential"));
-            Assert.AreEqual(results[2], new FeatureRequest("waterway", null));
+            var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
+            Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
+            Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
+            Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
+            Assert.AreEqual(results[2], new ParseRequest("waterway", null));
         }
 
         [TestMethod]
@@ -42,11 +42,11 @@
                 "amenity:restaurant\nhighway:residential",
                 "waterway"
             };
-            var results = FeatureRequest.ParseFeatureRequestFromGrasshopper(input);
-            Assert.AreEqual(results[0], new FeatureRequest("amenity", "restaurant"));
-            Assert.AreNotEqual(results[0], new FeatureRequest("amenity", "zz"));
-            Assert.AreEqual(results[1], new FeatureRequest("highway", "residential"));
-            Assert.AreEqual(results[2], new FeatureRequest("waterway", null));
+            var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
+            Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
+            Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
+            Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
+            Assert.AreEqual(results[2], new ParseRequest("waterway", null));
         }
         [TestMethod]
         public void TestTripleExampleComma()
@@ -55,11 +55,11 @@
                 "amenity:restaurant,highway:residential,",
                 "waterway"
             };
-            var results = FeatureRequest.ParseFeatureRequestFromGrasshopper(input);
-            Assert.AreEqual(results[0], new FeatureRequest("amenity", "restaurant"));
-            Assert.AreNotEqual(results[0], new FeatureRequest("amenity", "zz"));
-            Assert.AreEqual(results[1], new FeatureRequest("highway", "residential"));
-            Assert.AreEqual(results[2], new FeatureRequest("waterway", null));
+            var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
+            Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
+            Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
+            Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
+            Assert.AreEqual(results[2], new ParseRequest("waterway", null));
         }
 
         [TestMethod]
@@ -69,11 +69,11 @@
                 "amenity:restaurant,highway:residential",
                 ",waterway"
             };
-            var results = FeatureRequest.ParseFeatureRequestFromGrasshopper(input);
-            Assert.AreEqual(results[0], new FeatureRequest("amenity", "restaurant"));
-            Assert.AreNotEqual(results[0], new FeatureRequest("amenity", "zz"));
-            Assert.AreEqual(results[1], new FeatureRequest("highway", "residential"));
-            Assert.AreEqual(results[2], new FeatureRequest("waterway", null));
+            var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
+            Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
+            Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
+            Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
+            Assert.AreEqual(results[2], new ParseRequest("waterway", null));
         }
     }
 }
