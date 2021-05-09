@@ -18,9 +18,9 @@
 
         protected static ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
-                new OSMMetaData("amenity", "", true), // 610 nodes 45 ways
-                new OSMMetaData("highway", "", true),  // 143 nodes, 615 ways
-                new OSMMetaData("building", "", true) // 140 nodes, 466 ways
+                new OSMMetaData("amenity"), // 610 nodes 45 ways
+                new OSMMetaData("highway"),  // 143 nodes, 615 ways
+                new OSMMetaData("building") // 140 nodes, 466 ways
             }
         );
 

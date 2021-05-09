@@ -12,73 +12,76 @@
     [TestClass]
     public class TestInputHandling
     {
+        private List<string> input;
+        private ParseRequest results;
         protected static MessagesWrapper messages = new MessagesWrapper();
-        private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("restaurant", "", false);
-        private OSMMetaData notExpectedParsedAmenityRestaraunt = new OSMMetaData("amenity", "", false);
+        private OSMMetaData expectedParsedGeological = new OSMMetaData("geological");
+        private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("restaurant", "amenity");
+        private OSMMetaData expectedParsedHighWayResidential = new OSMMetaData("residential", "highway");
+        private OSMMetaData expectedParsedWaterway = new OSMMetaData("waterway");
 
         [TestMethod]
-        public void TestSingleExample()
+        public void TestSingleKey()
         {
-            var input = new List<string>() { "amenity:restaurant" };
-            var results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
-            Assert.AreNotEqual(results.RequestedMetaData[0], notExpectedParsedAmenityRestaraunt);
+            input = new List<string>() { "geological" };
+            results = new ParseRequest(input, ref messages);
+            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedGeological);
         }
 
-        //[TestMethod]
-        //public void TestTripleExampleNewLine()
-        //{
-        //    var input = new List<string>() {
-        //        "amenity:restaurant",
-        //        "highway:residential",
-        //        "waterway"
-        //    };
-        //    var results = new ParseRequest(input, ref messages);
-        //    Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
-        //    Assert.AreNotEqual(results.RequestedMetaData[0], notExpectedParsedAmenityRestaraunt);
-        //    Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
-        //    Assert.AreEqual(results[2], new ParseRequest("waterway", null));
-        //}
+        [TestMethod]
+        public void TestSingleKeyValue()
+        { 
+            input = new List<string>() { "amenity:restaurant" };
+            results = new ParseRequest(input, ref messages);
+            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
+        }
 
-        //[TestMethod]
-        //public void TestDoubleExampleNewLine()
-        //{
-        //    var input = new List<string>() {
-        //        "amenity:restaurant\nhighway:residential",
-        //        "waterway"
-        //    };
-        //    var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
-        //    Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
-        //    Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
-        //    Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
-        //    Assert.AreEqual(results[2], new ParseRequest("waterway", null));
-        //}
-        //[TestMethod]
-        //public void TestTripleExampleComma()
-        //{
-        //    var input = new List<string>() {
-        //        "amenity:restaurant,highway:residential,",
-        //        "waterway"
-        //    };
-        //    var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
-        //    Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
-        //    Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
-        //    Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
-        //    Assert.AreEqual(results[2], new ParseRequest("waterway", null));
-        //}
+        [TestMethod]
+        public void TestTripleExampleNewLine()
+        {
+            input = new List<string>() {
+                "amenity:restaurant",
+                "highway:residential",
+                "waterway"
+            };
+            CheckResult(input);
+        }
 
-        //[TestMethod]
-        //public void TestDoubleExampleComma()
-        //{
-        //    var input = new List<string>() {
-        //        "amenity:restaurant,highway:residential",
-        //        ",waterway"
-        //    };
-        //    var results = ParseRequest.ParseFeatureRequestFromGrasshopper(input);
-        //    Assert.AreEqual(results[0], new ParseRequest("amenity", "restaurant"));
-        //    Assert.AreNotEqual(results[0], new ParseRequest("amenity", "zz"));
-        //    Assert.AreEqual(results[1], new ParseRequest("highway", "residential"));
-        //    Assert.AreEqual(results[2], new ParseRequest("waterway", null));
-        //}
+        [TestMethod]
+        public void TestDoubleExampleNewLine()
+        {
+            input = new List<string>() {
+                "amenity:restaurant\nhighway:residential",
+                "waterway"
+            };
+            CheckResult(input);
+        }
+        [TestMethod]
+        public void TestTripleExampleComma()
+        {
+            input = new List<string>() {
+                "amenity:restaurant,highway:residential,",
+                "waterway"
+            };
+            CheckResult(input);
+        }
+
+        [TestMethod]
+        public void TestDoubleExampleComma()
+        {
+            input = new List<string>() {
+                "amenity:restaurant,highway:residential",
+                ",waterway"
+            };
+            CheckResult(input);
+        }
+
+        private void CheckResult(List<string> input)
+        {
+            results = new ParseRequest(input, ref messages);
+            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(results.RequestedMetaData[1], expectedParsedHighWayResidential);
+            Assert.AreEqual(results.RequestedMetaData[2], expectedParsedWaterway);
+        }
     }
 }

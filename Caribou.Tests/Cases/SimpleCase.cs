@@ -19,9 +19,9 @@
 
         protected static ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
-                new OSMMetaData("craft", "", true), // 2 nodes 2 ways
-                new OSMMetaData("amenity",  "", true), // 1 node 0 ways
-                new OSMMetaData("building",  "", true)  // 2 nodes 1 ways
+                new OSMMetaData("craft"), // 2 nodes 2 ways
+                new OSMMetaData("amenity"), // 1 node 0 ways
+                new OSMMetaData("building")  // 2 nodes 1 ways
             }
         );
 

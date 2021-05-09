@@ -40,13 +40,10 @@
             // Transform the key:value formatted strings into OSM items and assign them
             foreach (string inputString in cleanedGhInput)
             { 
-                var osmItems = ParseRawKeyToOSMMetaData(inputString);
-                foreach (OSMMetaData osmItem in osmItems)
+                var osmItem = ParseItemToOSMMetaData(inputString);
+                if (osmItem != null)
                 {
-                    if (osmItem != null && !this.RequestedMetaData.Contains(osmItem))
-                    {
-                        this.RequestedMetaData.Add(osmItem);
-                    }
+                    this.RequestedMetaData.Add(osmItem);
                 }
             }
         }
@@ -57,36 +54,28 @@
             this.RequestedMetaData = prepackagedData;
         }
 
-        public static List<OSMMetaData> ParseRawKeyToOSMMetaData(string inputString)
+        public static OSMMetaData ParseItemToOSMMetaData(string inputString)
         {
-            string osmKey;
-            string osmValue = null;
-            OSMMetaData keyItem = null;
             List<OSMMetaData> foundItems = new List<OSMMetaData>();
 
             if (inputString.Length == 0)
             {
-                return foundItems;
+                return null;
             }
 
-            if (inputString.Contains(':'))
+            if (inputString.Trim().Split(':').Length > 1)
             {
-                osmKey = inputString.Trim().Split(':')[0];
-                osmValue = inputString.Trim().Split(':')[1];
-                // Create and return the parent key
-                keyItem = new OSMMetaData(osmValue, "", false, "");
-                foundItems.Add(keyItem);
+                // If dealing with a pair, e.g. amenity:restaurant
+                var osmKey = inputString.Trim().Split(':')[0];
+                var osmValue = inputString.Trim().Split(':')[1];
+                return new OSMMetaData(osmValue, osmKey);
             }
             else
             {
-                osmKey = inputString.Trim().Split(':')[0];
+                // If dealing with a top level item, e.g. geological
+                var osmKey = inputString.Trim().Split(':')[0];
+                return new OSMMetaData(osmKey);
             }
-
-            // Add the key as an item
-            OSMMetaData valueItem = new OSMMetaData(osmKey, "", false, "", keyItem);
-            foundItems.Add(valueItem);
-
-            return foundItems;
         }
     }
 }

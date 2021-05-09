@@ -11,13 +11,38 @@
     /// both "amenity" and "restaurant" are OSMMetaData items, with the later having the former is its Key.</summary>
     public class OSMMetaData : IEquatable<OSMMetaData>
     {
-        public OSMMetaData(string id, string name, bool isDefined, string explanation = "", OSMMetaData key = null)
+        // Constructing from Grasshopper data
+        public OSMMetaData(string specifiedId, string specifiedKey = null)
+        {
+            this.Id = specifiedId;
+            this.IsDefined = false;
+
+            // If providing a top-level defined primary feature like "natural" return that object
+            if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
+            {
+                this.IsDefined = true;
+                this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
+                this.Explanation = OSMDefinedFeatures.Primary[specifiedId].Explanation;
+                this.Key = null;
+                return;
+            }
+
+            // If providing a specific type of information to find/match, e.g. amenity:restaurant
+            // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
+            if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
+            {
+                this.Key = OSMDefinedFeatures.Primary[specifiedKey];
+            }
+        }
+
+        // Constructing from hardcoded data
+        public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
             this.Id = id;
-            this.Key = key;
-            this.IsDefined = isDefined;
             this.Name = name;
+            this.IsDefined = true;
             this.Explanation = explanation;
+            this.Key = key;
         }
 
         public string Id { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
@@ -27,7 +52,7 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.Id}:{this.Key}, (defined:  {this.IsDefined})";
+        public override string ToString() => $"{this.Id}:{this.Key}, (defined: {this.IsDefined})";
 
         public bool IsFeature()
         {
