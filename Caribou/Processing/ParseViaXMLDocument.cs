@@ -57,42 +57,51 @@
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
-        private static void GetBounds(ref RequestHandler result)
+        public static void GetBounds(ref RequestHandler result)
         {
-            foreach (string providedXML in result.xmlCollection.ProvidedXMLs)
+            double? currentMinLat = null;
+            double? currentMinLon = null;
+            double? currentMaxLat = null;
+            double? currentMaxLon = null;
+
+            foreach (string providedXML in result.XmlCollection.ProvidedXMLs)
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(providedXML);
                 XmlNode root = doc.DocumentElement;
                 var boundsElement = root.SelectNodes("/osm/bounds").Item(0);
-                CheckBounds(boundsElement, ref result);
+                CheckBounds(boundsElement, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
             }
+
+            result.MinBounds = new Coord(currentMinLat.Value, currentMinLon.Value);
+            result.MaxBounds = new Coord(currentMaxLat.Value, currentMaxLon.Value);
         }
 
-        private static void CheckBounds(XmlNode element, ref RequestHandler result)
+        private static void CheckBounds(XmlNode node, ref double? currentMinLat, ref double? currentMinLon,
+                                                         ref double? currentMaxLat, ref double? currentMaxLon)
         {
-            var boundsMinLat = Convert.ToDouble(element.Attributes.GetNamedItem("minlat").Value);
-            if (result.minBounds.Latitude > boundsMinLat)
+            var boundsMinLat = Convert.ToDouble(node.Attributes.GetNamedItem("minlat").Value);
+            if (!currentMinLat.HasValue || boundsMinLat < currentMinLat)
             {
-                result.minBounds.Latitude = boundsMinLat;
+                currentMinLat = boundsMinLat;
             }
 
-            var boundsMinLon = Convert.ToDouble(element.Attributes.GetNamedItem("minlon").Value);
-            if (result.minBounds.Longitude > boundsMinLon)
+            var boundsMinLon = Convert.ToDouble(node.Attributes.GetNamedItem("minlon").Value);
+            if (!currentMinLon.HasValue || boundsMinLon < currentMinLon)
             {
-                result.minBounds.Longitude = boundsMinLon;
+                currentMinLon = boundsMinLon;
             }
 
-            var boundsMaxLat = Convert.ToDouble(element.Attributes.GetNamedItem("maxlat").Value);
-            if (result.maxBounds.Latitude > boundsMaxLat)
+            var boundsMaxLat = Convert.ToDouble(node.Attributes.GetNamedItem("maxlat").Value);
+            if (!currentMaxLat.HasValue || boundsMaxLat > currentMaxLat)
             {
-                result.maxBounds.Latitude = boundsMaxLat;
+                currentMaxLat = boundsMaxLat;
             }
 
-            var boundsMaxLon = Convert.ToDouble(element.Attributes.GetNamedItem("maxlon").Value);
-            if (result.maxBounds.Longitude > boundsMaxLon)
+            var boundsMaxLon = Convert.ToDouble(node.Attributes.GetNamedItem("maxlon").Value);
+            if (!currentMaxLon.HasValue || boundsMaxLon > currentMaxLon)
             {
-                result.maxBounds.Longitude = boundsMaxLon;
+                currentMaxLon = boundsMaxLon;
             }
         }
     }

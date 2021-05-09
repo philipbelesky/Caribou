@@ -12,14 +12,14 @@
     // General purpose wrapped of the functionality required to output results to Grasshopper data
     public class RequestHandler
     {
-        public OSMXMLs xmlCollection;
+        public OSMXMLs XmlCollection;
         private ParseRequest requestedMetaData;
-        public Coord minBounds;
-        public Coord maxBounds;
+        public Coord MinBounds;
+        public Coord MaxBounds;
 
         public RequestHandler(OSMXMLs providedXMLs, ParseRequest requestedMetaData)
         {
-            this.xmlCollection = providedXMLs;
+            this.XmlCollection = providedXMLs;
             this.requestedMetaData = requestedMetaData;
         }
 

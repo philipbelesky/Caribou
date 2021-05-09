@@ -1,44 +1,42 @@
 ﻿namespace Caribou.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Caribou.Data;
-    using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class TestBoundsParsing : MelbourneCase
     {
-        private (Coord, Coord) boundsLatLon = (
-            new Coord(-37.8164200, 144.9627400),
-            new Coord(-37.8089200, 144.9710600)
-        );
+        private Coord expectedMinBounds = new Coord(-37.8164200, 144.9627400);
+        private Coord expectedMaxBounds = new Coord(-37.8089200, 144.9710600);
+        private RequestHandler result = new RequestHandler(OSMXMLs, mainFeatures);
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()
         {
-            var matches = Caribou.Processing.ParseViaXMLReader.FindByFeatures(miscSubFeatures, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref result);
+            CheckResult();
         }
 
         [TestMethod]
         public void ParseBoundsViaXMLDocument()
         {
-            var matches = Caribou.Processing.ParseViaXMLDocument.FindByFeatures(miscSubFeatures, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
+            Caribou.Processing.ParseViaXMLDocument.GetBounds(ref result);
+            CheckResult();
         }
 
         [TestMethod]
         public void ParseBoundsViaLinq()
         {
-            var matches = Caribou.Processing.ParseViaLinq.FindByFeatures(miscSubFeatures, melbourneFile);
-            Assert.AreEqual(boundsLatLon.Item1, matches.ExtentsMin);
-            Assert.AreEqual(boundsLatLon.Item2, matches.ExtentsMax);
-            Assert.AreEqual(boundsLatLon.Item1.Latitude, matches.ExtentsMin.Latitude);
+            Caribou.Processing.ParseViaLinq.GetBounds(ref result);
+            CheckResult();
+        }
+
+        private void CheckResult()
+        {
+            Assert.AreEqual(expectedMinBounds, result.MinBounds);
+            Assert.AreEqual(expectedMaxBounds, result.MaxBounds);
+            Assert.AreEqual(expectedMinBounds.Latitude, result.MinBounds.Latitude);
+            Assert.AreEqual(expectedMaxBounds.Longitude, result.MaxBounds.Longitude);
         }
     }
 }

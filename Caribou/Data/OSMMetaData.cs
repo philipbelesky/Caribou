@@ -9,7 +9,7 @@
     /// <summary>A key:value pairing that might be found within a node/way's tag in an OSM XML file.
     /// Applies to both keys and values (and thus features and subfeatures). E.g. if amenity=restaurant, then
     /// both "amenity" and "restaurant" are OSMMetaData items, with the later having the former is its Key.</summary>
-    public class OSMMetaData
+    public class OSMMetaData : IEquatable<OSMMetaData>
     {
         public OSMMetaData(string id, string name, bool isDefined, string explanation = "", OSMMetaData key = null)
         {
@@ -27,7 +27,7 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"({this.Name}, {this.Explanation})";
+        public override string ToString() => $"{this.Id}:{this.Key}, (defined:  {this.IsDefined})";
 
         public bool IsFeature()
         {
@@ -37,6 +37,19 @@
         public bool IsSubFeature()
         {
             return this.IsDefined && this.Key != null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as OSMMetaData);
+        }
+
+        public bool Equals(OSMMetaData other)
+        {
+            return other != null &&
+                   Id == other.Id &&
+                   EqualityComparer<OSMMetaData>.Default.Equals(Key, other.Key) &&
+                   IsDefined == other.IsDefined;
         }
     }
 }

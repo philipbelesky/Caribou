@@ -62,9 +62,23 @@
         public void SetData(IGH_DataAccess da)
         {
             WorkerSetData(da); // Worker must implement a custom SetData as per below
+
+            // Report any messages done by the worker instance
+            // We must manually translate here from the mock warning types back to GH types due to unit testing requirements
             foreach (var (level, message) in RuntimeMessages.Messages)
             {
-                Parent.AddRuntimeMessage(level, message); // Report any messages done by the worker instance
+                switch (level)
+                {
+                    case MessagesWrapper.Level.Error:
+                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, message);
+                        break;
+                    case MessagesWrapper.Level.Warning:
+                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, message);
+                        break;
+                    case MessagesWrapper.Level.Remark:
+                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, message);
+                        break;
+                }
             }
         }
 

@@ -51,6 +51,12 @@
             }
         }
 
+        // This constructor is mostly just used to enable testing
+        public ParseRequest(List<OSMMetaData> prepackagedData)
+        {
+            this.RequestedMetaData = prepackagedData;
+        }
+
         public static List<OSMMetaData> ParseRawKeyToOSMMetaData(string inputString)
         {
             string osmKey;

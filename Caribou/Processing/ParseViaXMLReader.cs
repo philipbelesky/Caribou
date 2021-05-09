@@ -10,7 +10,7 @@
     {
         public static void FindItemsByTag(ref RequestHandler request)
         {
-            GetBounds(ref request); 
+            GetBounds(ref request);
 
             //var matches = new RequestHandler(featuresSpecified); // Output
             //var matchAllKey = ParseRequest.SearchAllKey;
@@ -96,9 +96,14 @@
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
-        private static void GetBounds(ref RequestHandler result)
+        public static void GetBounds(ref RequestHandler result)
         {
-            foreach (string providedXML in result.xmlCollection.ProvidedXMLs)
+            double? currentMinLat = null;
+            double? currentMinLon = null;
+            double? currentMaxLat = null;
+            double? currentMaxLon = null;
+
+            foreach (string providedXML in result.XmlCollection.ProvidedXMLs)
             {
                 using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
                 {
@@ -108,38 +113,42 @@
                         {
                             if (reader.Name == "bounds")
                             {
-                                CheckBounds(reader, ref result);
+                                CheckBounds(reader, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
                             }
                         }
                     }
                 }
             }
+
+            result.MinBounds = new Coord(currentMinLat.Value, currentMinLon.Value);
+            result.MaxBounds = new Coord(currentMaxLat.Value, currentMaxLon.Value);
         }
 
-        private static void CheckBounds(XmlReader reader, ref RequestHandler result)
+        private static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
+                                                          ref double? currentMaxLat, ref double? currentMaxLon)
         {
             var boundsMinLat = Convert.ToDouble(reader.GetAttribute("minlat"));
-            if (result.minBounds.Latitude > boundsMinLat)
+            if (!currentMinLat.HasValue || boundsMinLat < currentMinLat)
             {
-                result.minBounds.Latitude = boundsMinLat;
+                currentMinLat = boundsMinLat;
             }
 
             var boundsMinLon = Convert.ToDouble(reader.GetAttribute("minlon"));
-            if (result.minBounds.Longitude > boundsMinLon)
+            if (!currentMinLon.HasValue || boundsMinLon < currentMinLon)
             {
-                result.minBounds.Longitude = boundsMinLon;
+                currentMinLon = boundsMinLon;
             }
 
             var boundsMaxLat = Convert.ToDouble(reader.GetAttribute("maxlat"));
-            if (result.maxBounds.Latitude > boundsMaxLat)
+            if (!currentMaxLat.HasValue || boundsMaxLat > currentMaxLat)
             {
-                result.maxBounds.Latitude = boundsMaxLat;
+                currentMaxLat = boundsMaxLat;
             }
 
             var boundsMaxLon = Convert.ToDouble(reader.GetAttribute("maxlon"));
-            if (result.maxBounds.Longitude > boundsMaxLon)
+            if (!currentMaxLon.HasValue || boundsMaxLon > currentMaxLon)
             {
-                result.maxBounds.Longitude = boundsMaxLon;
+                currentMaxLon = boundsMaxLon;
             }
         }
     }

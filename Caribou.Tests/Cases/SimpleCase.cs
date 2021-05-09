@@ -1,30 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Tests
+﻿namespace Caribou.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Caribou.Components;
     using Caribou.Data;
     using Caribou.Processing;
 
     public class SimpleCase
     {
-        protected readonly string simpleFile = Properties.Resources.SimpleOSM;
+        protected static MessagesWrapper messages = new MessagesWrapper();
+        protected static OSMXMLs OSMXMLs = new OSMXMLs(new List<string>() {
+            Properties.Resources.SimpleOSM
+        }, ref messages);
 
-        protected readonly List<ParseRequest> mainFeatures = new List<ParseRequest>()
-        {
-            new ParseRequest("craft", ""), // 2 nodes 2 ways
-            new ParseRequest("amenity",  ""), // 1 node 0 ways
-            new ParseRequest("building",  "")  // 2 nodes 1 ways
-        };
 
-        protected readonly List<ParseRequest> miscSubFeatures = new List<ParseRequest>()
-        {
-            new ParseRequest( "amenity", "restaurant" ), // 1 nodes; 0 ways
-            new ParseRequest( "craft", "jeweller" ), // 1 nodes; 1 way
-            new ParseRequest( "building", "retail" ) // // 2 nodes 0 ways
-        };
+        protected static ParseRequest mainFeatures = new ParseRequest(
+            new List<OSMMetaData>() {
+                new OSMMetaData("craft", "", true), // 2 nodes 2 ways
+                new OSMMetaData("amenity",  "", true), // 1 node 0 ways
+                new OSMMetaData("building",  "", true)  // 2 nodes 1 ways
+            }
+        );
+
+        protected static ParseRequest miscSubFeatures = new ParseRequest(
+            new List<string>() {
+                "amenity:restaurant", // 1 nodes; 0 ways
+                "craft:jeweller", // 1 nodes; 1 ways
+                "building:retail", // 2 nodes; 0 ways
+            }, ref messages); 
     }
 }
