@@ -64,10 +64,11 @@
     <Compile Include="Components\FindWaysComponent.cs" />
     <Compile Include="Components\LoadAndParseWaysWorker.cs" />
     <Compile Include="Components\LoadAndParseNodesWorker.cs" />
+    <Compile Include="Components\MessagesWrapper.cs" />
     <Compile Include="Components\SelectDefinedFeaturesComponent.cs" />
     <Compile Include="Components\SpecifyArbitraryValuesComponent.cs" />
     <Compile Include="Data\OSMXMLs.cs" />
-    <Compile Include="Data\RequestResult.cs" />
+    <Compile Include="Data\RequestHandler.cs" />
     <Compile Include="Processing\GetRhinoCoordinateSystem.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />

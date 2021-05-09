@@ -8,6 +8,7 @@
     using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
+    using Grasshopper.Kernel.Types;
     using Rhino.Geometry;
 
     /// <summary>The 'work' of a component that conforms to the asynchronous class features provided by WorkerInstance.
@@ -21,8 +22,10 @@
         protected OSMXMLs providedXMLs;
         protected ParseRequest requestedMetaData;
         // Outputs
-        protected RequestHandler foundOSMItems;
+        protected RequestHandler result;
         protected List<string> debugOutput = new List<string>();
+        protected GH_Structure<GH_String> itemTags;
+        protected GH_Structure<GH_String> itemMetaDatas;
 
         public BaseLoadAndParseWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -31,30 +34,43 @@
 
         public override void DoWork(Action<string, double> reportProgress, Action done)
         {
-            // Checking for cancellation
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
-
-            // Extra LatLon coords from XML tag that match the specified feature/subfeature
-            this.foundItems = ParseViaXMLReader.FindByFeatures(this.requestedMetaData, this.providedXMLsRaw);
+            result = new RequestHandler(providedXMLs, requestedMetaData);
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            // Translate OSM nodes to Rhino points
-            this.foundNodes = TranslateToXYManually.NodePointsFromCoords(this.foundItems);
+            // Extract LatLon coords from XML tag that match the specified feature/subfeature
+            ParseViaXMLReader.FindItemsByTag(ref result);
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            // Translate OSM ways to Rhino polylines
-            this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.foundItems);
+            this.MakeGeometryForComponentType();
 
-            // Create output tree path for featues
-            this.foundElementsReport = this.foundItems.ReportFoundFeatures(false);
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            this.MakeTreeForComponentType();
+
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            this.itemTags = result.MakeTreeForItemTags();
+
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            this.itemMetaDatas = result.MakeTreeForItemTags();
+
+            if (this.CancellationToken.IsCancellationRequested)
+               return;
 
             done();
         }
+
+        public abstract void MakeGeometryForComponentType(); // Generate type-specific geometry (e.g. way or node)
+
+        public abstract void MakeTreeForComponentType(); // Generate type-specific tree (e.g. way or node)
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
@@ -74,6 +90,29 @@
             this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw, ref parseMessages);
 
             this.RuntimeMessages.Messages.AddRange(parseMessages.Messages);
+        }
+
+        public abstract void OutputTreeForComponentType(IGH_DataAccess da); // Output type-specific tree (e.g. way or node)
+
+        protected override void WorkerSetData(IGH_DataAccess da)
+        {
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            this.OutputTreeForComponentType(da); // Set component-specific outputs
+
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            da.SetDataTree(1, this.itemTags);
+
+            if (this.CancellationToken.IsCancellationRequested)
+                return;
+
+            da.SetDataTree(2, this.itemMetaDatas);
+
+            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
+            da.SetDataList(3, this.debugOutput);
         }
     }
 }

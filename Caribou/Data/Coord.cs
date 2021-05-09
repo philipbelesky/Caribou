@@ -1,7 +1,7 @@
 ﻿namespace Caribou.Data
 {
     /// <summary>Just a named equivalent to Point for geographic coordinates.</summary>
-    public readonly struct Coord
+    public struct Coord
     {
         public Coord(double x, double y)
         {
@@ -9,9 +9,9 @@
             this.Longitude = y;
         }
 
-        public double Latitude { get; }
+        public double Latitude { get; set; }
 
-        public double Longitude { get; }
+        public double Longitude { get; set; }
 
         public override string ToString() => $"({this.Latitude}, {this.Longitude})";
     }

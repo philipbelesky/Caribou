@@ -7,12 +7,13 @@
     using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
+    using Grasshopper.Kernel.Types;
     using Rhino.Geometry;
 
     /// <summary>Asynchronous task to identify and output all OSM ways as Polylines for a given request.</summary>
     public class LoadAndParseWaysWorker : BaseLoadAndParseWorker
     {
-        private DataTree<Polyline> foundWays;
+        private GH_Structure<GH_Curve> foundWays;
 
         public LoadAndParseWaysWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -21,18 +22,20 @@
 
         public override WorkerInstance Duplicate() => new LoadAndParseWaysWorker(this.Parent);
 
-        protected override void WorkerSetData(IGH_DataAccess da)
+        public override void MakeGeometryForComponentType()
         {
-            if (this.CancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
+            /// Translate OSM ways to Rhino polylines
+            //this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.foundItems);
+        }
 
+        public override void MakeTreeForComponentType()
+        {
+            this.foundWays = new GH_Structure<GH_Curve>();
+        }
+
+        public override void OutputTreeForComponentType(IGH_DataAccess da)
+        {
             da.SetDataTree(0, this.foundWays);
-            da.SetDataTree(1, this.foundOSMItems);
-            da.SetDataTree(2, this.foundElementsReport);
-            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
-            da.SetDataList(3, this.debugOutput);
         }
     }
 }
