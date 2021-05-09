@@ -9,7 +9,9 @@
     using Grasshopper.Kernel.Data;
     using Rhino.Geometry;
 
-    public class LoadAndParseWorker : WorkerInstance
+    /// <summary>The 'work' of a component that conforms to the asynchronous class features provided by WorkerInstance.
+    /// Inherited by the workers that parse for specific geometries and provides their shared methods and parameters.</summary>
+    public abstract class BaseLoadAndParseWorker : WorkerInstance
     {
         private string xmlFileContents;
         private List<string> requestedFeaturesRaw;
@@ -20,7 +22,7 @@
         private DataTree<Polyline> foundWays;
         private DataTree<string> foundElementsReport;
 
-        public LoadAndParseWorker(GH_Component parent)
+        public BaseLoadAndParseWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
         {
         }
@@ -51,8 +53,6 @@
 
             done();
         }
-
-        public override WorkerInstance Duplicate() => new LoadAndParseWorker(this.Parent);
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {

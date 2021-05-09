@@ -8,9 +8,10 @@
     using Caribou.Properties;
     using Grasshopper.Kernel;
 
-    public class SpecifyFeaturesComponent : CaribouComponent
+    /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
+    public class SelectDefinedFeaturesComponent : CaribouComponent
     {
-        public SpecifyFeaturesComponent() : base("Specify features and subfeatures to extract", "Set Features", "TODO", "OSM") { }
+        public SelectDefinedFeaturesComponent() : base("Specify features and subfeatures to extract", "Set Features", "TODO", "OSM") { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {

@@ -8,9 +8,10 @@
     using Caribou.Properties;
     using Grasshopper.Kernel;
 
-    public class SpecifyTagValuesComponent : CaribouComponent
+    /// <summary>Provides affordances for specifying arbitrary key:value pairings to be found.</summary>
+    public class SpecifyArbitraryValuesComponent : CaribouComponent
     {
-        public SpecifyTagValuesComponent() : base("Specify tags and values to extract", "Set Tags", "TODO", "OSM") { }
+        public SpecifyArbitraryValuesComponent() : base("Specify tags and values to extract", "Set Tags", "TODO", "OSM") { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {

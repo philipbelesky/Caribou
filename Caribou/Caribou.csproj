@@ -61,15 +61,18 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
-    <Compile Include="Components\SpecifyFeaturesComponent.cs" />
-    <Compile Include="Components\SpecifyTagValuesComponent.cs" />
+    <Compile Include="Components\FindWaysComponent.cs" />
+    <Compile Include="Components\LoadAndParseWaysWorker.cs" />
+    <Compile Include="Components\LoadAndParseNodesWorker.cs" />
+    <Compile Include="Components\SelectDefinedFeaturesComponent.cs" />
+    <Compile Include="Components\SpecifyArbitraryValuesComponent.cs" />
     <Compile Include="Data\RequestResult.cs" />
     <Compile Include="Processing\GetRhinoCoordinateSystem.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
     <Compile Include="Processing\ParseViaXMLReader.cs" />
-    <Compile Include="Components\LoadAndParseComponent.cs" />
-    <Compile Include="Components\LoadAndParseWorker.cs" />
+    <Compile Include="Components\FindNodesComponent.cs" />
+    <Compile Include="Components\BaseLoadAndParseWorker.cs" />
     <Compile Include="Processing\TranslateToXYManually.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -81,8 +84,8 @@
     <Compile Include="WorkerInstance.cs" />
     <Compile Include="Data\Coord.cs" />
     <Compile Include="Data\FeatureRequest.cs" />
-    <Compile Include="Data\FeatureDefinition.cs" />
-    <Compile Include="Data\OSMFeatures.cs" />
+    <Compile Include="Data\OSMMetaData.cs" />
+    <Compile Include="Data\OSMDefinedFeatures.cs" />
     <Compile Include="Processing\TranslateToXYViaLib.cs" />
   </ItemGroup>
   <ItemGroup>

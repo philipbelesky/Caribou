@@ -1,5 +1,6 @@
 ﻿namespace Caribou.Data
 {
+    /// <summary>Just a named equivalent to Point for geographic coordinates.</summary>
     public readonly struct Coord
     {
         public Coord(double x, double y)

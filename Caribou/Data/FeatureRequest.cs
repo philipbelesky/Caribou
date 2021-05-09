@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>A specific key:value pair represent feature/subfeatures to search for in an OSM file
+    /// Setup as a struct rather than dict for easier use of a specific hardcoded key to mean "all subfeatures"</summary>
     public readonly struct FeatureRequest
     {
-        // A specific key:value pair represent feature/subfeatures to search for in an OSM file
-        // Setup as a struct rather than dict for easier use of a specific hardcoded key to mean "all subfeatures"
         public const string SearchAllKey = "__ALL__"; // magic value; represents finding all subfeatures
 
         public FeatureRequest(string primaryFeature, string subFeature)
