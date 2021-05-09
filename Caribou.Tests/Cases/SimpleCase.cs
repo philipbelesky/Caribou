@@ -16,7 +16,6 @@
             Properties.Resources.SimpleOSM
         }, ref messages);
 
-
         protected static ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
                 new OSMMetaData("craft"), // 2 nodes 2 ways

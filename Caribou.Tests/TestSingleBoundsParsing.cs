@@ -4,39 +4,39 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestBoundsParsing : MelbourneCase
+    public class TestSingleBoundsParsing : MelbourneCase
     {
         private Coord expectedMinBounds = new Coord(-37.8164200, 144.9627400);
         private Coord expectedMaxBounds = new Coord(-37.8089200, 144.9710600);
-        private RequestHandler result = new RequestHandler(OSMXMLs, mainFeatures);
+        private RequestHandler results = new RequestHandler(OSMXMLs, mainFeatures);
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()
         {
-            Caribou.Processing.ParseViaXMLReader.GetBounds(ref result);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results);
             CheckResult();
         }
 
         [TestMethod]
         public void ParseBoundsViaXMLDocument()
         {
-            Caribou.Processing.ParseViaXMLDocument.GetBounds(ref result);
+            Caribou.Processing.ParseViaXMLDocument.GetBounds(ref results);
             CheckResult();
         }
 
         [TestMethod]
         public void ParseBoundsViaLinq()
         {
-            Caribou.Processing.ParseViaLinq.GetBounds(ref result);
+            Caribou.Processing.ParseViaLinq.GetBounds(ref results);
             CheckResult();
         }
 
         private void CheckResult()
         {
-            Assert.AreEqual(expectedMinBounds, result.MinBounds);
-            Assert.AreEqual(expectedMaxBounds, result.MaxBounds);
-            Assert.AreEqual(expectedMinBounds.Latitude, result.MinBounds.Latitude);
-            Assert.AreEqual(expectedMaxBounds.Longitude, result.MaxBounds.Longitude);
+            Assert.AreEqual(expectedMinBounds, results.MinBounds);
+            Assert.AreEqual(expectedMaxBounds, results.MaxBounds);
+            Assert.AreEqual(expectedMinBounds.Latitude, results.MinBounds.Latitude);
+            Assert.AreEqual(expectedMaxBounds.Longitude, results.MaxBounds.Longitude);
         }
     }
 }

@@ -16,7 +16,7 @@
             // When provided with a list of strings it can either be a request to parse multiple files, OR it 
             // could be a single file that is being read per-line. To guess, we check the length of the first item
             // which will either be a whole-file, or a single line
-            if (ghInput.Count > 1 && ghInput[0].Length > 100)
+            if (ghInput.Count > 1 && ghInput[0].Length < 100)
             {
                 // To account for files being provided in per-line mode we just concat them and re-add into a new list 
                 this.ProvidedXMLs = new List<string>() {

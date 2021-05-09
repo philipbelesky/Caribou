@@ -2,7 +2,7 @@
 <osm version="0.6" generator="Overpass API 0.7.56.1004 6cd3eaec">
 <note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
 <meta osm_base="2020-07-23T08:46:02Z"/>
-  <bounds minlat="-37.8164200" minlon="144.9627400" maxlat="-37.8089200" maxlon="144.9710600"/>
+  <bounds minlat="-37.9164200" minlon="144.9627400" maxlat="-37.8089200" maxlon="144.9710600"/>
   <node id="1" lat="-37.8134515" lon="144.9689196" version="1" timestamp="2017-04-15T22:43:13Z" changeset="47826499" uid="4633898" user="monena41">
     <tag k="amenity" v="restaurant"/>
   </node>
