@@ -8,13 +8,13 @@
     using Caribou.Components;
     using Caribou.Data;
     using Caribou.Processing;
+    using Caribou.Tests.Processing;
 
-    public class MelbourneCase
+    public class MelbourneCase : BaseNodeParsingTest
     {
-        protected static MessagesWrapper msgs = new MessagesWrapper();
         protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM
-        }, ref msgs);
+        }, ref messages);
 
         protected static ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
@@ -31,6 +31,6 @@
                 "highway:residential", // 0 nodes; 5 ways
                 "highway:residential", // 0 nodes; 5 ways
                 "building:retail" // // 130 nodes 19 ways
-            }, ref msgs);
+            }, ref messages);
     }
 }

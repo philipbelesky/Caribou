@@ -8,10 +8,10 @@
     using Caribou.Components;
     using Caribou.Data;
     using Caribou.Processing;
+    using Caribou.Tests.Processing;
 
-    public class SimpleCase
+    public class SimpleCase : BaseNodeParsingTest
     {
-        protected static MessagesWrapper messages = new MessagesWrapper();
         protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.SimpleOSM
         }, ref messages);

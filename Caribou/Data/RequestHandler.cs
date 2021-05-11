@@ -27,6 +27,13 @@
         {
             this.XmlCollection = providedXMLs;
             this.requestedMetaData = requestedMetaData;
+
+            this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
+            foreach (OSMMetaData metaData in requestedMetaData.requests)
+            {
+                this.FoundData[metaData] = new List<FoundItem>();
+            }
+            this.FoundItemIds = new List<string>();
         }
 
         public void AddWayIfMatchesRequest(string nodeId, Dictionary<string, string> nodeTags, List<Coord> coords)
@@ -58,10 +65,11 @@
 
         private void AddItem(OSMMetaData match, Dictionary<string, string> nodeTags, List<Coord> coords)
         {
-            FoundData[match].Add(new FoundItem(nodeTags, coords));
+            var newFind = new FoundItem(nodeTags, coords);
+            this.FoundData[match].Add(newFind);
         }
 
-        private List<OSMMetaData> RequestsThatWantItem(string nodeId, Dictionary<string, string> nodeTags)
+        private List<OSMMetaData> RequestsThatWantItem(string nodeId, Dictionary<string, string> tagsOfFoundNode)
         {
             var matches = new List<OSMMetaData>();
 
@@ -74,19 +82,26 @@
                 return matches;
             }
 
-            foreach (var request in this.requestedMetaData.RequestedMetaData)
+            foreach (var request in this.requestedMetaData.requests)
             {
-                if (!nodeTags.ContainsKey(request.Id))
+                var requestedKey = request.k;
+                var requestedValue = request.v;
+              
+                if (requestedKey == null)
                 {
-                    continue;
+                    // If we are only looking for a key, e.g. all <tag k="building">
+                    if (tagsOfFoundNode.ContainsKey(requestedValue))
+                    {
+                        matches.Add(request);
+                    }
                 }
-                else if (request.Key == null)
+                else if (tagsOfFoundNode.ContainsKey(requestedKey.v))
                 {
-                    matches.Add(request);
-                }
-                else if (request.Key.Id == nodeTags[request.Key.Id])
-                {
-                    matches.Add(request);
+                    // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
+                    if (tagsOfFoundNode[requestedKey.v] == requestedValue)
+                    {
+                        matches.Add(request);
+                    }
                 }
             }
             return matches;

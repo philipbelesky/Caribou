@@ -51,6 +51,7 @@
     <Compile Include="Cases\MelbourneCase.cs" />
     <Compile Include="Data\TestMultipleBoundsParsing.cs" />
     <Compile Include="Data\TestSingleBoundsParsing.cs" />
+    <Compile Include="Processing\BaseNodeParsingTest.cs" />
     <Compile Include="Processing\TestInputHandling.cs" />
     <Compile Include="Data\TestLatLonToXY.cs" />
     <Compile Include="Data\TestLatLonViaLibToXY.cs" />

@@ -25,7 +25,7 @@
         {
             input = new List<string>() { "geological" };
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedGeological);
+            Assert.AreEqual(results.requests[0], expectedParsedGeological);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@
         { 
             input = new List<string>() { "amenity:restaurant" };
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(results.requests[0], expectedParsedAmenityRestaraunt);
         }
 
         [TestMethod]
@@ -79,9 +79,9 @@
         private void CheckResult(List<string> input)
         {
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.RequestedMetaData[0], expectedParsedAmenityRestaraunt);
-            Assert.AreEqual(results.RequestedMetaData[1], expectedParsedHighWayResidential);
-            Assert.AreEqual(results.RequestedMetaData[2], expectedParsedWaterway);
+            Assert.AreEqual(results.requests[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(results.requests[1], expectedParsedHighWayResidential);
+            Assert.AreEqual(results.requests[2], expectedParsedWaterway);
         }
     }
 }

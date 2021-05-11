@@ -17,7 +17,7 @@
         // Constructing from Grasshopper data
         public OSMMetaData(string specifiedId, string specifiedKey = null)
         {
-            this.Id = specifiedId;
+            this.v = specifiedId;
             this.IsDefined = false;
 
             // If providing a top-level defined primary feature like "natural" return that object
@@ -26,7 +26,7 @@
                 this.IsDefined = true;
                 this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
                 this.Explanation = OSMDefinedFeatures.Primary[specifiedId].Explanation;
-                this.Key = null;
+                this.k = null;
                 return;
             }
 
@@ -34,37 +34,37 @@
             // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
             if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
             {
-                this.Key = OSMDefinedFeatures.Primary[specifiedKey];
+                this.k = OSMDefinedFeatures.Primary[specifiedKey];
             }
         }
 
         // Constructing from hardcoded data
         public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
-            this.Id = id;
+            this.v = id;
             this.Name = name;
             this.IsDefined = true;
             this.Explanation = explanation;
-            this.Key = key;
+            this.k = key;
         }
 
-        public string Id { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
-        public OSMMetaData Key { get; } // If set, points back to the key this value is assocaited with.
+        public string v { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
+        public OSMMetaData k { get; } // If set, points back to the key this value is assocaited with.
         public bool IsDefined { get; } // Is a pre-defined feature or subfeature (as defined in OSMDefinedFeature)
 
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.Id}:{this.Key}, (defined: {this.IsDefined})";
+        public override string ToString() => $"{this.v}:{this.k}";
 
         public bool IsFeature()
         {
-            return this.IsDefined && this.Key == null;
+            return this.IsDefined && this.k == null;
         }
 
         public bool IsSubFeature()
         {
-            return this.IsDefined && this.Key != null;
+            return this.IsDefined && this.k != null;
         }
 
         public override bool Equals(object obj)
@@ -75,9 +75,21 @@
         public bool Equals(OSMMetaData other)
         {
             return other != null &&
-                   Id == other.Id &&
-                   EqualityComparer<OSMMetaData>.Default.Equals(Key, other.Key) &&
-                   IsDefined == other.IsDefined;
+                   this.v == other.v &&
+                   EqualityComparer<OSMMetaData>.Default.Equals(this.k, other.k);
+        }
+
+        // Need to provide a hash code as we are using this as a dictionary key in RequestHandler
+        public override int GetHashCode()
+        {
+            if (this.k == null)
+            {
+                return this.v.GetHashCode();
+            }
+            else
+            {
+                return this.v.GetHashCode() ^ this.k.GetHashCode();
+            }
         }
     }
 }

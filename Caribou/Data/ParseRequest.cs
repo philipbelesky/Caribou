@@ -11,7 +11,7 @@
     /// </summary>
     public struct ParseRequest
     {
-        public List<OSMMetaData> RequestedMetaData;
+        public List<OSMMetaData> requests;
 
         public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
         {
@@ -37,14 +37,14 @@
                 }
             }
 
-            this.RequestedMetaData = new List<OSMMetaData>();
+            this.requests = new List<OSMMetaData>();
             // Transform the key:value formatted strings into OSM items and assign them
             foreach (string inputString in cleanedGhInput)
             { 
                 var osmItem = ParseItemToOSMMetaData(inputString);
                 if (osmItem != null)
                 {
-                    this.RequestedMetaData.Add(osmItem);
+                    this.requests.Add(osmItem);
                 }
             }
         }
@@ -52,7 +52,7 @@
         // This constructor is mostly just used to enable testing
         public ParseRequest(List<OSMMetaData> prepackagedData)
         {
-            this.RequestedMetaData = prepackagedData;
+            this.requests = prepackagedData;
         }
 
         public static OSMMetaData ParseItemToOSMMetaData(string inputString)
