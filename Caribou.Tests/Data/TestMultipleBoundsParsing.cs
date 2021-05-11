@@ -12,7 +12,7 @@
         private RequestHandler results = new RequestHandler(new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM,
             Properties.Resources.SimpleOSM,
-        }, ref msgs), mainFeatures);
+        }, ref messages), mainFeatures);
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()
