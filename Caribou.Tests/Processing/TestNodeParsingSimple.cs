@@ -38,22 +38,22 @@
         [TestMethod]
         public void ParseNodesGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
 
-            Assert.AreEqual(allCrafts, results.FoundData[craftsData].Count);
-            Assert.AreEqual(allAmenities, results.FoundData[amenitiesData].Count);
-            Assert.AreEqual(allBuildings, results.FoundData[buildingsData].Count);
+            Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData));
+            Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
+            Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData));
         }
 
         [TestMethod]
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
             var firstRestaurantLat = results.FoundData[amenitiesRestaurantsData][0].Coords[0].Latitude;
 
-            Assert.AreEqual(allAmenitiesRestaurants, results.FoundData[amenitiesRestaurantsData].Count);
-            Assert.AreEqual(allCraftJewellers, results.FoundData[craftJewellersData].Count);
-            Assert.AreEqual(allBuildingsRetail, results.FoundData[buildingsRetailData].Count);
+            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
+            Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
             Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurantLat);
         }
 

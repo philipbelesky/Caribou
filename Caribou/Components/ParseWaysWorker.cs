@@ -24,7 +24,7 @@
 
         public override void ExtractCoordsForComponentType()
         {
-            ParseViaXMLReader.FindItemsByTag(ref this.result, "way");
+            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMTypes.Node);
         }
 
         public override void MakeGeometryForComponentType()

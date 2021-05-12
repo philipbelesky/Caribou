@@ -7,7 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestsWayParsingMultiple : MultipleCase
+    public class TestsNodeParsingMultiple : MultipleCase
     {
         const int allCrafts = 3;
         const int allAmenities = 2;
@@ -37,21 +37,21 @@
         [TestMethod]
         public void ParseNodesGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
 
-            Assert.AreEqual(allCrafts, results.FoundData[craftsData].Count);
-            Assert.AreEqual(allAmenities, results.FoundData[amenitiesData].Count);
-            Assert.AreEqual(allBuildings, results.FoundData[buildingsData].Count);
+            Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData)); 
+            Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData)); 
+            Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData)); 
         }
 
         [TestMethod]
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
 
-            Assert.AreEqual(allAmenitiesRestaurants, results.FoundData[amenitiesRestaurantsData].Count);
-            Assert.AreEqual(allCraftJewellers, results.FoundData[craftJewellersData].Count);
-            Assert.AreEqual(allBuildingsRetail, results.FoundData[buildingsRetailData].Count);
+            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
+            Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
         }
 
         //[TestMethod]

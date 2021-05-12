@@ -68,6 +68,7 @@
     <Compile Include="Components\SpecifyFeaturesComponent.cs" />
     <Compile Include="Components\SpecifyArbitraryValuesComponent.cs" />
     <Compile Include="Data\FoundItem.cs" />
+    <Compile Include="Data\OSMGeometryType.cs" />
     <Compile Include="Data\OSMXMLFiles.cs" />
     <Compile Include="Data\RequestHandler.cs" />
     <Compile Include="Processing\GetRhinoCoordinateSystem.cs" />

@@ -40,26 +40,26 @@
         [TestMethod]
         public void ParseNodesGivenKeyViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
 
-            Assert.AreEqual(allAmenities, results.FoundData[amenitiesData].Count);
-            Assert.AreEqual(allHighways, results.FoundData[highwaysData].Count);
-            Assert.AreEqual(allBuildings, results.FoundData[buildingsData].Count);
+            Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
+            Assert.AreEqual(allHighways, CountNodesForMetaData(results, highwaysData));
+            Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData));
         }
 
         [TestMethod]
         public void ParseNodesGivenKeyValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, "node");
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
             var firstRestaurantLat = results.FoundData[amenitiesRestaurantsData].First().Coords.First().Latitude;
             var firstFirstWorshopLon = results.FoundData[amenitiesWorshipData].First().Coords.First().Longitude;
                         
-            Assert.AreEqual(allAmenitiesRestaurants, results.FoundData[amenitiesRestaurantsData].Count);
+            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurantLat);
-            Assert.AreEqual(allAmenitiesWorship, results.FoundData[amenitiesWorshipData].Count);
+            Assert.AreEqual(allAmenitiesWorship, CountNodesForMetaData(results, amenitiesWorshipData));
             Assert.AreEqual(expectedFirstWorshopLon, firstFirstWorshopLon);            
-            Assert.AreEqual(allHighwaysResidential, results.FoundData[highwayResidentialData].Count);
-            Assert.AreEqual(allBuildingsRetail, results.FoundData[buildingsRetailData].Count);
+            Assert.AreEqual(allHighwaysResidential, CountNodesForMetaData(results, highwayResidentialData));
+            Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
         }
 
         //[TestMethod]

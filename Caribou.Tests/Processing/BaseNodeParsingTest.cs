@@ -1,5 +1,6 @@
 ﻿namespace Caribou.Tests.Processing
 {
+    using System.Linq;
     using Caribou.Components;
     using Caribou.Data;
     using Caribou.Processing;
@@ -18,11 +19,25 @@
         protected readonly OSMMetaData amenitiesWorshipData = new OSMMetaData("place_of_worship", "amenity");
         protected readonly OSMMetaData highwayResidentialData = new OSMMetaData("residential", "highway");
 
-        protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, string typeOfFeature)
+        protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, OSMTypes typeOfFeature)
         {
             var results = new RequestHandler(xml, features);
             ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature);
             return results;
+        }
+
+        protected int CountNodesForMetaData(RequestHandler results, OSMMetaData request)
+        {
+            var allResults = results.FoundData[request];
+            var nodeResults = allResults.Where(o => o.Kind == OSMTypes.Node);
+            return nodeResults.Count();
+        }
+
+        protected int CountWaysForMetaData(RequestHandler results, OSMMetaData request)
+        {
+            var allResults = results.FoundData[request];
+            var nodeResults = allResults.Where(o => o.Kind == OSMTypes.Way);
+            return nodeResults.Count();
         }
     }
 }

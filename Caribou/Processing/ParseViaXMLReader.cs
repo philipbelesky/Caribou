@@ -11,7 +11,7 @@
     /// </summary>
     public static class ParseViaXMLReader
     {
-        public static void FindItemsByTag(ref RequestHandler request, string typeToFind)
+        public static void FindItemsByTag(ref RequestHandler request, OSMTypes typeToFind)
         {
             GetBounds(ref request);
 
@@ -19,11 +19,11 @@
             {
                 using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
                 {
-                    if (typeToFind == "way")
+                    if (typeToFind == OSMTypes.Way)
                     {
                         FindWaysInXML(reader, ref request);
                     }
-                    if (typeToFind == "node")
+                    if (typeToFind == OSMTypes.Node)
                     {
                         FindNodesInXML(reader, ref request);
                     }
