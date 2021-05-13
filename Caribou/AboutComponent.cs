@@ -83,6 +83,6 @@
 
         public override Guid ComponentGuid => new Guid("4ccad95b-ec0d-4559-a26f-07dc5dc18a32");
 
-        protected override System.Drawing.Bitmap Icon => Resources.icons_icon_plugin;
+        protected override System.Drawing.Bitmap Icon => Resources.icons_plugin;
     }
 }
