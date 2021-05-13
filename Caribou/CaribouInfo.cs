@@ -9,7 +9,7 @@
     {
         public override string Name => "Caribou";
 
-        public override Bitmap Icon => Resources.icons_icon_plugin;
+        public override Bitmap Icon => Resources.icons_plugin;
 
         // GHB note: if using the provided "About" component this text is output there
         public override string Description => "Fast and resilient OSM data loader";
