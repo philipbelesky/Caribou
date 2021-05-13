@@ -126,8 +126,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons_icon_plugin.png" />
-    <None Include="Resources\icons_icon_test.png" />
+    <None Include="Resources\icons_plugin.png" />
+    <None Include="Resources\icons_ways.png" />
+    <None Include="Resources\icons_nodes.png" />
+    <None Include="Resources\icons_plugin.png" />
+    <None Include="Resources\icons_select.png" />
+    <None Include="Resources\icons_buildings.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
