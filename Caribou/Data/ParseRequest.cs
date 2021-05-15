@@ -67,19 +67,18 @@
                 return null;
             }
 
-            if (inputString.Trim().Split(':').Length > 1)
+            var osmKey = inputString.Trim().Split(':')[0];
+            if (inputString.Trim().Split(':').Length >= 2)
             {
-                // If dealing with a pair, e.g. amenity:restaurant
-                var osmKey = inputString.Trim().Split(':')[0];
                 var osmValue = inputString.Trim().Split(':')[1];
-                return new OSMMetaData(osmValue, osmKey);
+                if (osmValue != "*" && !string.IsNullOrEmpty(osmValue))
+                {
+                    // If dealing with a pair, e.g. amenity:restaurant
+                    return new OSMMetaData(osmValue, osmKey);
+                }
             }
-            else
-            {
-                // If dealing with a top level item, e.g. geological
-                var osmKey = inputString.Trim().Split(':')[0];
-                return new OSMMetaData(osmKey);
-            }
+            // If dealing with a top level item, e.g. geological (or geological: or geological:*)
+            return new OSMMetaData(osmKey);
         }
     }
 }

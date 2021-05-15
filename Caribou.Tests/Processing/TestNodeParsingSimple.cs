@@ -17,6 +17,10 @@
         const int allBuildingsRetail = 2;
         const double expectedFirstRestaurantLat = -37.8134515;
         const double expectedFirstBuildingLon = 144.9658410;
+        const int allNamedThings = 1;
+        const int allWikiRelated = 1;
+        const int allTramRoutes = 0;
+        const int allTramStops = 1;
 
         //[TestMethod]
         //public void ParseNodesGivenKeyViaXMLDocument()
@@ -54,12 +58,28 @@
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
-            var firstRestaurant = results.FoundData[amenitiesRestaurantsData][0].Coords[0];
+            var firstRestaurant = results.FoundData[amenitiesRestaurantsData][0];
 
             Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
             Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
-            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurant.Latitude);
+
+            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurant.Coords[0].Latitude);
+            Assert.AreEqual("restaurant", firstRestaurant.Tags["amenity"]);
+        }
+
+        [TestMethod]
+        public void ParseNodesGivenKeyValueViaXMLReader()
+        {
+            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMTypes.Node);
+
+            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(allNamedThings, CountNodesForMetaData(results, namedThingsData));
+            Assert.AreEqual(allWikiRelated, CountNodesForMetaData(results, wikiRelatedData));
+            Assert.AreEqual(allTramRoutes, CountNodesForMetaData(results, tramRoutesData));
+            Assert.AreEqual(allTramStops, CountNodesForMetaData(results, tramStopsData));
+            Assert.AreEqual("falconry", results.FoundData[namedThingsData][0].Tags["craft"]);
+            Assert.AreEqual("Ye Olde Falcon Store", results.FoundData[namedThingsData][0].Tags["name"]);
         }
 
         //[TestMethod]

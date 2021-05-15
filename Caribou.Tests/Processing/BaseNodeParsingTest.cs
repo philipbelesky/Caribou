@@ -19,6 +19,11 @@
         protected readonly OSMMetaData amenitiesWorshipData = new OSMMetaData("place_of_worship", "amenity");
         protected readonly OSMMetaData highwayResidentialData = new OSMMetaData("residential", "highway");
 
+        protected readonly OSMMetaData namedThingsData = new OSMMetaData("name");
+        protected readonly OSMMetaData wikiRelatedData = new OSMMetaData("wikipedia");
+        protected readonly OSMMetaData tramRoutesData = new OSMMetaData("tram", "route_master");
+        protected readonly OSMMetaData tramStopsData = new OSMMetaData("yes", "tram_stop");
+
         protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, OSMTypes typeOfFeature)
         {
             var results = new RequestHandler(xml, features);

@@ -6,3 +6,16 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6a5919298be744a2bc1018bd9e0ec1c2)](https://www.codacy.com/manual/philipbelesky/Caribou?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=philipbelesky/GrasshopperBootstrap&amp;utm_campaign=Badge_Grade)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Features
+
+- Very fast
+- Calculates asynchronously so Grasshopper does not freeze
+- Outputs are tree-formatted per datatype; allowing for easier downstream filtering and organised baking
+- Allows for querying arbitrary data, not just defined features/subfeatures
+- Parse multiple OSM files simultaneously with de-duplication
+
+## Roadmap
+
+- Specification of features/sub-features along with counts and definitions
+- Smart building height projections
+- Parsing of `<relation>` type data

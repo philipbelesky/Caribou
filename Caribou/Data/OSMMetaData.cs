@@ -20,21 +20,24 @@
             this.v = specifiedId;
             this.IsDefined = false;
 
-            // If providing a top-level defined primary feature like "natural" return that object
             if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
             {
+                // If providing a top-level defined primary feature like "natural" return that object
                 this.IsDefined = true;
                 this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
                 this.Explanation = OSMDefinedFeatures.Primary[specifiedId].Explanation;
                 this.k = null;
-                return;
             }
-
-            // If providing a specific type of information to find/match, e.g. amenity:restaurant
-            // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
-            if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
+            else if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
             {
+                // If providing a specific type of information to find/match, e.g. amenity:restaurant
+                // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
                 this.k = OSMDefinedFeatures.Primary[specifiedKey];
+            }
+            else if (specifiedKey != null)
+            {
+                // If providing arbitrary key:value pairings then create the parent rather than referencing
+                this.k = new OSMMetaData(specifiedKey);
             }
         }
 
@@ -55,7 +58,12 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.v}:{this.k}";
+        public override string ToString() => $"{this.v}:{this.KeyNiceName()}";
+
+        private string KeyNiceName()
+        {
+            return this.k == null ? "*" : this.k.v;
+        }
 
         public bool IsFeature()
         {

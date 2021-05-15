@@ -16,12 +16,17 @@
         const int allAmenitiesRestaurants = 0;
         const int allCraftJewellers = 1;
         const int allBuildingsRetail = 0;
+        const int allNamedThings = 2;
+        const int allWikiRelated = 1;
+        const int allTramRoutes = 1;
+        const int allTramStops = 0;
         // Counting number of nodes per way
         const int ndsInEquitableHouse = 4;
         const int ndsInEquitablePlaza = 3;
         // Comparing nodes within a away
         readonly Coord firstNdForEquitableHouse = new Coord(-37.8154598, 144.9630487);
         readonly Coord secondNdForEquitablePlaza = new Coord(-37.8153878, 144.9632926);
+
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()
@@ -42,31 +47,50 @@
         //    }
 
         [TestMethod]
-        public void ParseWaysGivenKeyViaXMLReader()
+        public void ParseWaysGivenFeatureViaXMLReader()
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Way);
+            var equitableHouse = results.FoundData[buildingsData][0];
 
             Assert.AreEqual(allCrafts, CountWaysForMetaData(results, craftsData));
             Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
             Assert.AreEqual(allBuildings, CountWaysForMetaData(results, buildingsData));
 
-            Assert.AreEqual(ndsInEquitableHouse, results.FoundData[buildingsData][0].Coords.Count());
-            Assert.AreEqual(firstNdForEquitableHouse, results.FoundData[buildingsData][0].Coords[0]);
+            Assert.AreEqual(ndsInEquitableHouse, equitableHouse.Coords.Count());
+            Assert.AreEqual(firstNdForEquitableHouse, equitableHouse.Coords[0]);
+            Assert.AreEqual("yes", equitableHouse.Tags["building"]);
+            Assert.AreEqual("falconry", equitableHouse.Tags["craft"]);
+            Assert.AreEqual("Equitable House", equitableHouse.Tags["name"]);
         }
 
         [TestMethod]
-        public void ParseWaysGivenKeyValueViaXMLReader()
+        public void ParseWaysGivenSubFeatureViaXMLReader()
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
+            var equitablePlaza = results.FoundData[craftJewellersData][0];
 
             Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountWaysForMetaData(results, craftJewellersData));
             Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
 
-            Assert.AreEqual(ndsInEquitablePlaza, results.FoundData[craftJewellersData][0].Coords.Count());
-            Assert.AreEqual(secondNdForEquitablePlaza, results.FoundData[craftJewellersData][0].Coords[1]);
+            Assert.AreEqual(ndsInEquitablePlaza, equitablePlaza.Coords.Count);
+            Assert.AreEqual(secondNdForEquitablePlaza, equitablePlaza.Coords[1]);
+            Assert.AreEqual("jeweller", equitablePlaza.Tags["craft"]);
+            Assert.AreEqual("Equitable Plaza", equitablePlaza.Tags["name"]);
         }
 
+        [TestMethod]
+        public void ParseWaysGivenKeyValueViaXMLReader()
+        {
+            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMTypes.Way);
+
+            Assert.AreEqual(allNamedThings, CountWaysForMetaData(results, namedThingsData));
+            Assert.AreEqual(allWikiRelated, CountWaysForMetaData(results, wikiRelatedData));
+            Assert.AreEqual(allTramRoutes, CountWaysForMetaData(results, tramRoutesData));
+            Assert.AreEqual(allTramStops, CountWaysForMetaData(results, tramStopsData));
+            Assert.AreEqual("falconry", results.FoundData[namedThingsData][0].Tags["craft"]);
+            Assert.AreEqual("Equitable House", results.FoundData[namedThingsData][0].Tags["name"]);
+        }
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyValueViaXMLDocument()
         //    {

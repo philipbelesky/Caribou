@@ -52,7 +52,7 @@
         {
             input = new List<string>() {
                 "amenity:restaurant\nhighway:residential",
-                "waterway"
+                "waterway:*"
             };
             CheckResult(input);
         }
@@ -71,9 +71,25 @@
         {
             input = new List<string>() {
                 "amenity:restaurant,highway:residential",
-                ",waterway"
+                ",waterway:*"
             };
             CheckResult(input);
+        }
+
+        [TestMethod]
+        public void CheckRandomExmaple()
+        {
+            input = new List<string>() {
+                "name:", // 1 nodes; 2 ways
+                "wikipedia", // 1 nodes; 1 way
+                "route_master:tram", // 0 nodes 1 way
+                "tram_stop:yes" // 1 nodes 0 way
+            };
+            results = new ParseRequest(input, ref messages);
+            Assert.AreEqual(results.requests[0], new OSMMetaData("name"));
+            Assert.AreEqual(results.requests[1], new OSMMetaData("wikipedia"));
+            Assert.AreEqual(results.requests[2], new OSMMetaData("tram", "route_master"));
+            Assert.AreEqual(results.requests[3], new OSMMetaData("yes", "tram_stop"));
         }
 
         private void CheckResult(List<string> input)
