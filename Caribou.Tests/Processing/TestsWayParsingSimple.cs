@@ -9,13 +9,19 @@
     [TestClass]
     public class TestsWayParsingSimple : SimpleCase
     {
+        // Counting number of ways per type
         const int allCrafts = 2;
         const int allAmenities = 0;
         const int allBuildings = 1;
-
         const int allAmenitiesRestaurants = 0;
         const int allCraftJewellers = 1;
         const int allBuildingsRetail = 0;
+        // Counting number of nodes per way
+        const int ndsInEquitableHouse = 4;
+        const int ndsInEquitablePlaza = 3;
+        // Comparing nodes within a away
+        readonly Coord firstNdForEquitableHouse = new Coord(-37.8154598, 144.9630487);
+        readonly Coord secondNdForEquitablePlaza = new Coord(-37.8153878, 144.9632926);
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()
@@ -43,6 +49,9 @@
             Assert.AreEqual(allCrafts, CountWaysForMetaData(results, craftsData));
             Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
             Assert.AreEqual(allBuildings, CountWaysForMetaData(results, buildingsData));
+
+            Assert.AreEqual(ndsInEquitableHouse, results.FoundData[buildingsData][0].Coords.Count());
+            Assert.AreEqual(firstNdForEquitableHouse, results.FoundData[buildingsData][0].Coords[0]);
         }
 
         [TestMethod]
@@ -53,6 +62,9 @@
             Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountWaysForMetaData(results, craftJewellersData));
             Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
+
+            Assert.AreEqual(ndsInEquitablePlaza, results.FoundData[craftJewellersData][0].Coords.Count());
+            Assert.AreEqual(secondNdForEquitablePlaza, results.FoundData[craftJewellersData][0].Coords[1]);
         }
 
         //    //[TestMethod]

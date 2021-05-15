@@ -35,6 +35,16 @@
     <nd ref="6"/>
     <nd ref="9"/>
     <tag k="craft" v="jeweller"/>
-    <tag k="name" v="Equitable House"/>
+    <tag k="name" v="Equitable Plaza"/>
   </way>
+  <relation id="9056" version="176" timestamp="2017-04-07T11:56:58Z" changeset="47537174" uid="838520" user="Pizza1016">
+    <member type="relation" ref="6170460" role=""/>
+    <member type="relation" ref="6170459" role=""/>
+    <member type="relation" ref="6305927" role=""/>
+    <member type="relation" ref="6386782" role=""/>
+    <tag k="route_master" v="tram"/>
+    <tag k="type" v="route_master"/>
+    <tag k="wikidata" v="Q6811967"/>
+    <tag k="wikipedia" v="en:Melbourne tram route 70"/>
+  </relation>
 </osm>

@@ -44,7 +44,10 @@
                 var osmItem = ParseItemToOSMMetaData(inputString);
                 if (osmItem != null)
                 {
-                    this.requests.Add(osmItem);
+                    if (!this.requests.Contains(osmItem)) // Prevent duplicates
+                    {
+                        this.requests.Add(osmItem);
+                    }
                 }
             }
         }

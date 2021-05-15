@@ -16,10 +16,11 @@
         const int allAmenitiesWorship = 6;
         const int allHighwaysResidential = 5;
         const int allBuildingsRetail = 19;
-        private double firstAmenityWorshipFirstNodeLat = -37.8164641;
-        private double firstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed
-        private double firstHighwayResidentialFirstNodeLon = 144.9735701;
-        private double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
+        const int firstHighwaysResidentialNodesCount = 42;
+        const double firstAmenityWorshipFirstNodeLat = -37.8164641;
+        const double firstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed
+        const double firstHighwayResidentialFirstNodeLon = 144.9735701;
+        const double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()
@@ -54,19 +55,20 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
 
-            //Assert.AreEqual(allAmenitiesRestaurants, matches.Ways["amenity"]["restaurant"].Count);
-            //Assert.AreEqual(allAmenitiesWorship, matches.Ways["amenity"]["place_of_worship"].Count);
-            //Assert.AreEqual(allHighwaysResidential, matches.Ways["highway"]["residential"].Count);
-            //Assert.AreEqual(allBuildingsRetail, matches.Ways["building"]["retail"].Count);
+            Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(allAmenitiesWorship, CountWaysForMetaData(results, amenitiesWorshipData));
+            Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
+            Assert.AreEqual(allHighwaysResidential, CountWaysForMetaData(results, highwayResidentialData));
 
-            //Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][0].Latitude);
-            //var itemCountA = matches.Ways["amenity"]["place_of_worship"][0].Length;
-            //Assert.AreEqual(firstAmenityWorshipFirstNodeLat, matches.Ways["amenity"]["place_of_worship"][0][itemCountA - 1].Latitude);
-            //Assert.AreEqual(firstAmenityWorksipLastNodeLat, matches.Ways["amenity"]["place_of_worship"][0][itemCountA - 2].Latitude);
-            //Assert.AreEqual(allHighwaysResidential, matches.Ways["highway"]["residential"].Count);
-            //var itemCountB = matches.Ways["highway"]["residential"][0].Length;
-            //Assert.AreEqual(firstHighwayResidentialFirstNodeLon, matches.Ways["highway"]["residential"][0][0].Longitude);
-            //Assert.AreEqual(firstHighwayResidentialLastNodeLon, matches.Ways["highway"]["residential"][0][itemCountB - 1].Longitude);
+            var itemCountA = results.FoundData[amenitiesWorshipData][0].Coords.Count();
+            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[0].Latitude);
+            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 1].Latitude);
+            Assert.AreEqual(firstAmenityWorksipLastNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 2].Latitude);
+            Assert.AreEqual(firstHighwaysResidentialNodesCount, results.FoundData[highwayResidentialData][0].Coords.Count);
+
+            var itemCountB = results.FoundData[highwayResidentialData][0].Coords.Count();
+            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, results.FoundData[highwayResidentialData][0].Coords[0].Longitude);
+            Assert.AreEqual(firstHighwayResidentialLastNodeLon, results.FoundData[highwayResidentialData][0].Coords[itemCountB - 1].Longitude);
         }
 
         //    //[TestMethod]

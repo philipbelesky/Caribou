@@ -46,11 +46,9 @@
                 {
                     if (reader.Name == "node")
                     {
-                        request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
-                        currentNodeMetaData.Clear();
                         currentNodeId = reader.GetAttribute("id");
                         currentLat = Convert.ToDouble(reader.GetAttribute("lat"));
-                        currentLon = Convert.ToDouble(reader.GetAttribute("lon")); 
+                        currentLon = Convert.ToDouble(reader.GetAttribute("lon"));
                     }
                     else if (reader.Name == "tag")
                     {
@@ -58,9 +56,13 @@
                     }
                     else if (reader.Name == "way")
                     {
-                        request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
-                        break;
+                         break;
                     }
+                }
+                else if (reader.Name == "node") // Closing out a node tag
+                {
+                    request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
+                    currentNodeMetaData.Clear();
                 }
             }
         }
@@ -71,6 +73,7 @@
             var currentWayMetaData = new Dictionary<string, string>();
             var currentWayNodes = new List<Coord>();
             var allNodes = new Dictionary<string, Coord>();
+            var inANode = false; // Only needed for ways
 
             while (reader.Read())
             {
@@ -78,31 +81,39 @@
                 {
                     if (reader.Name == "way")
                     {
-                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); // If finished looping over a prior node
                         currentWayId = reader.GetAttribute("id");
-                        currentWayMetaData.Clear();
-                        currentWayNodes.Clear();
+                        inANode = true; // Add tag data
                     }
                     else if (reader.Name == "node")
                     {
                         var nodeId = reader.GetAttribute("id");
                         allNodes[nodeId] = new Coord(
-                            Convert.ToDouble(reader.GetAttribute("lat")), Convert.ToDouble(reader.GetAttribute("lon")));
+                            Convert.ToDouble(reader.GetAttribute("lat")), 
+                            Convert.ToDouble(reader.GetAttribute("lon")));
                     }
-                    else if (reader.Name == "nd")
+                    else if (inANode && reader.Name == "nd")
                     {
-                        var ndId = reader.GetAttribute("id");
+                        var ndId = reader.GetAttribute("ref");
                         currentWayNodes.Add(allNodes[ndId]);
                     }
-                    else if (reader.Name == "tag")
+                    else if (inANode && reader.Name == "tag")
                     {
                         currentWayMetaData[reader.GetAttribute("k")] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "relation")
                     {
-                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
                         break;
                     }
+                }
+                else
+                {
+                    inANode = false;
+                    if (reader.Name == "way") // Closing out a way tag
+                    {
+                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); // If finished looping over a prior node                    currentWayMetaData.Clear();
+                    }
+                    currentWayMetaData.Clear();
+                    currentWayNodes.Clear();
                 }
             }
         }

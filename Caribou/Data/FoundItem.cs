@@ -10,8 +10,8 @@
     {
         public FoundItem(Dictionary<string, string> tags, List<Coord> coords)
         {
-            this.Tags = tags;
-            this.Coords = coords;
+            this.Tags = new Dictionary<string, string>(tags);
+            this.Coords = new List<Coord>(coords);
             if (this.Coords.Count > 1)
             {
                 this.Kind = OSMTypes.Way;

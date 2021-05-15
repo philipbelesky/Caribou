@@ -16,6 +16,7 @@
         const int allCraftJewellers = 1;
         const int allBuildingsRetail = 2;
         const double expectedFirstRestaurantLat = -37.8134515;
+        const double expectedFirstBuildingLon = 144.9658410;
 
         //[TestMethod]
         //public void ParseNodesGivenKeyViaXMLDocument()
@@ -39,22 +40,26 @@
         public void ParseNodesGivenFeatureViaXMLReader()
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
+            var firstBuilding = results.FoundData[buildingsData][0];
 
             Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData));
             Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
             Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData));
+            Assert.AreEqual(expectedFirstBuildingLon, firstBuilding.Coords[0].Longitude);
+            Assert.AreEqual("falconry", firstBuilding.Tags["craft"]);
+            Assert.AreEqual("retail", firstBuilding.Tags["building"]);
         }
 
         [TestMethod]
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
-            var firstRestaurantLat = results.FoundData[amenitiesRestaurantsData][0].Coords[0].Latitude;
+            var firstRestaurant = results.FoundData[amenitiesRestaurantsData][0].Coords[0];
 
             Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
             Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
-            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurantLat);
+            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurant.Latitude);
         }
 
         //[TestMethod]

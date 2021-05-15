@@ -26,12 +26,12 @@
     <nd ref="1"/>
     <nd ref="2"/>
     <nd ref="3"/>
-    <tag k="amenity" v="place_of_worship"/>
+    <tag k="amenity" v="restaurant"/>
   </way>
   <way id="11" version="3" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48">
     <nd ref="4"/>
     <nd ref="5"/>
     <nd ref="3"/>
-    <tag k="amenity" v="place_of_worship"/>
+    <tag k="amenity" v="restaurant"/>
   </way>
 </osm>

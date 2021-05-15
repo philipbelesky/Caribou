@@ -9,12 +9,12 @@
     [TestClass]
     public class TestsWayParsingMultiple : MultipleCase
     {
-        const int allCrafts = 3; // TODO
-        const int allAmenities = 2; // TODO
-        const int allBuildings = 5; // TODO
-        const int allAmenitiesRestaurants = 2; // TODO
-        const int allCraftJewellers = 2; // TODO
-        const int allBuildingsRetail = 2; // TODO
+        const int allCrafts = 0;
+        const int allAmenities = 4;
+        const int allBuildings = 0;
+        const int allAmenitiesRestaurant = 3;
+        const int allCraftJewellers = 0;
+        const int allBuildingsRetail = 0;
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()
@@ -49,7 +49,7 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
 
-            Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(allAmenitiesRestaurant, CountWaysForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountWaysForMetaData(results, craftJewellersData));
             Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
         }

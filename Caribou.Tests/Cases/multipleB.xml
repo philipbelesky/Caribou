@@ -20,6 +20,6 @@
     <nd ref="2"/>
     <nd ref="3"/>
     <nd ref="21"/>
-    <tag k="amenity" v="place_of_worship"/>
+    <tag k="amenity" v="restaurant"/>
   </way>
 </osm>
