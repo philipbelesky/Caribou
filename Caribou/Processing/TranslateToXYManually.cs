@@ -29,24 +29,25 @@
             return geometryResult;
         }
 
-        public static Dictionary<OSMMetaData, List<Polyline>> WayPolylinesFromCoords(RequestHandler result)
+        public static Dictionary<OSMMetaData, List<PolylineCurve>> WayPolylinesFromCoords(RequestHandler result)
         {
-            var geometryResult = new Dictionary<OSMMetaData, List<Polyline>>();
+            var geometryResult = new Dictionary<OSMMetaData, List<PolylineCurve>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
 
             foreach (var entry in result.FoundData)
             {
-                geometryResult[entry.Key] = new List<Polyline>();
+                geometryResult[entry.Key] = new List<PolylineCurve>();
                 foreach (FoundItem item in entry.Value)
                 {
                     var linePoints = new List<Point3d>();
                     foreach (var coord in item.Coords)
                     {
-                       linePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds));
+                        var pt = GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds);
+                        linePoints.Add(pt);
                     }
 
-                    var polyLine = new Polyline(linePoints);
+                    var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
                     geometryResult[entry.Key].Add(polyLine);
                 }
             }

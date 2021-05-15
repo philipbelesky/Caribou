@@ -15,7 +15,7 @@
     public class ParseWaysWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Curve> wayOutputs;
-        private Dictionary<OSMMetaData, List<Polyline>> foundWays;
+        private Dictionary<OSMMetaData, List<PolylineCurve>> foundWays;
 
         public ParseWaysWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -26,7 +26,7 @@
 
         public override void ExtractCoordsForComponentType()
         {
-            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Node);
+            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Way);
         }
 
         public override void MakeGeometryForComponentType()

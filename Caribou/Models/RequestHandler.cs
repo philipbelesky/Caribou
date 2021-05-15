@@ -17,7 +17,7 @@
     public class RequestHandler
     {
         public OSMXMLFiles XmlCollection;
-        private ParseRequest requestedMetaData;
+        public ParseRequest RequestedMetaData;
         public Coord MinBounds;
         public Coord MaxBounds;
 
@@ -27,7 +27,7 @@
         public RequestHandler(OSMXMLFiles providedXMLs, ParseRequest requestedMetaData)
         {
             this.XmlCollection = providedXMLs;
-            this.requestedMetaData = requestedMetaData;
+            this.RequestedMetaData = requestedMetaData;
 
             this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
             foreach (OSMMetaData metaData in requestedMetaData.Requests)
@@ -80,7 +80,7 @@
                 return matches;
             }
 
-            foreach (var request in this.requestedMetaData.Requests)
+            foreach (var request in this.RequestedMetaData.Requests)
             {
                 var requestedKey = request.ParentType;
                 var requestedValue = request.ThisType;

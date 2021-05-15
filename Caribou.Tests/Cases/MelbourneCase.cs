@@ -12,7 +12,7 @@
 
     public class MelbourneCase : BaseNodeParsingTest
     {
-        protected const OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
+        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM
         }, ref messages);
 

@@ -24,8 +24,8 @@
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddCurveParameter("Ways", "W", "Ways; e.g. nodes linked in a linear order via a Polyline", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Tags", "T", "TODO", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Features", "F", "The requested OSM features formatted as a tree structure to match the content", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Report", "R", "The name, count, and description of each feature", GH_ParamAccess.tree);
         }
 
         public override GH_Exposure Exposure => GH_Exposure.primary;
