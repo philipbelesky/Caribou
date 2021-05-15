@@ -20,8 +20,15 @@
                 GH_Path path = new GH_Path(i);
                 var metaData = result.RequestedMetaData.Requests[i];
                 var results = result.FoundData[metaData];
-                foreach (var foundItem in results)
+                for (int j = 0; j < results.Count; j++)
                 {
+                    var subPath = new GH_Path(i, j);
+                    foreach (var tag in results[j].Tags)
+                    {
+                        var tagReadout = new GH_String(tag.Key + "=" + tag.Value);
+                        output.Append(tagReadout, subPath);
+                    }
+
                     // Make a second level of path and add list of key:values
                 }
             }
@@ -36,8 +43,16 @@
             {
                 GH_Path path = new GH_Path(i);
                 var metaData = result.RequestedMetaData.Requests[i];
+                var count = result.FoundData[metaData].Count;
+
+                output.Append(new GH_String(metaData.ToString()), path);
                 output.Append(new GH_String(metaData.Name), path);
-                output.Append(new GH_String("count is"), path);
+                output.Append(new GH_String($"{count} found"), path);
+
+                if (!string.IsNullOrEmpty(metaData.Explanation))
+                {
+                    output.Append(new GH_String($"Defined as: {metaData.Explanation}"), path);
+                }
             }
 
             return output;

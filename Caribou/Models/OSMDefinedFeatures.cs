@@ -21,7 +21,7 @@
             { "barrier", new OSMMetaData("barrier", "Barrier", "A physical structure which blocks or impedes movement. The barrier tag only covers on-the-ground barriers, it does not cover waterway barriers (dams, waterfalls...).") },
             { "boundary", new OSMMetaData("boundary", "Boundary", "Administrative bounds as well as other types of territories, such as a municipal limits, a national park, or a post code.") },
             { "building", new OSMMetaData("building", "Building", "Individual buildings (e.g. a house) or groups of connected buildings (e.g. terrace housing).") },
-            { "craft", new OSMMetaData("craft", "Craft", "Paces that produce or process customised goods, such as bakeries, carpenters, photographers, and wineries. Unlike shops, these are places that produce small amounts of custmised goods on demand and by order.") },
+            { "craft", new OSMMetaData("craft", "Craft", "Places that produce or process customised goods, such as bakeries, carpenters, photographers, and wineries. Unlike shops, these are places that produce small amounts of custmised goods on demand and by order.") },
             { "emergency", new OSMMetaData("emergency", "Emergency", "Emergency facilities and equipment, such as fire hydrants, sirens, lifeguard towers, or ambulance stations.") },
             { "geological", new OSMMetaData("geological", "Geological", "Describes the geological makup of an area or location, such as an outcrop or volcanic vent.") },
             { "healthcare", new OSMMetaData("healthcare", "Healthcare", "Services delivered by a variety of different professionals in different types of facilities.") },
