@@ -31,7 +31,7 @@
         [TestMethod]
         public void TestSingleKeyValue()
         { 
-            input = new List<string>() { "amenity:restaurant" };
+            input = new List<string>() { "amenity=restaurant" };
             results = new ParseRequest(input, ref messages);
             Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
         }
@@ -40,8 +40,8 @@
         public void TestTripleExampleNewLine()
         {
             input = new List<string>() {
-                "amenity:restaurant",
-                "highway:residential",
+                "amenity=restaurant",
+                "highway=residential",
                 "waterway"
             };
             CheckResult(input);
@@ -51,8 +51,8 @@
         public void TestDoubleExampleNewLine()
         {
             input = new List<string>() {
-                "amenity:restaurant\nhighway:residential",
-                "waterway:*"
+                "amenity=restaurant\nhighway=residential",
+                "waterway=*"
             };
             CheckResult(input);
         }
@@ -60,7 +60,7 @@
         public void TestTripleExampleComma()
         {
             input = new List<string>() {
-                "amenity:restaurant,highway:residential,",
+                "amenity=restaurant,highway=residential,",
                 "waterway"
             };
             CheckResult(input);
@@ -70,8 +70,8 @@
         public void TestDoubleExampleComma()
         {
             input = new List<string>() {
-                "amenity:restaurant,highway:residential",
-                ",waterway:*"
+                "amenity=restaurant,highway=residential",
+                ",waterway=*"
             };
             CheckResult(input);
         }
@@ -80,10 +80,10 @@
         public void CheckRandomExmaple()
         {
             input = new List<string>() {
-                "name:", // 1 nodes; 2 ways
+                "name=", // 1 nodes; 2 ways
                 "wikipedia", // 1 nodes; 1 way
-                "route_master:tram", // 0 nodes 1 way
-                "tram_stop:yes" // 1 nodes 0 way
+                "route_master=tram", // 0 nodes 1 way
+                "tram_stop=yes" // 1 nodes 0 way
             };
             results = new ParseRequest(input, ref messages);
             Assert.AreEqual(results.Requests[0], new OSMMetaData("name"));

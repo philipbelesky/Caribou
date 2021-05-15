@@ -12,6 +12,7 @@
     public struct ParseRequest
     {
         public List<OSMMetaData> Requests;
+        const char splitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
 
         public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
         {
@@ -67,10 +68,10 @@
                 return null;
             }
 
-            var osmKey = inputString.Trim().Split(':')[0];
-            if (inputString.Trim().Split(':').Length >= 2)
+            var osmKey = inputString.Trim().Split(splitChar)[0];
+            if (inputString.Trim().Split(splitChar).Length >= 2)
             {
-                var osmValue = inputString.Trim().Split(':')[1];
+                var osmValue = inputString.Trim().Split(splitChar)[1];
                 if (osmValue != "*" && !string.IsNullOrEmpty(osmValue))
                 {
                     // If dealing with a pair, e.g. amenity:restaurant

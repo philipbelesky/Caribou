@@ -26,18 +26,18 @@
 
         protected static ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
-                "amenity:restaurant", // 1 nodes; 0 ways
-                "craft:jeweller", // 1 nodes; 1 ways
-                "building:retail", // 2 nodes; 0 ways
+                "amenity=restaurant", // 1 nodes; 0 ways
+                "craft=jeweller", // 1 nodes; 1 ways
+                "building=retail", // 2 nodes; 0 ways
             }, ref messages);
 
         protected static ParseRequest arbitraryKeyValues = new ParseRequest(
             new List<string>() {
-                "amenity:restaurant", // 1 nodes; 0 ways
-                "name:", // 1 nodes; 2 ways
+                "amenity=restaurant", // 1 nodes; 0 ways
+                "name=", // 1 nodes; 2 ways
                 "wikipedia", // 1 nodes; 1 way
-                "route_master:tram", // 0 nodes 1 way
-                "tram_stop:yes" // 1 nodes 0 way
+                "route_master=tram", // 0 nodes 1 way
+                "tram_stop=yes" // 1 nodes 0 way
             }, ref messages);
     }
 }

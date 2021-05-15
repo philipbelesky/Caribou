@@ -61,6 +61,7 @@
     <Compile Include="AboutComponent.cs" />
     <Compile Include="CaribouComponent.cs" />
     <Compile Include="CaribouInfo.cs" />
+    <Compile Include="Components\BaseFindComponent.cs" />
     <Compile Include="Components\FindWaysComponent.cs" />
     <Compile Include="Components\ParseWaysWorker.cs" />
     <Compile Include="Components\ParseNodesWorker.cs" />

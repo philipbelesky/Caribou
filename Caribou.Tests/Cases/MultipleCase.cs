@@ -28,9 +28,9 @@
 
         protected static ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
-                "amenity:restaurant", // x nodes x ways
-                "craft:jeweller", // x nodes x ways
-                "building:retail", // x nodes x ways
+                "amenity=restaurant", // x nodes x ways
+                "craft=jeweller", // x nodes x ways
+                "building=retail", // x nodes x ways
             }, ref messages); 
     }
 }

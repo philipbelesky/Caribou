@@ -58,7 +58,7 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.ThisType}:{this.KeyNiceName()}";
+        public override string ToString() => $"{this.ThisType}={this.KeyNiceName()}";
 
         private string KeyNiceName()
         {

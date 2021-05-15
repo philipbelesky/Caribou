@@ -26,11 +26,11 @@
 
         protected static ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
-                "amenity:restaurant", // 173 nodes; 0 ways
-                "amenity:place_of_worship", // 2 node; 7 ways
-                "highway:residential", // 0 nodes; 5 ways
-                "highway:residential", // 0 nodes; 5 ways
-                "building:retail" // // 130 nodes 19 ways
+                "amenity=restaurant", // 173 nodes; 0 ways
+                "amenity=place_of_worship", // 2 node; 7 ways
+                "highway=residential", // 0 nodes; 5 ways
+                "highway=residential", // 0 nodes; 5 ways
+                "building=retail" // // 130 nodes 19 ways
             }, ref messages);
     }
 }
