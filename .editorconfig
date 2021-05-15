@@ -3,6 +3,12 @@
 # GrasshopperBootstrap Rules
 # Description: The standard Microsoft reccomended rules with overrides especially relevant to plugin development.
 
+end_of_line = lf
+trim_trailing_whitespace = true
+indent_style = "space"
+indent_size = "4"
+insert_final_newline = true
+
 # Code files
 [*.{cs,vb}]
 
@@ -27,6 +33,7 @@ dotnet_diagnostic.CA1404.severity = warning
 dotnet_diagnostic.CA1405.severity = warning
 dotnet_diagnostic.CA1410.severity = warning
 dotnet_diagnostic.CA1415.severity = warning
+dotnet_diagnostic.CA1815.severity = suggestion
 dotnet_diagnostic.CA1821.severity = warning
 dotnet_diagnostic.CA1900.severity = warning
 dotnet_diagnostic.CA1901.severity = warning

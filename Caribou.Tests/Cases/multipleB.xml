@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API 0.7.56.1004 6cd3eaec">
+<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+<meta osm_base="2020-07-23T08:46:02Z"/>
+  <bounds minlat="-37.9164200" minlon="144.9627400" maxlat="-37.8089200" maxlon="144.9710600"/>
+  <node id="21" lat="-37.8124515" lon="144.9689196" version="1" timestamp="2017-04-15T22:43:13Z" changeset="47826499" uid="4633898" user="monena41">
+    <tag k="amenity" v="restaurant"/>
+  </node>
+  <node id="2" lat="-37.8149890" lon="144.9658410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+    <tag k="craft" v="jeweller"/>
+  </node>
+  <node id="3" lat="-37.8149890" lon="144.9658410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+    <tag k="craft" v="falconry"/>
+    <tag k="building" v="retail"/>
+  </node>
+  <node id="6" lat="-37.8156850" lon="144.9649280" version="8" timestamp="2019-03-27T08:13:08Z" changeset="68576545" uid="9451067" user="b-jazz-bot">
+    <tag k="building" />
+  </node>
+  <way id="9" version="3" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48">
+    <nd ref="2"/>
+    <nd ref="3"/>
+    <nd ref="21"/>
+    <tag k="amenity" v="restaurant"/>
+  </way>
+</osm>

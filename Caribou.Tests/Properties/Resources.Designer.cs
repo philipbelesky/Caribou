@@ -66,12 +66,75 @@ namespace Caribou.Tests.Properties {
         ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
         ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
         ///
-        ///  &lt;bounds minlat=&quot;-37.8164200&quot; minlon=&quot;144.9627400&quot; maxlat=&quot;-37.8089200&quot; maxlon=&quot;144.9710600&quot;/&gt;
+        ///  &lt;bounds minlat=&quot;-37.8164200&quot; minlon=&quot;144.9127400&quot; maxlat=&quot;-37.2164200&quot; maxlon=&quot;144.9710600&quot;/&gt;
         ///  &lt;node id=&quot;4795887585&quot; lat=&quot;-37.8134515&quot; lon=&quot;144.9689196&quot; version=&quot;1&quot; timestamp=&quot;2017-04-15T22:43:13Z&quot; changeset=&quot;47826499&quot; uid=&quot;4633898&quot; user=&quot;monena [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MelbourneOSM {
             get {
                 return ResourceManager.GetString("MelbourneOSM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
+        ///  &lt;bounds minlat=&quot;-37.9064200&quot; minlon=&quot;144.9527400&quot; maxlat=&quot;-37.7989200&quot; maxlon=&quot;144.9610600&quot;/&gt;
+        ///
+        ///&lt;/osm&gt;
+        ///.
+        /// </summary>
+        internal static string MultipleA {
+            get {
+                return ResourceManager.GetString("MultipleA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
+        ///  &lt;bounds minlat=&quot;-37.9164200&quot; minlon=&quot;144.9627400&quot; maxlat=&quot;-37.8089200&quot; maxlon=&quot;144.9710600&quot;/&gt;
+        ///
+        ///&lt;/osm&gt;
+        ///.
+        /// </summary>
+        internal static string MultipleB {
+            get {
+                return ResourceManager.GetString("MultipleB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
+        ///  &lt;bounds minlat=&quot;-37.9264200&quot; minlon=&quot;144.9727400&quot; maxlat=&quot;-37.8189200&quot; maxlon=&quot;144.9810600&quot;/&gt;
+        ///
+        ///&lt;/osm&gt;
+        ///.
+        /// </summary>
+        internal static string MultipleC {
+            get {
+                return ResourceManager.GetString("MultipleC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;osm version=&quot;0.6&quot; generator=&quot;Overpass API 0.7.56.1004 6cd3eaec&quot;&gt;
+        ///&lt;note&gt;The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.&lt;/note&gt;
+        ///&lt;meta osm_base=&quot;2020-07-23T08:46:02Z&quot;/&gt;
+        ///  &lt;bounds minlat=&quot;-37.9164200&quot; minlon=&quot;144.9627400&quot; maxlat=&quot;-37.8089200&quot; maxlon=&quot;144.9710600&quot;/&gt;
+        ///  &lt;node id=&quot;1&quot; lat=&quot;-37.8134515&quot; lon=&quot;144.9689196&quot; version=&quot;1&quot; timestamp=&quot;2017-04-15T22:43:13Z&quot; changeset=&quot;47826499&quot; uid=&quot;4633898&quot; user=&quot;monena41&quot;&gt;
+        ///    &lt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SimpleOSM {
+            get {
+                return ResourceManager.GetString("SimpleOSM", resourceCulture);
             }
         }
     }

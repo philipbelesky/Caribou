@@ -11,11 +11,12 @@
     using Grasshopper.Kernel;
     using Timer = System.Timers.Timer;
 
+    /// <summary>This is a base class that can be used by all of a plugin's components to do calculations asynchronously.</summary>
     public abstract class CaribouAsyncComponent : CaribouComponent
     {
-        // This is a base class that can be used by all of a plugin's components to do calculations asynchronously
         // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
         // This implementation is a near-direct copy of that published in [this repository](https://github.com/specklesystems/GrasshopperAsyncComponent/)
+
         public ConcurrentDictionary<string, double> ProgressReports;
         public List<WorkerInstance> Workers;
         public readonly List<CancellationTokenSource> CancellationSources;
@@ -74,7 +75,7 @@
         /// <summary>
         /// Optional: if you have opinions on how the default system task scheduler should treat your workers, set it here.
         /// </summary>
-        public TaskCreationOptions? TaskCreationOptions { get; set; } = null;
+        public TaskCreationOptions? TaskCreationOptions { get; set; }
 
         public virtual void DisplayProgress(object sender, System.Timers.ElapsedEventArgs e)
         {

@@ -8,16 +8,17 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using Caribou.Processing;
+    using Caribou.Data;
 
     public class ChicagoBenchmarks
     {
         // These are benchmarks for a large XML case (100mbs)
 
         private string chicagoFile = Properties.Resources.ChicagoOSM;
-        private DataRequestResult[] features = new DataRequestResult[]
+        private List<ParseRequest> features = new List<ParseRequest>()
         {
-            new DataRequestResult("amenity", ""), new DataRequestResult("highway",  ""),
-            new DataRequestResult("amenity", "restaurant"), new DataRequestResult("highway",  "residential")
+            new ParseRequest("amenity", ""), new ParseRequest("highway",  ""),
+            new ParseRequest("amenity", "restaurant"), new ParseRequest("highway",  "residential")
         };
 
         public ChicagoBenchmarks()
@@ -29,7 +30,7 @@
         {
             var result = Caribou.Processing.ParseViaXMLReader.FindByFeatures(features, chicagoFile);
         }
-        
+
         [Benchmark]
         public void TestParseViaXMLDocument()
         {

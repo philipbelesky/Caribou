@@ -63,9 +63,9 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons_icon_plugin {
+        internal static System.Drawing.Bitmap icons_buildings {
             get {
-                object obj = ResourceManager.GetObject("icons_icon_plugin", resourceCulture);
+                object obj = ResourceManager.GetObject("icons_buildings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,39 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons_icon_test {
+        internal static System.Drawing.Bitmap icons_nodes {
             get {
-                object obj = ResourceManager.GetObject("icons_icon_test", resourceCulture);
+                object obj = ResourceManager.GetObject("icons_nodes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons_plugin {
+            get {
+                object obj = ResourceManager.GetObject("icons_plugin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons_select {
+            get {
+                object obj = ResourceManager.GetObject("icons_select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons_ways {
+            get {
+                object obj = ResourceManager.GetObject("icons_ways", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

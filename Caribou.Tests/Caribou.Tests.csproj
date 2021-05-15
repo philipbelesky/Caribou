@@ -47,10 +47,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cases\MultipleCase.cs" />
+    <Compile Include="Cases\SimpleCase.cs" />
     <Compile Include="Cases\MelbourneCase.cs" />
-    <Compile Include="TestBoundsParsing.cs" />
-    <Compile Include="TestNodeParsing.cs" />
-    <Compile Include="TestsWayParsing.cs" />
+    <Compile Include="Models\TestMultipleBoundsParsing.cs" />
+    <Compile Include="Models\TestSingleBoundsParsing.cs" />
+    <Compile Include="Processing\BaseNodeParsingTest.cs" />
+    <Compile Include="Processing\TestInputHandling.cs" />
+    <Compile Include="Models\TestLatLonToXY.cs" />
+    <Compile Include="Models\TestLatLonViaLibToXY.cs" />
+    <Compile Include="Processing\TestNodeParsingSimple.cs" />
+    <Compile Include="Processing\TestNodeParsingLarge.cs" />
+    <Compile Include="Processing\TestNodeParsingMultiple.cs" />
+    <Compile Include="Processing\TestWayParsingMultiple.cs" />
+    <Compile Include="Processing\TestWayParsingSimple.cs" />
+    <Compile Include="Processing\TestWayParsingLarge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,7 +95,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Cases\melbourne.osm.xml" />
+    <None Include="Cases\melbourne.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cases\simple.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cases\multipleA.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cases\multipleB.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cases\multipleC.xml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
