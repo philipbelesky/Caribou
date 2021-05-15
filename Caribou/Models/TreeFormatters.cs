@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -39,6 +40,8 @@
         public static GH_Structure<GH_String> MakeTreeForMetaDataReport(RequestHandler result)
         {
             var output = new GH_Structure<GH_String>();
+            var tInfo = CultureInfo.CurrentCulture.TextInfo;
+
             for (int i = 0; i < result.RequestedMetaData.Requests.Count; i++)
             {
                 GH_Path path = new GH_Path(i);
@@ -46,8 +49,16 @@
                 var count = result.FoundData[metaData].Count;
 
                 output.Append(new GH_String(metaData.ToString()), path);
-                output.Append(new GH_String(metaData.Name), path);
                 output.Append(new GH_String($"{count} found"), path);
+                output.Append(new GH_String(tInfo.ToTitleCase(metaData.Name)), path);
+                if (metaData.ParentType != null)
+                {
+                    output.Append(new GH_String(tInfo.ToTitleCase(metaData.ParentType.Name)), path);
+                }
+                else
+                {
+                    output.Append(new GH_String(""), path);
+                }
 
                 if (!string.IsNullOrEmpty(metaData.Explanation))
                 {

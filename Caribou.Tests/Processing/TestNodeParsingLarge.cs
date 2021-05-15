@@ -62,6 +62,20 @@
             Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
         }
 
+        [TestMethod]
+        public void ParseNodesGivenDoubleKeyViaXMLReader()
+        {
+            var query = new OSMMetaData("Swanston Street", "addr:street");
+            var test = new ParseRequest(new List<OSMMetaData>() { query });
+            var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
+            Assert.AreEqual(80, CountNodesForMetaData(results, query));
+
+            var rawQuery = new List<string>() { "addr:street=Swanston Street" };
+            test = new ParseRequest(rawQuery, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
+            Assert.AreEqual(80, CountNodesForMetaData(results, query));
+        }
+
         //[TestMethod]
         //public void ParseNodesGivenKeyValueViaXMLDocument()
         //{

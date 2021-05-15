@@ -82,6 +82,25 @@
             Assert.AreEqual("Ye Olde Falcon Store", results.FoundData[namedThingsData][0].Tags["name"]);
         }
 
+        [TestMethod]
+        public void ParseNodesGivenDoubleKeyViaXMLReader()
+        {
+            var queryA = new OSMMetaData("Swanston Street", "addr:street");
+            var test = new ParseRequest(new List<OSMMetaData>() { queryA });
+            var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
+            Assert.AreEqual(2, CountNodesForMetaData(results, queryA));
+
+            var queryB = new List<string>() { "addr:street=Swanston Street" };
+            test = new ParseRequest(queryB, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
+            Assert.AreEqual(2, CountNodesForMetaData(results, queryA));
+
+            var queryC = new List<string>() { "addr:street=swanston street" };
+            test = new ParseRequest(queryC, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
+            Assert.AreEqual(2, CountNodesForMetaData(results, queryA));
+        }
+
         //[TestMethod]
         //public void ParseNodesGivenKeyValueViaXMLDocument()
         //{

@@ -71,6 +71,20 @@
             Assert.AreEqual(firstHighwayResidentialLastNodeLon, results.FoundData[highwayResidentialData][0].Coords[itemCountB - 1].Longitude);
         }
 
+        [TestMethod]
+        public void ParseWaysGivenDoubleKeyViaXMLReader()
+        {
+            var query = new OSMMetaData("Swanston Street", "addr:street");
+            var test = new ParseRequest(new List<OSMMetaData>() { query });
+            var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
+            Assert.AreEqual(2, CountWaysForMetaData(results, query));
+
+            var rawQuery = new List<string>() { "addr:street=Swanston Street" };
+            test = new ParseRequest(rawQuery, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
+            Assert.AreEqual(2, CountWaysForMetaData(results, query));
+        }
+
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyValueViaXMLDocument()
         //    {

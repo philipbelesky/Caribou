@@ -52,7 +52,7 @@
                     }
                     else if (reader.Name == "tag")
                     {
-                        currentNodeMetaData[reader.GetAttribute("k")] = reader.GetAttribute("v");
+                        currentNodeMetaData[reader.GetAttribute("k").ToLower()] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "way")
                     {
@@ -98,7 +98,7 @@
                     }
                     else if (inANode && reader.Name == "tag")
                     {
-                        currentWayMetaData[reader.GetAttribute("k")] = reader.GetAttribute("v");
+                        currentWayMetaData[reader.GetAttribute("k").ToLower()] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "relation")
                     {

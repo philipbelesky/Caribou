@@ -91,6 +91,26 @@
             Assert.AreEqual("falconry", results.FoundData[namedThingsData][0].Tags["craft"]);
             Assert.AreEqual("Equitable House", results.FoundData[namedThingsData][0].Tags["name"]);
         }
+
+        [TestMethod]
+        public void ParseWaysGivenDoubleKeyViaXMLReader()
+        {
+            var queryA = new OSMMetaData("Swanston Street", "addr:street");
+            var test = new ParseRequest(new List<OSMMetaData>() { queryA });
+            var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
+            Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
+
+            var queryB = new List<string>() { "addr:street=Swanston Street" };
+            test = new ParseRequest(queryB, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
+            Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
+
+            var queryC = new List<string>() { "addr:street=swanston street" };
+            test = new ParseRequest(queryC, ref messages);
+            results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
+            Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
+        }
+
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyValueViaXMLDocument()
         //    {

@@ -95,8 +95,10 @@
                 }
                 else if (tagsOfFoundNode.ContainsKey(requestedKey.ThisType))
                 {
+                    var testValue = tagsOfFoundNode[requestedKey.ThisType];
                     // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
-                    if (tagsOfFoundNode[requestedKey.ThisType] == requestedValue)
+                    // We don't care about case for matching values, e.g. "Swanston St" vs "swanston st"
+                    if (testValue != null && testValue.ToLower() == requestedValue.ToLower())
                     {
                         matches.Add(request);
                     }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -17,7 +18,7 @@
         // Constructing from Grasshopper data
         public OSMMetaData(string specifiedId, string specifiedKey = null)
         {
-            this.ThisType = specifiedId;
+            this.ThisType = specifiedId.ToLower();
             this.IsDefined = false;
 
             if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
@@ -39,6 +40,11 @@
                 // If providing arbitrary key:value pairings then create the parent rather than referencing
                 this.ParentType = new OSMMetaData(specifiedKey);
             }
+
+            if (string.IsNullOrEmpty(this.Name)) // Try and make a nice name for layer bakes, etc
+            {
+                this.Name = specifiedId.Replace("_", " ");
+            }
         }
 
         // Constructing from hardcoded data
@@ -58,7 +64,17 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.ThisType}={this.KeyNiceName()}";
+        public override string ToString() => this.ParentType == null ? this.SingleSearchNiceName() : this.MultiSearchNiceName();
+
+        private string SingleSearchNiceName()
+        {
+            return $"{this.ThisType}=*";
+        }
+
+        private string MultiSearchNiceName()
+        {
+            return $"{this.KeyNiceName()}={this.ThisType}";
+        }
 
         private string KeyNiceName()
         {

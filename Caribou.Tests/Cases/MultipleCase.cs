@@ -21,7 +21,7 @@
         protected static ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
                 new OSMMetaData("craft"), // x nodes x ways
-                new OSMMetaData("amenity"), // x nodes x ways
+                new OSMMetaData("Amenity"), // x nodes x ways
                 new OSMMetaData("building")  // x nodes x ways
             }
         );
@@ -29,7 +29,7 @@
         protected static ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
                 "amenity=restaurant", // x nodes x ways
-                "craft=jeweller", // x nodes x ways
+                "Craft=JEWELLER", // x nodes x ways
                 "building=retail", // x nodes x ways
             }, ref messages); 
     }
