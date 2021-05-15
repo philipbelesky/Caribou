@@ -7,7 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestsWayParsingSimple : SimpleCase
+    public class TestWayParsingSimple : SimpleCase
     {
         // Counting number of ways per type
         const int allCrafts = 2;

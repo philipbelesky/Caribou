@@ -7,7 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestsWayParsingLarge : MelbourneCase
+    public class TestWayParsingLarge : MelbourneCase
     {
         const int allHighways = 612;
         const int allAmenities = 45;

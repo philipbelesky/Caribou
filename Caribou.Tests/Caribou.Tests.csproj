@@ -58,10 +58,10 @@
     <Compile Include="Data\TestLatLonViaLibToXY.cs" />
     <Compile Include="Processing\TestNodeParsingSimple.cs" />
     <Compile Include="Processing\TestNodeParsingLarge.cs" />
-    <Compile Include="Processing\TestsNodeParsingMultiple.cs" />
-    <Compile Include="Processing\TestsWayParsingMultiple.cs" />
-    <Compile Include="Processing\TestsWayParsingSimple.cs" />
-    <Compile Include="Processing\TestsWayParsingLarge.cs" />
+    <Compile Include="Processing\TestNodeParsingMultiple.cs" />
+    <Compile Include="Processing\TestWayParsingMultiple.cs" />
+    <Compile Include="Processing\TestWayParsingSimple.cs" />
+    <Compile Include="Processing\TestWayParsingLarge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

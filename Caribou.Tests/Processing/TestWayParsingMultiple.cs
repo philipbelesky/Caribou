@@ -7,7 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestsWayParsingMultiple : MultipleCase
+    public class TestWayParsingMultiple : MultipleCase
     {
         const int allCrafts = 0;
         const int allAmenities = 4;

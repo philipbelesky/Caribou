@@ -67,10 +67,10 @@
     <Compile Include="Components\MessagesWrapper.cs" />
     <Compile Include="Components\SpecifyFeaturesComponent.cs" />
     <Compile Include="Components\SpecifyArbitraryValuesComponent.cs" />
-    <Compile Include="Data\FoundItem.cs" />
-    <Compile Include="Data\OSMGeometryType.cs" />
-    <Compile Include="Data\OSMXMLFiles.cs" />
-    <Compile Include="Data\RequestHandler.cs" />
+    <Compile Include="Models\FoundItem.cs" />
+    <Compile Include="Models\OSMGeometryType.cs" />
+    <Compile Include="Models\OSMXMLFiles.cs" />
+    <Compile Include="Models\RequestHandler.cs" />
     <Compile Include="Processing\GetRhinoCoordinateSystem.cs" />
     <Compile Include="Processing\ParseViaLinq.cs" />
     <Compile Include="Processing\ParseViaXMLDocument.cs" />
@@ -86,10 +86,10 @@
     </Compile>
     <Compile Include="CaribouAsyncComponent.cs" />
     <Compile Include="WorkerInstance.cs" />
-    <Compile Include="Data\Coord.cs" />
-    <Compile Include="Data\ParseRequest.cs" />
-    <Compile Include="Data\OSMMetaData.cs" />
-    <Compile Include="Data\OSMDefinedFeatures.cs" />
+    <Compile Include="Models\Coord.cs" />
+    <Compile Include="Models\ParseRequest.cs" />
+    <Compile Include="Models\OSMMetaData.cs" />
+    <Compile Include="Models\OSMDefinedFeatures.cs" />
     <Compile Include="Processing\TranslateToXYViaLib.cs" />
   </ItemGroup>
   <ItemGroup>
