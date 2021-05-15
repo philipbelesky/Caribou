@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using Caribou.Data;
+    using Caribou.Models;
     using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
@@ -13,7 +14,8 @@
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
     public class ParseNodesWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Point> foundNodes;
+        private GH_Structure<GH_Point> nodeOutputs;
+        private Dictionary<OSMMetaData, List<Point3d>> foundNodes;
 
         public ParseNodesWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -29,18 +31,18 @@
 
         public override void MakeGeometryForComponentType()
         {
-            //// Translate OSM nodes to Rhino points
-            //this.foundNodes = TranslateToXYManually.NodePointsFromCoords(this.foundItems);
+            // Translate OSM nodes to Rhino points
+            this.foundNodes = TranslateToXYManually.NodePointsFromCoords(this.result);
         }
 
-        public override void MakeTreeForComponentType()
+        public override void GetTreeForComponentType()
         {
-            this.foundNodes = new GH_Structure<GH_Point>();
+            this.nodeOutputs = TreeFormatters.MakeTreeForNodes(this.foundNodes);
         }
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            da.SetDataTree(0, this.foundNodes);
+            da.SetDataTree(0, this.nodeOutputs);
         }
     }
 }

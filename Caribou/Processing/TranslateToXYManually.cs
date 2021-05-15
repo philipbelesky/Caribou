@@ -10,86 +10,54 @@
 
     public static class TranslateToXYManually
     {
-        //public static DataTree<Point3d> NodePointsFromCoords(RequestHandler result)
-        //{
-        //    var results = new DataTree<Point3d>();
-        //    var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
-        //    Coord lengthPerDegree = GetDegreesPerAxis(result.minBounds, result.maxBounds, unitScale);
+        public static Dictionary<OSMMetaData, List<Point3d>> NodePointsFromCoords(RequestHandler result)
+        {
+            var geometryResult = new Dictionary<OSMMetaData, List<Point3d>>();
+            var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
+            Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
 
-        //    var i = 0;
-        //    foreach (var featureType in result.Nodes.Keys)
-        //    {
-        //        var j = 0;
-        //        foreach (var subfeatureType in result.Nodes[featureType].Keys)
-        //        {
-        //            if (subfeatureType == ParseRequest.SearchAllKey)
-        //            {
-        //                continue;
-        //            }
+            foreach (var entry in result.FoundData)
+            {
+                geometryResult[entry.Key] = new List<Point3d>();
+                foreach (FoundItem item in entry.Value)
+                {
+                    var pt = GetPointFromLatLong(item.Coords[0], lengthPerDegree, result.MinBounds);
+                    geometryResult[entry.Key].Add(pt);
+                }
+            }
 
-        //            GH_Path subfeaturePath = new GH_Path(i, j);
-        //            results.EnsurePath(subfeaturePath);
-        //            j++;
+            return geometryResult;
+        }
 
-        //            foreach (var coord in result.Nodes[featureType][subfeatureType])
-        //            {
-        //                var pt = GetPointFromLatLong(coord, lengthPerDegree, result.minBounds);
-        //                results.Add(pt, subfeaturePath);
-        //            }
-        //        }
+        public static Dictionary<OSMMetaData, List<Polyline>> WayPolylinesFromCoords(RequestHandler result)
+        {
+            var geometryResult = new Dictionary<OSMMetaData, List<Polyline>>();
+            var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
+            Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
+            
+            foreach (var entry in result.FoundData)
+            {
+                geometryResult[entry.Key] = new List<Polyline>();
+                foreach (FoundItem item in entry.Value)
+                {
+                    var linePoints = new List<Point3d>();
+                    foreach (var coord in item.Coords)
+                    {
+                       linePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds));
+                    }
 
-        //        i++;
-        //    }
+                    var polyLine = new Polyline(linePoints);
+                    geometryResult[entry.Key].Add(polyLine);
+                }
+            }
 
-        //    return results;
-        //}
+            return geometryResult;
+        }
 
-        //public static DataTree<Polyline> WayPolylinesFromCoords(RequestHandler foundItems)
-        //{
-        //    List<Point3d> linePoints;
-        //    var results = new DataTree<Polyline>();
-        //    var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem);
-        //    Coord lengthPerDegree = GetDegreesPerAxis(foundItems.minBounds, foundItems.maxBounds, unitScale);
-
-        //    var i = 0;
-        //    foreach (var featureType in foundItems.Ways.Keys)
-        //    {
-        //        var j = 0;
-        //        foreach (var subfeatureType in foundItems.Ways[featureType].Keys)
-        //        {
-        //            if (subfeatureType == ParseRequest.SearchAllKey)
-        //            {
-        //                continue;
-        //            }
-
-        //            GH_Path subfeaturePath = new GH_Path(i, j);
-        //            results.EnsurePath(subfeaturePath);
-        //            j++;
-
-        //            foreach (var wayCoords in foundItems.Ways[featureType][subfeatureType])
-        //            {
-        //                linePoints = new List<Point3d>();
-        //                foreach (var coord in wayCoords)
-        //                {
-        //                    linePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, foundItems.minBounds));
-        //                }
-
-        //                var crv = new Polyline(linePoints);
-        //                results.Add(crv, subfeaturePath);
-        //            }
-        //        }
-
-        //        i++;
-        //    }
-
-        //    return results;
-        //}
-
+        // Thanks to Elk for this code!
         public static Coord GetDegreesPerAxis(Coord min, Coord max, double unitScale)
         {
-            // Thanks to Elk for this code!
             double meanEarthRadius = 6371000;
-
             // Get the median latitude value for evaluating the earth's radius at the location
             double averageLat = min.Latitude + ((max.Latitude - min.Latitude) / 2);
             double yLenPerDegree = ((Math.PI * meanEarthRadius) / 180) * unitScale;

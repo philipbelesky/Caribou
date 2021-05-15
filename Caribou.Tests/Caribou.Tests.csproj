@@ -50,12 +50,12 @@
     <Compile Include="Cases\MultipleCase.cs" />
     <Compile Include="Cases\SimpleCase.cs" />
     <Compile Include="Cases\MelbourneCase.cs" />
-    <Compile Include="Data\TestMultipleBoundsParsing.cs" />
-    <Compile Include="Data\TestSingleBoundsParsing.cs" />
+    <Compile Include="Models\TestMultipleBoundsParsing.cs" />
+    <Compile Include="Models\TestSingleBoundsParsing.cs" />
     <Compile Include="Processing\BaseNodeParsingTest.cs" />
     <Compile Include="Processing\TestInputHandling.cs" />
-    <Compile Include="Data\TestLatLonToXY.cs" />
-    <Compile Include="Data\TestLatLonViaLibToXY.cs" />
+    <Compile Include="Models\TestLatLonToXY.cs" />
+    <Compile Include="Models\TestLatLonViaLibToXY.cs" />
     <Compile Include="Processing\TestNodeParsingSimple.cs" />
     <Compile Include="Processing\TestNodeParsingLarge.cs" />
     <Compile Include="Processing\TestNodeParsingMultiple.cs" />

@@ -67,6 +67,7 @@
     <Compile Include="Components\MessagesWrapper.cs" />
     <Compile Include="Components\SpecifyFeaturesComponent.cs" />
     <Compile Include="Components\SpecifyArbitraryValuesComponent.cs" />
+    <Compile Include="Models\TreeFormatters.cs" />
     <Compile Include="Models\FoundItem.cs" />
     <Compile Include="Models\OSMGeometryType.cs" />
     <Compile Include="Models\OSMXMLFiles.cs" />

@@ -5,12 +5,13 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Caribou.Models;
     using Grasshopper;
     using Grasshopper.Kernel.Data;
     using Grasshopper.Kernel.Types;
 
     /// <summary>
-    /// A datatype and series of methods that each type of component uses to structure it's requested metadata and its returned data
+    /// A datatype and series of methods that each type of component uses to structure its requested metadata and its returned data
     /// Basically provides a ton of shared logic independent of Way/Node requested types
     /// </summary>
     public class RequestHandler
@@ -107,17 +108,16 @@
             return matches;
         }
 
-        public GH_Structure<GH_String> MakeTreeForItemTags()
+        public GH_Structure<GH_String> GetTreeForItemTags()
         {
             // TODO
-            return new GH_Structure<GH_String>();
+            return TreeFormatters.MakeTreeForItemTags(this);
         }
 
-        public GH_Structure<GH_String> MakeTreeForMetaDataReport()
+        public GH_Structure<GH_String> GetTreeForMetaDataReport()
         {
             // TODO
-            return new GH_Structure<GH_String>();
+            return TreeFormatters.MakeTreeForMetaDataReport(this);
         }
-
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using Caribou.Data;
+    using Caribou.Models;
     using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
@@ -13,7 +14,8 @@
     /// <summary>Asynchronous task to identify and output all OSM ways as Polylines for a given request.</summary>
     public class ParseWaysWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Curve> foundWays;
+        private GH_Structure<GH_Curve> wayOutputs;
+        private Dictionary<OSMMetaData, List<Polyline>> foundWays;
 
         public ParseWaysWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -29,18 +31,18 @@
 
         public override void MakeGeometryForComponentType()
         {
-            /// Translate OSM ways to Rhino polylines
-            //this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.foundItems);
+            // Translate OSM ways to Rhino polylines
+            this.foundWays = TranslateToXYManually.WayPolylinesFromCoords(this.result);
         }
 
-        public override void MakeTreeForComponentType()
+        public override void GetTreeForComponentType()
         {
-            this.foundWays = new GH_Structure<GH_Curve>();
+            this.wayOutputs = TreeFormatters.MakeTreeForWays(this.foundWays);
         }
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            da.SetDataTree(0, this.foundWays);
+            da.SetDataTree(0, this.wayOutputs);
         }
     }
 }

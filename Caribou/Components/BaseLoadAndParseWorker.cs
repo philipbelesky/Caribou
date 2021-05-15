@@ -41,27 +41,27 @@
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.ExtractCoordsForComponentType();
+            this.ExtractCoordsForComponentType(); // Parse XML for lat/lon data
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.MakeGeometryForComponentType();
+            this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.MakeTreeForComponentType();
+            this.GetTreeForComponentType(); // Form tree structure for Rhino geo
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.itemTags = result.MakeTreeForItemTags();
+            this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.itemMetaDatas = result.MakeTreeForItemTags();
+            this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
 
             if (this.CancellationToken.IsCancellationRequested)
                return;
@@ -76,7 +76,7 @@
         public abstract void MakeGeometryForComponentType();
 
         // Generate type-specific tree (e.g. way or node)
-        public abstract void MakeTreeForComponentType();
+        public abstract void GetTreeForComponentType();
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
