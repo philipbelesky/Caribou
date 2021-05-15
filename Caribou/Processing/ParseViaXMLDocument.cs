@@ -9,7 +9,7 @@
     {
         public static void FindItemsByTag(ref RequestHandler request)
         {
-            GetBounds(ref request); 
+            GetBounds(ref request);
 
             //var matches = new RequestHandler(featuresSpecified); // Output
             //var matchAllKey = ParseRequest.SearchAllKey;

@@ -43,7 +43,7 @@
         [TestMethod]
         public void ParseWaysGivenKeyViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Way);
 
             Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
             Assert.AreEqual(allHighways, CountWaysForMetaData(results, highwaysData));
@@ -53,20 +53,20 @@
         [TestMethod]
         public void ParseWaysGivenKeyValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Way);
 
             Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allAmenitiesWorship, CountWaysForMetaData(results, amenitiesWorshipData));
             Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
             Assert.AreEqual(allHighwaysResidential, CountWaysForMetaData(results, highwayResidentialData));
 
-            var itemCountA = results.FoundData[amenitiesWorshipData][0].Coords.Count();
+            var itemCountA = results.FoundData[amenitiesWorshipData][0].Coords.Count;
             Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[0].Latitude);
             Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 1].Latitude);
             Assert.AreEqual(firstAmenityWorksipLastNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 2].Latitude);
             Assert.AreEqual(firstHighwaysResidentialNodesCount, results.FoundData[highwayResidentialData][0].Coords.Count);
 
-            var itemCountB = results.FoundData[highwayResidentialData][0].Coords.Count();
+            var itemCountB = results.FoundData[highwayResidentialData][0].Coords.Count;
             Assert.AreEqual(firstHighwayResidentialFirstNodeLon, results.FoundData[highwayResidentialData][0].Coords[0].Longitude);
             Assert.AreEqual(firstHighwayResidentialLastNodeLon, results.FoundData[highwayResidentialData][0].Coords[itemCountB - 1].Longitude);
         }

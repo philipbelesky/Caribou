@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caribou.Data;
-using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-
-namespace Caribou.Models
+﻿namespace Caribou.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Caribou.Data;
+    using Grasshopper.Kernel.Data;
+    using Grasshopper.Kernel.Types;
+    using Rhino.Geometry;
+
     public static class TreeFormatters
     {
-
         public static GH_Structure<GH_String> MakeTreeForItemTags(RequestHandler result)
         {
             // TODO

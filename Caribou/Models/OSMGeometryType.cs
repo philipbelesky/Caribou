@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Data
+﻿namespace Caribou.Data
 {
-    public enum OSMTypes { Node, Way }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    public enum OSMGeometryType
+    {
+        Node,
+        Way
+    }
 }

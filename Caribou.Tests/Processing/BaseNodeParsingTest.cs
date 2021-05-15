@@ -24,7 +24,7 @@
         protected readonly OSMMetaData tramRoutesData = new OSMMetaData("tram", "route_master");
         protected readonly OSMMetaData tramStopsData = new OSMMetaData("yes", "tram_stop");
 
-        protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, OSMTypes typeOfFeature)
+        protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, OSMGeometryType typeOfFeature)
         {
             var results = new RequestHandler(xml, features);
             ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature);
@@ -34,14 +34,14 @@
         protected int CountNodesForMetaData(RequestHandler results, OSMMetaData request)
         {
             var allResults = results.FoundData[request];
-            var nodeResults = allResults.Where(o => o.Kind == OSMTypes.Node);
+            var nodeResults = allResults.Where(o => o.Kind == OSMGeometryType.Node);
             return nodeResults.Count();
         }
 
         protected int CountWaysForMetaData(RequestHandler results, OSMMetaData request)
         {
             var allResults = results.FoundData[request];
-            var nodeResults = allResults.Where(o => o.Kind == OSMTypes.Way);
+            var nodeResults = allResults.Where(o => o.Kind == OSMGeometryType.Way);
             return nodeResults.Count();
         }
     }

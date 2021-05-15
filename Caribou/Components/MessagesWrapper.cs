@@ -11,7 +11,9 @@
         public List<(Level, string)> Messages { get; }
         public enum Level
         {
-            Warning, Remark, Error
+            Warning,
+            Remark,
+            Error
         }
 
         public MessagesWrapper()

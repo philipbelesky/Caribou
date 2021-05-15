@@ -49,14 +49,14 @@
         [TestMethod]
         public void ParseWaysGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Way);
             var equitableHouse = results.FoundData[buildingsData][0];
 
             Assert.AreEqual(allCrafts, CountWaysForMetaData(results, craftsData));
             Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
             Assert.AreEqual(allBuildings, CountWaysForMetaData(results, buildingsData));
 
-            Assert.AreEqual(ndsInEquitableHouse, equitableHouse.Coords.Count());
+            Assert.AreEqual(ndsInEquitableHouse, equitableHouse.Coords.Count);
             Assert.AreEqual(firstNdForEquitableHouse, equitableHouse.Coords[0]);
             Assert.AreEqual("yes", equitableHouse.Tags["building"]);
             Assert.AreEqual("falconry", equitableHouse.Tags["craft"]);
@@ -66,7 +66,7 @@
         [TestMethod]
         public void ParseWaysGivenSubFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Way);
             var equitablePlaza = results.FoundData[craftJewellersData][0];
 
             Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
@@ -82,7 +82,7 @@
         [TestMethod]
         public void ParseWaysGivenKeyValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMGeometryType.Way);
 
             Assert.AreEqual(allNamedThings, CountWaysForMetaData(results, namedThingsData));
             Assert.AreEqual(allWikiRelated, CountWaysForMetaData(results, wikiRelatedData));

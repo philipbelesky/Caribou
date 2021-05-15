@@ -37,7 +37,7 @@
         [TestMethod]
         public void ParseWaysGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Way);
 
             Assert.AreEqual(allCrafts, CountWaysForMetaData(results, craftsData));
             Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
@@ -47,7 +47,7 @@
         [TestMethod]
         public void ParseWaysGivenSubFeatureValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Way);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Way);
 
             Assert.AreEqual(allAmenitiesRestaurant, CountWaysForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountWaysForMetaData(results, craftJewellersData));

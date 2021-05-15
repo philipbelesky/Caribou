@@ -37,7 +37,7 @@
         [TestMethod]
         public void ParseNodesGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Node);
 
             Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData)); 
             Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData)); 
@@ -47,7 +47,7 @@
         [TestMethod]
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Node);
 
             Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));

@@ -25,7 +25,7 @@
         {
             input = new List<string>() { "geological" };
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.requests[0], expectedParsedGeological);
+            Assert.AreEqual(results.Requests[0], expectedParsedGeological);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@
         { 
             input = new List<string>() { "amenity:restaurant" };
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.requests[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
         }
 
         [TestMethod]
@@ -86,18 +86,18 @@
                 "tram_stop:yes" // 1 nodes 0 way
             };
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.requests[0], new OSMMetaData("name"));
-            Assert.AreEqual(results.requests[1], new OSMMetaData("wikipedia"));
-            Assert.AreEqual(results.requests[2], new OSMMetaData("tram", "route_master"));
-            Assert.AreEqual(results.requests[3], new OSMMetaData("yes", "tram_stop"));
+            Assert.AreEqual(results.Requests[0], new OSMMetaData("name"));
+            Assert.AreEqual(results.Requests[1], new OSMMetaData("wikipedia"));
+            Assert.AreEqual(results.Requests[2], new OSMMetaData("tram", "route_master"));
+            Assert.AreEqual(results.Requests[3], new OSMMetaData("yes", "tram_stop"));
         }
 
         private void CheckResult(List<string> input)
         {
             results = new ParseRequest(input, ref messages);
-            Assert.AreEqual(results.requests[0], expectedParsedAmenityRestaraunt);
-            Assert.AreEqual(results.requests[1], expectedParsedHighWayResidential);
-            Assert.AreEqual(results.requests[2], expectedParsedWaterway);
+            Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(results.Requests[1], expectedParsedHighWayResidential);
+            Assert.AreEqual(results.Requests[2], expectedParsedWaterway);
         }
     }
 }

@@ -12,7 +12,7 @@
 
     /// <summary>
     /// A datatype and series of methods that each type of component uses to structure its requested metadata and its returned data
-    /// Basically provides a ton of shared logic independent of Way/Node requested types
+    /// Basically provides a ton of shared logic independent of Way/Node requested types.
     /// </summary>
     public class RequestHandler
     {
@@ -30,10 +30,11 @@
             this.requestedMetaData = requestedMetaData;
 
             this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
-            foreach (OSMMetaData metaData in requestedMetaData.requests)
+            foreach (OSMMetaData metaData in requestedMetaData.Requests)
             {
                 this.FoundData[metaData] = new List<FoundItem>();
             }
+
             this.FoundItemIds = new List<string>();
         }
 
@@ -74,20 +75,16 @@
         {
             var matches = new List<OSMMetaData>();
 
-            if (string.IsNullOrEmpty(nodeId))
-            {
-                return matches;
-            }
-            if (this.FoundItemIds.Contains(nodeId))
+            if (string.IsNullOrEmpty(nodeId) || this.FoundItemIds.Contains(nodeId))
             {
                 return matches;
             }
 
-            foreach (var request in this.requestedMetaData.requests)
+            foreach (var request in this.requestedMetaData.Requests)
             {
-                var requestedKey = request.k;
-                var requestedValue = request.v;
-              
+                var requestedKey = request.ParentType;
+                var requestedValue = request.ThisType;
+
                 if (requestedKey == null)
                 {
                     // If we are only looking for a key, e.g. all <tag k="building">
@@ -96,15 +93,16 @@
                         matches.Add(request);
                     }
                 }
-                else if (tagsOfFoundNode.ContainsKey(requestedKey.v))
+                else if (tagsOfFoundNode.ContainsKey(requestedKey.ThisType))
                 {
                     // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
-                    if (tagsOfFoundNode[requestedKey.v] == requestedValue)
+                    if (tagsOfFoundNode[requestedKey.ThisType] == requestedValue)
                     {
                         matches.Add(request);
                     }
                 }
             }
+
             return matches;
         }
 

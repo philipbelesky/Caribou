@@ -11,7 +11,7 @@
     /// </summary>
     public struct ParseRequest
     {
-        public List<OSMMetaData> requests;
+        public List<OSMMetaData> Requests;
 
         public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
         {
@@ -37,16 +37,16 @@
                 }
             }
 
-            this.requests = new List<OSMMetaData>();
+            this.Requests = new List<OSMMetaData>();
             // Transform the key:value formatted strings into OSM items and assign them
             foreach (string inputString in cleanedGhInput)
-            { 
+            {
                 var osmItem = ParseItemToOSMMetaData(inputString);
                 if (osmItem != null)
                 {
-                    if (!this.requests.Contains(osmItem)) // Prevent duplicates
+                    if (!this.Requests.Contains(osmItem)) // Prevent duplicates
                     {
-                        this.requests.Add(osmItem);
+                        this.Requests.Add(osmItem);
                     }
                 }
             }
@@ -55,7 +55,7 @@
         // This constructor is mostly just used to enable testing
         public ParseRequest(List<OSMMetaData> prepackagedData)
         {
-            this.requests = prepackagedData;
+            this.Requests = prepackagedData;
         }
 
         public static OSMMetaData ParseItemToOSMMetaData(string inputString)
@@ -77,6 +77,7 @@
                     return new OSMMetaData(osmValue, osmKey);
                 }
             }
+
             // If dealing with a top level item, e.g. geological (or geological: or geological:*)
             return new OSMMetaData(osmKey);
         }

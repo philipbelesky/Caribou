@@ -7,11 +7,11 @@
     using Caribou.Data;
 
     /// <summary>
-    /// Methods for parsing an XML file and extracting data that use XMLReader-based methods
+    /// Methods for parsing an XML file and extracting data that use XMLReader-based methods.
     /// </summary>
     public static class ParseViaXMLReader
     {
-        public static void FindItemsByTag(ref RequestHandler request, OSMTypes typeToFind)
+        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind)
         {
             GetBounds(ref request);
 
@@ -19,11 +19,11 @@
             {
                 using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
                 {
-                    if (typeToFind == OSMTypes.Way)
+                    if (typeToFind == OSMGeometryType.Way)
                     {
                         FindWaysInXML(reader, ref request);
                     }
-                    if (typeToFind == OSMTypes.Node)
+                    else if (typeToFind == OSMGeometryType.Node)
                     {
                         FindNodesInXML(reader, ref request);
                     }
@@ -88,7 +88,7 @@
                     {
                         var nodeId = reader.GetAttribute("id");
                         allNodes[nodeId] = new Coord(
-                            Convert.ToDouble(reader.GetAttribute("lat")), 
+                            Convert.ToDouble(reader.GetAttribute("lat")),
                             Convert.ToDouble(reader.GetAttribute("lon")));
                     }
                     else if (inANode && reader.Name == "nd")
@@ -112,6 +112,7 @@
                     {
                         request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); // If finished looping over a prior node                    currentWayMetaData.Clear();
                     }
+
                     currentWayMetaData.Clear();
                     currentWayNodes.Clear();
                 }

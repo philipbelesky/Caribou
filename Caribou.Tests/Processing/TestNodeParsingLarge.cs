@@ -40,7 +40,7 @@
         [TestMethod]
         public void ParseNodesGivenKeyViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Node);
 
             Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
             Assert.AreEqual(allHighways, CountNodesForMetaData(results, highwaysData));
@@ -50,7 +50,7 @@
         [TestMethod]
         public void ParseNodesGivenKeyValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Node);
             var firstRestaurantLat = results.FoundData[amenitiesRestaurantsData].First().Coords.First().Latitude;
             var firstFirstWorshopLon = results.FoundData[amenitiesWorshipData].First().Coords.First().Longitude;
                         

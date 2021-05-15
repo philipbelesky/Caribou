@@ -17,7 +17,7 @@
         // Constructing from Grasshopper data
         public OSMMetaData(string specifiedId, string specifiedKey = null)
         {
-            this.v = specifiedId;
+            this.ThisType = specifiedId;
             this.IsDefined = false;
 
             if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
@@ -26,53 +26,53 @@
                 this.IsDefined = true;
                 this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
                 this.Explanation = OSMDefinedFeatures.Primary[specifiedId].Explanation;
-                this.k = null;
+                this.ParentType = null;
             }
             else if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
             {
                 // If providing a specific type of information to find/match, e.g. amenity:restaurant
                 // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
-                this.k = OSMDefinedFeatures.Primary[specifiedKey];
+                this.ParentType = OSMDefinedFeatures.Primary[specifiedKey];
             }
             else if (specifiedKey != null)
             {
                 // If providing arbitrary key:value pairings then create the parent rather than referencing
-                this.k = new OSMMetaData(specifiedKey);
+                this.ParentType = new OSMMetaData(specifiedKey);
             }
         }
 
         // Constructing from hardcoded data
         public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
-            this.v = id;
+            this.ThisType = id;
             this.Name = name;
             this.IsDefined = true;
             this.Explanation = explanation;
-            this.k = key;
+            this.ParentType = key;
         }
 
-        public string v { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
-        public OSMMetaData k { get; } // If set, points back to the key this value is assocaited with.
+        public string ThisType { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
+        public OSMMetaData ParentType { get; } // If set, points back to the key this value is assocaited with.
         public bool IsDefined { get; } // Is a pre-defined feature or subfeature (as defined in OSMDefinedFeature)
 
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => $"{this.v}:{this.KeyNiceName()}";
+        public override string ToString() => $"{this.ThisType}:{this.KeyNiceName()}";
 
         private string KeyNiceName()
         {
-            return this.k == null ? "*" : this.k.v;
+            return this.ParentType == null ? "*" : this.ParentType.ThisType;
         }
 
         public bool IsFeature()
         {
-            return this.IsDefined && this.k == null;
+            return this.IsDefined && this.ParentType == null;
         }
 
         public bool IsSubFeature()
         {
-            return this.IsDefined && this.k != null;
+            return this.IsDefined && this.ParentType != null;
         }
 
         public override bool Equals(object obj)
@@ -83,20 +83,20 @@
         public bool Equals(OSMMetaData other)
         {
             return other != null &&
-                   this.v == other.v &&
-                   EqualityComparer<OSMMetaData>.Default.Equals(this.k, other.k);
+                   this.ThisType == other.ThisType &&
+                   EqualityComparer<OSMMetaData>.Default.Equals(this.ParentType, other.ParentType);
         }
 
         // Need to provide a hash code as we are using this as a dictionary key in RequestHandler
         public override int GetHashCode()
         {
-            if (this.k == null)
+            if (this.ParentType == null)
             {
-                return this.v.GetHashCode();
+                return this.ThisType.GetHashCode();
             }
             else
             {
-                return this.v.GetHashCode() ^ this.k.GetHashCode();
+                return this.ThisType.GetHashCode() ^ this.ParentType.GetHashCode();
             }
         }
     }

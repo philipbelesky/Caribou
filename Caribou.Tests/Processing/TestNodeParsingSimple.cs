@@ -43,7 +43,7 @@
         [TestMethod]
         public void ParseNodesGivenFeatureViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Node);
             var firstBuilding = results.FoundData[buildingsData][0];
 
             Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData));
@@ -57,7 +57,7 @@
         [TestMethod]
         public void ParseNodesGivenSubFeatureValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Node);
             var firstRestaurant = results.FoundData[amenitiesRestaurantsData][0];
 
             Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
@@ -71,7 +71,7 @@
         [TestMethod]
         public void ParseNodesGivenKeyValueViaXMLReader()
         {
-            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMTypes.Node);
+            var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMGeometryType.Node);
 
             Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
             Assert.AreEqual(allNamedThings, CountNodesForMetaData(results, namedThingsData));

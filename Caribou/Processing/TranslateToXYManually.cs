@@ -34,7 +34,7 @@
             var geometryResult = new Dictionary<OSMMetaData, List<Polyline>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
-            
+
             foreach (var entry in result.FoundData)
             {
                 geometryResult[entry.Key] = new List<Polyline>();
