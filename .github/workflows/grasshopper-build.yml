@@ -1,4 +1,4 @@
-name: Build Grasshopper Plugin
+name: Build and Publish Grasshopper Plugin
 
 on: [push, pull_request, release]
 # Enable below if you want to restrict actions to specific branches
@@ -12,16 +12,12 @@ jobs:
 
   build:
 
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
       Solution_Name: Caribou    # Replace with your solution name, i.e. MyWpfApp
-      Debug_File_Path: '.\Caribou\bin\'
+      Plugin_File_Name: Caribou
       Release_File_Path: '.\Caribou\release\'
 
     steps:
@@ -44,26 +40,23 @@ jobs:
 
     # Restore NuGet packages
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
     # Build the application
     - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild $env:Solution_Name /p:Configuration=Release
 
+    # Publish the GHA file upon releases
     - name: Upload release build of plugin as artefact
-      if: ${{ matrix.configuration == 'Release' }} # Only upload gha from a release build
+      if: github.ref == 'refs/heads/main' && github.event_name == 'release' && github.event.action == 'created'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.Plugin_File_Name }}
         path: ${{ env.Release_File_Path }}/${{ env.Plugin_File_Name }}.gha
 
-    # Publish only if on main branch, and if a Github release has been cut
+    # Publish to Yak upon releases
     - name: Push main version to Yak
-      if: ${{ matrix.configuration == 'Release' }} && github.ref == 'refs/heads/main' && github.event_name == 'release' && github.event.action == 'created'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'release' && github.event.action == 'created'
       uses: pfmephisto/rhino-yak@v1
       with:
         build-directory: ${{ env.Release_File_Path }}
