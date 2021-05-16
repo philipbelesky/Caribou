@@ -9,7 +9,7 @@
     public class FindNodesComponent : BaseFindComponent
     {
         public FindNodesComponent()
-            : base("Extract Ways", "Ways", "Load and parse node (e.g. point) data from an OSM file based on its metadata")
+            : base("Extract Nodes", "Nodes", "Load and parse node (e.g. point) data from an OSM file based on its metadata")
         {
             this.BaseWorker = new ParseNodesWorker(this);
         }

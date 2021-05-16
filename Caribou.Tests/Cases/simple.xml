@@ -7,7 +7,7 @@
     <tag k="amenity" v="restaurant"/>
     <tag k="addr:street" v="Swanston Street"/>
   </node>
-  <node id="2" lat="-37.8149890" lon="144.9658410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+  <node id="2" lat="-37.8129890" lon="144.9628410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
     <tag k="craft" v="jeweller"/>
     <tag k="wikipedia" v="en:Uncut Gems"/>
   </node>
