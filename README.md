@@ -54,6 +54,7 @@ Thanks to:
 
 - Dimitrie Stefanescu and the authors of the [GrasshopeprAsyncComponent](https://github.com/specklesystems/GrasshopperAsyncComponent) repo.
 - Timothy Logan, the author of [Elk](https://github.com/logant/Elk).
+- Povl Filip Sonne-Frederiksen, author of the [Yak package manager action](https://github.com/pfmephisto/rhino-yak)
 
 ## License
 

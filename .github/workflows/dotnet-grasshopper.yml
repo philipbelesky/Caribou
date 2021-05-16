@@ -60,3 +60,11 @@ jobs:
       with:
         name: ${{ env.Plugin_File_Name }}
         path: ${{ env.Release_File_Path }}/${{ env.Plugin_File_Name }}.gha
+
+    # Publish only if on main branch, and if a Github release has been cut
+    - name: Push main version to Yak
+      if: ${{ matrix.configuration == 'Release' }} && github.ref == 'refs/heads/main' && github.event_name == 'release' && github.event.action == 'created'
+      uses: pfmephisto/rhino-yak@v1
+      with:
+        build-directory: ${{ env.Release_File_Path }}
+        version: "$Env:SimpleVersion"
