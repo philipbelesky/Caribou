@@ -1,0 +1,15 @@
+name: Caribou
+version: 0.5.0-alpha
+authors:
+  - Philip Belesky
+keywords:
+  - open_street_map
+  - mapping
+  - osm
+  - cadastral
+  - elk
+  - guid:c9beedb9-07ec-4974-a0a2-44670ddb17e4
+icon_url: "https://raw.githubusercontent.com/philipbelesky/Caribou/main/assets/logo_small.png?token=AADZCWKKPZSFNHX2Y6TQYH3AVHKKW"
+description: >
+  Caribou parses downloaded Open Street Map data into Rhino geometry. It is currently in Alpha testing.
+url: "https://github.com/philipbelesky/Caribou"
