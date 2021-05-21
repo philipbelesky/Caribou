@@ -1,14 +1,14 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETFramework,Version=v4.8": {
+    ".NETFramework,Version=v4.6.2": {
       "Grasshopper": {
         "type": "Direct",
-        "requested": "[7.0.20314.3001, )",
-        "resolved": "7.0.20314.3001",
-        "contentHash": "8/NnsEbu2sC45ndvXWwvzu7rzj02GHd3/GoPCtHcD6r2iLAIR2xefuyoKt7mpsKra3AQDPMAHoVEA7MYZo2Ecw==",
+        "requested": "[6.12.19029.6381, )",
+        "resolved": "6.12.19029.6381",
+        "contentHash": "W98SCvKikWGpWtIxL9VAE5M2jBBFDVZvX0xWnJ2wdVTX05dOXLZ55gz2E1rbSlzTXSGwAi+aKsg4/pKewFd8gw==",
         "dependencies": {
-          "RhinoCommon": "[7.0.20314.3001]"
+          "RhinoCommon": "[6.12.19029.6381]"
         }
       },
       "ILRepack.Lib.MSBuild.Task": {
@@ -40,9 +40,9 @@
       },
       "RhinoCommon": {
         "type": "Direct",
-        "requested": "[7.0.20314.3001, )",
-        "resolved": "7.0.20314.3001",
-        "contentHash": "uB4NfLaKkQYDLrwfw2YdERr1srOqigPO3d9QoQ5YwkcGB8rDdNhfNwQPW0alNJfTn0n77yGR0S+FSBgXNOfDhw=="
+        "requested": "[6.12.19029.6381, )",
+        "resolved": "6.12.19029.6381",
+        "contentHash": "BcUrws+8VC6dCFORtFpsdKLBT4aQIGN8O991u+5V9YyeJT9lgl+2IFTsPN/QiXLPbNoCUcv3R5ENGAfT14LQtQ=="
       },
       "StyleCop.Analyzers": {
         "type": "Direct",
@@ -84,8 +84,8 @@
         "contentHash": "JTfMic5fEFWICePbr7GXOGPranqS9Qxu2U/BZEcnnGbK1SFW8TxRyGp6O1L52xsbfOdqmzjc0t5ubhDrjj+Xpg=="
       }
     },
-    ".NETFramework,Version=v4.8/win": {},
-    ".NETFramework,Version=v4.8/win-x64": {},
-    ".NETFramework,Version=v4.8/win-x86": {}
+    ".NETFramework,Version=v4.6.2/win": {},
+    ".NETFramework,Version=v4.6.2/win-x64": {},
+    ".NETFramework,Version=v4.6.2/win-x86": {}
   }
 }
