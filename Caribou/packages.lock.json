@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.6.2": {
+      "Eto.Forms": {
+        "type": "Direct",
+        "requested": "[2.5.11, )",
+        "resolved": "2.5.11",
+        "contentHash": "M7NHdVxgicUE8BjpHkZJO+SPSTgcxTg28Xe20FIzHA2s48U7Al0l22hLIwMFE56Ul6e18WMkkAlgnZWuJY0SLg==",
+        "dependencies": {
+          "System.ComponentModel.Annotations": "4.7.0"
+        }
+      },
       "Grasshopper": {
         "type": "Direct",
         "requested": "[6.12.19029.6381, )",
@@ -10,12 +19,6 @@
         "dependencies": {
           "RhinoCommon": "[6.12.19029.6381]"
         }
-      },
-      "ILRepack.Lib.MSBuild.Task": {
-        "type": "Direct",
-        "requested": "[2.0.18.1, )",
-        "resolved": "2.0.18.1",
-        "contentHash": "qZ7CfC96nRO47N3IC5DYtmGCJHUzVPqrGyN6J22Drfvk97u/LK8b/weFSbJPhTv8Z2kL6RkOO/vTL+FJeRovag=="
       },
       "Microsoft.CodeAnalysis.FxCopAnalyzers": {
         "type": "Direct",
@@ -66,6 +69,11 @@
         "type": "Transitive",
         "resolved": "3.3.0",
         "contentHash": "JTfMic5fEFWICePbr7GXOGPranqS9Qxu2U/BZEcnnGbK1SFW8TxRyGp6O1L52xsbfOdqmzjc0t5ubhDrjj+Xpg=="
+      },
+      "System.ComponentModel.Annotations": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "0YFqjhp/mYkDGpU0Ye1GjE53HMp9UVfGN7seGpAMttAC0C40v5gw598jCgpbBLMmCo0E5YRLBv5Z2doypO49ZQ=="
       }
     },
     ".NETFramework,Version=v4.6.2/win": {},
