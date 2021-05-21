@@ -9,10 +9,10 @@
     [TestClass]
     public class TestLatLonViaLibToXY
     {
-        private double mScale = 1.0;
-        private double mmScale = 0.001;
-        private Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // melbourne.xml
-        private Coord testMaxBounds = new Coord(-37.8089200, 144.9710600); // melbourne.xml
+        //private double mScale = 1.0;
+        //private double mmScale = 0.001;
+        //private Coord testMinBounds = new Coord(-37.8164200, 144.9627400); // melbourne.xml
+        //private Coord testMaxBounds = new Coord(-37.8089200, 144.9710600); // melbourne.xml
 
         //[TestMethod]
         //public void GetUTMZones()

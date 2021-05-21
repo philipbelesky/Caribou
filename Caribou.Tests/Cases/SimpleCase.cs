@@ -12,11 +12,11 @@
 
     public class SimpleCase : BaseNodeParsingTest
     {
-        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
+        protected static readonly OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.SimpleOSM
         }, ref messages);
 
-        protected static ParseRequest mainFeatures = new ParseRequest(
+        protected static readonly ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
                 new OSMMetaData("craft"), // 2 nodes 2 ways
                 new OSMMetaData("amenity"), // 1 node 0 ways
@@ -24,14 +24,14 @@
             }
         );
 
-        protected static ParseRequest miscSubFeatures = new ParseRequest(
+        protected static readonly ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
                 "amenity=restaurant", // 1 nodes; 0 ways
                 "Craft=jeweller", // 1 nodes; 1 ways
                 "building=Retail", // 2 nodes; 0 ways
             }, ref messages);
 
-        protected static ParseRequest arbitraryKeyValues = new ParseRequest(
+        protected static readonly ParseRequest arbitraryKeyValues = new ParseRequest(
             new List<string>() {
                 "amenity=restaurant", // 1 nodes; 0 ways
                 "name=", // 1 nodes; 2 ways

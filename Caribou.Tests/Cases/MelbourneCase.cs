@@ -12,11 +12,11 @@
 
     public class MelbourneCase : BaseNodeParsingTest
     {
-        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
+        protected static readonly OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.MelbourneOSM
         }, ref messages);
 
-        protected static ParseRequest mainFeatures = new ParseRequest(
+        protected static readonly ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
                 new OSMMetaData("amenity"), // 610 nodes 45 ways
                 new OSMMetaData("HIGHWAY"),  // 143 nodes, 615 ways
@@ -24,7 +24,7 @@
             }
         );
 
-        protected static ParseRequest miscSubFeatures = new ParseRequest(
+        protected static readonly ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
                 "amenity=restaurant", // 173 nodes; 0 ways
                 "Amenity=place_of_worship", // 2 node; 7 ways

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
     using Caribou.Data;
@@ -37,6 +38,7 @@
             double currentLat = 0;
             double currentLon = 0;
             var currentNodeMetaData = new Dictionary<string, string>();
+            var ci = CultureInfo.InvariantCulture;
 
             // Loop (linearly) through all tags. Keep track of each node's metadata and coords while looping through its tags.
             // When encountering the next node add the tracked data.
@@ -52,7 +54,7 @@
                     }
                     else if (reader.Name == "tag")
                     {
-                        currentNodeMetaData[reader.GetAttribute("k").ToLower()] = reader.GetAttribute("v");
+                        currentNodeMetaData[reader.GetAttribute("k").ToLower(ci)] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "way")
                     {
@@ -74,6 +76,7 @@
             var currentWayNodes = new List<Coord>();
             var allNodes = new Dictionary<string, Coord>();
             var inANode = false; // Only needed for ways
+            var ci = CultureInfo.InvariantCulture;
 
             while (reader.Read())
             {
@@ -98,7 +101,7 @@
                     }
                     else if (inANode && reader.Name == "tag")
                     {
-                        currentWayMetaData[reader.GetAttribute("k").ToLower()] = reader.GetAttribute("v");
+                        currentWayMetaData[reader.GetAttribute("k").ToLower(ci)] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "relation")
                     {

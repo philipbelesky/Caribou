@@ -20,12 +20,12 @@
         public ConcurrentDictionary<string, double> ProgressReports;
         public List<WorkerInstance> Workers;
         public readonly List<CancellationTokenSource> CancellationSources;
-        Action<string, double> reportProgress;
-        Action done;
-        Timer displayProgressTimer;
-        int state;
-        int setData;
-        List<Task> tasks;
+        protected Action<string, double> reportProgress;
+        protected Action done;
+        protected Timer displayProgressTimer;
+        protected int state;
+        protected int setData;
+        protected List<Task> tasks;
 
         // Pass the constructor parameters up to the main GHBComponent abstract class
         protected CaribouAsyncComponent(string name, string nickname, string description, string subCategory)

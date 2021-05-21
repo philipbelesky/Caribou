@@ -18,7 +18,7 @@
         // Constructing from Grasshopper data
         public OSMMetaData(string specifiedId, string specifiedKey = null)
         {
-            this.ThisType = specifiedId.ToLower();
+            this.ThisType = specifiedId.ToLower(CultureInfo.InvariantCulture);
             this.IsDefined = false;
 
             if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
