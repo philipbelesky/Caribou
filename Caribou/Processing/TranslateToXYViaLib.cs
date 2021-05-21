@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Caribou.Data;
-    using GeoAPI.CoordinateSystems.Transformations;
+    //using GeoAPI.CoordinateSystems.Transformations;
     using Rhino;
     using Rhino.Geometry;
 
@@ -74,17 +74,17 @@
         //    return results;
         //}
 
-        public static Point3d GetPointFromLatLongViaLib(Coord ptCoord, ICoordinateTransformation transformation)
-        {
-            double[] longLatWGS = new double[] { ptCoord.Latitude, ptCoord.Longitude }; // Note: LONG then LAT
-            var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation); // Returns in Y-X
-            return new Point3d(eastNorthUTM[0], eastNorthUTM[1], 0);
-        }
+        //public static Point3d GetPointFromLatLongViaLib(Coord ptCoord, ICoordinateTransformation transformation)
+        //{
+        //    double[] longLatWGS = new double[] { ptCoord.Latitude, ptCoord.Longitude }; // Note: LONG then LAT
+        //    var eastNorthUTM = GetXYFromLatLon(longLatWGS, transformation); // Returns in Y-X
+        //    return new Point3d(eastNorthUTM[0], eastNorthUTM[1], 0);
+        //}
 
-        // Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
-        public static double[] GetXYFromLatLon(double[] latLon, ICoordinateTransformation transformation)
-        {
-            return transformation.MathTransform.Transform(latLon);
-        }
+        //// Separated out mostly to enable unit testing (e.g. not require Rhinocommon)
+        //public static double[] GetXYFromLatLon(double[] latLon, ICoordinateTransformation transformation)
+        //{
+        //    return transformation.MathTransform.Transform(latLon);
+        //}
     }
 }

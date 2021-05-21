@@ -109,9 +109,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="ProjNET4GeoAPI">
-      <Version>1.4.1</Version>
-    </PackageReference>
     <PackageReference Include="RhinoCommon">
       <Version>6.12.19029.6381</Version>
       <!-- Earliest possible Rhino 6 support -->
@@ -122,6 +119,9 @@
       <Version>1.1.118</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
