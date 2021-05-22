@@ -17,6 +17,7 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 
 ## Features
 
+- ✅ Windows and MacOS are both fully supported
 - ✅ Very fast parsing of even very large files
 - ✅ Parsing is performed asynchronously so Grasshopper does not freeze
 - ✅ Components embrace a modular approach to filtering and extracting data
