@@ -11,7 +11,7 @@
             var updateButton = new Button()
             {
                 Text = "Update Selection",
-                Width = (windowWidth / 2) - 35,
+                Width = (windowWidth / 2) - 31,
                 Height = 40,
 
             };
@@ -20,7 +20,7 @@
             var cancelButton = new Button()
             {
                 Text = "Cancel Update",
-                Width = (windowWidth / 2) - 35,
+                Width = (windowWidth / 2) - 31,
                 Height = 40,
             };
             //cancelButton.Click += (sender, e) => { CancelAndClose(); };
@@ -31,7 +31,7 @@
                 Items = {
                     updateButton, cancelButton
                 },
-                Spacing = 25,
+                Spacing = 24,
                 Padding = 0,
             };
             return layout;

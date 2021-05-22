@@ -13,6 +13,23 @@
     /// </summary>
     public static class OSMDefinedFeatures
     {
+        public static Dictionary<OSMMetaData, List<OSMMetaData>> GetAll()
+        {
+            var allDataInHierarchy = new Dictionary<OSMMetaData, List<OSMMetaData>>();
+
+            foreach (var primaryFeature in Primary)
+            {
+                allDataInHierarchy[primaryFeature.Value] = new List<OSMMetaData>()
+                {
+                    new OSMMetaData("AAA", "BBB", "Lorum"),
+                    new OSMMetaData("AAA", "BBB", "Lorum"),
+                    new OSMMetaData("AAA", "BBB", "Lorum")
+                };
+            }
+
+            return allDataInHierarchy;
+        }
+
         public static readonly Dictionary<string, OSMMetaData> Primary = new Dictionary<string, OSMMetaData>()
         {
             { "aerialway", new OSMMetaData("aerialway", "Aerialway", "Forms of transportation for people or goods that use aerial wires, e.g. cable-cars and chair-lifts.") },
