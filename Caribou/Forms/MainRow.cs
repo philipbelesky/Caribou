@@ -10,13 +10,11 @@
     {
         private TreeGridItemCollection data;
         public TreeGridView viewForm;
-        private int windowWidth;
 
-        public MainRow(int windowWidth)
+        public MainRow(int tableWidth, int tableHeight)
         {
-            this.windowWidth = windowWidth;
-            this.data = SelectionCollection.GetCollection();
-            this.viewForm = GetLayout();
+            this.data = SelectionCollection.GetCollection(false);
+            this.viewForm = GetLayout(tableWidth, tableHeight);
         }
 
         private void ToggleSelectedStatus(TreeGridItem item)
@@ -64,11 +62,11 @@
             return newBool.ToString();
         }
 
-        private TreeGridView GetLayout()
+        private TreeGridView GetLayout(int tableWidth, int tableHeight)
         {
             var featureSelect = new TreeGridView()
             {
-                Height = 600,
+                Height = tableHeight,
                 GridLines = GridLines.Horizontal,
                 AllowColumnReordering = true,
                 RowHeight = 30,
@@ -154,7 +152,7 @@
             };
             featureSelect.Columns.Add(descriptionColumn);
 
-            featureSelect.DataStore = SelectionCollection.GetCollection();
+            featureSelect.DataStore = this.data;
             return featureSelect;
         }
     }

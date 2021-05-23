@@ -9,13 +9,13 @@
     /// <summary>Translates from the Feature/SubFeature datasets into the UI elements in the view.</summary>
     public static class SelectionCollection
     {
-        public static TreeGridItemCollection GetCollection()
+        public static TreeGridItemCollection GetCollection(bool includeObscure)
         {
             var itemsForCollection = new List<TreeGridItem>();
 
             foreach (var item in OSMDefinedFeatures.GetDefinedFeaturesForForm())
             {
-                var treeItem = GetItem(item.Key, item.Value);
+                var treeItem = GetItem(item.Key, item.Value, includeObscure);
                 itemsForCollection.Add(treeItem);
             }
 
@@ -23,7 +23,7 @@
             return treeCollection;
         }
 
-        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures)
+        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
         {
             var parentItem = new TreeGridItem
             {
@@ -32,6 +32,11 @@
 
             foreach (var child in childFeatures)
             {
+                if (!includeObscure && child.IsObscure())
+                {
+                    continue;
+                }
+
                 var childItem = new TreeGridItem
                 {
                     Values = child.GetColumnData()

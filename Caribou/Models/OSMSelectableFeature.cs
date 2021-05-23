@@ -53,22 +53,26 @@
             }
 
             if (countType < 100)
-                return "Very few";
+                return "Very Rare";
             else if (countType < 1000)
-                return "Few";
+                return "Rare";
             else if (countType < 10000)
-                return "Some";
+                return "Uncommon";
             else if (countType < 100000)
-                return "Many";
+                return "Common";
             else if (countType < 1000000)
+                return "Very Common";
+            else if (countType < 10000000)
+                return "Abundant";
+            else if (countType >= 100000000)
                 return "Heaps";
 
-            return "?";
+            return countType.ToString();
         }
 
-        public bool IsRare()
+        public bool IsObscure()
         {
-            return (this.NodeCount < 100 && this.WayCount < 100);
+            return (this.NodeCount < 1000 && this.WayCount < 1000);
         }
 
         // Used in the UI form to sort by alphabetical 
