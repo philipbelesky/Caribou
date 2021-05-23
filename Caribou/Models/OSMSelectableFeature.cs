@@ -32,9 +32,18 @@
             {
                 this.Name, this.IsSelected.ToString(),
                 GetCount(this.NodeCount), GetCount(this.WayCount),
-                this.ToString(), this.Explanation
+                this.ToString(), "View", this.Explanation
             };
         }
+
+        private Uri GetLink()
+        {
+            if (this.IsFeature())
+            {
+                return new Uri($"//wiki.openstreetmap.org/wiki/Key:{this.ThisType}");
+            }
+            return new Uri($"//wiki.openstreetmap.org/wiki/Tag:{this.ParentType}={this.ThisType}");
+        } 
 
         private string GetCount(int countType)
         {

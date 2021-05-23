@@ -21,11 +21,13 @@
             this.Title = "Select Features and Sub-Features";
             this.Resizable = false;
 
+            var mainRow = new MainRow(windowWidth);
+
             Content = new StackLayout
             {
                 Padding = 10,
                 Items = {
-                    MainRow.GetLayout(windowWidth),
+                    mainRow.viewForm,
                     new StackLayout() {
                         Padding = 10,
                     }, // Just for padding
@@ -34,14 +36,5 @@
             };
         }
 
-        private void UpdateAndClose()
-        {
-            Application.Instance.Quit();
-        }
-
-        private void CancelAndClose()
-        {
-            Application.Instance.Quit();
-        }
     }
 }

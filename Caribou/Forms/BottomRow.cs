@@ -15,7 +15,7 @@
                 Height = 40,
 
             };
-            //updateButton.Click += (sender, e) => { UpdateAndClose(); };
+            updateButton.Click += (sender, e) => { UpdateAndClose(); };
 
             var cancelButton = new Button()
             {
@@ -23,7 +23,7 @@
                 Width = (windowWidth / 2) - 32,
                 Height = 40,
             };
-            //cancelButton.Click += (sender, e) => { CancelAndClose(); };
+            cancelButton.Click += (sender, e) => { CancelAndClose(); };
 
             var layout = new StackLayout
             {
@@ -35,6 +35,16 @@
                 Padding = 0,
             };
             return layout;
+        }
+
+        private static void UpdateAndClose()
+        {
+            Application.Instance.Quit();
+        }
+
+        private static void CancelAndClose()
+        {
+            Application.Instance.Quit();
         }
     }
 }

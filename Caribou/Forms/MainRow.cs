@@ -2,24 +2,88 @@
 {
     using System;
     using System.Collections.Generic;
+    using Caribou.Models;
     using Eto.Forms;
 
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
-    public static class MainRow
+    public class MainRow
     {
-        public static TreeGridView GetLayout(int windowWidth)
+        private TreeGridItemCollection data;
+        public TreeGridView viewForm;
+        private int windowWidth;
+
+        public MainRow(int windowWidth)
+        {
+            this.windowWidth = windowWidth;
+            this.data = SelectionCollection.GetCollection();
+            this.viewForm = GetLayout();
+        }
+
+        private void ToggleSelectedStatus(TreeGridItem item)
+        {
+            var newValue = FlipCheckbox(item);
+            item.SetValue(1, newValue);
+
+            foreach (TreeGridItem subItem in item.Children)
+            {
+                subItem.SetValue(1, newValue);
+            }
+            viewForm.ReloadItem(item); // Also affects children
+        }
+
+        private void CellDoubleClickHandler(object sender, GridCellMouseEventArgs e)
+        {
+            ToggleSelectedStatus(e.Item as TreeGridItem);
+        }
+
+        private void CellClickHandler(object sender, GridCellMouseEventArgs e)
+        {
+            if (e.Column == 1)
+            {
+                ToggleSelectedStatus(e.Item as TreeGridItem);
+            }
+            if (e.Column == 5)
+            {
+
+            }
+            // TODO: toggling if on checkbox
+            // TODO: open link if on wiki
+        }
+
+        private void HeaderClickHandler(object sender, EventArgs e)
+        {
+            // TODO: sorting
+        }
+
+        private string FlipCheckbox(TreeGridItem item) // to string, flip, and back again
+        {
+            var currentValue = item.GetValue(1);
+            bool currentBool;
+            bool.TryParse(currentValue as string, out currentBool);
+            bool newBool = !currentBool;
+            return newBool.ToString();
+        }
+
+        private TreeGridView GetLayout()
         {
             var featureSelect = new TreeGridView()
             {
                 Height = 600,
                 GridLines = GridLines.Horizontal,
+                AllowColumnReordering = true,
                 RowHeight = 30,
             };
+            featureSelect.CellDoubleClick += this.CellDoubleClickHandler;
+            featureSelect.CellClick += this.CellClickHandler;
+            featureSelect.ColumnHeaderClick += this.HeaderClickHandler;
 
             var titleColumn = new GridColumn()
             {
                 HeaderText = "Feature",
-                DataCell = new TextBoxCell(0),
+                DataCell = new TextBoxCell(0)
+                {
+                    //Binding = Binding.Property<OSMSelectableFeature, string>(r => r.Name)
+                },
                 Resizable = false,
                 Sortable = true,
                 AutoSize = true,
@@ -29,11 +93,14 @@
             var checkColumn = new GridColumn()
             {
                 HeaderText = "Select",
-                DataCell = new CheckBoxCell(1),
+                DataCell = new CheckBoxCell(1)
+                {
+                    //Binding = Binding.Property<OSMSelectableFeature, bool>(r => r.IsSelected)
+                },
                 Width = 55,
                 Resizable = false,
                 Sortable = true,
-                Editable = true,
+                // Editable = true,
             };
             featureSelect.Columns.Add(checkColumn);
 
@@ -43,7 +110,7 @@
                 DataCell = new TextBoxCell(2),
                 Resizable = false,
                 Sortable = true,
-                Width = 75,
+                Width = 85,
             };
             featureSelect.Columns.Add(nodeColumn);
 
@@ -53,7 +120,7 @@
                 DataCell = new TextBoxCell(3),
                 Resizable = false,
                 Sortable = true,
-                Width = 75,
+                Width = 85,
             };
             featureSelect.Columns.Add(wayColumn);
 
@@ -67,10 +134,20 @@
             };
             featureSelect.Columns.Add(keyValueColumn);
 
+            var linkColumn = new GridColumn()
+            {
+                HeaderText = "Wiki Info",
+                DataCell = new TextBoxCell(5),
+                Resizable = false,
+                Sortable = true,
+                AutoSize = true,
+            };
+            featureSelect.Columns.Add(linkColumn);
+
             var descriptionColumn = new GridColumn()
             {
                 HeaderText = "Description",
-                DataCell = new TextBoxCell(5),
+                DataCell = new TextBoxCell(6),
                 Resizable = false,
                 Sortable = true,
                 AutoSize = true,
