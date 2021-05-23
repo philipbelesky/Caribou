@@ -106,6 +106,7 @@
     <Compile Include="Forms\BottomRow.cs" />
     <Compile Include="Forms\MainRow.cs" />
     <Compile Include="Forms\SelectionCollection.cs" />
+    <Compile Include="Models\OSMSelectableFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eto.Forms">
