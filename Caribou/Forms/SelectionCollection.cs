@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Caribou.Data;
+    using Caribou.Models;
     using Eto.Forms;
 
     /// <summary>Translates from the Feature/SubFeature datasets into the UI elements in the view.</summary>
@@ -12,7 +13,7 @@
         {
             var itemsForCollection = new List<TreeGridItem>();
 
-            foreach (var item in OSMDefinedFeatures.GetAll())
+            foreach (var item in OSMDefinedFeatures.GetDefinedFeaturesForForm())
             {
                 var treeItem = GetItem(item.Key, item.Value);
                 itemsForCollection.Add(treeItem);
@@ -22,12 +23,12 @@
             return treeCollection;
         }
 
-        private static TreeGridItem GetItem(OSMMetaData parentFeature, List<OSMMetaData> childFeatures)
+        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures)
         {
             var parentItem = new TreeGridItem
             {
                 Values = new string[] {
-                    parentFeature.Name, parentFeature.Explanation, "false"
+                    parentFeature.Name, parentFeature.Explanation, parentFeature.IsSelected.ToString()
                 },
             };
 
@@ -36,7 +37,7 @@
                 var childItem = new TreeGridItem
                 {
                     Values = new string[] {
-                        child.Name, child.Explanation, "false"
+                        child.Name, child.Explanation, child.IsSelected.ToString()
                     }
                 };
                 parentItem.Children.Add(childItem);

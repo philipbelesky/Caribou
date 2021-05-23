@@ -4,7 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
+    using System.Text.Json;
+    using Caribou.Models;
+    using Caribou.Properties;
+
 #pragma warning disable SA1310 // Field names should not contain underscore
 
     /// <summary>
@@ -13,20 +16,45 @@
     /// </summary>
     public static class OSMDefinedFeatures
     {
-        public static Dictionary<OSMMetaData, List<OSMMetaData>> GetAll()
+        // Take the hardcoded feature types below, combine with the subfeatures in JSON, and report them back as a tree
+        public static Dictionary<OSMSelectableFeature, List<OSMSelectableFeature>> GetDefinedFeaturesForForm()
         {
-            var allDataInHierarchy = new Dictionary<OSMMetaData, List<OSMMetaData>>();
+            var allDataInHierarchy = new Dictionary<OSMSelectableFeature, List<OSMSelectableFeature>>();
 
             foreach (var primaryFeature in Primary)
             {
-                allDataInHierarchy[primaryFeature.Value] = new List<OSMMetaData>()
-                {
-                    new OSMMetaData("AAA", "BBB", "Lorum"),
-                    new OSMMetaData("AAA", "BBB", "Lorum"),
-                    new OSMMetaData("AAA", "BBB", "Lorum")
-                };
+                var pf = primaryFeature.Value;
+                var spf = new OSMSelectableFeature(pf.ThisType, pf.Name, pf.Explanation, 0, 0);
+                allDataInHierarchy[spf] = new List<OSMSelectableFeature>() { };
             }
 
+            var docString = Encoding.UTF8.GetString(Resources.SubFeatureData);
+            using (JsonDocument document = JsonDocument.Parse(docString))
+            {
+                JsonElement root = document.RootElement;
+                foreach (JsonElement element in root.EnumerateArray())
+                {
+                    if (element.TryGetProperty("feature", out JsonElement feature))
+                    {
+                        var nameID = element.GetProperty("subfeature").ToString();
+                        OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, nameID,
+                            element.GetProperty("description").ToString(),
+                            int.Parse(element.GetProperty("nodes").ToString()),
+                            int.Parse(element.GetProperty("ways").ToString())
+                        );
+
+                        var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
+                        allDataInHierarchy[parent].Add(subfeature);
+                    }
+                }
+            }
+
+
+            foreach (var primaryFeature in allDataInHierarchy)
+            {
+                primaryFeature.Value.Sort();
+            }
+                
             return allDataInHierarchy;
         }
 
