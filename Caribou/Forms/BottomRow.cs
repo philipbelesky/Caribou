@@ -6,20 +6,18 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class BottomRow
     {
-        public static StackLayout GetLayout(int windowWidth, int buttonHeight)
+        public static CheckBox GetHider(int buttonHeight)
         {
-            var buttonWidth = 200;
-            var spacing = 24;
-            var toggleWidth = windowWidth - (buttonWidth * 2) - spacing - 64;
-
             var showHideMinor = new CheckBox()
             {
                 Text = "Hide SubFeatures with very low counts",
-                Width = toggleWidth,
                 Checked = true,
                 Height = buttonHeight,
             };
-
+            return showHideMinor;
+        }
+        public static Button GetUpdate(int buttonWidth, int buttonHeight)
+        {
             var updateButton = new Button()
             {
                 Text = "✅ Update Selection",
@@ -28,7 +26,11 @@
 
             };
             updateButton.Click += (sender, e) => { UpdateAndClose(); };
+            return updateButton;
+        }
 
+        public static Button GetCancel(int buttonWidth, int buttonHeight)
+        {
             var cancelButton = new Button()
             {
                 Text = "❌ Cancel Update",
@@ -36,17 +38,7 @@
                 Height = buttonHeight,
             };
             cancelButton.Click += (sender, e) => { CancelAndClose(); };
-
-            var layout = new StackLayout
-            {
-                Orientation = Orientation.Horizontal,
-                Items = {
-                    showHideMinor, updateButton, cancelButton
-                },
-                Spacing = spacing,
-                Padding = 0,
-            };
-            return layout;
+            return cancelButton;
         }
 
         private static void UpdateAndClose()

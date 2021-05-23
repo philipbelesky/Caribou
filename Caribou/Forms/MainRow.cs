@@ -11,10 +11,10 @@
         private TreeGridItemCollection data;
         public TreeGridView viewForm;
 
-        public MainRow(int tableWidth, int tableHeight)
+        public MainRow()
         {
             this.data = SelectionCollection.GetCollection(false);
-            this.viewForm = GetLayout(tableWidth, tableHeight);
+            this.viewForm = GetLayout();
         }
 
         private void ToggleSelectedStatus(TreeGridItem item)
@@ -66,11 +66,10 @@
             return newBool.ToString();
         }
 
-        private TreeGridView GetLayout(int tableWidth, int tableHeight)
+        private TreeGridView GetLayout()
         {
             var featureSelect = new TreeGridView()
             {
-                Height = tableHeight,
                 GridLines = GridLines.Horizontal,
                 AllowColumnReordering = true,
                 RowHeight = 30,

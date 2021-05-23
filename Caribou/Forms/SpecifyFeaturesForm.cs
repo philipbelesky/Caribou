@@ -9,9 +9,10 @@
 
     public class SpecifyFeaturesForm : Form
     {
-        private int windowWidth = 1100;
-        private int windowHeight = 700;
+        private int windowWidth = 700;
+        private int windowHeight = 1000;
         private int buttonHeight = 40;
+        private int buttonWidth = 200;
         private int padding = 10;
 
         public SpecifyFeaturesForm()
@@ -23,22 +24,30 @@
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
 
-            var tableHeight = windowHeight - buttonHeight - (padding * 2) - 56;
-            var tableWidth = windowWidth - (padding * 2);
-            var mainRow = new MainRow(tableWidth, tableHeight);
+            var mainRow = new MainRow();
 
-            Content = new StackLayout
+            var formLayout = new DynamicLayout()
             {
                 Padding = 10,
-                Items = {
-                    "Double click to add a row",
-                    mainRow.viewForm,
-                    new StackLayout() {
-                        Padding = 10,
-                    }, // Just for padding
-                    BottomRow.GetLayout(windowWidth, buttonHeight),
-                }
+                Spacing = new Size(10, 10),
             };
+
+            formLayout.BeginVertical();
+            formLayout.BeginHorizontal();
+            formLayout.Add(BottomRow.GetHider(buttonHeight));
+            formLayout.Add(null);
+            formLayout.Add(BottomRow.GetUpdate(buttonWidth, buttonHeight));
+            formLayout.Add(BottomRow.GetCancel(buttonWidth, buttonHeight));
+            formLayout.EndHorizontal();
+            formLayout.EndVertical();
+
+            formLayout.BeginVertical();
+            formLayout.BeginHorizontal();
+            formLayout.Add(mainRow.viewForm);
+            formLayout.EndHorizontal();
+            formLayout.EndVertical();
+
+            Content = formLayout;
         }
         protected override void OnSizeChanged(EventArgs e)
         {
