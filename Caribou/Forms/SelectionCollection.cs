@@ -27,18 +27,14 @@
         {
             var parentItem = new TreeGridItem
             {
-                Values = new string[] {
-                    parentFeature.Name, parentFeature.Explanation, parentFeature.IsSelected.ToString()
-                },
+                Values = parentFeature.GetColumnData()
             };
 
             foreach (var child in childFeatures)
             {
                 var childItem = new TreeGridItem
                 {
-                    Values = new string[] {
-                        child.Name, child.Explanation, child.IsSelected.ToString()
-                    }
+                    Values = child.GetColumnData()
                 };
                 parentItem.Children.Add(childItem);
             }

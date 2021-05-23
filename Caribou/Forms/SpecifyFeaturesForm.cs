@@ -9,12 +9,13 @@
 
     public class SpecifyFeaturesForm : Form
     {
-        private int windowWidth = 800;
+        private int windowWidth = 1100;
+        private int windowHeight = 700;
 
         public SpecifyFeaturesForm()
         {
             // sets the client (inner) size of the window for your content
-            this.ClientSize = new Eto.Drawing.Size(windowWidth, 700);
+            this.ClientSize = new Eto.Drawing.Size(windowWidth, windowHeight);
             this.Padding = 10;
 
             this.Title = "Select Features and Sub-Features";

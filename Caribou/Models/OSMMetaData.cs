@@ -26,24 +26,23 @@
                 // If providing a top-level defined primary feature like "natural" return that object
                 this.IsDefined = true;
                 this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
-                this.Explanation = OSMDefinedFeatures.Primary[specifiedId].Explanation;
+                this.Explanation = MakeNiceExplanation(OSMDefinedFeatures.Primary[specifiedId].Explanation);
                 this.ParentType = null;
             }
-            else if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
+            else
             {
-                // If providing a specific type of information to find/match, e.g. amenity:restaurant
-                // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
-                this.ParentType = OSMDefinedFeatures.Primary[specifiedKey];
-            }
-            else if (specifiedKey != null)
-            {
-                // If providing arbitrary key:value pairings then create the parent rather than referencing
-                this.ParentType = new OSMMetaData(specifiedKey);
-            }
-
-            if (string.IsNullOrEmpty(this.Name)) // Try and make a nice name for layer bakes, etc
-            {
-                this.Name = specifiedId.Replace("_", " ");
+                if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
+                {
+                    // If providing a specific type of information to find/match, e.g. amenity:restaurant
+                    // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
+                    this.ParentType = OSMDefinedFeatures.Primary[specifiedKey];
+                }
+                else if (specifiedKey != null)
+                {
+                    // If providing arbitrary key:value pairings then create the parent rather than referencing
+                    this.ParentType = new OSMMetaData(specifiedKey);
+                }
+                this.Name = MakeNiceName(null, specifiedKey);
             }
         }
 
@@ -51,9 +50,9 @@
         public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
             this.ThisType = id;
-            this.Name = name;
+            this.Name = MakeNiceName(name, id);
             this.IsDefined = true;
-            this.Explanation = explanation;
+            this.Explanation = MakeNiceExplanation(explanation);
             this.ParentType = key;
         }
 
@@ -64,7 +63,32 @@
         public string Name { get; } // Readable name; i.e. including spaces and so on
         public string Explanation { get; } // A description of what this represents
 
-        public override string ToString() => this.ParentType == null ? this.SingleSearchNiceName() : this.MultiSearchNiceName();
+        public override string ToString() => this.IsFeature() ? this.SingleSearchNiceName() : this.MultiSearchNiceName();
+
+        private static string MakeNiceName(string providedName, string providedID)
+        {
+            if (!string.IsNullOrEmpty(providedName))
+            {
+                return providedName;
+            }
+            // Try and make a nice name for layer bakes, etc
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            var name = providedID.Replace("_", " ");
+            name = textInfo.ToTitleCase(name);
+            return name;
+        }
+
+        private static string MakeNiceExplanation(string explanation)
+        {
+            if (!string.IsNullOrEmpty(explanation))
+            {
+                if (explanation.Last() != '.')
+                {
+                    explanation += '.';
+                }
+            }
+            return explanation;
+        }
 
         private string SingleSearchNiceName()
         {

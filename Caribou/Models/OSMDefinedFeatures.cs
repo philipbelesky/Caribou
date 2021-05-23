@@ -24,7 +24,7 @@
             foreach (var primaryFeature in Primary)
             {
                 var pf = primaryFeature.Value;
-                var spf = new OSMSelectableFeature(pf.ThisType, pf.Name, pf.Explanation, 0, 0);
+                var spf = new OSMSelectableFeature(pf.ThisType, pf.Name, pf.Explanation, 0, 0, false);
                 allDataInHierarchy[spf] = new List<OSMSelectableFeature>() { };
             }
 
@@ -37,13 +37,14 @@
                     if (element.TryGetProperty("feature", out JsonElement feature))
                     {
                         var nameID = element.GetProperty("subfeature").ToString();
-                        OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, nameID,
+                        var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
+
+                        OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, null,
                             element.GetProperty("description").ToString(),
                             int.Parse(element.GetProperty("nodes").ToString()),
-                            int.Parse(element.GetProperty("ways").ToString())
+                            int.Parse(element.GetProperty("ways").ToString()),
+                            true, parent
                         );
-
-                        var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
                         allDataInHierarchy[parent].Add(subfeature);
                     }
                 }
@@ -53,6 +54,10 @@
             foreach (var primaryFeature in allDataInHierarchy)
             {
                 primaryFeature.Value.Sort();
+                var description = $"Items that are specified as {primaryFeature.Key.Name}, but without more specific subfeature information";
+                primaryFeature.Value.Insert(0, new OSMSelectableFeature(
+                    "yes", "UNTAGGED", description, 0, 0, false, primaryFeature.Key
+                ));
             }
                 
             return allDataInHierarchy;

@@ -20,16 +20,16 @@
             {
                 HeaderText = "Feature",
                 DataCell = new TextBoxCell(0),
-                Width = 120,
                 Resizable = false,
                 Sortable = true,
+                AutoSize = true,
             };
             featureSelect.Columns.Add(titleColumn);
 
             var checkColumn = new GridColumn()
             {
                 HeaderText = "Select",
-                DataCell = new CheckBoxCell(2),
+                DataCell = new CheckBoxCell(1),
                 Width = 55,
                 Resizable = false,
                 Sortable = true,
@@ -37,10 +37,40 @@
             };
             featureSelect.Columns.Add(checkColumn);
 
+            var nodeColumn = new GridColumn()
+            {
+                HeaderText = "Nodes Count",
+                DataCell = new TextBoxCell(2),
+                Resizable = false,
+                Sortable = true,
+                Width = 75,
+            };
+            featureSelect.Columns.Add(nodeColumn);
+
+            var wayColumn = new GridColumn()
+            {
+                HeaderText = "Ways Count",
+                DataCell = new TextBoxCell(3),
+                Resizable = false,
+                Sortable = true,
+                Width = 75,
+            };
+            featureSelect.Columns.Add(wayColumn);
+
+            var keyValueColumn = new GridColumn()
+            {
+                HeaderText = "K:V Format",
+                DataCell = new TextBoxCell(4),
+                Resizable = false,
+                Sortable = true,
+                AutoSize = true,
+            };
+            featureSelect.Columns.Add(keyValueColumn);
+
             var descriptionColumn = new GridColumn()
             {
                 HeaderText = "Description",
-                DataCell = new TextBoxCell(1),
+                DataCell = new TextBoxCell(5),
                 Resizable = false,
                 Sortable = true,
                 AutoSize = true,

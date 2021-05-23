@@ -12,16 +12,54 @@
         public int NodeCount { get; set; }
         //public int RelationCount { get; set; } // Not useful as not filterable
         public int WayCount { get; set; }
+        public bool ShowCounts { get; set; }
 
         // Full constructor
         public OSMSelectableFeature(string subfeature, string name, string description,
-                                    int nodes, int ways,
+                                    int nodes, int ways, bool showCounts,
                                     OSMSelectableFeature key = null)
             : base(subfeature, name, description, key)
         {
             this.IsSelected = false;
             this.NodeCount = nodes;
             this.WayCount = ways;
+            this.ShowCounts = showCounts;
+        }
+
+        public string[] GetColumnData() // For the form table
+        {
+            return new string[]
+            {
+                this.Name, this.IsSelected.ToString(),
+                GetCount(this.NodeCount), GetCount(this.WayCount),
+                this.ToString(), this.Explanation
+            };
+        }
+
+        private string GetCount(int countType)
+        {
+            if (this.IsFeature() || !this.ShowCounts)
+            {
+                return "";
+            }
+
+            if (countType < 100)
+                return "Very few";
+            else if (countType < 1000)
+                return "Few";
+            else if (countType < 10000)
+                return "Some";
+            else if (countType < 100000)
+                return "Many";
+            else if (countType < 1000000)
+                return "Heaps";
+
+            return "?";
+        }
+
+        public bool IsRare()
+        {
+            return (this.NodeCount < 100 && this.WayCount < 100);
         }
 
         // Used in the UI form to sort by alphabetical 
