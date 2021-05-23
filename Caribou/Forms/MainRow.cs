@@ -29,6 +29,12 @@
             viewForm.ReloadItem(item); // Also affects children
         }
 
+        private void OpenWikiLink(TreeGridItem item)
+        {
+            var url = item.Values[7] as string;
+            System.Diagnostics.Process.Start(url);
+        }
+
         private void CellDoubleClickHandler(object sender, GridCellMouseEventArgs e)
         {
             ToggleSelectedStatus(e.Item as TreeGridItem);
@@ -42,10 +48,8 @@
             }
             if (e.Column == 5)
             {
-
+                OpenWikiLink(e.Item as TreeGridItem);
             }
-            // TODO: toggling if on checkbox
-            // TODO: open link if on wiki
         }
 
         private void HeaderClickHandler(object sender, EventArgs e)

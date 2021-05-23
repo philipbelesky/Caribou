@@ -25,14 +25,14 @@
 
         private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
         {
-            var parentItem = new TreeGridItem
+            var parentItem = new TreeGridItem  
             {
                 Values = parentFeature.GetColumnData()
             };
 
             foreach (var child in childFeatures)
             {
-                if (!includeObscure && child.IsObscure())
+                if (!includeObscure && child.IsObscure() && child.ShowCounts)
                 {
                     continue;
                 }
