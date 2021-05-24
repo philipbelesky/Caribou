@@ -82,6 +82,8 @@
         {
             if (!string.IsNullOrEmpty(explanation))
             {
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                explanation = textInfo.ToTitleCase(explanation);
                 if (explanation.Last() != '.')
                 {
                     explanation += '.';

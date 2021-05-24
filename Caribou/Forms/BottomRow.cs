@@ -23,7 +23,6 @@
                 Text = "✅ Update Selection",
                 Width = buttonWidth,
                 Height = buttonHeight,
-
             };
             updateButton.Click += (sender, e) => { UpdateAndClose(); };
             return updateButton;

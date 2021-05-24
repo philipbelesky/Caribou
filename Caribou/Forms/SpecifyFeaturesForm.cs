@@ -9,16 +9,14 @@
 
     public class SpecifyFeaturesForm : Form
     {
-        private int windowWidth = 700;
-        private int windowHeight = 1000;
+        private int windowWidth = 1000;
+        private int windowHeight = 1020;
         private int buttonHeight = 40;
         private int buttonWidth = 200;
         private int padding = 10;
 
         public SpecifyFeaturesForm()
         {
-            // sets the client (inner) size of the window for your content
-            this.ClientSize = new Eto.Drawing.Size(windowWidth, windowHeight);
             this.Padding = padding;
 
             this.Title = "Select Features and Sub-Features";
@@ -35,9 +33,10 @@
             formLayout.BeginVertical();
             formLayout.BeginHorizontal();
             formLayout.Add(BottomRow.GetHider(buttonHeight));
-            formLayout.Add(null);
-            formLayout.Add(BottomRow.GetUpdate(buttonWidth, buttonHeight));
-            formLayout.Add(BottomRow.GetCancel(buttonWidth, buttonHeight));
+            formLayout.Add(null, true);
+            formLayout.AddAutoSized(BottomRow.GetUpdate(buttonWidth, buttonHeight));
+            formLayout.Add(new Label() { Width = 10 }); // Spacer
+            formLayout.AddAutoSized(BottomRow.GetCancel(buttonWidth, buttonHeight));
             formLayout.EndHorizontal();
             formLayout.EndVertical();
 

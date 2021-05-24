@@ -125,15 +125,15 @@
             };
             featureSelect.Columns.Add(wayColumn);
 
-            var keyValueColumn = new GridColumn()
-            {
-                HeaderText = "K:V Format",
-                DataCell = new TextBoxCell(4),
-                Resizable = false,
-                Sortable = true,
-                AutoSize = true,
-            };
-            featureSelect.Columns.Add(keyValueColumn);
+            //var keyValueColumn = new GridColumn()
+            //{
+            //    HeaderText = "K:V Format",
+            //    DataCell = new TextBoxCell(4),
+            //    Resizable = false,
+            //    Sortable = true,
+            //    AutoSize = true,
+            //};
+            //featureSelect.Columns.Add(keyValueColumn);
 
             var linkColumn = new GridColumn()
             {
@@ -151,7 +151,6 @@
                 DataCell = new TextBoxCell(6),
                 Resizable = false,
                 Sortable = true,
-                AutoSize = true,
             };
             featureSelect.Columns.Add(descriptionColumn);
 
