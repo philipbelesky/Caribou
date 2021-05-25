@@ -71,6 +71,10 @@
             {
                 return providedName;
             }
+            if (string.IsNullOrEmpty(providedID))
+            {
+                return "*";
+            }
             // Try and make a nice name for layer bakes, etc
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             var name = providedID.Replace("_", " ");
