@@ -5,4 +5,5 @@
 # Use Git Large File Storage for 3dm files
 *.3dm filter=lfs diff=lfs merge=lfs -text
 *.osm.xml filter=lfs diff=lfs merge=lfs -text
+*.osm filter=lfs diff=lfs merge=lfs -text
 tagfinder_thesaurus.rdf.xmp filter=lfs diff=lfs merge=lfs -text
