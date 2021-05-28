@@ -1,11 +1,10 @@
 ﻿namespace Caribou.Components
 {
     using System;
-    using Rhino.UI;
-    using Eto.Drawing;
-    using Eto.Forms;
     using System.Collections.Generic;
     using Caribou.Forms;
+    using Eto.Drawing;
+    using Eto.Forms;
 
     public class SpecifyFeaturesForm : Form
     {
@@ -42,16 +41,16 @@
 
             formLayout.BeginVertical();
             formLayout.BeginHorizontal();
-            formLayout.Add(mainRow.viewForm);
+            formLayout.Add(mainRow.ViewForm);
             formLayout.EndHorizontal();
             formLayout.EndVertical();
 
             Content = formLayout;
         }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
         }
-
     }
 }

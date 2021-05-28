@@ -16,6 +16,7 @@
             };
             return showHideMinor;
         }
+
         public static Button GetUpdate(int buttonWidth, int buttonHeight)
         {
             var updateButton = new Button()

@@ -43,23 +43,20 @@
                             element.GetProperty("description").ToString(),
                             int.Parse(element.GetProperty("nodes").ToString()),
                             int.Parse(element.GetProperty("ways").ToString()),
-                            true, parent
-                        );
+                            true, parent);
                         allDataInHierarchy[parent].Add(subfeature);
                     }
                 }
             }
-
 
             foreach (var primaryFeature in allDataInHierarchy)
             {
                 primaryFeature.Value.Sort();
                 var description = $"Items that are specified as {primaryFeature.Key.Name}, but without more specific subfeature information";
                 primaryFeature.Value.Insert(0, new OSMSelectableFeature(
-                    "yes", "UNTAGGED", description, 0, 0, false, primaryFeature.Key
-                ));
+                    "yes", "UNTAGGED", description, 0, 0, false, primaryFeature.Key));
             }
-                
+
             return allDataInHierarchy;
         }
 

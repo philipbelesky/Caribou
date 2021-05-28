@@ -25,7 +25,7 @@
 
         private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
         {
-            var parentItem = new TreeGridItem  
+            var parentItem = new TreeGridItem
             {
                 Values = parentFeature.GetColumnData()
             };

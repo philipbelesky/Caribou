@@ -5,16 +5,16 @@
     using Caribou.Models;
     using Eto.Forms;
 
-    /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
+    /// <summary>The 'main' layout for feature/subfeature selection within the window.</summary>
     public class MainRow
     {
         private TreeGridItemCollection data;
-        public TreeGridView viewForm;
+        public TreeGridView ViewForm;
 
         public MainRow()
         {
             this.data = SelectionCollection.GetCollection(false);
-            this.viewForm = GetLayout();
+            this.ViewForm = GetLayout();
         }
 
         private void ToggleSelectedStatus(TreeGridItem item)
@@ -26,7 +26,8 @@
             {
                 subItem.SetValue(1, newValue);
             }
-            viewForm.ReloadItem(item); // Also affects children
+
+            ViewForm.ReloadItem(item); // Also affects children
         }
 
         private void OpenWikiLink(TreeGridItem item)
@@ -46,7 +47,7 @@
             {
                 ToggleSelectedStatus(e.Item as TreeGridItem);
             }
-            if (e.Column == 5)
+            else if (e.Column == 5)
             {
                 OpenWikiLink(e.Item as TreeGridItem);
             }

@@ -42,8 +42,9 @@
             {
                 return $"https://wiki.openstreetmap.org/wiki/Key:{this.ThisType}";
             }
+
             return $"https://wiki.openstreetmap.org/wiki/Tag:{this.ParentType}={this.ThisType}";
-        } 
+        }
 
         private string GetCount(int countType)
         {
@@ -72,10 +73,10 @@
 
         public bool IsObscure()
         {
-            return (this.NodeCount < 1000 && this.WayCount < 1000);
+            return this.NodeCount < 1000 && this.WayCount < 1000;
         }
 
-        // Used in the UI form to sort by alphabetical 
+        // Used in the UI form to sort by alphabetical
         public int CompareTo(OSMSelectableFeature other)
         {
             return this.Name.CompareTo(other.Name);
