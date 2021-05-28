@@ -96,16 +96,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="CaribouAsyncComponent.cs" />
-    <Compile Include="Resources\HardcodedData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HardcodedData.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Icons.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Icons.resx</DependentUpon>
-    </Compile>
     <Compile Include="WorkerInstance.cs" />
     <Compile Include="Models\Coord.cs" />
     <Compile Include="Models\ParseRequest.cs" />
@@ -161,17 +151,9 @@
     <None Include="Resources\TagData.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Icons.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\HardcodedData.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HardcodedData.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

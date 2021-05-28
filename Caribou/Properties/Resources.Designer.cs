@@ -73,9 +73,29 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons_buildings1 {
+            get {
+                object obj = ResourceManager.GetObject("icons_buildings1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons_nodes {
             get {
                 object obj = ResourceManager.GetObject("icons_nodes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons_nodes1 {
+            get {
+                object obj = ResourceManager.GetObject("icons_nodes1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,6 +113,16 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons_plugin1 {
+            get {
+                object obj = ResourceManager.GetObject("icons_plugin1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons_select {
             get {
                 object obj = ResourceManager.GetObject("icons_select", resourceCulture);
@@ -103,9 +133,29 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons_select1 {
+            get {
+                object obj = ResourceManager.GetObject("icons_select1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons_ways {
             get {
                 object obj = ResourceManager.GetObject("icons_ways", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons_ways1 {
+            get {
+                object obj = ResourceManager.GetObject("icons_ways1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
