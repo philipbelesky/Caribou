@@ -47,7 +47,7 @@
             {
                 ToggleSelectedStatus(e.Item as TreeGridItem);
             }
-            if (e.Column == 5)
+            else if (e.Column == 5)
             {
                 OpenWikiLink(e.Item as TreeGridItem);
             }

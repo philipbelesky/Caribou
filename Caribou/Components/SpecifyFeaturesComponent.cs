@@ -23,7 +23,7 @@
         private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
 
         public SpecifyFeaturesComponent() : base("Specify Features/SubFeatures", "Specify Features",
-            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM") 
+            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM")
         {
         }
 
