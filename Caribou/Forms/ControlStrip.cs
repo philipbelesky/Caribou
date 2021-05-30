@@ -26,7 +26,7 @@
             return label;
         }
 
-        public static Button GetUpdate(int buttonWidth, int buttonHeight)
+        public static Button GetUpdate(int buttonWidth, int buttonHeight, Action updateAndClose)
         {
             var updateButton = new Button()
             {
@@ -34,11 +34,11 @@
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            updateButton.Click += (sender, e) => { UpdateAndClose(); };
+            updateButton.Click += (sender, e) => { updateAndClose(); };
             return updateButton;
         }
 
-        public static Button GetCancel(int buttonWidth, int buttonHeight)
+        public static Button GetCancel(int buttonWidth, int buttonHeight, Action cancelAndClose)
         {
             var cancelButton = new Button()
             {
@@ -46,18 +46,8 @@
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            cancelButton.Click += (sender, e) => { CancelAndClose(); };
+            cancelButton.Click += (sender, e) => { cancelAndClose(); };
             return cancelButton;
-        }
-
-        private static void UpdateAndClose()
-        {
-            Application.Instance.Quit();
-        }
-
-        private static void CancelAndClose()
-        {
-            Application.Instance.Quit();
         }
     }
 }

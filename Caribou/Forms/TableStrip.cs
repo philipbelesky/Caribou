@@ -8,12 +8,12 @@
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
     public class TableStrip
     {
-        private TreeGridItemCollection data;
+        public TreeGridItemCollection data;
         public TreeGridView viewForm;
 
-        public TableStrip()
+        public TableStrip(TreeGridItemCollection selectionState)
         {
-            this.data = SelectionCollection.GetCollection(false);
+            this.data = selectionState;
             this.viewForm = GetLayout();
         }
 
@@ -26,6 +26,7 @@
             {
                 subItem.SetValue(1, newValue);
             }
+
             viewForm.ReloadItem(item); // Also affects children
         }
 

@@ -27,17 +27,22 @@
         {
         }
 
+        public virtual string GetSubComponentText()
+        {
+            return "v" + GetPluginVersion();
+        }
+
         // Adds a message under each component while debugging; useful to distinguish between components from published vs development sources
 #if DEBUG
         public override bool Read(GH_IReader reader)
         {
-            this.Message = "v" + GetPluginVersion();
+            this.Message = GetSubComponentText();
             return base.Read(reader);
         }
 
         public override void AddedToDocument(GH_Document document)
         {
-            this.Message = "v" + GetPluginVersion();
+            this.Message = GetSubComponentText();
             base.AddedToDocument(document);
         }
 #endif

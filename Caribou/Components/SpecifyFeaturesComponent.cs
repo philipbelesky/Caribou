@@ -10,12 +10,15 @@
     using Grasshopper.GUI.Canvas;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Attributes;
+    using Caribou.Forms;
+    using System.Collections.Generic;
 
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : CaribouComponent
     {
-        private string textOfKeyValueSelected = "TODO key:value";
-        private SpecifyFeaturesForm pickerForm = new SpecifyFeaturesForm();
+        private SpecifyFeaturesForm pickerForm;
+        private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
+        private List<string> selectionOutput = new List<string>();
 
         public SpecifyFeaturesComponent() : base("Specify Features/SubFeatures", "Specify Features",
             "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM") 
@@ -31,6 +34,94 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
+            this.pickerForm = new SpecifyFeaturesForm(selectionState);
+            if (this.selectionOutput.Count == 0)
+            {
+                this.Message = "\u00A0Double Click to Select&nbsp;";
+            }
+            else
+            {
+                var spacedKeyValues = string.Join(",", this.selectionOutput.ToArray());
+                var message = LineSpaceKeyValues(spacedKeyValues, this.selectionOutput.Count);
+                this.Message = "\u00A0" + message + "\u00A0"; 
+            }
+
+            da.SetDataList(0, selectionOutput); // Update downstream text
+        }
+
+        private void OpenFeaturePicker()
+        {
+            int x = (int)Mouse.Position.X + 20;
+            int y = (int)Mouse.Position.Y - 160;
+            this.pickerForm.Location = new Eto.Drawing.Point(x, y);
+            this.pickerForm.Closed += (sender, e) => { HandlePickerClose(); };
+            this.pickerForm.Show();
+        }
+
+        private void HandlePickerClose()
+        {
+            this.selectionState = this.pickerForm.mainRow.data;
+            this.selectionOutput = GetSelectedKeyValuesFromForm();
+            this.ExpireSolution(true); // Recalculate output
+        }
+
+        private List<string> GetSelectedKeyValuesFromForm()
+        {
+            var selectedKVs = new List<string>();
+            for (var i = 0; i < this.selectionState.Count; i++)
+            {
+                var item = this.selectionState[i] as TreeGridItem;
+                SelectionCollection.GetKeyValueTextIfSelected(item, ref selectedKVs);
+            }
+
+            return selectedKVs;
+        }
+
+
+        // Affordances for sub-menu text
+
+        //public override bool Read(GH_IReader reader) // Add message below component
+        //{
+        //    this.Message = GetSelectedKeyValuesFromForm();
+        //    return base.Read(reader);
+        //}
+
+        //public override void AddedToDocument(GH_Document document) // Add message below component
+        //{
+        //    this.Message = GetSelectedKeyValuesFromForm();
+        //    base.AddedToDocument(document);
+        //}
+
+        // Affordances for right-click menu and double click shortcut
+
+        public static string LineSpaceKeyValues(string message, int tagCount)
+        {
+            if (tagCount <= 3)
+            {
+                return message;
+            }
+
+            string[] individualKeyVals = message.Split(',');
+            int characterCounter = 0;
+            string lineSpacedKeyVals = "";
+
+            for (int i = 0; i < individualKeyVals.Length; i++)
+            {
+                lineSpacedKeyVals += individualKeyVals[i] + " ";
+                characterCounter += individualKeyVals[i].Length;
+
+                if (characterCounter > 30) // Linelength
+                {
+                    lineSpacedKeyVals += "\n";
+                    characterCounter = 0;
+                }
+            }
+            return lineSpacedKeyVals;
+        }
+
+        private void OpenFeaturePickerFromMenu(object sender, EventArgs e)
+        {
+            OpenFeaturePicker();
         }
 
         public override void CreateAttributes()
@@ -54,31 +145,6 @@
         {
             Menu_AppendItem(menu, "Select Features", this.OpenFeaturePickerFromMenu, null, true, false);
             Menu_AppendSeparator(menu);
-        }
-
-        private void OpenFeaturePickerFromMenu(object sender, EventArgs e)
-        {
-            OpenFeaturePicker();
-        }
-
-        private void OpenFeaturePicker()
-        {
-            int x = (int)Mouse.Position.X + 20;
-            int y = (int)Mouse.Position.Y - 160;
-            this.pickerForm.Location = new Eto.Drawing.Point(x, y);
-            this.pickerForm.Show();
-        }
-
-        public override bool Read(GH_IReader reader) // Add message below component
-        {
-            this.Message = textOfKeyValueSelected;
-            return base.Read(reader);
-        }
-
-        public override void AddedToDocument(GH_Document document) // Add message below component
-        {
-            this.Message = textOfKeyValueSelected;
-            base.AddedToDocument(document);
         }
 
         public override Guid ComponentGuid => new Guid("cc8d82ba-f381-46ee-8014-7e2d1bff824c");
