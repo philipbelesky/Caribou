@@ -31,7 +31,7 @@
 
         private void OpenWikiLink(TreeGridItem item)
         {
-            var url = item.Values[7] as string;
+            var url = item.Values[6] as string;
             System.Diagnostics.Process.Start(url);
         }
 
@@ -87,7 +87,8 @@
                 },
                 Resizable = false,
                 Sortable = true,
-                AutoSize = true,
+                AutoSize = false,
+                Width = 165, // Don't autosize; hides the arrow buttons on macOS
             };
             featureSelect.Columns.Add(titleColumn);
 
@@ -125,15 +126,15 @@
             };
             featureSelect.Columns.Add(wayColumn);
 
-            //var keyValueColumn = new GridColumn()
-            //{
-            //    HeaderText = "K:V Format",
-            //    DataCell = new TextBoxCell(4),
-            //    Resizable = false,
-            //    Sortable = true,
-            //    AutoSize = true,
-            //};
-            //featureSelect.Columns.Add(keyValueColumn);
+            var keyValueColumn = new GridColumn()
+            {
+                HeaderText = "K:V Format",
+                DataCell = new TextBoxCell(4),
+                Resizable = false,
+                Sortable = true,
+                AutoSize = true,
+            };
+            featureSelect.Columns.Add(keyValueColumn);
 
             var linkColumn = new GridColumn()
             {

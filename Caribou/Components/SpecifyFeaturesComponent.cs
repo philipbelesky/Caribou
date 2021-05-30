@@ -15,7 +15,7 @@
     public class SpecifyFeaturesComponent : CaribouComponent
     {
         private string textOfKeyValueSelected = "TODO key:value";
-        private SpecifyFeaturesForm pickerForm;
+        private SpecifyFeaturesForm pickerForm = new SpecifyFeaturesForm();
 
         public SpecifyFeaturesComponent() : base("Specify Features/SubFeatures", "Specify Features",
             "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM") 
@@ -63,12 +63,9 @@
 
         private void OpenFeaturePicker()
         {
-            this.pickerForm = new SpecifyFeaturesForm();
             int x = (int)Mouse.Position.X + 20;
             int y = (int)Mouse.Position.Y - 160;
             this.pickerForm.Location = new Eto.Drawing.Point(x, y);
-            this.pickerForm.Topmost = true; // Put form atop Grasshopper (MacOS)
-
             this.pickerForm.Show();
         }
 

@@ -10,7 +10,7 @@
     public class SpecifyFeaturesForm : Form
     {
         private int windowWidth = 1000;
-        private int windowHeight = 920;
+        private int windowHeight = 980;
         private int buttonHeight = 40;
         private int buttonWidth = 200;
         private int padding = 10;
@@ -20,6 +20,7 @@
             this.Padding = padding;
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
+            this.Topmost = true; // Put form atop Grasshopper (MacOS)
 
             var mainRow = new TableStrip();
 
@@ -27,7 +28,7 @@
             {
                 Padding = 10,
                 Spacing = new Size(10, 10),
-                Size = new Size(windowWidth, windowHeight),
+                Size = new Size(windowWidth, windowHeight),                
             };
 
             formLayout.BeginVertical();
@@ -49,10 +50,5 @@
 
             Content = formLayout;
         }
-        protected override void OnSizeChanged(EventArgs e)
-        {
-            base.OnSizeChanged(e);
-        }
-
     }
 }
