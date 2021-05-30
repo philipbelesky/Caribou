@@ -18,7 +18,6 @@
         public SpecifyFeaturesForm()
         {
             this.Padding = padding;
-
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
 

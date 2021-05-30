@@ -5,6 +5,7 @@
     using Caribou.Properties;
     using Eto.Forms;
     using GH_IO.Serialization;
+    using Rhino.UI;
     using Grasshopper.GUI;
     using Grasshopper.GUI.Canvas;
     using Grasshopper.Kernel;
@@ -63,10 +64,10 @@
         private void OpenFeaturePicker()
         {
             this.pickerForm = new SpecifyFeaturesForm();
-            var mousePos = Mouse.Position;
-            int x = (int)mousePos.X + 20;
-            int y = (int)mousePos.Y - 160;
+            int x = (int)Mouse.Position.X + 20;
+            int y = (int)Mouse.Position.Y - 160;
             this.pickerForm.Location = new Eto.Drawing.Point(x, y);
+            this.pickerForm.Topmost = true; // Put form atop Grasshopper (MacOS)
 
             this.pickerForm.Show();
         }
