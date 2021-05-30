@@ -18,6 +18,7 @@
     public class SpecifyFeaturesComponent : CaribouComponent
     {
         private SpecifyFeaturesForm pickerForm;
+        private bool shouldShowFormOnAdded = true;
         private List<string> selectionOutput = new List<string>();
         private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
 
@@ -35,7 +36,6 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-            this.pickerForm = new SpecifyFeaturesForm(selectionState);
             if (this.selectionOutput.Count == 0)
             {
                 this.Message = "\u00A0Double Click to Select\u00A0\u00A0"; // Spacing to ensure in black bit
@@ -52,8 +52,12 @@
 
         private void OpenFeaturePicker()
         {
-            int x = (int)Mouse.Position.X + 20;
-            int y = (int)Mouse.Position.Y - 160;
+            int x = (int)Mouse.Position.X - 5;
+            int y = (int)Mouse.Position.Y - 40;
+            if (this.pickerForm == null)
+            {
+                this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
+            }
             this.pickerForm.Location = new Eto.Drawing.Point(x, y);
             this.pickerForm.Closed += (sender, e) => { HandlePickerClose(); };
             this.pickerForm.Show();
@@ -90,24 +94,24 @@
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
             var csvSelection = reader.GetString("selectionSerialised");
-            this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection);
-            this.selectionOutput = GetSelectedKeyValuesFromForm();
+            if (csvSelection != null)
+            {
+                this.shouldShowFormOnAdded = false;
+                this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection);
+                this.selectionOutput = GetSelectedKeyValuesFromForm();
+            }
             return base.Read(reader);
         }
 
-        // Affordances for sub-menu text
+        public override void AddedToDocument(GH_Document document)
+        {
+            if (this.shouldShowFormOnAdded) // We only want to show the form on component-placement...
+            {
+                OpenFeaturePicker(); // but AddedToDocument() fires on file loads
+            }
 
-        //public override bool Read(GH_IReader reader) // Add message below component
-        //{
-        //    this.Message = GetSelectedKeyValuesFromForm();
-        //    return base.Read(reader);
-        //}
-
-        //public override void AddedToDocument(GH_Document document) // Add message below component
-        //{
-        //    this.Message = GetSelectedKeyValuesFromForm();
-        //    base.AddedToDocument(document);
-        //}
+            base.AddedToDocument(document);
+        }
 
         // Affordances for right-click menu and double click shortcut
 
