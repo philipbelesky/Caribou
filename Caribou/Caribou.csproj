@@ -106,7 +106,7 @@
     <Compile Include="Forms\ControlStrip.cs" />
     <Compile Include="Forms\TableStrip.cs" />
     <Compile Include="Forms\SelectionCollection.cs" />
-    <Compile Include="Models\OSMSelectableFeature.cs" />
+    <Compile Include="Forms\OSMSelectableFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eto.Forms">
