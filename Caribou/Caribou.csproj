@@ -103,8 +103,8 @@
     <Compile Include="Models\OSMDefinedFeatures.cs" />
     <Compile Include="Processing\TranslateToXYViaLib.cs" />
     <Compile Include="Forms\SpecifyFeaturesForm.cs" />
-    <Compile Include="Forms\BottomRow.cs" />
-    <Compile Include="Forms\MainRow.cs" />
+    <Compile Include="Forms\ControlStrip.cs" />
+    <Compile Include="Forms\TableStrip.cs" />
     <Compile Include="Forms\SelectionCollection.cs" />
     <Compile Include="Models\OSMSelectableFeature.cs" />
   </ItemGroup>

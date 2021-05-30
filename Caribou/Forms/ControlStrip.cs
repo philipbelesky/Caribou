@@ -4,7 +4,7 @@
     using Eto.Forms;
 
     /// <summary>The bottom row of the window containing the button types.</summary>
-    public static class BottomRow
+    public static class ControlStrip
     {
         public static CheckBox GetHider(int buttonHeight)
         {
@@ -12,10 +12,10 @@
             {
                 Text = "Hide SubFeatures with very low counts",
                 Checked = true,
-                Height = buttonHeight,
             };
             return showHideMinor;
         }
+
         public static Button GetUpdate(int buttonWidth, int buttonHeight)
         {
             var updateButton = new Button()

@@ -6,12 +6,12 @@
     using Eto.Forms;
 
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
-    public class MainRow
+    public class TableStrip
     {
         private TreeGridItemCollection data;
         public TreeGridView viewForm;
 
-        public MainRow()
+        public TableStrip()
         {
             this.data = SelectionCollection.GetCollection(false);
             this.viewForm = GetLayout();

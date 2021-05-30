@@ -10,7 +10,7 @@
     public class SpecifyFeaturesForm : Form
     {
         private int windowWidth = 1000;
-        private int windowHeight = 1020;
+        private int windowHeight = 920;
         private int buttonHeight = 40;
         private int buttonWidth = 200;
         private int padding = 10;
@@ -22,21 +22,22 @@
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
 
-            var mainRow = new MainRow();
+            var mainRow = new TableStrip();
 
             var formLayout = new DynamicLayout()
             {
                 Padding = 10,
                 Spacing = new Size(10, 10),
+                Size = new Size(windowWidth, windowHeight),
             };
 
             formLayout.BeginVertical();
             formLayout.BeginHorizontal();
-            formLayout.Add(BottomRow.GetHider(buttonHeight));
+            formLayout.Add(ControlStrip.GetHider(buttonHeight));
             formLayout.Add(null, true);
-            formLayout.AddAutoSized(BottomRow.GetUpdate(buttonWidth, buttonHeight));
+            formLayout.AddAutoSized(ControlStrip.GetUpdate(buttonWidth, buttonHeight));
             formLayout.Add(new Label() { Width = 10 }); // Spacer
-            formLayout.AddAutoSized(BottomRow.GetCancel(buttonWidth, buttonHeight));
+            formLayout.AddAutoSized(ControlStrip.GetCancel(buttonWidth, buttonHeight));
             formLayout.EndHorizontal();
             formLayout.EndVertical();
 
