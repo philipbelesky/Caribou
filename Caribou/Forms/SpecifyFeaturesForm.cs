@@ -33,7 +33,8 @@
 
             formLayout.BeginVertical();
             formLayout.BeginHorizontal();
-            formLayout.Add(ControlStrip.GetHider(buttonHeight));
+            formLayout.Add(ControlStrip.GetHider());
+            formLayout.Add(ControlStrip.GetCheckLabel());
             formLayout.Add(null, true);
             formLayout.AddAutoSized(ControlStrip.GetUpdate(buttonWidth, buttonHeight));
             formLayout.Add(new Label() { Width = 10 }); // Spacer

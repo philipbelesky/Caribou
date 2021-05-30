@@ -6,14 +6,24 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider(int buttonHeight)
+        public static CheckBox GetHider()
         {
             var showHideMinor = new CheckBox()
             {
-                Text = "Hide SubFeatures with very low counts",
                 Checked = true,
             };
             return showHideMinor;
+        }
+
+        // On MacOS having the label inline with checkbox creates an alignment issue
+        // TODO: set clicks on this to set the status of the checkbox
+        public static Label GetCheckLabel()
+        {
+            var label = new Label()
+            {
+                Text = " Hide SubFeatures with very low counts",
+            };
+            return label;
         }
 
         public static Button GetUpdate(int buttonWidth, int buttonHeight)
