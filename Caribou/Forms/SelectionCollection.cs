@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Forms
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Caribou.Data;
     using Caribou.Models;
@@ -9,6 +10,8 @@
     /// <summary>Translates from the Feature/SubFeature datasets into the UI elements in the view.</summary>
     public static class SelectionCollection
     {
+        private static int keyValueIndex = 4;
+
         public static TreeGridItemCollection GetCollection(bool includeObscure)
         {
             var itemsForCollection = new List<TreeGridItem>();
@@ -23,10 +26,32 @@
             return treeCollection;
         }
 
+        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
+        {
+            var parentItem = new TreeGridItem
+            {
+                Values = parentFeature.GetColumnData()
+            };
+
+            foreach (var child in childFeatures)
+            {
+                if (!includeObscure && child.IsObscure() && child.ShowCounts)
+                {
+                    continue;
+                }
+
+                var childItem = new TreeGridItem
+                {
+                    Values = child.GetColumnData()
+                };
+                parentItem.Children.Add(childItem);
+            }
+
+            return parentItem;
+        }
+
         public static void GetKeyValueTextIfSelected(TreeGridItem item, ref List<string> keyvalues)
         {
-            var keyValueIndex = 4;
-
             var childSelections = new List<string>();
             for (var j = 0; j < item.Children.Count; j++)
             {
@@ -52,28 +77,37 @@
             return;
         }
 
-        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
+        public static TreeGridItemCollection DeserialiseKeyValues(string csvSelection)
         {
-            var parentItem = new TreeGridItem
-            {
-                Values = parentFeature.GetColumnData()
-            };
+            // Need to set selection state back from list of keyValue strings that persisted
+            var newSelectionState = SelectionCollection.GetCollection(false);
+            var csvItems = csvSelection.Split(',').ToList();
 
-            foreach (var child in childFeatures)
+            foreach (TreeGridItem item in newSelectionState)
             {
-                if (!includeObscure && child.IsObscure() && child.ShowCounts)
+                var itemKeyVal = item.Values[keyValueIndex].ToString();
+                if (csvItems.Contains(itemKeyVal))
                 {
-                    continue;
+                    item.Values[1] = "True";
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        childItem.Values[1] = "True";
+                    }
                 }
-
-                var childItem = new TreeGridItem
+                else
                 {
-                    Values = child.GetColumnData()
-                };
-                parentItem.Children.Add(childItem);
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        var childItemKeyVal = childItem.Values[keyValueIndex].ToString();
+                        if (csvItems.Contains(childItemKeyVal))
+                        {
+                            childItem.Values[1] = "True";
+                        }
+                    }
+                }
             }
 
-            return parentItem;
+            return newSelectionState;
         }
     }
 }

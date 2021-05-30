@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Components
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
     using Caribou.Properties;
     using Eto.Forms;
@@ -17,8 +18,8 @@
     public class SpecifyFeaturesComponent : CaribouComponent
     {
         private SpecifyFeaturesForm pickerForm;
-        private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
         private List<string> selectionOutput = new List<string>();
+        private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
 
         public SpecifyFeaturesComponent() : base("Specify Features/SubFeatures", "Specify Features",
             "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM") 
@@ -37,13 +38,13 @@
             this.pickerForm = new SpecifyFeaturesForm(selectionState);
             if (this.selectionOutput.Count == 0)
             {
-                this.Message = "\u00A0Double Click to Select&nbsp;";
+                this.Message = "\u00A0Double Click to Select\u00A0\u00A0"; // Spacing to ensure in black bit
             }
             else
             {
                 var spacedKeyValues = string.Join(",", this.selectionOutput.ToArray());
                 var message = LineSpaceKeyValues(spacedKeyValues, this.selectionOutput.Count);
-                this.Message = "\u00A0" + message + "\u00A0"; 
+                this.Message = "\u00A0" + message + "\u00A0";
             }
 
             da.SetDataList(0, selectionOutput); // Update downstream text
@@ -77,6 +78,22 @@
             return selectedKVs;
         }
 
+        // To persist the selection variable we need to override Read and Write
+
+        public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+        {
+            var csvSelection = string.Join(",", this.selectionOutput.ToArray());
+            writer.SetString("selectionSerialised", csvSelection);
+            return base.Write(writer);
+        }
+
+        public override bool Read(GH_IO.Serialization.GH_IReader reader)
+        {
+            var csvSelection = reader.GetString("selectionSerialised");
+            this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection);
+            this.selectionOutput = GetSelectedKeyValuesFromForm();
+            return base.Read(reader);
+        }
 
         // Affordances for sub-menu text
 
@@ -107,12 +124,12 @@
 
             for (int i = 0; i < individualKeyVals.Length; i++)
             {
-                lineSpacedKeyVals += individualKeyVals[i] + " ";
+                lineSpacedKeyVals += individualKeyVals[i] + ",";
                 characterCounter += individualKeyVals[i].Length;
 
                 if (characterCounter > 30) // Linelength
                 {
-                    lineSpacedKeyVals += "\n";
+                    lineSpacedKeyVals += "\u00A0\u00A0\n\u00A0";
                     characterCounter = 0;
                 }
             }
@@ -126,12 +143,12 @@
 
         public override void CreateAttributes()
         {
-            m_attributes = new MySpecialComponentAttributes(this); // Add custom attrributes so double-clicks open form
+            m_attributes = new SpecifyFeaturesAttributes(this); // Add custom attrributes so double-clicks open form
         }
 
-        private class MySpecialComponentAttributes : GH_ComponentAttributes
+        private class SpecifyFeaturesAttributes : GH_ComponentAttributes
         {
-            public MySpecialComponentAttributes(IGH_Component component)
+            public SpecifyFeaturesAttributes(IGH_Component component)
               : base(component) { }
 
             public override GH_ObjectResponse RespondToMouseDoubleClick(GH_Canvas sender, GH_CanvasMouseEvent e)
