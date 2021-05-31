@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Caribou.Properties;
     using Grasshopper.Kernel;
 
     /// <summary>Provides affordances for specifying arbitrary key:value pairings to be found.</summary>

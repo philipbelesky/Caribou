@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Text.Json;
+    // using System.Text.Json;
     using Caribou.Models;
     using Caribou.Properties;
 
@@ -29,25 +29,25 @@
             }
 
             var docString = Encoding.UTF8.GetString(Resources.SubFeatureData);
-            using (JsonDocument document = JsonDocument.Parse(docString))
-            {
-                JsonElement root = document.RootElement;
-                foreach (JsonElement element in root.EnumerateArray())
-                {
-                    if (element.TryGetProperty("feature", out JsonElement feature))
-                    {
-                        var nameID = element.GetProperty("subfeature").ToString();
-                        var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
+            //using (JsonDocument document = JsonDocument.Parse(docString))
+            //{
+            //    JsonElement root = document.RootElement;
+            //    foreach (JsonElement element in root.EnumerateArray())
+            //    {
+            //        if (element.TryGetProperty("feature", out JsonElement feature))
+            //        {
+            //            var nameID = element.GetProperty("subfeature").ToString();
+            //            var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
 
-                        OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, null,
-                            element.GetProperty("description").ToString(),
-                            int.Parse(element.GetProperty("nodes").ToString()),
-                            int.Parse(element.GetProperty("ways").ToString()),
-                            true, parent);
-                        allDataInHierarchy[parent].Add(subfeature);
-                    }
-                }
-            }
+            //            OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, null,
+            //                element.GetProperty("description").ToString(),
+            //                int.Parse(element.GetProperty("nodes").ToString()),
+            //                int.Parse(element.GetProperty("ways").ToString()),
+            //                true, parent);
+            //            allDataInHierarchy[parent].Add(subfeature);
+            //        }
+            //    }
+            //}
 
             foreach (var primaryFeature in allDataInHierarchy)
             {
