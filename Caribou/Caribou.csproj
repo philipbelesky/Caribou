@@ -13,7 +13,6 @@
   <!--NUGET-->
   <ItemGroup>
     <PackageReference Include="Grasshopper" Version="6.16.19190.7001" IncludeAssets="compile;build" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <!--LOCALLY REFERENCED ASSEMBLIES-->

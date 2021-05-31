@@ -8,7 +8,8 @@
     /// </summary>
     public class MessagesWrapper
     {
-        public List<(Level, string)> Messages { get; }
+        public List<Dictionary<Level, string>> Messages { get; }
+
         public enum Level
         {
             Warning,
@@ -18,22 +19,31 @@
 
         public MessagesWrapper()
         {
-            this.Messages = new List<(Level, string)>();
+            this.Messages = new List<Dictionary<Level, string>>();
         }
 
         public void AddWarning(string msg)
         {
-            this.Messages.Add((Level.Warning, msg));
+            var item = new Dictionary<Level, string> {
+                { Level.Warning, msg }
+            };
+            this.Messages.Add(item);
         }
 
         public void AddRemark(string msg)
         {
-            this.Messages.Add((Level.Remark, msg));
+            var item = new Dictionary<Level, string> {
+                { Level.Remark, msg }
+            };
+            this.Messages.Add(item);
         }
 
         public void AddError(string msg)
         {
-            this.Messages.Add((Level.Error, msg));
+            var item = new Dictionary<Level, string> {
+                { Level.Error, msg }
+            };
+            this.Messages.Add(item);
         }
     }
 }
