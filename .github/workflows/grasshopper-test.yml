@@ -43,4 +43,4 @@ jobs:
 
     # Run the actual tests
     - name: Run Unit Tests
-      run: vstest.console $env:Tests_Name\bin\Debug\$env:Tests_Name.dll
+      run: vstest.console $env:Tests_Name\bin\Debug\net45\$env:Tests_Name.dll
