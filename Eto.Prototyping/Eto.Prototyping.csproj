@@ -9,20 +9,16 @@
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
     <StartupObject></StartupObject>
-
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Text.Encoding" Version="4.3.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <Reference Include="Caribou">
+      <HintPath>..\Caribou\bin\ForTests\Caribou.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Caribou\Caribou.csproj">
-    </ProjectReference>
+    <Reference Include="Eto, Version=2.5.0.0, Culture=neutral, PublicKeyToken=552281e97c755530" />
   </ItemGroup>
+
 </Project>

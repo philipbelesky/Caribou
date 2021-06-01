@@ -1,6 +1,7 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 using System;
+using Caribou.Forms;
 using Caribou.Components;
 
 namespace Eto.Prototyping
@@ -10,8 +11,17 @@ namespace Eto.Prototyping
         [STAThread]
         static void Main(string[] args)
         {
-            // new Application(Eto.Platform.Detect).Run(new MainForm());
-            new Application(Eto.Platform.Detect).Run(new SpecifyFeaturesForm());
+            new Application().Run(new MyForm());
+        }
+    }
+
+    public class MyForm : Form
+    {
+        public MyForm()
+        {
+            Title = "My Cross-Platform App";
+            ClientSize = new Size(200, 200);
+            Content = new Label { Text = "Hello World!" };
         }
     }
 }
