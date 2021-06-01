@@ -11,17 +11,9 @@ namespace Eto.Prototyping
         [STAThread]
         static void Main(string[] args)
         {
-            new Application().Run(new MyForm());
-        }
-    }
-
-    public class MyForm : Form
-    {
-        public MyForm()
-        {
-            Title = "My Cross-Platform App";
-            ClientSize = new Size(200, 200);
-            Content = new Label { Text = "Hello World!" };
+            var mockSelectionState = SelectionCollection.GetCollection(false);
+            // Note that this only works on Windows; for macOS seems to crash unless using Eto 2.5.11+. 
+            new Application(Eto.Platforms.Wpf).Run(new SpecifyFeaturesForm(mockSelectionState));
         }
     }
 }
