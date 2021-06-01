@@ -49,7 +49,7 @@
   <!--Make Unit-Testable DLLs-->
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
     <PostBuildEvent>
-      xcopy "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou\bin\ForTests\Caribou.dll" /Y
+      echo f | xcopy "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou\bin\ForTests\Caribou.dll" /y /i
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSUnixLike())">
