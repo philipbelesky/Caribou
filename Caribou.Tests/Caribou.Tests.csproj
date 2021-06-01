@@ -13,6 +13,10 @@
     <PackageReference Include="coverlet.collector" Version="1.3.0" />
   </ItemGroup>
 
+  <!-- Both the project and assembly reference seem to be required for tests to not skip -->
+  <ItemGroup>
+    <ProjectReference Include="..\Caribou\Caribou.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Caribou">
       <HintPath>..\Caribou\bin\ForTests\Caribou.dll</HintPath>
