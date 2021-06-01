@@ -24,7 +24,7 @@
         public virtual Uri PluginURL => new Uri("https://github.com/philipbelesky/caribou/");
 
         // GHB note: if using the provided "About" component this File is output there
-        public virtual Uri ChangeLogURL => new Uri("https://github.com/philipbelesky/Caribou/blob/main/CHANGELOG.md");
+        public virtual Uri ChangeLogURL => new Uri("https://raw.githubusercontent.com/philipbelesky/Caribou/main/CHANGELOG.md");
 
         // GHB note: if using the provided "About" component this URL is parsed there
         public virtual Uri ReleasesFeed => new Uri("https://github.com/philipbelesky/caribou/releases.atom");

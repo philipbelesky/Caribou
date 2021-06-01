@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Set the BuildPlatform property to the Eto platform you wish to build for.
+    The default is the platform you are building on.
+    Valid values: Wpf, Windows, Mac64, XamMac2, Gtk, Direct2D
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <!-- Must mirror dependencies and versions in Caribou main, plus provide platform UI assemblies -->
+  <ItemGroup>
+    <PackageReference Include="Eto.Forms" Version="2.5.0" />
+    <PackageReference Include="Eto.Platform.Wpf" Version="2.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Eto.Platform.Mac64" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Caribou">
+      <HintPath>..\Caribou\bin\ForTests\Caribou.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

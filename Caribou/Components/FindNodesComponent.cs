@@ -18,7 +18,7 @@
         {
             pManager.AddPointParameter("Nodes", "N", "Nodes; e.g. points that describe a location of interest", GH_ParamAccess.tree);
             pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Report", "R", reportDescription, GH_ParamAccess.tree);
+            pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
         }
 
         public override Guid ComponentGuid => new Guid("912176ea-061e-2b5b-9642-8417372d6371");

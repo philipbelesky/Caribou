@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Caribou.Properties;
     using Grasshopper.Kernel;
 
     /// <summary>Provides affordances for specifying arbitrary key:value pairings to be found.</summary>
@@ -29,6 +28,6 @@
 
     //    public override Guid ComponentGuid => new Guid("19eb5d29-d1d1-43bf-aa40-8d9694c03481");
 
-    //    protected override System.Drawing.Bitmap Icon => Resources.icons_select;
+    //    protected override System.Drawing.Bitmap Icon => Resources.Icons.icons_select;
     //}
 }

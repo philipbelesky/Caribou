@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -74,6 +75,7 @@
         private List<OSMMetaData> RequestsThatWantItem(string nodeId, Dictionary<string, string> tagsOfFoundNode)
         {
             var matches = new List<OSMMetaData>();
+            var ci = CultureInfo.InvariantCulture;
 
             if (string.IsNullOrEmpty(nodeId) || this.FoundItemIds.Contains(nodeId))
             {
@@ -98,7 +100,7 @@
                     var testValue = tagsOfFoundNode[requestedKey.ThisType];
                     // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
                     // We don't care about case for matching values, e.g. "Swanston St" vs "swanston st"
-                    if (testValue != null && testValue.ToLower() == requestedValue.ToLower())
+                    if (testValue != null && testValue.ToLower(ci) == requestedValue.ToLower(ci))
                     {
                         matches.Add(request);
                     }

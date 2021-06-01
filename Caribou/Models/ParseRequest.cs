@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Caribou.Components;
 
@@ -12,7 +13,7 @@
     public struct ParseRequest
     {
         public List<OSMMetaData> Requests;
-        const char splitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
+        public const char SplitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
 
         public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
         {
@@ -34,7 +35,7 @@
 
                 for (var i = 0; i < lines.Length; i++)
                 {
-                    cleanedGhInput.Add(lines[i].Trim().ToLower());
+                    cleanedGhInput.Add(lines[i].Trim().ToLower(CultureInfo.InvariantCulture));
                 }
             }
 
@@ -68,10 +69,10 @@
                 return null;
             }
 
-            var osmKey = inputString.Trim().Split(splitChar)[0];
-            if (inputString.Trim().Split(splitChar).Length >= 2)
+            var osmKey = inputString.Trim().Split(SplitChar)[0];
+            if (inputString.Trim().Split(SplitChar).Length >= 2)
             {
-                var osmValue = inputString.Trim().Split(splitChar)[1];
+                var osmValue = inputString.Trim().Split(SplitChar)[1];
                 if (osmValue != "*" && !string.IsNullOrEmpty(osmValue))
                 {
                     // If dealing with a pair, e.g. amenity:restaurant

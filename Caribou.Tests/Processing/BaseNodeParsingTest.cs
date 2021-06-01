@@ -31,14 +31,14 @@
             return results;
         }
 
-        protected int CountNodesForMetaData(RequestHandler results, OSMMetaData request)
+        protected static int CountNodesForMetaData(RequestHandler results, OSMMetaData request)
         {
             var allResults = results.FoundData[request];
             var nodeResults = allResults.Where(o => o.Kind == OSMGeometryType.Node);
             return nodeResults.Count();
         }
 
-        protected int CountWaysForMetaData(RequestHandler results, OSMMetaData request)
+        protected static int CountWaysForMetaData(RequestHandler results, OSMMetaData request)
         {
             var allResults = results.FoundData[request];
             var nodeResults = allResults.Where(o => o.Kind == OSMGeometryType.Way);

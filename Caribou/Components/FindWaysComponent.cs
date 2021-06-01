@@ -18,7 +18,7 @@
         {
             pManager.AddCurveParameter("Ways", "W", "Ways; e.g. nodes linked in a linear order via a Polyline", GH_ParamAccess.tree);
             pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Report", "R", reportDescription, GH_ParamAccess.tree);
+            pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
         }
 
         public override Guid ComponentGuid => new Guid("f677053e-0416-433b-9a8e-ce3124998b7d");

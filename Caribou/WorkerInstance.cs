@@ -65,19 +65,22 @@
 
             // Report any messages done by the worker instance
             // We must manually translate here from the mock warning types back to GH types due to unit testing requirements
-            foreach (var (level, message) in RuntimeMessages.Messages)
+            foreach (var msg in RuntimeMessages.Messages)
             {
-                switch (level)
+                foreach (var level in msg.Keys)
                 {
-                    case MessagesWrapper.Level.Error:
-                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, message);
-                        break;
-                    case MessagesWrapper.Level.Warning:
-                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, message);
-                        break;
-                    case MessagesWrapper.Level.Remark:
-                        Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, message);
-                        break;
+                    switch (level)
+                    {
+                        case MessagesWrapper.Level.Error:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, msg[level]);
+                            break;
+                        case MessagesWrapper.Level.Warning:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, msg[level]);
+                            break;
+                        case MessagesWrapper.Level.Remark:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, msg[level]);
+                            break;
+                    }
                 }
             }
         }

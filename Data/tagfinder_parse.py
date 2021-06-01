@@ -10,7 +10,14 @@ namespaces = {
     'dcterms': "http://purl.org/dc/terms/",
 }
 
+defined_features = [
+    "aerialway", "aeroway", "amenity", "barrier", "boundary", "building", "craft", "emergency", "geological", "healthcare", "highway", "historic", "landuse", "leisure", "man_made", "military", "natural", "office", "place", "power", "public_transport", "railway", "route", "shop", "sport", "telecom", "tourism", "water", "waterway",
+]
+
+# Tags related to defined features; Subfeatures are tags relating to features defined in OSMDefinedFeatures
+# Keys relate to arbitrary metadata
 data = {
+    'subfeature': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
     'tag': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
     'key': []  # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Key:meadow">
 }
@@ -20,10 +27,16 @@ for tagRoot in root:
     tagUrl = tagRoot.attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}about']
 
     if 'Tag:' in tagUrl:
-        tagType = "tag"
         tagPath = tagUrl.split('Tag:')[1]
         feature = tagPath.split('=')[0]
         subfeature = tagPath.split('=')[1]
+
+        if feature in defined_features:
+            tagType = "subfeature"
+        else:
+            tagType = "tag"
+
+
     elif 'Key:' in tagUrl:
         tagType = "key"
         tagPath = tagUrl.split('Key:')[1]
@@ -71,8 +84,15 @@ for tagRoot in root:
     }
     data[tagType].append(tag_example)
 
+print("Found this many subfeatures:", len(data['subfeature']))
 print("Found this many tags:", len(data['tag']))
 print("Found this many key:", len(data['key']))
 
+with open('SubFeatureData.json', 'w') as fp:
+    json.dump(data['subfeature'], fp, indent=4, sort_keys=True)
+
 with open('TagData.json', 'w') as fp:
-    json.dump(data, fp, indent=4, sort_keys=True)
+    json.dump(data['tag'], fp, indent=4, sort_keys=True)
+
+with open('KeyData.json', 'w') as fp:
+    json.dump(data['key'], fp, indent=4, sort_keys=True)

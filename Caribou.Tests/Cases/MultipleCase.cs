@@ -12,13 +12,13 @@
 
     public class MultipleCase : BaseNodeParsingTest
     {
-        protected static OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
+        protected static readonly OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
             Properties.Resources.MultipleA,
             Properties.Resources.MultipleB,
             Properties.Resources.MultipleC,
         }, ref messages);
 
-        protected static ParseRequest mainFeatures = new ParseRequest(
+        protected static readonly ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {
                 new OSMMetaData("craft"), // x nodes x ways
                 new OSMMetaData("Amenity"), // x nodes x ways
@@ -26,7 +26,7 @@
             }
         );
 
-        protected static ParseRequest miscSubFeatures = new ParseRequest(
+        protected static readonly ParseRequest miscSubFeatures = new ParseRequest(
             new List<string>() {
                 "amenity=restaurant", // x nodes x ways
                 "Craft=JEWELLER", // x nodes x ways
