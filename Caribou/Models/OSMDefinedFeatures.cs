@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    // using System.Text.Json;
+    using Newtonsoft.Json;
     using Caribou.Models;
     using Caribou.Properties;
 
@@ -29,25 +29,16 @@
             }
 
             var docString = Encoding.UTF8.GetString(Resources.SubFeatureData);
-            //using (JsonDocument document = JsonDocument.Parse(docString))
-            //{
-            //    JsonElement root = document.RootElement;
-            //    foreach (JsonElement element in root.EnumerateArray())
-            //    {
-            //        if (element.TryGetProperty("feature", out JsonElement feature))
-            //        {
-            //            var nameID = element.GetProperty("subfeature").ToString();
-            //            var parent = allDataInHierarchy.Keys.First(k => k.ThisType == feature.ToString());
+            var jsonValue = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(docString);
 
-            //            OSMSelectableFeature subfeature = new OSMSelectableFeature(nameID, null,
-            //                element.GetProperty("description").ToString(),
-            //                int.Parse(element.GetProperty("nodes").ToString()),
-            //                int.Parse(element.GetProperty("ways").ToString()),
-            //                true, parent);
-            //            allDataInHierarchy[parent].Add(subfeature);
-            //        }
-            //    }
-            //}
+            foreach (var item in jsonValue)
+            {
+                var nameID = item["subfeature"];
+                var parent = allDataInHierarchy.Keys.First(k => k.ThisType == item["feature"]);
+                OSMSelectableFeature subfeature = new OSMSelectableFeature(
+                    nameID, null, item["description"], int.Parse(item["nodes"]), int.Parse(item["ways"]), true, parent);
+                allDataInHierarchy[parent].Add(subfeature);
+            }
 
             foreach (var primaryFeature in allDataInHierarchy)
             {
