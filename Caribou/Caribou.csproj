@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <Version>1.0</Version>
+    <VersionPrefix>0.6.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
     <RhinoPluginType>gha</RhinoPluginType><!-- Tells MacOS VS to rename to gha -->
