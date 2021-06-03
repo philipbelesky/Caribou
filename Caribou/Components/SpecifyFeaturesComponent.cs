@@ -18,11 +18,10 @@
     public class SpecifyFeaturesComponent : CaribouComponent
     {
         private SpecifyFeaturesForm pickerForm;
-        private bool shouldShowFormOnAdded = true;
         private List<string> selectionOutput = new List<string>();
         private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
 
-        public SpecifyFeaturesComponent() : base("Specify Features/SubFeatures", "Specify Features",
+        public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM")
         {
         }
@@ -31,14 +30,14 @@
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("OSM Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
+            pManager.AddTextParameter("Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
         }
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
             if (this.selectionOutput.Count == 0)
             {
-                this.Message = "\u00A0Double Click to Select\u00A0\u00A0"; // Spacing to ensure in black bit
+                this.Message = "\u00A0No Features Selected\u00A0\u00A0"; // Spacing to ensure in black bit
             }
             else
             {
@@ -50,14 +49,12 @@
             da.SetDataList(0, selectionOutput); // Update downstream text
         }
 
-        private void OpenFeaturePicker()
+        public void OpenFeaturePicker()
         {
+            this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
+
             int x = (int)Mouse.Position.X - 5;
             int y = (int)Mouse.Position.Y - 40;
-            if (this.pickerForm == null)
-            {
-                this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
-            }
             this.pickerForm.Location = new Eto.Drawing.Point(x, y);
             this.pickerForm.Closed += (sender, e) => { HandlePickerClose(); };
             this.pickerForm.Show();
@@ -83,7 +80,6 @@
         }
 
         // To persist the selection variable we need to override Read and Write
-
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
             var csvSelection = string.Join(",", this.selectionOutput.ToArray());
@@ -96,25 +92,13 @@
             var csvSelection = reader.GetString("selectionSerialised");
             if (csvSelection != null)
             {
-                this.shouldShowFormOnAdded = false;
                 this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection);
                 this.selectionOutput = GetSelectedKeyValuesFromForm();
             }
             return base.Read(reader);
         }
 
-        public override void AddedToDocument(GH_Document document)
-        {
-            if (this.shouldShowFormOnAdded) // We only want to show the form on component-placement...
-            {
-                OpenFeaturePicker(); // but AddedToDocument() fires on file loads
-            }
-
-            base.AddedToDocument(document);
-        }
-
         // Affordances for right-click menu and double click shortcut
-
         public static string LineSpaceKeyValues(string message, int tagCount)
         {
             if (tagCount <= 3)
@@ -140,32 +124,9 @@
             return lineSpacedKeyVals;
         }
 
-        private void OpenFeaturePickerFromMenu(object sender, EventArgs e)
-        {
-            OpenFeaturePicker();
-        }
-
         public override void CreateAttributes()
         {
-            m_attributes = new SpecifyFeaturesAttributes(this); // Add custom attrributes so double-clicks open form
-        }
-
-        private class SpecifyFeaturesAttributes : GH_ComponentAttributes
-        {
-            public SpecifyFeaturesAttributes(IGH_Component component)
-              : base(component) { }
-
-            public override GH_ObjectResponse RespondToMouseDoubleClick(GH_Canvas sender, GH_CanvasMouseEvent e)
-            {
-                (Owner as SpecifyFeaturesComponent)?.OpenFeaturePicker();
-                return GH_ObjectResponse.Handled;
-            }
-        }
-
-        protected override void AppendAdditionalComponentMenuItems(ToolStripDropDown menu)
-        {
-            Menu_AppendItem(menu, "Select Features", this.OpenFeaturePickerFromMenu, null, true, false);
-            Menu_AppendSeparator(menu);
+            m_attributes = new CustomSetButton(this, this.OpenFeaturePicker); // Add custom attrributes so double-clicks open form
         }
 
         public override Guid ComponentGuid => new Guid("cc8d82ba-f381-46ee-8014-7e2d1bff824c");

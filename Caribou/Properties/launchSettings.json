@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Caribou": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Rhino 7\\System\\Rhino.exe"
+    },
+    "Caribou v6": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Rhino 6\\System\\Rhino.exe"
+    }
+  }
+}
