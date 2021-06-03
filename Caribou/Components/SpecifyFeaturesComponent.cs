@@ -51,17 +51,11 @@
 
         public void OpenFeaturePicker()
         {
-            if (this.pickerForm == null)
-            {
-                this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
-            }
+            this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
 
-            if (Mouse.Position != null)
-            {
-                int x = (int)Mouse.Position.X - 5;
-                int y = (int)Mouse.Position.Y - 40;
-                this.pickerForm.Location = new Eto.Drawing.Point(x, y);
-            }
+            int x = (int)Mouse.Position.X - 5;
+            int y = (int)Mouse.Position.Y - 40;
+            this.pickerForm.Location = new Eto.Drawing.Point(x, y);
             this.pickerForm.Closed += (sender, e) => { HandlePickerClose(); };
             this.pickerForm.Show();
         }
