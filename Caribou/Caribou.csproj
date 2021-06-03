@@ -9,6 +9,7 @@
     <RhinoPluginType>gha</RhinoPluginType><!-- Tells MacOS VS to rename to gha -->
     <TargetExt>.gha</TargetExt><!-- Tells Windows VS to rename to gha -->
     <RhinoMacLauncher>/Applications/Rhino 7.app</RhinoMacLauncher>
+    <Configurations>Debug;Release;Debug (v6)</Configurations>
   </PropertyGroup>
 
   <!--NUGET-->
@@ -41,11 +42,7 @@
   </ItemGroup>
 
   <!--BUILDS-->
-  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
-    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
-    <StartArguments></StartArguments>
-    <StartAction>Program</StartAction>
-  </PropertyGroup>
+  
   <!--Make Unit-Testable DLLs-->
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
     <PostBuildEvent>
