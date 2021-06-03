@@ -104,5 +104,23 @@
 
             return output;
         }
+
+        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Brep>> foundBuildings)
+        {
+            var output = new GH_Structure<GH_Brep>();
+            var i = 0;
+
+            foreach (var entry in foundBuildings)
+            {
+                GH_Path path = new GH_Path(i);
+                i++;
+                foreach (var pBuilding in entry.Value)
+                {
+                    output.Append(new GH_Brep(pBuilding), path);
+                }
+            }
+
+            return output;
+        }
     }
 }

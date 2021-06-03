@@ -9,6 +9,7 @@
     public enum OSMGeometryType
     {
         Node,
-        Way
+        Way,
+        Building
     }
 }
