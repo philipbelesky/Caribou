@@ -30,13 +30,13 @@
             topButtons.BeginHorizontal();
             topButtons.Add(ControlStrip.GetHider(ToggleMinorFeatures));
             topButtons.Add(null);
-            topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 100, buttonHeight, ExpandAll));
+            topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
             topButtons.Add(new Label() { Width = 10 });
-            topButtons.Add(ControlStrip.GetCollapseAll(buttonWidth - 100, buttonHeight, CollapseAll));
+            topButtons.Add(ControlStrip.GetCollapseAll(buttonWidth - 90, buttonHeight, CollapseAll));
             topButtons.Add(new Label() { Width = 10 });
-            topButtons.Add(ControlStrip.GetSelectAll(buttonWidth - 100, buttonHeight, SelectAll));
+            topButtons.Add(ControlStrip.GetSelectAll(buttonWidth - 90, buttonHeight, SelectAll));
             topButtons.Add(new Label() { Width = 10 });
-            topButtons.Add(ControlStrip.GetSelectNone(buttonWidth - 100, buttonHeight, SelectNone));
+            topButtons.Add(ControlStrip.GetSelectNone(buttonWidth - 90, buttonHeight, SelectNone));
             topButtons.EndHorizontal();
                         
             var bottomButtons = new DynamicLayout();

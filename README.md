@@ -19,39 +19,37 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 
 - ✅ Windows and MacOS are both fully supported
 - ✅ Very fast parsing of even very large files
+- ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
 - ✅ Parsing is performed asynchronously so Grasshopper does not freeze
-- ✅ Components embrace a modular approach to filtering and extracting data
-- ✅ Parse multiple OSM files simultaneously with de-duplication
+- ✅ Parse multiple OSM files simultaneously with de-duplication of identical geometries
 - ✅ Allows for querying for arbitrary data, not just defined features/sub-features
 - ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering and baking
 
 ## Roadmap
 
-- 🕘 Faster!
 - 🕘 Dedicated component for defining 3D buildings
+- 🕘 Documentation and examples
+- 🕘 Faster!
+- 🕘 Affordance for querying arbitrary Metadata
 - 🕘 Parsing of `<relation>` type data
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
 
 ## Setup and Use
 
+![Image of the definition setup](/assets/demo-v0.7.png)
+
 - Plugin installation
-  1. For now, releases are available in the [Rhino package manager](https://www.rhino3d.com/features/package-manager/) only.
+  1. For now, releases are available by searching for *Caribou* in the [Rhino package manager](https://www.rhino3d.com/features/package-manager/) only.
 - Data gathering
   1. Go to [https://www.openstreetmap.org](openstreetmap.org)
   2. Locate the general area you wish to model and hit `export`, then `manually select an area`
   3. Click the `OVERPASS API` link to download the `xml` file
 - Grasshopper Setup
-  1. Place an `Extract Nodes` or `Extract Ways` component (or both)
-  2. Use a standard `Read File` component for your `xml` file and connect it as `OSM Content`
-  3. Using a panel, list the data you wish to extract in a comma-separated `key` or `key=value` format. These can include official [features and sub-features](https://wiki.openstreetmap.org/wiki/Map_Features) types or any form of meta-data.  E.g.:
-  ```
-    building,
-    highway=traffic_signals,
-    cuisine=mexican,
-    addr:street=Swanston Street
-  ```
-
-![Image of the definition setup](/assets/setup-v0.5.png)
+  1. Place Caribou's `Extract Nodes` or `Extract Ways` component (or both)
+  2. Place a standard Grasshopper `File Path` component, reference your `xml` file(s), and connect the outputs to the `OSM File` input parameter
+  3. Place Caribou's `Specify Features` component.
+  4. Click the button at the bottom of the `Specify Features` component and select the types of features you want to extract.
+ 5. Connect the `OSM Features` output to the `OSM Features` input.
 
 ## Recognition
 

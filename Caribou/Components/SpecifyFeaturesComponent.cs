@@ -22,7 +22,7 @@
         private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
-            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM")
+            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "Select")
         {
         }
 
@@ -30,7 +30,7 @@
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
+            pManager.AddTextParameter("OSM Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
         }
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)

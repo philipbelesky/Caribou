@@ -11,7 +11,7 @@
     {
         protected const string ReportDescription = "The name, count, and description of each feature";
         public BaseFindComponent(string name, string nickname, string description)
-            : base(name, nickname, description, "OSM Parsers") { }
+            : base(name, nickname, description, "Parse") { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {

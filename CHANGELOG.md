@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0-alpha] -
+
+### Changed
+- Added selection/expansion manipulation buttons to the feature selection GUI
+- Added a button to open the feature selection GUI directly from the component
+- Parser components now take file paths, not file contents, as inputs
+
 ## [0.6.0-alpha] - 2021-06-01
 
 ### Added
