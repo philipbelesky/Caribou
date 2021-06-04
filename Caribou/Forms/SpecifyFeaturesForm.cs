@@ -28,9 +28,12 @@
 
             var topButtons = new DynamicLayout();
             topButtons.BeginHorizontal();
-            topButtons.Add(ControlStrip.GetHider());
-            topButtons.Add(ControlStrip.GetCheckLabel());
+            topButtons.Add(ControlStrip.GetHider(ToggleMinorFeatures));
             topButtons.Add(null);
+            topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 100, buttonHeight, ExpandAll));
+            topButtons.Add(new Label() { Width = 10 });
+            topButtons.Add(ControlStrip.GetCollapseAll(buttonWidth - 100, buttonHeight, CollapseAll));
+            topButtons.Add(new Label() { Width = 10 });
             topButtons.Add(ControlStrip.GetSelectAll(buttonWidth - 100, buttonHeight, SelectAll));
             topButtons.Add(new Label() { Width = 10 });
             topButtons.Add(ControlStrip.GetSelectNone(buttonWidth - 100, buttonHeight, SelectNone));
@@ -71,14 +74,41 @@
         {
         }
 
-        private void SelectAll() // Just from the button
+        private void SelectAll() => this.SetSelection("True"); 
+
+        private void SelectNone() => this.SetSelection("False");
+
+        private void ExpandAll() => this.SetRollout(true);
+
+        private void CollapseAll() => this.SetRollout(false);
+
+        private void ToggleMinorFeatures()
         {
-            
+            // TODO: try and preserve state of existing items via key setting
+            this.providedState = SelectionCollection.GetCollection(true);
+            this.mainRow.viewForm.ReloadData();
         }
 
-        private void SelectNone() // Just from the button
+        private void SetSelection(string boolAsString)
         {
-            
+            foreach (TreeGridItem item in this.providedState)
+            {
+                item.SetValue(1, boolAsString);
+                foreach (TreeGridItem childItem in item.Children)
+                {
+                    childItem.SetValue(1, boolAsString);                    
+                }
+            }
+            this.mainRow.viewForm.ReloadData();
+        }
+
+        private void SetRollout(bool value)
+        {
+            foreach (TreeGridItem item in this.providedState)
+            {
+                item.Expanded = value;
+            }
+            this.mainRow.viewForm.ReloadData();
         }
 
         private void UpdateAndClose() // Just from the button

@@ -6,31 +6,22 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider()
+        public static CheckBox GetHider(Action toggleMinorFeatures)
         {
-            var showHideMinor = new CheckBox()
+            var showHideMinorFeatures = new CheckBox()
             {
                 Checked = true,
+                Text = "Hide SubFeatures with very low counts",
             };
-            return showHideMinor;
-        }
-
-        // On MacOS having the label inline with checkbox creates an alignment issue
-        // TODO: set clicks on this to set the status of the checkbox
-        public static Label GetCheckLabel()
-        {
-            var label = new Label()
-            {
-                Text = " Hide SubFeatures with very low counts",
-            };
-            return label;
+            showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleMinorFeatures(); };
+            return showHideMinorFeatures;
         }
 
         public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)
         {
             var allButton = new Button()
             {
-                Text = "Select All",
+                Text = "🔘 Select All",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
@@ -42,12 +33,35 @@
         {
             var noneButton = new Button()
             {
-                Text = "Select None",
+                Text = "⚪ Select None",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
             noneButton.Click += (sender, e) => { selectNone(); };
             return noneButton;
+        }
+        public static Button GetExpandAll(int buttonWidth, int buttonHeight, Action expandAll)
+        {
+            var allButton = new Button()
+            {
+                Text = "⬇️ Expand All",
+                Width = buttonWidth,
+                Height = buttonHeight,
+            };
+            allButton.Click += (sender, e) => { expandAll(); };
+            return allButton;
+        }
+
+        public static Button GetCollapseAll(int buttonWidth, int buttonHeight, Action collapseAll)
+        {
+            var collapseButton = new Button()
+            {
+                Text = "⬆️ Collapse All",
+                Width = buttonWidth,
+                Height = buttonHeight,
+            };
+            collapseButton.Click += (sender, e) => { collapseAll(); };
+            return collapseButton;
         }
 
     }
