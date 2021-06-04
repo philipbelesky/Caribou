@@ -28,7 +28,6 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 ## Roadmap
 
 - 🕘 Faster!
-- 🕘 Intuitive GUI for defining feature/subfeature filters
 - 🕘 Dedicated component for defining 3D buildings
 - 🕘 Parsing of `<relation>` type data
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
