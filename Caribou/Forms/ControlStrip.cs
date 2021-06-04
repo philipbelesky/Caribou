@@ -26,28 +26,29 @@
             return label;
         }
 
-        public static Button GetUpdate(int buttonWidth, int buttonHeight, Action updateAndClose)
+        public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)
         {
-            var updateButton = new Button()
+            var allButton = new Button()
             {
-                Text = "✅ Update Selection",
+                Text = "Select All",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            updateButton.Click += (sender, e) => { updateAndClose(); };
-            return updateButton;
+            allButton.Click += (sender, e) => { selectAll(); };
+            return allButton;
         }
 
-        public static Button GetCancel(int buttonWidth, int buttonHeight, Action cancelAndClose)
+        public static Button GetSelectNone(int buttonWidth, int buttonHeight, Action selectNone)
         {
-            var cancelButton = new Button()
+            var noneButton = new Button()
             {
-                Text = "❌ Cancel Update",
+                Text = "Select None",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            cancelButton.Click += (sender, e) => { cancelAndClose(); };
-            return cancelButton;
+            noneButton.Click += (sender, e) => { selectNone(); };
+            return noneButton;
         }
+
     }
 }
