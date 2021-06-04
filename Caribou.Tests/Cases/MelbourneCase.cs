@@ -10,11 +10,11 @@
     using Caribou.Processing;
     using Caribou.Tests.Processing;
 
-    public class MelbourneCase : BaseNodeParsingTest
+    public class MelbourneCase : BaseParsingTest
     {
-        protected static readonly OSMXMLFiles OSMXMLs = new OSMXMLFiles(new List<string>() {
+        protected static readonly List<string> OSMXMLs = new List<string>() {
             Properties.Resources.MelbourneOSM
-        }, ref messages);
+        };
 
         protected static readonly ParseRequest mainFeatures = new ParseRequest(
             new List<OSMMetaData>() {

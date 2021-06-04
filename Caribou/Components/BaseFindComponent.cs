@@ -15,7 +15,7 @@
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("OSM Content", "C", "The contents of an XML OSM file (use the output of a Read File component)", GH_ParamAccess.list);
+            pManager.AddGenericParameter("OSM File Path", "P", "The path to XML file(s) downloaded from Open Street map", GH_ParamAccess.list);
             pManager.AddTextParameter("OSM Features", "F", "A list of features and subfeatures to extract from the OSM file, in a 'key=value' format separated by newlines or commas", GH_ParamAccess.list);
         }
 

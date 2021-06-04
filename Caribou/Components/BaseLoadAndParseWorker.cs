@@ -18,10 +18,9 @@
     public abstract class BaseLoadAndParseWorker : WorkerInstance
     {
         // Inputs
-        protected List<string> providedXMLsRaw;
+        protected List<string> providedFilePaths;
         protected List<string> requestedMetaDataRaw;
         // Parsed Inputs
-        protected OSMXMLFiles providedXMLs;
         protected ParseRequest requestedMetaData;
         // Outputs
         protected RequestHandler result;
@@ -38,7 +37,7 @@
             logger.Reset();
             logger.indexOfDebugOutput = 3;
 
-            result = new RequestHandler(providedXMLs, requestedMetaData);
+            result = new RequestHandler(providedFilePaths, requestedMetaData);
             logger.NoteTiming("Setup request handler");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
@@ -88,9 +87,8 @@
                 return;
 
             // PARSE XML Data
-            this.providedXMLsRaw = new List<string>();
-            da.GetDataList(0, this.providedXMLsRaw);
-            this.providedXMLs = new OSMXMLFiles(this.providedXMLsRaw, ref parseMessages);
+            this.providedFilePaths = new List<string>();
+            da.GetDataList(0, this.providedFilePaths);
 
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();
