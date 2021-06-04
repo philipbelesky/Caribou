@@ -36,10 +36,10 @@
             da.SetData(0, GetPluginVersion());
             da.SetData(3, assemblyInfo.Description);
             da.SetData(4, assemblyInfo.PluginURL.ToString());
-            LogTiming("Setup"); // Debug Info
+            logger.NoteTiming("Setup"); // Debug Info
             da.SetData(1, GetLatestVersion(assemblyInfo.ReleasesFeed));
             da.SetData(2, GetLatestChanges(assemblyInfo.ChangeLogURL));
-            LogTiming("URL fetching"); // Debug Info
+            logger.NoteTiming("URL fetching"); // Debug Info
         }
 
         private static string GetLatestVersion(Uri feedURL)
