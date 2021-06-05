@@ -26,7 +26,6 @@
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
-            this.Closed += (sender, e) => { HandleClose(); };
             this.mainRow = new TableStrip(selectionState);
 
             var topButtons = new DynamicLayout();
@@ -73,10 +72,6 @@
             };
         }
 
-        private void HandleClose() // Can be triggered in window chrome
-        {
-        }
-
         private void SelectAll() => this.SetSelection("True"); 
 
         private void SelectNone() => this.SetSelection("False");
@@ -88,13 +83,13 @@
         private void ToggleObscureFeatures()
         {
             this.hideObscureFeatures = !this.hideObscureFeatures;
-            this.providedState = SelectionCollection.GetCollection(this.hideObscureFeatures);
+            this.mainRow.viewForm.DataStore = SelectionCollection.GetCollection(this.hideObscureFeatures);
             this.mainRow.viewForm.ReloadData();
         }
 
         private void SetSelection(string boolAsString)
         {
-            foreach (TreeGridItem item in this.providedState)
+            foreach (TreeGridItem item in this.mainRow.data)
             {
                 item.SetValue(1, boolAsString);
                 foreach (TreeGridItem childItem in item.Children)
@@ -107,7 +102,7 @@
 
         private void SetRollout(bool value)
         {
-            foreach (TreeGridItem item in this.providedState)
+            foreach (TreeGridItem item in this.mainRow.data)
             {
                 item.Expanded = value;
             }
