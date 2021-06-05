@@ -60,8 +60,10 @@ jobs:
     - name: Build Yak
       run: .\yak.exe build
       working-directory: ${{ env.Release_File_Path }}
-      env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Check Build
+      run: ls .
+      working-directory: ${{ env.Release_File_Path }}
 
     - name: Push Rhino 6 version to YAK
       run: |
