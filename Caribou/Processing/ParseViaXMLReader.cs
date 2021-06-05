@@ -12,25 +12,34 @@
     /// </summary>
     public static class ParseViaXMLReader
     {
+        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request);
+
         public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool readPathAsContents = false)
         {
-            GetBounds(ref request, readPathAsContents);
+            DispatchDelegate dispatchForType;
+            if (typeToFind == OSMGeometryType.Way)
+                dispatchForType = FindWaysInXML;
+            else if (typeToFind == OSMGeometryType.Node)
+                dispatchForType = FindNodesInXML;
+            else
+                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
 
+            GetBounds(ref request, readPathAsContents);
             foreach (string xmlPath in request.XmlPaths)
             {
-                XmlReader reader;
                 if (readPathAsContents)
-                    reader = XmlReader.Create(new StringReader(xmlPath)); // Only used in testing
-                else
-                    reader = XmlReader.Create(xmlPath);
-
-                if (typeToFind == OSMGeometryType.Way)
                 {
-                    FindWaysInXML(reader, ref request);
+                    using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
+                    {
+                        dispatchForType(reader, ref request); // Only used in testing
+                    }
                 }
-                else if (typeToFind == OSMGeometryType.Node)
+                else
                 {
-                    FindNodesInXML(reader, ref request);
+                    using (XmlReader reader = XmlReader.Create(xmlPath))
+                    {
+                        dispatchForType(reader, ref request);
+                    }
                 }
             }
         }
