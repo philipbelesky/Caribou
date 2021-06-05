@@ -15,10 +15,13 @@
         private int buttonWidth = 200;
         private int padding = 10;
         private TreeGridItemCollection providedState;
+        public bool hideObscureFeatures;
 
-        public SpecifyFeaturesForm(TreeGridItemCollection selectionState)
+        public SpecifyFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
         {
             this.providedState = selectionState;
+            this.hideObscureFeatures = hideObscureFeatures;
+
             this.Padding = padding;
             this.Title = "Select Features and Sub-Features";
             this.Resizable = true;
@@ -28,7 +31,7 @@
 
             var topButtons = new DynamicLayout();
             topButtons.BeginHorizontal();
-            topButtons.Add(ControlStrip.GetHider(ToggleMinorFeatures));
+            topButtons.Add(ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures));
             topButtons.Add(null);
             topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
             topButtons.Add(new Label() { Width = 10 });
@@ -82,10 +85,10 @@
 
         private void CollapseAll() => this.SetRollout(false);
 
-        private void ToggleMinorFeatures()
+        private void ToggleObscureFeatures()
         {
-            // TODO: try and preserve state of existing items via key setting
-            this.providedState = SelectionCollection.GetCollection(true);
+            this.hideObscureFeatures = !this.hideObscureFeatures;
+            this.providedState = SelectionCollection.GetCollection(this.hideObscureFeatures);
             this.mainRow.viewForm.ReloadData();
         }
 
@@ -96,7 +99,7 @@
                 item.SetValue(1, boolAsString);
                 foreach (TreeGridItem childItem in item.Children)
                 {
-                    childItem.SetValue(1, boolAsString);                    
+                    childItem.SetValue(1, boolAsString);
                 }
             }
             this.mainRow.viewForm.ReloadData();

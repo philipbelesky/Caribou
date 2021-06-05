@@ -6,11 +6,11 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider(Action toggleMinorFeatures)
+        public static CheckBox GetHider(Action toggleMinorFeatures, bool hideObscureFeaturesState)
         {
             var showHideMinorFeatures = new CheckBox()
             {
-                Checked = true,
+                Checked = hideObscureFeaturesState,
                 Text = "Hide SubFeatures with very low counts",
             };
             showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleMinorFeatures(); };
