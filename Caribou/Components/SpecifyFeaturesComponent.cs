@@ -30,7 +30,7 @@
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("OSM Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
+            pManager.AddTextParameter("OSM Features", "OF", "A list of OSM features and subfeatures", GH_ParamAccess.list);
         }
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
