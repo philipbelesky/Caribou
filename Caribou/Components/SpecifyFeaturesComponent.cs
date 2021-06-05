@@ -21,8 +21,8 @@
         private List<string> selectionOutput = new List<string>();
         private TreeGridItemCollection selectionState;
         protected bool hideObscureFeatures = true;
-        private string storageKeyForSelectionState = "selectionSerialised";
-        private string storageKeyForIncludesObscureState = "selectionIncludesObscure";
+        private readonly string storageKeyForSelectionState = "selectionSerialised";
+        private readonly string storageKeyForIncludesObscureState = "selectionIncludesObscure";
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "Select")
