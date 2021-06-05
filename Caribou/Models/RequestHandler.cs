@@ -17,7 +17,7 @@
     /// </summary>
     public class RequestHandler
     {
-        public OSMXMLFiles XmlCollection;
+        public List<string> XmlPaths;
         public ParseRequest RequestedMetaData;
         public Coord MinBounds;
         public Coord MaxBounds;
@@ -25,9 +25,9 @@
         public Dictionary<OSMMetaData, List<FoundItem>> FoundData; // The collected items per request
         public List<string> FoundItemIds; // Used to track for duplicate ways/nodes across files
 
-        public RequestHandler(OSMXMLFiles providedXMLs, ParseRequest requestedMetaData)
+        public RequestHandler(List<string> providedXMLs, ParseRequest requestedMetaData)
         {
-            this.XmlCollection = providedXMLs;
+            this.XmlPaths = providedXMLs;
             this.RequestedMetaData = requestedMetaData;
 
             this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
@@ -112,13 +112,11 @@
 
         public GH_Structure<GH_String> GetTreeForItemTags()
         {
-            // TODO
             return TreeFormatters.MakeTreeForItemTags(this);
         }
 
         public GH_Structure<GH_String> GetTreeForMetaDataReport()
         {
-            // TODO
             return TreeFormatters.MakeTreeForMetaDataReport(this);
         }
     }

@@ -75,7 +75,7 @@
             double? currentMaxLat = null;
             double? currentMaxLon = null;
 
-            foreach (string providedXML in result.XmlCollection.ProvidedXMLs)
+            foreach (string providedXML in result.XmlPaths)
             {
                 var xml = XDocument.Parse(providedXML);
                 var boundsElement = (from el in xml.Descendants("bounds") select el).First();

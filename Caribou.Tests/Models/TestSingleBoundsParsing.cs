@@ -13,7 +13,7 @@
         [TestMethod]
         public void ParseBoundsViaXMLReader()
         {
-            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
             CheckResult();
         }
 

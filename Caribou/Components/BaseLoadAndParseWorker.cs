@@ -18,14 +18,12 @@
     public abstract class BaseLoadAndParseWorker : WorkerInstance
     {
         // Inputs
-        protected List<string> providedXMLsRaw;
+        protected List<string> providedFilePaths;
         protected List<string> requestedMetaDataRaw;
         // Parsed Inputs
-        protected OSMXMLFiles providedXMLs;
         protected ParseRequest requestedMetaData;
         // Outputs
         protected RequestHandler result;
-        protected List<string> debugOutput = new List<string>();
         protected GH_Structure<GH_String> itemTags;
         protected GH_Structure<GH_String> itemMetaDatas;
 
@@ -36,33 +34,36 @@
 
         public override void DoWork(Action<string, double> reportProgress, Action done)
         {
-            result = new RequestHandler(providedXMLs, requestedMetaData);
+            logger.Reset();
+            logger.indexOfDebugOutput = 3;
 
+            result = new RequestHandler(providedFilePaths, requestedMetaData);
+            logger.NoteTiming("Setup request handler");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.ExtractCoordsForComponentType(); // Parse XML for lat/lon data
-
+            logger.NoteTiming("Extract coords from data");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
-
+            logger.NoteTiming("Translate coords to geometry");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.GetTreeForComponentType(); // Form tree structure for Rhino geo
-
+            logger.NoteTiming("Output geometry");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
-
+            logger.NoteTiming("Output tags");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
-
+            logger.NoteTiming("Output metadata");
             if (this.CancellationToken.IsCancellationRequested)
                return;
 
@@ -86,9 +87,8 @@
                 return;
 
             // PARSE XML Data
-            this.providedXMLsRaw = new List<string>();
-            da.GetDataList(0, this.providedXMLsRaw);
-            this.providedXMLs = new OSMXMLFiles(this.providedXMLsRaw, ref parseMessages);
+            this.providedFilePaths = new List<string>();
+            da.GetDataList(0, this.providedFilePaths);
 
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();
@@ -116,9 +116,6 @@
                 return;
 
             da.SetDataTree(2, this.itemMetaDatas);
-
-            // Can't use the GHBComponent approach to logging; so construct output for Debug param manually
-            da.SetDataList(3, this.debugOutput);
         }
     }
 }

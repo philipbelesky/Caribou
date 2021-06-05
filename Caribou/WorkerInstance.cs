@@ -54,6 +54,8 @@
         // Per issues #11 and #14 in https://github.com/specklesystems/GrasshopperAsyncComponent/ this helps prevent messages vanishing
         protected MessagesWrapper RuntimeMessages { get; set; } = new MessagesWrapper();
 
+        protected LoggingHandler logger = new LoggingHandler();
+
         // As per RuntimeMessages, we need to write out any messages passed up
         /// <summary>
         /// Write your data setting logic here. <b>Do not call this function directly from this class. It will be invoked by the parent <see cref="CaribouAsyncComponent"/> after you've called `Done` in the <see cref="DoWork(Action{string}, Action{string, GH_RuntimeMessageLevel}, Action)"/> function.</b>
@@ -83,6 +85,10 @@
                     }
                 }
             }
+
+#if DEBUG
+            da.SetDataList(logger.indexOfDebugOutput, logger.debugLogs);
+#endif
         }
 
         protected abstract void WorkerSetData(IGH_DataAccess da);

@@ -6,48 +6,63 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider()
+        public static CheckBox GetHider(Action toggleMinorFeatures, bool hideObscureFeaturesState)
         {
-            var showHideMinor = new CheckBox()
+            var showHideMinorFeatures = new CheckBox()
             {
-                Checked = true,
+                Checked = hideObscureFeaturesState,
+                Text = "Hide SubFeatures with very low counts",
             };
-            return showHideMinor;
+            showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleMinorFeatures(); };
+            return showHideMinorFeatures;
         }
 
-        // On MacOS having the label inline with checkbox creates an alignment issue
-        // TODO: set clicks on this to set the status of the checkbox
-        public static Label GetCheckLabel()
+        public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)
         {
-            var label = new Label()
+            var allButton = new Button()
             {
-                Text = " Hide SubFeatures with very low counts",
-            };
-            return label;
-        }
-
-        public static Button GetUpdate(int buttonWidth, int buttonHeight, Action updateAndClose)
-        {
-            var updateButton = new Button()
-            {
-                Text = "✅ Update Selection",
+                Text = "🔘 Select All",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            updateButton.Click += (sender, e) => { updateAndClose(); };
-            return updateButton;
+            allButton.Click += (sender, e) => { selectAll(); };
+            return allButton;
         }
 
-        public static Button GetCancel(int buttonWidth, int buttonHeight, Action cancelAndClose)
+        public static Button GetSelectNone(int buttonWidth, int buttonHeight, Action selectNone)
         {
-            var cancelButton = new Button()
+            var noneButton = new Button()
             {
-                Text = "❌ Cancel Update",
+                Text = "⚪ Select None",
                 Width = buttonWidth,
                 Height = buttonHeight,
             };
-            cancelButton.Click += (sender, e) => { cancelAndClose(); };
-            return cancelButton;
+            noneButton.Click += (sender, e) => { selectNone(); };
+            return noneButton;
         }
+        public static Button GetExpandAll(int buttonWidth, int buttonHeight, Action expandAll)
+        {
+            var allButton = new Button()
+            {
+                Text = "⬇️ Expand All",
+                Width = buttonWidth,
+                Height = buttonHeight,
+            };
+            allButton.Click += (sender, e) => { expandAll(); };
+            return allButton;
+        }
+
+        public static Button GetCollapseAll(int buttonWidth, int buttonHeight, Action collapseAll)
+        {
+            var collapseButton = new Button()
+            {
+                Text = "⬆️ Collapse All",
+                Width = buttonWidth,
+                Height = buttonHeight,
+            };
+            collapseButton.Click += (sender, e) => { collapseAll(); };
+            return collapseButton;
+        }
+
     }
 }

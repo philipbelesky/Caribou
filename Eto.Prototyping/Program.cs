@@ -13,7 +13,7 @@ namespace Eto.Prototyping
         {
             var mockSelectionState = SelectionCollection.GetCollection(false);
             // Note that this only works on Windows; for macOS seems to crash unless using Eto 2.5.11+. 
-            new Application(Eto.Platforms.Wpf).Run(new SpecifyFeaturesForm(mockSelectionState));
+            new Application(Eto.Platforms.Wpf).Run(new SpecifyFeaturesForm(mockSelectionState, true));
         }
     }
 }

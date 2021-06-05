@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection;
+    using Caribou.Components;
     using GH_IO.Serialization;
     using Grasshopper.Kernel;
     using Rhino;
@@ -12,14 +13,10 @@
         // This is a base class that can be used by all the plugin's components. This can allow for better code reuse for:
         // - Very commonly used functions (e.g. retrieving tolerances)
         // - Shared setup tasks (e.g. plugin category; or if wrapping SolveInstance in exception tracking (e.g. Sentry))
-
+        protected LoggingHandler logger = new LoggingHandler();
         private static string pluginCategory = "Caribou";
         public static readonly double DocAngleTolerance = RhinoDoc.ActiveDoc.ModelAngleToleranceRadians;
         public static readonly double DocAbsTolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
-
-        protected List<string> debugLogs; // Debug parameter output
-        protected Stopwatch debugTimer;
-        protected int indexOfDebugOutput; // Tracking where to output logs
 
         // Pass the constructor parameters up to the main GH_Component abstract class
         protected CaribouComponent(string name, string nickname, string description, string subCategory)
@@ -47,21 +44,6 @@
         }
 #endif
 
-        [Conditional("DEBUG")]
-        public void LogTiming(string eventDescription)
-        {
-            var logInfo = eventDescription + ": ";
-            debugTimer.Stop();
-            debugLogs.Add(logInfo.PadRight(28, ' ') + debugTimer.ElapsedMilliseconds.ToString() + " ms");
-            debugTimer.Restart();
-        }
-
-        [Conditional("DEBUG")]
-        public void LogGeneral(string eventDescription)
-        {
-            debugLogs.Add(eventDescription);
-        }
-
         // Components must implement the method
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>")]
         protected abstract void CaribouRegisterOutputParams(GH_Component.GH_OutputParamManager pManager);
@@ -72,7 +54,7 @@
             CaribouRegisterOutputParams(pManager);
 #if DEBUG
             pManager.AddTextParameter("Debug", "D", "Debug output logged from component - this parameter should be hidden in release builds", GH_ParamAccess.list); // Debugging affordance
-            indexOfDebugOutput = pManager.ParamCount - 1;
+            logger.indexOfDebugOutput = pManager.ParamCount - 1;
 #endif
         }
 
@@ -84,14 +66,13 @@
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 #if DEBUG
-            debugTimer = Stopwatch.StartNew(); // Setup timer used for debugging
-            debugLogs = new List<string>(); // The debugging log that would be output
+            logger.Reset();
 #endif
 
             CaribouSolveInstance(DA);
 
 #if DEBUG
-            DA.SetDataList(indexOfDebugOutput, debugLogs);
+            DA.SetDataList(logger.indexOfDebugOutput, logger.debugLogs);
 #endif
         }
 

@@ -9,15 +9,15 @@
     {
         private Coord expectedMinBounds = new Coord(-37.9164200, 144.9127400); // Lowest left
         private Coord expectedMaxBounds = new Coord(-37.2164200, 144.9710600); // Highest right
-        private RequestHandler results = new RequestHandler(new OSMXMLFiles(new List<string>() {
+        private RequestHandler results = new RequestHandler(new List<string>() {
             Properties.Resources.MelbourneOSM,
-            Properties.Resources.SimpleOSM,
-        }, ref messages), mainFeatures);
+            Properties.Resources.SimpleOSM
+        }, mainFeatures);
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()
         {
-            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
             CheckResult();
         }
 

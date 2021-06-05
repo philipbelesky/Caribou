@@ -2,18 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <VersionPrefix>0.6.0</VersionPrefix>
+    <VersionPrefix>0.7.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
     <RhinoPluginType>gha</RhinoPluginType><!-- Tells MacOS VS to rename to gha -->
     <TargetExt>.gha</TargetExt><!-- Tells Windows VS to rename to gha -->
     <RhinoMacLauncher>/Applications/Rhino 7.app</RhinoMacLauncher>
+    <Configurations>Debug;Release;Debug (v6)</Configurations>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://philipbelesky.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/philipbelesky/Caribou</RepositoryUrl>
   </PropertyGroup>
 
   <!--NUGET-->
   <ItemGroup>
-    <PackageReference Include="Eto.Forms" Version="2.5.0" />
+    <PackageReference Include="Eto.Forms" Version="2.5.0" IncludeAssets="compile;build" />
     <PackageReference Include="Grasshopper" Version="6.16.19190.7001" IncludeAssets="compile;build" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
@@ -25,7 +29,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
-  <!--RESOURCES FILE-->
+  <!--RESOURCES FILES-->
   <ItemGroup>
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -41,21 +45,21 @@
   </ItemGroup>
 
   <!--BUILDS-->
-  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
-    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
-    <StartArguments></StartArguments>
-    <StartAction>Program</StartAction>
-  </PropertyGroup>
   <!--Make Unit-Testable DLLs-->
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
     <PostBuildEvent>
-      xcopy "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou\bin\ForTests\Caribou.dll" /Y
+      echo f | xcopy "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou\bin\ForTests\Caribou.dll" /y /i
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSUnixLike())">
     <PostBuildEvent>
       cp "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou/bin/ForTests/Caribou.dll"
     </PostBuildEvent>
+  </PropertyGroup>
+  <!-- Don't provide pdb file for release builds -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
 
