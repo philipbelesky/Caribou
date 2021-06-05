@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build:
+  publish:
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -43,7 +43,12 @@ jobs:
     - name: Build the application
       run: msbuild $env:Solution_Name /p:Configuration=Release
 
-    # Publish to Yak upon releases
+    # Get the assembly version
+    - uses: dotnet/nbgv@master
+      with:
+        setAllVars: true
+
+    # Publish to Yak upon releases, from https://github.com/pfmephisto/rhino-yak
     - name: Push main version to Yak
       uses: pfmephisto/rhino-yak@v1
       with:
