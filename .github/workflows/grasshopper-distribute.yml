@@ -1,4 +1,4 @@
-name: Publish Grasshopper Plugin
+name: Distribute Grasshopper Plugin
 
 on:
   release:
@@ -46,21 +46,28 @@ jobs:
     # Below actions from https://discourse.mcneel.com/t/github-action-to-yak/120815/3
     # ...and https://github.com/arup-group/GSA-Grasshopper/blob/master/.github/workflows/yakdeploy.yml
     - name: Download Yak
+      run: curl https://files.mcneel.com/yak/tools/latest/yak.exe -o yak.exe
+      working-directory: ${{ env.Release_File_Path }}
       env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-      run: curl -o <path_to_yak_>/yak.exe http://files.mcneel.com/yak/tools/latest/yak.exe
+
+    - name: Check Download
+      run: ls .
+      working-directory: ${{ env.Release_File_Path }}
+      env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Build Yak
+      run: .\yak.exe build
+      working-directory: ${{ env.Release_File_Path }}
       env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-      run: ..\..\yak.exe build
-      working-directory: ${{ env.Release_File_Path }}
 
     - name: Push Rhino 6 version to YAK
       run: |
         $YAK_FILE=$(ls *.yak)
         echo $YAK_FILE
-        ..\..\yak.exe push $YAK_FILE
+        .\yak.exe push $YAK_FILE
       working-directory: ${{ env.Release_File_Path }}
       env:
         YAK_TOKEN: ${{ secrets.YAK_TOKEN }}
@@ -69,12 +76,11 @@ jobs:
     # as per https://developer.rhino3d.com/wip/guides/yak/creating-a-rhino-plugin-package/
     - name: Push Rhino 7 version to YAK
       run: |
-        $YAK_FILE=$(ls *.yak)
         $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
         $yakRh7Name =  $yakCurrentVersName -Replace "rh6_16", "rh7_0"
         echo $yakRh7Name
         Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
-        ..\..\yak.exe push $yakRh7Name
+        .\yak.exe push $yakRh7Name
       working-directory: ${{ env.Release_File_Path }}
       env:
         YAK_TOKEN: ${{ secrets.YAK_TOKEN }}

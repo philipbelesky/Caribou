@@ -10,6 +10,7 @@ jobs:
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     env:
+      Solution_Name: Caribou
       Tests_Name: Caribou.Tests   # Replace with your test project name, i.e. MyWpfApp
 
     steps:
@@ -30,11 +31,16 @@ jobs:
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
-    # Restore the tests
-    - name: Restore tests project
-      run: msbuild $env:Tests_Name /t:Restore /p:Configuration="Debug"
+    - name: Restore the project's packages
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
     # Build the application
+    - name: Build the project
+      run: msbuild $env:Solution_Name /p:Configuration=Release
+
+    - name: Restore tests project's packages
+      run: msbuild $env:Tests_Name /t:Restore /p:Configuration="Debug"
+
     - name: Build tests project
       run: msbuild $env:Tests_Name /p:Configuration="Debug"
 
@@ -43,6 +49,6 @@ jobs:
       uses: Malcolmnixon/Setup-VSTest@v4
 
     # Run the actual tests
-    - name: Run Unit Tests
+    - name: Run project's unit tests
       run: vstest.console $env:Tests_Name\bin\Debug\net45\$env:Tests_Name.dll
       
