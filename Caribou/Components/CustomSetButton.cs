@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -14,7 +15,8 @@
     {
         // Adapted from https://www.grasshopper3d.com/forum/topics/create-radio-button-on-grasshopper-component?commentId=2985220%3AComment%3A835552
 
-        private Action buttonClickHandler; 
+        private Action buttonClickHandler;
+        private int buttonHeight = 45;
         
         public CustomSetButton(SpecifyFeaturesComponent owner, Action openFormCallback) : base(owner) {
             this.buttonClickHandler = openFormCallback;
@@ -24,20 +26,16 @@
         {
             base.Layout();
 
-            System.Drawing.Rectangle rec0 = GH_Convert.ToRectangle(Bounds);
-            rec0.Height += 22;
-            if (rec0.Width < 100)
-            {
-                rec0.Width = 100; // Ensure button has enough space; even if not drawing full names etc
-            }
+            System.Drawing.Rectangle componentRect = GH_Convert.ToRectangle(Bounds);
+            componentRect.Height += buttonHeight;
 
-            System.Drawing.Rectangle rec1 = rec0;
-            rec1.Y = rec1.Bottom - 22;
-            rec1.Height = 22;
-            rec1.Inflate(-2, -2);
+            System.Drawing.Rectangle buttonRect = componentRect;
+            buttonRect.Y = buttonRect.Bottom - buttonHeight;
+            buttonRect.Height = buttonHeight;
+            buttonRect.Inflate(-3, -3); // Shrink button bounds for cleaner insert
 
-            Bounds = rec0;
-            ButtonBounds = rec1;
+            Bounds = componentRect;
+            ButtonBounds = buttonRect;
         }
         private System.Drawing.Rectangle ButtonBounds { get; set; }
 
@@ -47,7 +45,8 @@
 
             if (channel == GH_CanvasChannel.Objects)
             {
-                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.Black, "Specify Features", 2, 0);
+                GH_Capsule button = GH_Capsule.CreateTextCapsule(
+                    ButtonBounds, ButtonBounds, GH_Palette.Black, "Specify\nFeatures", 2, 0);
                 button.Render(graphics, Selected, Owner.Locked, false);
                 button.Dispose();
             }

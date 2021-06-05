@@ -20,8 +20,8 @@
             if (metaDataRawValues.Count == 0)
             {
                 messages.AddWarning("No feature keys provided. Please provide them via:\n" +
-                    "- Via text parameters 'key:value' format separated by commas or newlines" +
-                    "- Via one of the Specify components.");
+                    "- One of Caribou's Specify components." + 
+                    "- Text parameters in a 'key=value' or 'key=*' format separated by commas or newlines\n");
             }
 
             var cleanedGhInput = new List<string>();

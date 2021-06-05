@@ -1,11 +1,12 @@
 ﻿namespace Caribou.Tests.Processing
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Caribou.Components;
     using Caribou.Data;
     using Caribou.Processing;
 
-    public abstract class BaseNodeParsingTest
+    public abstract class BaseParsingTest
     {
         protected static MessagesWrapper messages = new MessagesWrapper();
         protected readonly OSMMetaData craftsData = new OSMMetaData("craft");
@@ -24,10 +25,10 @@
         protected readonly OSMMetaData tramRoutesData = new OSMMetaData("tram", "route_master");
         protected readonly OSMMetaData tramStopsData = new OSMMetaData("yes", "tram_stop");
 
-        protected static RequestHandler fetchResultsViaXMLReader(OSMXMLFiles xml, ParseRequest features, OSMGeometryType typeOfFeature)
+        protected static RequestHandler fetchResultsViaXMLReader(List<string> xml, ParseRequest features, OSMGeometryType typeOfFeature)
         {
             var results = new RequestHandler(xml, features);
-            ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature);
+            ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature, true);
             return results;
         }
 

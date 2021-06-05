@@ -19,18 +19,22 @@
     {
         private SpecifyFeaturesForm pickerForm;
         private List<string> selectionOutput = new List<string>();
-        private TreeGridItemCollection selectionState = SelectionCollection.GetCollection(false);
+        private TreeGridItemCollection selectionState;
+        protected bool hideObscureFeatures = true;
+        private readonly string storageKeyForSelectionState = "selectionSerialised";
+        private readonly string storageKeyForIncludesObscureState = "selectionIncludesObscure";
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
-            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "OSM")
+            "Provides a graphical interface (via double-click or right-click menu) to specify a list of OSM features.", "Select")
         {
+            this.selectionState = SelectionCollection.GetCollection(this.hideObscureFeatures);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Features", "F", "A list of OSM features and subfeatures", GH_ParamAccess.list);
+            pManager.AddTextParameter("OSM Features", "OF", "A list of OSM features and subfeatures", GH_ParamAccess.list);
         }
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
@@ -51,10 +55,10 @@
 
         public void OpenFeaturePicker()
         {
-            this.pickerForm = new SpecifyFeaturesForm(this.selectionState);
+            this.pickerForm = new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
 
             int x = (int)Mouse.Position.X - 5;
-            int y = (int)Mouse.Position.Y - 40;
+            int y = (int)Mouse.Position.Y - 250;
             this.pickerForm.Location = new Eto.Drawing.Point(x, y);
             this.pickerForm.Closed += (sender, e) => { HandlePickerClose(); };
             this.pickerForm.Show();
@@ -63,6 +67,7 @@
         private void HandlePickerClose()
         {
             this.selectionState = this.pickerForm.mainRow.data;
+            this.hideObscureFeatures = this.pickerForm.hideObscureFeatures;
             this.selectionOutput = GetSelectedKeyValuesFromForm();
             this.ExpireSolution(true); // Recalculate output
         }
@@ -79,26 +84,32 @@
             return selectedKVs;
         }
 
-        // To persist the selection variable we need to override Read and Write
+        // To persist the selection state variables we need to override Write to record state in the definition
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
             var csvSelection = string.Join(",", this.selectionOutput.ToArray());
-            writer.SetString("selectionSerialised", csvSelection);
+            writer.SetString(storageKeyForSelectionState, csvSelection);
+            writer.SetBoolean(storageKeyForIncludesObscureState, hideObscureFeatures);
             return base.Write(writer);
         }
 
+        // To persist selection state variables we need to override Read to check for state in the definiton
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
-            var csvSelection = reader.GetString("selectionSerialised");
-            if (csvSelection != null)
+            if (reader.ItemExists(storageKeyForIncludesObscureState))
+                this.hideObscureFeatures = reader.GetBoolean(storageKeyForIncludesObscureState);
+
+            if (reader.ItemExists(storageKeyForSelectionState))
             {
-                this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection);
+                var csvSelection = reader.GetString(storageKeyForSelectionState);
+                this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection, this.hideObscureFeatures);
                 this.selectionOutput = GetSelectedKeyValuesFromForm();
             }
+
             return base.Read(reader);
         }
 
-        // Affordances for right-click menu and double click shortcut
+        // Affordances for the below-component list of values
         public static string LineSpaceKeyValues(string message, int tagCount)
         {
             if (tagCount <= 3)

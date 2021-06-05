@@ -64,7 +64,7 @@
             double? currentMaxLat = null;
             double? currentMaxLon = null;
 
-            foreach (string providedXML in result.XmlCollection.ProvidedXMLs)
+            foreach (string providedXML in result.XmlPaths)
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(providedXML);

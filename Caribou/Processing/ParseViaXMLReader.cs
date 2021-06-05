@@ -12,21 +12,33 @@
     /// </summary>
     public static class ParseViaXMLReader
     {
-        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind)
-        {
-            GetBounds(ref request);
+        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request);
 
-            foreach (string providedXML in request.XmlCollection.ProvidedXMLs)
+        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool readPathAsContents = false)
+        {
+            DispatchDelegate dispatchForType;
+            if (typeToFind == OSMGeometryType.Way)
+                dispatchForType = FindWaysInXML;
+            else if (typeToFind == OSMGeometryType.Node)
+                dispatchForType = FindNodesInXML;
+            else
+                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
+
+            GetBounds(ref request, readPathAsContents);
+            foreach (string xmlPath in request.XmlPaths)
             {
-                using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
+                if (readPathAsContents)
                 {
-                    if (typeToFind == OSMGeometryType.Way)
+                    using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
                     {
-                        FindWaysInXML(reader, ref request);
+                        dispatchForType(reader, ref request); // Only used in testing
                     }
-                    else if (typeToFind == OSMGeometryType.Node)
+                }
+                else
+                {
+                    using (XmlReader reader = XmlReader.Create(xmlPath))
                     {
-                        FindNodesInXML(reader, ref request);
+                        dispatchForType(reader, ref request);
                     }
                 }
             }
@@ -123,26 +135,29 @@
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
-        public static void GetBounds(ref RequestHandler result)
+        public static void GetBounds(ref RequestHandler result, bool readPathAsContents = false)
         {
             double? currentMinLat = null;
             double? currentMinLon = null;
             double? currentMaxLat = null;
             double? currentMaxLon = null;
 
-            foreach (string providedXML in result.XmlCollection.ProvidedXMLs)
+            foreach (string xmlPath in result.XmlPaths)
             {
-                using (XmlReader reader = XmlReader.Create(new StringReader(providedXML)))
+                XmlReader reader;
+                if (readPathAsContents) 
+                    reader = XmlReader.Create(new StringReader(xmlPath)); // Only used in testing
+                else
+                    reader = XmlReader.Create(xmlPath);
+   
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    if (reader.IsStartElement())
                     {
-                        if (reader.IsStartElement())
+                        if (reader.Name == "bounds")
                         {
-                            if (reader.Name == "bounds")
-                            {
-                                CheckBounds(reader, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
-                                break;
-                            }
+                            CheckBounds(reader, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
+                            break;
                         }
                     }
                 }

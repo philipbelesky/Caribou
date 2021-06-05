@@ -26,7 +26,7 @@
             return treeCollection;
         }
 
-        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool includeObscure)
+        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool hideObscureFeatures)
         {
             var parentItem = new TreeGridItem
             {
@@ -35,9 +35,8 @@
 
             foreach (var child in childFeatures)
             {
-                if (!includeObscure && child.IsObscure() && child.ShowCounts)
-                {
-                    continue;
+                if (child.ShowCounts && hideObscureFeatures && child.IsObscure()) { 
+                    continue; 
                 }
 
                 var childItem = new TreeGridItem
@@ -77,10 +76,10 @@
             return;
         }
 
-        public static TreeGridItemCollection DeserialiseKeyValues(string csvSelection)
+        public static TreeGridItemCollection DeserialiseKeyValues(string csvSelection, bool includeObscure)
         {
             // Need to set selection state back from list of keyValue strings that persisted
-            var newSelectionState = SelectionCollection.GetCollection(false);
+            var newSelectionState = SelectionCollection.GetCollection(includeObscure);
             var csvItems = csvSelection.Split(',').ToList();
 
             foreach (TreeGridItem item in newSelectionState)
