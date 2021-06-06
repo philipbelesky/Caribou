@@ -9,12 +9,12 @@
     public class SpecifyFeaturesForm : Form
     {
         public TableStrip mainRow;
-        private int windowWidth = 1000;
-        private int windowHeight = 633; // Need to be large enough to show buttom row
-        private int buttonHeight = 40;
-        private int buttonWidth = 200;
-        private int padding = 10;
-        private TreeGridItemCollection providedState;
+        private readonly int windowWidth = 1000;
+        private readonly int windowHeight = 633; // Need to be large enough to show buttom row
+        private readonly int buttonHeight = 40;
+        private readonly int buttonWidth = 200;
+        private readonly int padding = 10;
+        private readonly TreeGridItemCollection providedState;
         public bool hideObscureFeatures;
 
         public SpecifyFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
