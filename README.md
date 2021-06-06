@@ -21,16 +21,16 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 - ✅ Very fast parsing of even very large files
 - ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
 - ✅ Parsing is performed asynchronously so Grasshopper does not freeze
-- ✅ Parse multiple OSM files simultaneously with de-duplication of identical geometries
-- ✅ Allows for querying for arbitrary data, not just defined features/sub-features
-- ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering and baking
+- ✅ Parse multiple OSM files simultaneously with de-duplication of geometry
+- ✅ Allows for querying for arbitrary data outside of the primary OSM features/sub-features taxonomy
+- ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering, tagging, baking, etc
 
 ## Roadmap
 
-- 🕘 Dedicated component for defining 3D buildings
+- 🕘 Component for creating 3D buildings
 - 🕘 Documentation and examples
-- 🕘 Faster!
-- 🕘 Affordance for querying arbitrary Metadata
+- 🕘 Further speed optimisations
+- 🕘 Component to help construct queries for arbitrary Metadata
 - 🕘 Parsing of `<relation>` type data
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
 
