@@ -1,6 +1,7 @@
 ﻿namespace Caribou.Processing
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Threading;
     using Caribou.Components;
@@ -89,6 +90,14 @@
             // PARSE XML Data
             this.providedFilePaths = new List<string>();
             da.GetDataList(0, this.providedFilePaths);
+            foreach (var path in this.providedFilePaths)
+            {
+                if (!File.Exists(path))
+                    parseMessages.AddRemark($"Could not find file at {path}");
+            }
+            this.providedFilePaths.RemoveAll(path => !File.Exists(path));
+            if (this.providedFilePaths.Count == 0)
+                parseMessages.AddError($"No valid file paths provided");
 
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();
