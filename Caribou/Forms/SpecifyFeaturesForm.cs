@@ -23,7 +23,7 @@
             this.hideObscureFeatures = hideObscureFeatures;
 
             this.Padding = padding;
-            this.Title = "Select Features and Sub-Features";
+            this.Title = "Specify Features and Sub-Features";
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
             this.mainRow = new TableStrip(selectionState);
