@@ -17,7 +17,6 @@
 
         private Action buttonClickHandler;
         private int buttonHeight = 45;
-        private int buttonWidthIncrease = 5;
         
         public CustomSetButton(SpecifyFeaturesComponent owner, Action openFormCallback) : base(owner) {
             this.buttonClickHandler = openFormCallback;
