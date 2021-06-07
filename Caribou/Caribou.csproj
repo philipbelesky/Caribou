@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <VersionPrefix>0.7.0</VersionPrefix>
+    <VersionPrefix>0.8.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
