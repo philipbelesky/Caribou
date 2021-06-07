@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.8.0-alpha] - 2021-??-??
+## [0.8.0-alpha] - 2021-06-08
 ### Added
 - The `Report` parameter now provides a unique per-branch color for use in Geometry Previews and Legends. Colors generated using the HSLuv color space to enhance contrast.
+
+### Changed
+- License changed to LGPL
 
 ### Fixed
 - The 'Nice Name' items in the MetaData report parameter would fail to correctly label subfeatues
