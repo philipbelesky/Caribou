@@ -15,6 +15,7 @@
         private readonly int buttonWidth = 200;
         private readonly int padding = 10;
         private readonly TreeGridItemCollection providedState;
+        private readonly CheckBox obscureFeaturesCheckbox; // Need to track so we can manually set state
         public bool hideObscureFeatures;
 
         public SpecifyFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
@@ -30,7 +31,9 @@
 
             var topButtons = new DynamicLayout();
             topButtons.BeginHorizontal();
-            topButtons.Add(ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures));
+            this.obscureFeaturesCheckbox = ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures);
+            topButtons.Add(obscureFeaturesCheckbox);
+            topButtons.Add(ControlStrip.GetHiderLabel(ToggleObscureFeatuesManually));
             topButtons.Add(null);
             topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
             topButtons.Add(new Label() { Width = 10 });
@@ -80,9 +83,15 @@
 
         private void CollapseAll() => this.SetRollout(false);
 
+        private void ToggleObscureFeatuesManually()
+        {
+            this.obscureFeaturesCheckbox.Checked = !this.obscureFeaturesCheckbox.Checked.Value;
+            this.ToggleObscureFeatures();
+        }
+
         private void ToggleObscureFeatures()
         {
-            this.hideObscureFeatures = !this.hideObscureFeatures;
+            this.hideObscureFeatures = this.obscureFeaturesCheckbox.Checked.Value;
             this.mainRow.viewForm.DataStore = SelectionCollection.GetCollection(this.hideObscureFeatures);
             this.mainRow.viewForm.ReloadData();
         }

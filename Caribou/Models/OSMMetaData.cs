@@ -43,7 +43,7 @@
                     this.ParentType = new OSMMetaData(specifiedKey);
                 }
 
-                this.Name = MakeNiceName(null, specifiedKey);
+                this.Name = MakeNiceName(null, specifiedId, specifiedKey);
             }
         }
 
@@ -51,9 +51,13 @@
         public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
             this.ThisType = id;
-            this.Name = MakeNiceName(name, id);
             this.IsDefined = true;
             this.Explanation = MakeNiceExplanation(explanation);
+            if (key != null)
+                this.Name = MakeNiceName(name, id, key.Name);
+            else
+                this.Name = MakeNiceName(name, id, "");
+
             this.ParentType = key;
         }
 
@@ -66,7 +70,7 @@
 
         public override string ToString() => this.IsFeature() ? this.SingleSearchNiceName() : this.MultiSearchNiceName();
 
-        private static string MakeNiceName(string providedName, string providedID)
+        private static string MakeNiceName(string providedName, string providedID, string providedParent)
         {
             if (!string.IsNullOrEmpty(providedName))
             {
@@ -80,8 +84,12 @@
             // Try and make a nice name for layer bakes, etc
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             var name = providedID.Replace("_", " ");
-            name = textInfo.ToTitleCase(name);
-            return name;
+            if (name == "yes")
+            {
+                name = providedParent + " (Untagged)";
+            }
+
+            return textInfo.ToTitleCase(name);
         }
 
         private static string MakeNiceExplanation(string explanation)
