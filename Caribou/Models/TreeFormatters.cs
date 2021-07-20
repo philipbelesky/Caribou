@@ -78,11 +78,12 @@
             foreach (var entry in foundNodes)
             {
                 GH_Path path = new GH_Path(i);
-                i++;
+                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
                 foreach (var pt in entry.Value)
                 {
                     output.Append(new GH_Point(pt), path);
                 }
+                i++;
             }
 
             return output;
@@ -96,11 +97,12 @@
             foreach (var entry in foundWays)
             {
                 GH_Path path = new GH_Path(i);
-                i++;
+                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
                 foreach (var pLine in entry.Value)
                 {
                     output.Append(new GH_Curve(pLine), path);
                 }
+                i++;
             }
 
             return output;
@@ -114,11 +116,12 @@
             foreach (var entry in foundBuildings)
             {
                 GH_Path path = new GH_Path(i);
-                i++;
+                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
                 foreach (var pBuilding in entry.Value)
                 {
                     output.Append(new GH_Surface(pBuilding), path);
                 }
+                i++;
             }
             return output;
         }   
