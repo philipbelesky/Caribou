@@ -6,15 +6,25 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider(Action toggleMinorFeatures, bool hideObscureFeaturesState)
+        public static CheckBox GetHider(Action toggleAction, bool hideObscureFeaturesState)
         {
             var showHideMinorFeatures = new CheckBox()
             {
                 Checked = hideObscureFeaturesState,
-                Text = "Hide SubFeatures with very low counts",
             };
-            showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleMinorFeatures(); };
+            showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleAction(); };
             return showHideMinorFeatures;
+        }
+
+        /// <summary>Checkbox labels are misaligned on macOS if they have a provided Text.</summary>
+        public static Label GetHiderLabel(Action toggleAction)
+        {
+            var showHideMinorFeaturesLabel = new Label()
+            {
+                Text = " Hide SubFeatures with very low counts",
+            };
+            showHideMinorFeaturesLabel.MouseDown += (sender, e) => { toggleAction(); };
+            return showHideMinorFeaturesLabel;
         }
 
         public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)

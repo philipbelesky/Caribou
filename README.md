@@ -20,17 +20,17 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 - ✅ Windows and MacOS are both fully supported
 - ✅ Very fast parsing of even very large files
 - ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
-- ✅ Parsing is performed asynchronously so Grasshopper does not freeze
-- ✅ Parse multiple OSM files simultaneously with de-duplication of identical geometries
-- ✅ Allows for querying for arbitrary data, not just defined features/sub-features
-- ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering and baking
+- ✅ Parsing is performed asynchronously so Grasshopper remains responsive
+- ✅ Parse multiple OSM files simultaneously with de-duplication of geometry
+- ✅ Allows for querying for arbitrary data outside of the primary OSM features/sub-features taxonomy
+- ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering, tagging, baking, etc
 
 ## Roadmap
 
-- 🕘 Dedicated component for defining 3D buildings
+- 🕘 Component for creating 3D buildings
 - 🕘 Documentation and examples
-- 🕘 Faster!
-- 🕘 Affordance for querying arbitrary Metadata
+- 🕘 Further speed optimisations
+- 🕘 Component to help construct queries for arbitrary Metadata
 - 🕘 Parsing of `<relation>` type data
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
 
@@ -44,17 +44,19 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
   1. Go to [https://www.openstreetmap.org](openstreetmap.org)
   2. Locate the general area you wish to model and hit `export`, then `manually select an area`
   3. Click the `OVERPASS API` link to download the `xml` file
-- Grasshopper Setup
+- Grasshopper setup
   1. Place Caribou's `Extract Nodes` or `Extract Ways` component (or both)
   2. Place a standard Grasshopper `File Path` component, reference your `xml` file(s), and connect the outputs to the `OSM File` input parameter
   3. Place Caribou's `Specify Features` component.
   4. Click the button at the bottom of the `Specify Features` component and select the types of features you want to extract.
- 5. Connect the `OSM Features` output to the `OSM Features` input.
+  5. Connect the `OSM Features` output to the `OSM Features` input.
+
+See `examples/Simple.ghx` for a definition the contains a completed example of the above steps as well as components to provide a Legend and categorised baking.
 
 ## Recognition
 
 Thanks to:
 
-- Dimitrie Stefanescu and the authors of the [GrasshopeprAsyncComponent](https://github.com/specklesystems/GrasshopperAsyncComponent) repo.
-- Timothy Logan, author of [Elk](https://github.com/logant/Elk).
+- Timothy Logan, author of [Elk](https://github.com/logant/Elk), for LatLon conversion math and for an example of feature-picker form.
+- Dimitrie Stefanescu and the authors of the [GrasshopperAsyncComponent](https://github.com/specklesystems/GrasshopperAsyncComponent) repo.
 - Povl Filip Sonne-Frederiksen, author of the [Yak package manager action](https://github.com/pfmephisto/rhino-yak).

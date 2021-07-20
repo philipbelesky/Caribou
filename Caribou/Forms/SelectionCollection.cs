@@ -10,7 +10,7 @@
     /// <summary>Translates from the Feature/SubFeature datasets into the UI elements in the view.</summary>
     public static class SelectionCollection
     {
-        private static int keyValueIndex = 4;
+        private static readonly int keyValueIndex = 4;
 
         public static TreeGridItemCollection GetCollection(bool includeObscure)
         {

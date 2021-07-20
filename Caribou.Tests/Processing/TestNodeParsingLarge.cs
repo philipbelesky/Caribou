@@ -9,15 +9,15 @@
     [TestClass]
     public class TestNodeParsingLarge : MelbourneCase
     {
-        const int allAmenities = 610;
-        const int allHighways = 143;
-        const int allBuildings = 140;
-        const int allAmenitiesRestaurants = 173;
-        const int allAmenitiesWorship = 2;
-        const int allHighwaysResidential = 0;
-        const int allBuildingsRetail = 130;
-        const double expectedFirstWorshopLon = 144.963903;
-        const double expectedFirstRestaurantLat = -37.8134515;
+        const int AllAmenities = 610;
+        const int AllHighways = 143;
+        const int AllBuildings = 140;
+        const int AllAmenitiesRestaurants = 173;
+        const int AllAmenitiesWorship = 2;
+        const int AllHighwaysResidential = 0;
+        const int AllBuildingsRetail = 130;
+        const double ExpectedFirstWorshopLon = 144.963903;
+        const double ExpectedFirstRestaurantLat = -37.8134515;
 
         //[TestMethod]
         //public void ParseNodesGivenKeyViaXMLDocument()
@@ -42,9 +42,9 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Node);
 
-            Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
-            Assert.AreEqual(allHighways, CountNodesForMetaData(results, highwaysData));
-            Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData));
+            Assert.AreEqual(AllAmenities, CountNodesForMetaData(results, amenitiesData));
+            Assert.AreEqual(AllHighways, CountNodesForMetaData(results, highwaysData));
+            Assert.AreEqual(AllBuildings, CountNodesForMetaData(results, buildingsData));
         }
 
         [TestMethod]
@@ -54,12 +54,12 @@
             var firstRestaurantLat = results.FoundData[amenitiesRestaurantsData].First().Coords.First().Latitude;
             var firstFirstWorshopLon = results.FoundData[amenitiesWorshipData].First().Coords.First().Longitude;
                         
-            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
-            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurantLat);
-            Assert.AreEqual(allAmenitiesWorship, CountNodesForMetaData(results, amenitiesWorshipData));
-            Assert.AreEqual(expectedFirstWorshopLon, firstFirstWorshopLon);            
-            Assert.AreEqual(allHighwaysResidential, CountNodesForMetaData(results, highwayResidentialData));
-            Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
+            Assert.AreEqual(AllAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(ExpectedFirstRestaurantLat, firstRestaurantLat);
+            Assert.AreEqual(AllAmenitiesWorship, CountNodesForMetaData(results, amenitiesWorshipData));
+            Assert.AreEqual(ExpectedFirstWorshopLon, firstFirstWorshopLon);            
+            Assert.AreEqual(AllHighwaysResidential, CountNodesForMetaData(results, highwayResidentialData));
+            Assert.AreEqual(AllBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
         }
 
         [TestMethod]

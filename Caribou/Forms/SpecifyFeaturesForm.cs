@@ -9,12 +9,13 @@
     public class SpecifyFeaturesForm : Form
     {
         public TableStrip mainRow;
-        private int windowWidth = 1000;
-        private int windowHeight = 633; // Need to be large enough to show buttom row
-        private int buttonHeight = 40;
-        private int buttonWidth = 200;
-        private int padding = 10;
-        private TreeGridItemCollection providedState;
+        private readonly int windowWidth = 1000;
+        private readonly int windowHeight = 633; // Need to be large enough to show buttom row
+        private readonly int buttonHeight = 40;
+        private readonly int buttonWidth = 200;
+        private readonly int padding = 10;
+        private readonly TreeGridItemCollection providedState;
+        private readonly CheckBox obscureFeaturesCheckbox; // Need to track so we can manually set state
         public bool hideObscureFeatures;
 
         public SpecifyFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
@@ -23,14 +24,16 @@
             this.hideObscureFeatures = hideObscureFeatures;
 
             this.Padding = padding;
-            this.Title = "Select Features and Sub-Features";
+            this.Title = "Specify Features and Sub-Features";
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
             this.mainRow = new TableStrip(selectionState);
 
             var topButtons = new DynamicLayout();
             topButtons.BeginHorizontal();
-            topButtons.Add(ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures));
+            this.obscureFeaturesCheckbox = ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures);
+            topButtons.Add(obscureFeaturesCheckbox);
+            topButtons.Add(ControlStrip.GetHiderLabel(ToggleObscureFeatuesManually));
             topButtons.Add(null);
             topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
             topButtons.Add(new Label() { Width = 10 });
@@ -80,9 +83,15 @@
 
         private void CollapseAll() => this.SetRollout(false);
 
+        private void ToggleObscureFeatuesManually()
+        {
+            this.obscureFeaturesCheckbox.Checked = !this.obscureFeaturesCheckbox.Checked.Value;
+            this.ToggleObscureFeatures();
+        }
+
         private void ToggleObscureFeatures()
         {
-            this.hideObscureFeatures = !this.hideObscureFeatures;
+            this.hideObscureFeatures = this.obscureFeaturesCheckbox.Checked.Value;
             this.mainRow.viewForm.DataStore = SelectionCollection.GetCollection(this.hideObscureFeatures);
             this.mainRow.viewForm.ReloadData();
         }
