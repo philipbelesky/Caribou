@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Caribou.Data;
+    using Caribou.Processing;
     using Grasshopper;
     using Grasshopper.Kernel.Data;
     using Rhino;
@@ -52,6 +53,40 @@
                 }
             }
 
+            return geometryResult;
+        }
+
+        public static Dictionary<OSMMetaData, List<Surface>> BuildingSurfacesFromCoords(RequestHandler result)
+        {
+            var geometryResult = new Dictionary<OSMMetaData, List<Surface>>();
+            var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
+            Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
+
+            foreach (var entry in result.FoundData)
+            {
+                geometryResult[entry.Key] = new List<Surface>();
+                var lines = new List<PolylineCurve>();
+                foreach (FoundItem item in entry.Value)
+                {
+                    var linePoints = new List<Point3d>();
+                    foreach (var coord in item.Coords)
+                    {
+                        var pt = GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds);
+                        linePoints.Add(pt);
+                    }
+
+                    var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
+                    var height = IdentifyBuildingHeight.ParseHeight(item.Tags, unitScale);
+                    if (height > 0.0)
+                    {
+                        if (polyLine.ClosedCurveOrientation() == CurveOrientation.Clockwise)
+                            height = height * -1; // If curve plane's Z != global Z; extrude in opposite direction
+
+                        var surface = Extrusion.Create(polyLine, height, true);
+                        geometryResult[entry.Key].Add(surface);
+                    }
+                }
+            }
             return geometryResult;
         }
 
