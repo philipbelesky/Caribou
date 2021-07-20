@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.01] - 2021-07-20
+### Changed
+- Removed pre-release marker
+
 ## [0.9.0-beta] - 2021-07-20
 ### Added
 - A 'Extract Buildings' parameter that creates 3D geometry for items tagged with heights/levels
