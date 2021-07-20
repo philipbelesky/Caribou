@@ -13,7 +13,7 @@
 
 Caribou is a [Grasshopper plugin](https://www.grasshopper3d.com/) for parsing downloaded Open Street Map data into Rhino geometry.
 
-Caribou is currently in an alpha state. Feedback, issues, and pull-requests are encouraged.
+Caribou is currently in an beta state. Feedback, issues, and pull-requests are encouraged.
 
 ## Features
 

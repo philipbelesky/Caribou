@@ -1,5 +1,5 @@
 name: Caribou
-version: 0.8.0-alpha
+version: 0.9.0-beta
 authors:
   - Philip Belesky
 keywords:
@@ -11,5 +11,5 @@ keywords:
   - guid:c9beedb9-07ec-4974-a0a2-44670ddb17e4
 icon_url: "https://raw.githubusercontent.com/philipbelesky/Caribou/main/assets/logo_small.png?token=AADZCWKKPZSFNHX2Y6TQYH3AVHKKW"
 description: >
-  Caribou parses downloaded Open Street Map data into Rhino geometry. It is currently in Alpha testing.
+  Parses downloaded Open Street Map data into Grasshopper geometry. Currently in Beta.
 url: "https://github.com/philipbelesky/Caribou"
