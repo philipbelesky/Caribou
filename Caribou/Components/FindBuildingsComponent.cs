@@ -1,4 +1,4 @@
-﻿namespace Caribou.Components
+﻿namespace Caribou.Processing
 {
     using System;
     using Caribou.Components;
@@ -16,7 +16,7 @@
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddBrepParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
+            pManager.AddSurfaceParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
             pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
             pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
         }

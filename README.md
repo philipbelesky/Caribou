@@ -27,7 +27,6 @@ Caribou is currently in an alpha state. Feedback, issues, and pull-requests are 
 
 ## Roadmap
 
-- 🕘 Component for creating 3D buildings
 - 🕘 Documentation and examples
 - 🕘 Further speed optimisations
 - 🕘 Component to help construct queries for arbitrary Metadata

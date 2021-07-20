@@ -14,8 +14,8 @@
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
     public class ParseBuildingsWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Brep> buildingOutputs;
-        private Dictionary<OSMMetaData, List<Brep>> foundBuildings;
+        private GH_Structure<GH_Surface> buildingOutputs;
+        private Dictionary<OSMMetaData, List<Surface>> foundBuildings;
 
         public ParseBuildingsWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -31,8 +31,8 @@
 
         public override void MakeGeometryForComponentType()
         {
-            // Translate OSM nodes to Rhino points
-            // TODO:
+            // Translate OSM nodes to Rhino Surfaces
+            this.foundBuildings = TranslateToXYManually.BuildingSurfacesFromCoords(this.result);
         }
 
         public override void GetTreeForComponentType()

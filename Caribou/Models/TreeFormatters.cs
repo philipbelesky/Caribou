@@ -106,9 +106,9 @@
             return output;
         }
 
-        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Brep>> foundBuildings)
+        public static GH_Structure<GH_Surface> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Surface>> foundBuildings)
         {
-            var output = new GH_Structure<GH_Brep>();
+            var output = new GH_Structure<GH_Surface>();
             var i = 0;
 
             foreach (var entry in foundBuildings)
@@ -117,7 +117,7 @@
                 i++;
                 foreach (var pBuilding in entry.Value)
                 {
-                    output.Append(new GH_Brep(pBuilding), path);
+                    output.Append(new GH_Surface(pBuilding), path);
                 }
             }
             return output;

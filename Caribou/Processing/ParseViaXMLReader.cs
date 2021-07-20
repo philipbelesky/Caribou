@@ -12,17 +12,21 @@
     /// </summary>
     public static class ParseViaXMLReader
     {
-        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request);
+        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, bool onlyBuildings = false);
 
         public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool readPathAsContents = false)
         {
             DispatchDelegate dispatchForType;
-            if (typeToFind == OSMGeometryType.Way)
-                dispatchForType = FindWaysInXML;
-            else if (typeToFind == OSMGeometryType.Node)
+            if (typeToFind == OSMGeometryType.Node)
                 dispatchForType = FindNodesInXML;
+            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
+                dispatchForType = FindWaysInXML;
             else
                 dispatchForType = null; // Necessary to prevent below paths thinking variable not set
+
+            bool onlyBuildings = false;
+            if (typeToFind == OSMGeometryType.Building)
+                onlyBuildings = true;
 
             GetBounds(ref request, readPathAsContents);
             foreach (string xmlPath in request.XmlPaths)
@@ -31,7 +35,7 @@
                 {
                     using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
                     {
-                        dispatchForType(reader, ref request); // Only used in testing
+                        dispatchForType(reader, ref request, onlyBuildings); // Only used in testing
                     }
                 }
                 else
@@ -44,7 +48,7 @@
             }
         }
 
-        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request)
+        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, bool onlyBuildings)
         {
             string currentNodeId = "";
             double currentLat = 0;
@@ -81,7 +85,7 @@
             }
         }
 
-        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request)
+        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, bool onlyBuildings)
         {
             string currentWayId = "";
             var currentWayMetaData = new Dictionary<string, string>();
@@ -125,7 +129,11 @@
                     inANode = false;
                     if (reader.Name == "way") // Closing out a way tag
                     {
-                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); // If finished looping over a prior node                    currentWayMetaData.Clear();
+                        // If finished looping over a prior node
+                        if (onlyBuildings) 
+                            request.AddBuildingIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); 
+                        else
+                            request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
                     }
 
                     currentWayMetaData.Clear();
