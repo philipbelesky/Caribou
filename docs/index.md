@@ -2,122 +2,66 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+## Overview
 
-[Link to another page]({% link about.md %}).
+Caribou is a Grasshopper plugin for parsing downloaded Open Street Map data into Rhino geometry. Caribou is currently in an beta state, but core functionality should be stable.
 
-There should be whitespace between paragraphs.
+## Features
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+- ✅ Windows and MacOS are both fully supported
+- ✅ Very fast parsing of even very large files
+- ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
+- ✅ Parsing is performed asynchronously so Grasshopper remains responsive
+- ✅ Parse multiple OSM files simultaneously with de-duplication of geometry
+- ✅ Allows for querying for arbitrary data outside of the primary OSM features/sub-features taxonomy
+- ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering, tagging, baking, etc
 
-# Header 1
+## Installation
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*) or on [Food4Rhino](https://www.food4rhino.com/en/app/caribou?lang=en). If installing via the Package Manager, please ensure you fully quit/restart Rhinoceros after installing.
 
-## Header 2
+## Setup and Use
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+### Downloading Open Street Map data
 
-### Header 3
+1. Go to [https://www.openstreetmap.org](openstreetmap.org)
+2. Locate the general area you wish to model and hit **export**, then **manually select an area**
+3. Click the **OVERPASS API** link to download the `xml` file
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+Note that Caribou can parse and combine multiple `xml` downloads. If you are constrained by the maximum export area, you can use multiple crops/downloads to increase coverage of your site. Ensure there are clear overlaps between your crops - Caribou will handle de-duplication of any overlapping geometry.
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+### Parsing the data into Grasshopper Geometry
 
-#### Header 4
+Caribou's `Extract Nodes` and `Extract Ways` components each process two distinct types of Open Street Map data.
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+1. Nodes become `Points` in Grasshopper/Rhino and usually correspond to precise spatial markers; e.g. an ATM location, a traffic light, an address, or a tram stop.
+2. Ways become `Polylines` in Grasshopper/Rhino and usually correspond to areas or routes; e.g. a road, a bus route, a coastline, or a park.
 
-##### Header 5
+Caribou also provides an `Extract Buildings` component that handles converting `Way` geometry into 3D shapes if that `Way` is marked as a `building` and if metadata regarding that building's height is present.
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+Regardless of the type of `Extract` component you are using, the workflow is the same.
 
-###### Header 6
+1. Place Caribou's `Extract Nodes` or `Extract Ways` or `Extract Buildings` component(s)
+2. Place a standard Grasshopper `File Path` component, reference your `xml` file(s), and connect the outputs to the `OSM File` input parameter
+3. Place Caribou's `Specify Features` component.
+4. Click the button at the bottom of the `Specify Features` component and select the types of features you want to extract.
+5. Connect the `OSM Features` output from `Specify Features` to the `OSM Features` input of your `Extract` component(s).
+6. Done!
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+### Other Component Outputs
 
-### There's a horizontal rule below this.
+### Filtering Open Street Map Data
 
-* * *
+TODO
 
-### Here is an unordered list:
+### Baking and Labeling Geometry
 
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
+TODO
 
-### And an ordered list:
+See `examples/Simple.ghx` for a definition the contains a completed example of the above steps as well as components to provide a Legend and categorised baking.
 
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
+## Support and Source
 
-### And a nested list:
+Support can be requested, or feedback provided, by [opening a discussion on GitHub](https://github.com/philipbelesky/Caribou/discussions). Issues and pull-requests are encouraged.
 
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
+Caribou's source code [is available on GitHub](https://github.com/philipbelesky/Caribou/) under [the LGPL v3.0 license](https://github.com/philipbelesky/Caribou/blob/develop/LICENSE.md).

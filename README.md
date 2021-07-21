@@ -11,11 +11,19 @@
 
 </div>
 
-Caribou is a [Grasshopper plugin](https://www.grasshopper3d.com/) for parsing downloaded Open Street Map data into Rhino geometry.
+Caribou is a [Grasshopper plugin](https://www.grasshopper3d.com/) for parsing downloaded Open Street Map data into Rhino geometry. Caribou is currently in an beta state, but core functionality should be stable.
 
-Caribou is currently in an beta state. Feedback, issues, and pull-requests are encouraged.
+### Installation
 
-## Features
+Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*) or on [Food4Rhino](https://www.food4rhino.com/en/app/caribou?lang=en).
+
+### Documentation & Support
+
+Caribou's documentation [lives on this website](https://caribou.philipbelesky.com) and on [YouTube](https://www.youtube.com/user/philipbelesky).
+
+Support can be requested, or feedback provided, by [opening a discussion on GitHub](https://github.com/philipbelesky/Caribou/discussions). Issues and pull-requests are encouraged.
+
+### Features
 
 - ✅ Windows and MacOS are both fully supported
 - ✅ Very fast parsing of even very large files
@@ -25,34 +33,15 @@ Caribou is currently in an beta state. Feedback, issues, and pull-requests are e
 - ✅ Allows for querying for arbitrary data outside of the primary OSM features/sub-features taxonomy
 - ✅ Outputs are tree-formatted and organised per data-type to allow for downstream filtering, tagging, baking, etc
 
-## Roadmap
+### Roadmap
 
-- 🕘 Documentation and examples
 - 🕘 Further speed optimisations
-- 🕘 Component to help construct queries for arbitrary Metadata
+- 🕘 Component to help construct queries for arbitrary metadata
 - 🕘 Parsing of `<relation>` type data
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
+- 🕘 Customisable projection methods
 
-## Setup and Use
-
-![Image of the definition setup](/assets/demo-v0.7.png)
-
-- Plugin installation
-  1. For now, releases are available by searching for *Caribou* in the [Rhino package manager](https://www.rhino3d.com/features/package-manager/) only.
-- Data gathering
-  1. Go to [https://www.openstreetmap.org](openstreetmap.org)
-  2. Locate the general area you wish to model and hit `export`, then `manually select an area`
-  3. Click the `OVERPASS API` link to download the `xml` file
-- Grasshopper setup
-  1. Place Caribou's `Extract Nodes` or `Extract Ways` component (or both)
-  2. Place a standard Grasshopper `File Path` component, reference your `xml` file(s), and connect the outputs to the `OSM File` input parameter
-  3. Place Caribou's `Specify Features` component.
-  4. Click the button at the bottom of the `Specify Features` component and select the types of features you want to extract.
-  5. Connect the `OSM Features` output to the `OSM Features` input.
-
-See `examples/Simple.ghx` for a definition the contains a completed example of the above steps as well as components to provide a Legend and categorised baking.
-
-## Recognition
+### Recognition
 
 Thanks to:
 
