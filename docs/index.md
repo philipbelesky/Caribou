@@ -4,11 +4,11 @@ layout: default
 
 ## Overview
 
-Caribou is a Grasshopper plugin for parsing downloaded Open Street Map data into Rhino geometry. Caribou is currently in an beta state, but core functionality should be stable.
+Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing downloaded [Open Street Map](https://www.openstreetmap.org) data into Rhino geometry. Caribou is currently in an beta state, but core functionality should be stable.
 
 ## Features
 
-- ✅ Windows and MacOS are both fully supported
+- ✅ Windows and MacOS are both fully supported on Rhino 6 and Rhino 7
 - ✅ Very fast parsing of even very large files
 - ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
 - ✅ Parsing is performed asynchronously so Grasshopper remains responsive
@@ -24,7 +24,7 @@ Caribou is available to download via the [Rhino Package Manager](https://www.rhi
 
 ### Downloading Open Street Map data
 
-1. Go to [https://www.openstreetmap.org](openstreetmap.org)
+1. Go to [https://www.openstreetmap.org](https://www.openstreetmap.org)
 2. Locate the general area you wish to model and hit **export**, then **manually select an area**
 3. Click the **OVERPASS API** link to download the `xml` file
 
@@ -48,7 +48,41 @@ Regardless of the type of `Extract` component you are using, the workflow is the
 5. Connect the `OSM Features` output from `Specify Features` to the `OSM Features` input of your `Extract` component(s).
 6. Done!
 
-### Other Component Outputs
+### Non-Geometry Outputs
+
+Each `Extract` component also has two non-geometry outputs.
+
+*Tags* list all the different pieces of metadata attached to a geometric output. For example, a `Way` representing a building might have tags of:
+
+```
+addr: housenumber=158
+addr: street=Cuba Street
+addr: suburb=Te Aro
+building-apartments
+building:levels=8
+name=Cubana Apartments
+ref: linz: address id=stack(20 61327-2061340)
+````
+
+*Report* lists information related to the parsing process itself:
+
+```
+Office
+building=office
+35 found
+233,0,10
+Building
+building::office
+```
+
+This data is provided as:
+
+1. The specific type of information (Office)
+2. The 'raw' query string
+3. The number of items found
+4. A suggested color for this layer (colors are developed to maximise perceptual difference)
+5. The 'parent' type of the information
+6. A layer path string (to aid baking)
 
 ### Filtering Open Street Map Data
 
@@ -56,9 +90,12 @@ TODO
 
 ### Baking and Labeling Geometry
 
-TODO
+You can download this definition to see examples of how to:
 
-See `examples/Simple.ghx` for a definition the contains a completed example of the above steps as well as components to provide a Legend and categorised baking.
+1. Color the geometry in Grasshopper according to it's metadata data
+2. Display a legend in Rhino with the above color codes.
+3. Bake out the geometry to individually-labelled layers
+  - This requires the use of the [*human* plugin](https://discourse.mcneel.com/c/grasshopper/human/88) which is available for Rhino 6/7 on Windows/Mac.
 
 ## Support and Source
 
