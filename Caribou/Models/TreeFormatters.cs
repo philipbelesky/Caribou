@@ -47,18 +47,23 @@
                 var metaData = result.RequestedMetaData.Requests[i];
                 var count = result.FoundData[metaData].Count;
                 var colorForItem = GetPerceptualColorForTreeItem(requestMetaDataCount, i);
+                var metaDataTitle = tInfo.ToTitleCase(metaData.Name);
 
-                output.Append(new GH_String(tInfo.ToTitleCase(metaData.Name)), path);
+                output.Append(new GH_String(metaDataTitle), path);
                 output.Append(new GH_String(metaData.ToString()), path);
                 output.Append(new GH_String($"{count} found"), path);
                 output.Append(new GH_String(colorForItem.ToString()));
                 if (metaData.ParentType != null)
                 {
-                    output.Append(new GH_String(tInfo.ToTitleCase(metaData.ParentType.Name)), path);
+                    var titleName = tInfo.ToTitleCase(metaData.ParentType.Name);
+                    output.Append(new GH_String(titleName), path);
+                    var layerName = titleName + "::" + metaDataTitle;
+                    output.Append(new GH_String(layerName), path); // Layer path helper
                 }
                 else
                 {
                     output.Append(new GH_String("(No Parent Feature)"), path);
+                    output.Append(new GH_String(metaDataTitle + "::"), path); // Layer path helper
                 }
 
                 if (!string.IsNullOrEmpty(metaData.Explanation))
