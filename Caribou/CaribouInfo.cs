@@ -21,7 +21,7 @@
         public override string AuthorContact => "contact@philipbelesky.com";
 
         // GHB note: if using the provided "About" component this URL is output there
-        public virtual Uri PluginURL => new Uri("https://github.com/philipbelesky/caribou/");
+        public virtual Uri PluginURL => new Uri("https://caribou.philipbelesky.com");
 
         // GHB note: if using the provided "About" component this File is output there
         public virtual Uri ChangeLogURL => new Uri("https://raw.githubusercontent.com/philipbelesky/Caribou/main/CHANGELOG.md");

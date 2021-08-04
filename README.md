@@ -41,6 +41,10 @@ Support can be requested, or feedback provided, by [opening a discussion on GitH
 - 🕘 Integration with Rhino's `EarthAnchorPoint`
 - 🕘 Customisable projection methods
 
+### Changelog
+
+See [CHANGELOG.md](https://github.com/philipbelesky/Caribou/blob/main/CHANGELOG.md).
+
 ### Recognition
 
 Thanks to:
