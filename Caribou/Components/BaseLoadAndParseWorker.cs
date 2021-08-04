@@ -43,6 +43,7 @@
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
+            reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
             this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
             logger.NoteTiming("Extract coords from data");
             if (this.CancellationToken.IsCancellationRequested)

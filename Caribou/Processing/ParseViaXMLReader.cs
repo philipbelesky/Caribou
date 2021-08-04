@@ -120,7 +120,7 @@
                     request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
                     currentNodeMetaData.Clear();
                     nodesCollected++;
-                    if (nodesCollected % 5000 == 0) // roughly every half a second
+                    if (nodesCollected % 3000 == 0) // roughly every half a second
                         reportProgress(workerId, getProgressAcrossLines(xli.LineNumber, fileIndex, totalLines));
                 }
             }
@@ -136,7 +136,6 @@
             var inANode = false; // Only needed for ways
             var ci = CultureInfo.InvariantCulture;
             var xli = (IXmlLineInfo)reader; // Used to track read progress
-            var nodesCollected = 0;
             var waysCollected = 0;
 
             while (reader.Read())
@@ -159,11 +158,6 @@
                     {
                         var ndId = reader.GetAttribute("ref");
                         currentWayNodes.Add(allNodes[ndId]);
-                        nodesCollected += 1;
-                        if (nodesCollected % 10000 == 0)
-                        {
-                            reportProgress(workerId, getProgressAcrossLines(xli.LineNumber, fileIndex, totalLines));
-                        }
                     }
                     else if (inANode && reader.Name == "tag")
                     {
@@ -187,9 +181,7 @@
 
                         waysCollected += 1;
                         if (waysCollected % 2000 == 0) 
-                        {
                             reportProgress(workerId, getProgressAcrossLines(xli.LineNumber, fileIndex, totalLines));
-                        }
                     }
 
                     currentWayMetaData.Clear();
