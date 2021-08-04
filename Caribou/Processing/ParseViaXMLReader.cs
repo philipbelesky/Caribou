@@ -33,7 +33,7 @@
                 onlyBuildings = true;
 
             GetBounds(ref request, readPathAsContents);
-            var lineLengths = GetLineLengthsForFiles(request.XmlPaths, typeToFind);
+            var lineLengths = GetLineLengthsForFiles(request.XmlPaths, typeToFind, readPathAsContents);
             for (var i = 0; i < request.XmlPaths.Count; i++)
             {
                 var xmlPath = request.XmlPaths[i];
@@ -54,8 +54,11 @@
             }
         }
 
-        public static List<int> GetLineLengthsForFiles(List<string> xmlFilePaths, OSMGeometryType typeToFind)
+        public static List<int> GetLineLengthsForFiles(List<string> xmlFilePaths, OSMGeometryType typeToFind, bool readPathAsContents)
         {
+            if (readPathAsContents)
+                return Enumerable.Repeat(1000, xmlFilePaths.Count).ToList(); // With tests we pass strings, not paths, so just return arbitrary values
+
             var count = new List<int>();
             foreach (var filePath in xmlFilePaths)
             {
