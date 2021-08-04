@@ -24,9 +24,9 @@
 
         public override WorkerInstance Duplicate() => new ParseWaysWorker(this.Parent);
 
-        public override void ExtractCoordsForComponentType()
+        public override void ExtractCoordsForComponentType(Action<string, double> reportProgress)
         {
-            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Way);
+            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Way, reportProgress, Id);
         }
 
         public override void MakeGeometryForComponentType()

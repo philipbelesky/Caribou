@@ -43,7 +43,7 @@
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.ExtractCoordsForComponentType(); // Parse XML for lat/lon data
+            this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
             logger.NoteTiming("Extract coords from data");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
@@ -72,7 +72,7 @@
         }
 
         // Parse the XML to extract component specific results
-        public abstract void ExtractCoordsForComponentType();
+        public abstract void ExtractCoordsForComponentType(Action<string, double> reportProgress);
 
         // Generate type-specific geometry (e.g. way or node)
         public abstract void MakeGeometryForComponentType();
