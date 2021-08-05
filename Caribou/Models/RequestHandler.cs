@@ -25,18 +25,28 @@
         public Dictionary<OSMMetaData, List<FoundItem>> FoundData; // The collected items per request
         public List<string> FoundItemIds; // Used to track for duplicate ways/nodes across files
 
-        public RequestHandler(List<string> providedXMLs, ParseRequest requestedMetaData)
+        public string WorkerId; // Used for progress reporting
+        public Action<string, double> ReportProgress;
+        public List<int> LinesPerFile;
+
+        public RequestHandler(List<string> providedXMLs, ParseRequest requestedMetaData, OSMGeometryType requestedType,
+                              Action<string, double> reportProgress, string workerId)
         {
             this.XmlPaths = providedXMLs;
             this.RequestedMetaData = requestedMetaData;
 
+            // Setup data holders
+            this.FoundItemIds = new List<string>();
             this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
             foreach (OSMMetaData metaData in requestedMetaData.Requests)
             {
                 this.FoundData[metaData] = new List<FoundItem>();
             }
 
-            this.FoundItemIds = new List<string>();
+            // Setup reporting infrastructure
+            this.WorkerId = workerId;
+            this.ReportProgress = reportProgress;
+            this.LinesPerFile = ProgressReporting.GetLineLengthsForFiles(providedXMLs, requestedType);
         }
 
         public void AddWayIfMatchesRequest(string nodeId, Dictionary<string, string> nodeTags, List<Coord> coords)

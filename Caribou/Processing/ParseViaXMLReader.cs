@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Xml;
     using Caribou.Data;
+    using Caribou.Models;
 
     /// <summary>
     /// Methods for parsing an XML file and extracting data that use XMLReader-based methods.
@@ -14,80 +15,38 @@
     public static class ParseViaXMLReader
     {
         private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, 
-                                               List<int> totalLineLengths, int fileIndex,
-                                               Action<string, double> reportProgress, string workerId, bool onlyBuildings = false);
-        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind,
-                                          Action<string, double> reportProgress, string workerId, 
-                                          bool readPathAsContents = false)
-        {
-            DispatchDelegate dispatchForType;
-            if (typeToFind == OSMGeometryType.Node)
-                dispatchForType = FindNodesInXML;
-            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
-                dispatchForType = FindWaysInXML;
-            else
-                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
+                                               int fileIndex, bool onlyBuildings = false);
 
+
+        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool pathIsContents = false)
+        {
+            var dispatchForType = GetDispatchForType(typeToFind);
             bool onlyBuildings = false;
             if (typeToFind == OSMGeometryType.Building)
                 onlyBuildings = true;
 
-            GetBounds(ref request, readPathAsContents);
-            var lineLengths = GetLineLengthsForFiles(request.XmlPaths, typeToFind, readPathAsContents);
+            GetBounds(ref request, pathIsContents);
             for (var i = 0; i < request.XmlPaths.Count; i++)
             {
                 var xmlPath = request.XmlPaths[i];
-                if (readPathAsContents)
+                if (pathIsContents)
                 {
                     using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
                     {
-                        dispatchForType(reader, ref request, lineLengths, i, reportProgress, workerId, onlyBuildings); // Only used in testing
+                        dispatchForType(reader, ref request, i, onlyBuildings); // Only used in testing
                     }
                 }
                 else
                 {
                     using (XmlReader reader = XmlReader.Create(xmlPath))
                     {
-                        dispatchForType(reader, ref request, lineLengths, i, reportProgress, workerId);
+                        dispatchForType(reader, ref request, i);
                     }
                 }
             }
         }
 
-        public static List<int> GetLineLengthsForFiles(List<string> xmlFilePaths, OSMGeometryType typeToFind, bool readPathAsContents)
-        {
-            if (readPathAsContents)
-                return Enumerable.Repeat(1000, xmlFilePaths.Count).ToList(); // With tests we pass strings, not paths, so just return arbitrary values
-
-            var count = new List<int>();
-            foreach (var filePath in xmlFilePaths)
-            {
-                int linesForFile = File.ReadLines(filePath).Count();
-                if (typeToFind == OSMGeometryType.Node)
-                    linesForFile = Convert.ToInt32(linesForFile * 0.55); // Only half of the amount of a file is nodes
-
-                count.Add(linesForFile);
-            }
-            return count;
-        }
-
-        public static double getProgressAcrossLines(int currentLine, int currentFileIndex, List<int> totalLines)
-        {
-            var count = 0.0;
-            for (var i = 0; i < totalLines.Count; i++)
-            {
-                if (currentFileIndex > i)
-                    count += totalLines[i];
-                else if (currentFileIndex == i)
-                    count += currentLine;
-            }
-            var allLinesFromAllFiles = totalLines.Sum();
-            return count / (double)allLinesFromAllFiles;
-        }
-
-
-        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, List<int> totalLines, int fileIndex,
-                                          Action<string, double> reportProgress, string workerId, bool onlyBuildings)
+        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
         {
             string currentNodeId = "";
             double currentLat = 0;
@@ -124,13 +83,12 @@
                     currentNodeMetaData.Clear();
                     nodesCollected++;
                     if (nodesCollected % 3000 == 0) // roughly every half a second
-                        reportProgress(workerId, getProgressAcrossLines(xli.LineNumber, fileIndex, totalLines));
+                        ProgressReporting.Ping(xli.LineNumber, fileIndex, request);
                 }
             }
         }
 
-        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, List<int> totalLines, int fileIndex,
-                                         Action<string, double> reportProgress, string workerId, bool onlyBuildings)
+        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
         {
             string currentWayId = "";
             var currentWayMetaData = new Dictionary<string, string>();
@@ -183,8 +141,8 @@
                             request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
 
                         waysCollected += 1;
-                        if (waysCollected % 2000 == 0) 
-                            reportProgress(workerId, getProgressAcrossLines(xli.LineNumber, fileIndex, totalLines));
+                        if (waysCollected % 2000 == 0)
+                            ProgressReporting.Ping(xli.LineNumber, fileIndex, request);
                     }
 
                     currentWayMetaData.Clear();
@@ -193,8 +151,21 @@
             }
         }
 
+        // Retur n correct parser for each geometry type
+        private static DispatchDelegate GetDispatchForType(OSMGeometryType typeToFind)
+        {
+            DispatchDelegate dispatchForType;
+            if (typeToFind == OSMGeometryType.Node)
+                dispatchForType = FindNodesInXML;
+            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
+                dispatchForType = FindWaysInXML;
+            else
+                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
+            return dispatchForType;
+        }
+
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
-        public static void GetBounds(ref RequestHandler result, bool readPathAsContents = false)
+        private static void GetBounds(ref RequestHandler result, bool readPathAsContents = false)
         {
             double? currentMinLat = null;
             double? currentMinLon = null;
