@@ -8,23 +8,14 @@
     {
         public static CheckBox GetHider(Action toggleAction, bool hideObscureFeaturesState)
         {
+            // Note that checkbox labels misaligned on some versions of MacOS Rhino less than current
             var showHideMinorFeatures = new CheckBox()
             {
                 Checked = hideObscureFeaturesState,
+                Text = " Hide SubFeatures with very low counts",
             };
             showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleAction(); };
             return showHideMinorFeatures;
-        }
-
-        /// <summary>Checkbox labels are misaligned on macOS if they have a provided Text.</summary>
-        public static Label GetHiderLabel(Action toggleAction)
-        {
-            var showHideMinorFeaturesLabel = new Label()
-            {
-                Text = " Hide SubFeatures with very low counts",
-            };
-            showHideMinorFeaturesLabel.MouseDown += (sender, e) => { toggleAction(); };
-            return showHideMinorFeaturesLabel;
         }
 
         public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)

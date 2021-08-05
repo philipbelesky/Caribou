@@ -33,7 +33,6 @@
             topButtons.BeginHorizontal();
             this.obscureFeaturesCheckbox = ControlStrip.GetHider(ToggleObscureFeatures, this.hideObscureFeatures);
             topButtons.Add(obscureFeaturesCheckbox);
-            topButtons.Add(ControlStrip.GetHiderLabel(ToggleObscureFeatuesManually));
             topButtons.Add(null);
             topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
             topButtons.Add(new Label() { Width = 10 });
@@ -82,12 +81,6 @@
         private void ExpandAll() => this.SetRollout(true);
 
         private void CollapseAll() => this.SetRollout(false);
-
-        private void ToggleObscureFeatuesManually()
-        {
-            this.obscureFeaturesCheckbox.Checked = !this.obscureFeaturesCheckbox.Checked.Value;
-            this.ToggleObscureFeatures();
-        }
 
         private void ToggleObscureFeatures()
         {
