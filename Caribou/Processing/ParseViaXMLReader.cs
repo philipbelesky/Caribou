@@ -165,7 +165,7 @@
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
-        private static void GetBounds(ref RequestHandler result, bool readPathAsContents = false)
+        public static void GetBounds(ref RequestHandler result, bool readPathAsContents = false)
         {
             double? currentMinLat = null;
             double? currentMinLon = null;
@@ -197,7 +197,7 @@
             result.MaxBounds = new Coord(currentMaxLat.Value, currentMaxLon.Value);
         }
 
-        private static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
+        public static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
                                                           ref double? currentMaxLat, ref double? currentMaxLon)
         {
             var boundsMinLat = Convert.ToDouble(reader.GetAttribute("minlat"));

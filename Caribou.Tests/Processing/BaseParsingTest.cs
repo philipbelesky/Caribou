@@ -29,8 +29,8 @@
         
         protected static RequestHandler fetchResultsViaXMLReader(List<string> xml, ParseRequest features, OSMGeometryType typeOfFeature)
         {
-            var results = new RequestHandler(xml, features);
-            ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature, reportProgress, ".", true);
+            var results = new RequestHandler(xml, features, OSMGeometryType.Node, reportProgress, "Test");
+            ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature, true);
             return results;
         }
 

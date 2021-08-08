@@ -46,7 +46,8 @@
             // Setup reporting infrastructure
             this.WorkerId = workerId;
             this.ReportProgress = reportProgress;
-            this.LinesPerFile = ProgressReporting.GetLineLengthsForFiles(providedXMLs, requestedType);
+            if (providedXMLs[0].Length < 1000) // Don't calculate line lengths when working with tests (e.g. passed by contents not path)
+                this.LinesPerFile = ProgressReporting.GetLineLengthsForFiles(providedXMLs, requestedType);
         }
 
         public void AddWayIfMatchesRequest(string nodeId, Dictionary<string, string> nodeTags, List<Coord> coords)
