@@ -45,6 +45,7 @@
         // Override the main solve instance method. This allows it to be wrapped in a try/catch for error reporting purposes
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            RhinoDoc.ActiveDoc.Views.RedrawEnabled = false;
 #if DEBUG
             logger.Reset();
 #endif
@@ -54,6 +55,7 @@
 #if DEBUG
             DA.SetDataList(logger.indexOfDebugOutput, logger.debugLogs);
 #endif
+            RhinoDoc.ActiveDoc.Views.RedrawEnabled = true;
         }
 
         // This is provided to all components so it can be passed along to error reporting
