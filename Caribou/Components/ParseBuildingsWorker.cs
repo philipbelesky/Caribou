@@ -15,7 +15,10 @@
     public class ParseBuildingsWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Surface> buildingOutputs;
-        private Dictionary<OSMMetaData, List<Surface>> foundBuildings;
+        private Dictionary<OSMMetaData, List<Surface>> foundBuildings;        
+        protected override OSMGeometryType WorkerType() {
+            return OSMGeometryType.Building;
+        }
 
         public ParseBuildingsWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -23,11 +26,6 @@
         }
 
         public override WorkerInstance Duplicate() => new ParseBuildingsWorker(this.Parent);
-
-        public override void ExtractCoordsForComponentType()
-        {
-            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Building);
-        }
 
         public override void MakeGeometryForComponentType()
         {

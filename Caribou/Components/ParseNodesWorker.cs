@@ -16,6 +16,10 @@
     {
         private GH_Structure<GH_Point> nodeOutputs;
         private Dictionary<OSMMetaData, List<Point3d>> foundNodes;
+        protected override OSMGeometryType WorkerType()
+        {
+            return OSMGeometryType.Node;
+        }
 
         public ParseNodesWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -23,11 +27,6 @@
         }
 
         public override WorkerInstance Duplicate() => new ParseNodesWorker(this.Parent);
-
-        public override void ExtractCoordsForComponentType()
-        {
-            ParseViaXMLReader.FindItemsByTag(ref this.result, OSMGeometryType.Node);
-        }
 
         public override void MakeGeometryForComponentType()
         {

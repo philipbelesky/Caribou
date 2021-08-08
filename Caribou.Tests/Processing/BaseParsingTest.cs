@@ -1,5 +1,6 @@
 ﻿namespace Caribou.Tests.Processing
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Caribou.Components;
@@ -9,6 +10,7 @@
     public abstract class BaseParsingTest
     {
         protected static MessagesWrapper messages = new MessagesWrapper();
+        public static Action<string, double> reportProgress;
         protected readonly OSMMetaData craftsData = new OSMMetaData("craft");
         protected readonly OSMMetaData amenitiesData = new OSMMetaData("amenity");
         protected readonly OSMMetaData buildingsData = new OSMMetaData("building");
@@ -24,10 +26,10 @@
         protected readonly OSMMetaData wikiRelatedData = new OSMMetaData("wikipedia");
         protected readonly OSMMetaData tramRoutesData = new OSMMetaData("tram", "route_master");
         protected readonly OSMMetaData tramStopsData = new OSMMetaData("yes", "tram_stop");
-
+        
         protected static RequestHandler fetchResultsViaXMLReader(List<string> xml, ParseRequest features, OSMGeometryType typeOfFeature)
         {
-            var results = new RequestHandler(xml, features);
+            var results = new RequestHandler(xml, features, OSMGeometryType.Node, reportProgress, "Test");
             ParseViaXMLReader.FindItemsByTag(ref results, typeOfFeature, true);
             return results;
         }

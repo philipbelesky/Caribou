@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <VersionPrefix>0.9.0</VersionPrefix>
+    <VersionPrefix>0.11.0</VersionPrefix>
     <VersionSuffix>beta</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
@@ -18,7 +18,7 @@
   <!--NUGET-->
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.5.0" IncludeAssets="compile;build" />
-    <PackageReference Include="Grasshopper" Version="6.16.19190.7001" IncludeAssets="compile;build" />
+    <PackageReference Include="Grasshopper" Version="6.10.18308.14011" IncludeAssets="compile;build" />
     <PackageReference Include="Hsluv" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>

@@ -80,7 +80,7 @@
                     if (height > 0.0)
                     {
                         if (polyLine.ClosedCurveOrientation() == CurveOrientation.Clockwise)
-                            height = height * -1; // If curve plane's Z != global Z; extrude in opposite direction
+                            height *= -1; // If curve plane's Z != global Z; extrude in opposite direction
 
                         var surface = Extrusion.Create(polyLine, height, true);
                         geometryResult[entry.Key].Add(surface);

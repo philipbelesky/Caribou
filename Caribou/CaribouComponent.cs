@@ -24,26 +24,6 @@
         {
         }
 
-        public virtual string GetSubComponentText()
-        {
-            return "v" + GetPluginVersion();
-        }
-
-        // Adds a message under each component while debugging; useful to distinguish between components from published vs development sources
-#if DEBUG
-        public override bool Read(GH_IReader reader)
-        {
-            this.Message = GetSubComponentText();
-            return base.Read(reader);
-        }
-
-        public override void AddedToDocument(GH_Document document)
-        {
-            this.Message = GetSubComponentText();
-            base.AddedToDocument(document);
-        }
-#endif
-
         // Components must implement the method
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>")]
         protected abstract void CaribouRegisterOutputParams(GH_Component.GH_OutputParamManager pManager);
@@ -65,6 +45,7 @@
         // Override the main solve instance method. This allows it to be wrapped in a try/catch for error reporting purposes
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            RhinoDoc.ActiveDoc.Views.RedrawEnabled = false;
 #if DEBUG
             logger.Reset();
 #endif
@@ -74,6 +55,7 @@
 #if DEBUG
             DA.SetDataList(logger.indexOfDebugOutput, logger.debugLogs);
 #endif
+            RhinoDoc.ActiveDoc.Views.RedrawEnabled = true;
         }
 
         // This is provided to all components so it can be passed along to error reporting

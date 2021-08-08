@@ -12,7 +12,7 @@
         private RequestHandler results = new RequestHandler(new List<string>() {
             Properties.Resources.MelbourneOSM,
             Properties.Resources.SimpleOSM
-        }, mainFeatures);
+        }, mainFeatures, OSMGeometryType.Node, reportProgress, "Test");
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()

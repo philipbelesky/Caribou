@@ -11,6 +11,10 @@
     using Grasshopper.Kernel.Data;
     using Grasshopper.Kernel.Types;
     using Rhino.Geometry;
+    using System.Xml;
+    using System.Xml.Linq;
+    using System.Xml.XPath;
+    using System.Linq;
 
     /// <summary>
     /// Shared logic for doing the 'work' of each parsing component.
@@ -33,23 +37,34 @@
         {
         }
 
+        // Subclasses must specify their type
+        protected abstract OSMGeometryType WorkerType();
+
+        // Parse the XML to extract component specific results
+        public void ExtractCoordsForComponentType(Action<string, double> reportProgress)
+        {
+            ParseViaXMLReader.FindItemsByTag(ref this.result, this.WorkerType());
+        }
+
         public override void DoWork(Action<string, double> reportProgress, Action done)
         {
             logger.Reset();
             logger.indexOfDebugOutput = 3;
+            string typeName = Enum.GetName(typeof(OSMGeometryType), this.WorkerType());
 
-            result = new RequestHandler(providedFilePaths, requestedMetaData);
+            result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
             logger.NoteTiming("Setup request handler");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
-            this.ExtractCoordsForComponentType(); // Parse XML for lat/lon data
-            logger.NoteTiming("Extract coords from data");
+            reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
+            this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
+            logger.NoteTiming($"Extract {typeName}s from data");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
-            logger.NoteTiming("Translate coords to geometry");
+            logger.NoteTiming("Convert to geometry");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
@@ -70,9 +85,6 @@
 
             done();
         }
-
-        // Parse the XML to extract component specific results
-        public abstract void ExtractCoordsForComponentType();
 
         // Generate type-specific geometry (e.g. way or node)
         public abstract void MakeGeometryForComponentType();

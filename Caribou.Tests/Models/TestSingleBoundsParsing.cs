@@ -8,7 +8,8 @@
     {
         private Coord expectedMinBounds = new Coord(-37.8164200, 144.9127400);
         private Coord expectedMaxBounds = new Coord(-37.2164200, 144.9710600);
-        private RequestHandler results = new RequestHandler(OSMXMLs, mainFeatures);
+        private RequestHandler results = new RequestHandler(OSMXMLs, mainFeatures, 
+                                                            OSMGeometryType.Node, reportProgress, "Test");
 
         [TestMethod]
         public void ParseBoundsViaXMLReader()

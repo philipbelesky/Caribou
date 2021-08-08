@@ -4,57 +4,57 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Xml;
     using Caribou.Data;
+    using Caribou.Models;
 
     /// <summary>
     /// Methods for parsing an XML file and extracting data that use XMLReader-based methods.
     /// </summary>
     public static class ParseViaXMLReader
     {
-        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, bool onlyBuildings = false);
+        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, 
+                                               int fileIndex, bool onlyBuildings = false);
 
-        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool readPathAsContents = false)
+
+        public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool pathIsContents = false)
         {
-            DispatchDelegate dispatchForType;
-            if (typeToFind == OSMGeometryType.Node)
-                dispatchForType = FindNodesInXML;
-            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
-                dispatchForType = FindWaysInXML;
-            else
-                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
-
+            var dispatchForType = GetDispatchForType(typeToFind);
             bool onlyBuildings = false;
             if (typeToFind == OSMGeometryType.Building)
                 onlyBuildings = true;
 
-            GetBounds(ref request, readPathAsContents);
-            foreach (string xmlPath in request.XmlPaths)
+            GetBounds(ref request, pathIsContents);
+            for (var i = 0; i < request.XmlPaths.Count; i++)
             {
-                if (readPathAsContents)
+                var xmlPath = request.XmlPaths[i];
+                if (pathIsContents)
                 {
                     using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
                     {
-                        dispatchForType(reader, ref request, onlyBuildings); // Only used in testing
+                        dispatchForType(reader, ref request, i, onlyBuildings); // Only used in testing
                     }
                 }
                 else
                 {
                     using (XmlReader reader = XmlReader.Create(xmlPath))
                     {
-                        dispatchForType(reader, ref request);
+                        dispatchForType(reader, ref request, i);
                     }
                 }
             }
         }
 
-        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, bool onlyBuildings)
+        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
         {
             string currentNodeId = "";
             double currentLat = 0;
             double currentLon = 0;
             var currentNodeMetaData = new Dictionary<string, string>();
             var ci = CultureInfo.InvariantCulture;
+            var xli = (IXmlLineInfo)reader; // Used to track read progress
+            var nodesCollected = 0;
 
             // Loop (linearly) through all tags. Keep track of each node's metadata and coords while looping through its tags.
             // When encountering the next node add the tracked data.
@@ -81,11 +81,14 @@
                 {
                     request.AddNodeIfMatchesRequest(currentNodeId, currentNodeMetaData, currentLat, currentLon);
                     currentNodeMetaData.Clear();
+                    nodesCollected++;
+                    if (nodesCollected % 3000 == 0) // roughly every half a second
+                        ProgressReporting.Ping(xli.LineNumber, fileIndex, request);
                 }
             }
         }
 
-        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, bool onlyBuildings)
+        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
         {
             string currentWayId = "";
             var currentWayMetaData = new Dictionary<string, string>();
@@ -93,6 +96,8 @@
             var allNodes = new Dictionary<string, Coord>();
             var inANode = false; // Only needed for ways
             var ci = CultureInfo.InvariantCulture;
+            var xli = (IXmlLineInfo)reader; // Used to track read progress
+            var waysCollected = 0;
 
             while (reader.Read())
             {
@@ -134,12 +139,29 @@
                             request.AddBuildingIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); 
                         else
                             request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
+
+                        waysCollected += 1;
+                        if (waysCollected % 2000 == 0)
+                            ProgressReporting.Ping(xli.LineNumber, fileIndex, request);
                     }
 
                     currentWayMetaData.Clear();
                     currentWayNodes.Clear();
                 }
             }
+        }
+
+        // Retur n correct parser for each geometry type
+        private static DispatchDelegate GetDispatchForType(OSMGeometryType typeToFind)
+        {
+            DispatchDelegate dispatchForType;
+            if (typeToFind == OSMGeometryType.Node)
+                dispatchForType = FindNodesInXML;
+            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
+                dispatchForType = FindWaysInXML;
+            else
+                dispatchForType = null; // Necessary to prevent below paths thinking variable not set
+            return dispatchForType;
         }
 
         // Identify a minimum and maximum boundary that encompasses all of the provided files' boundaries
@@ -175,7 +197,7 @@
             result.MaxBounds = new Coord(currentMaxLat.Value, currentMaxLon.Value);
         }
 
-        private static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
+        public static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
                                                           ref double? currentMaxLat, ref double? currentMaxLon)
         {
             var boundsMinLat = Convert.ToDouble(reader.GetAttribute("minlat"));
