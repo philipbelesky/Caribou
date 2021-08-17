@@ -55,7 +55,7 @@
 
         private void HeaderClickHandler(object sender, EventArgs e)
         {
-            // TODO: sorting
+            // TODO: implement sorting (and change the Sortable properties on GridColumn())
         }
 
         private string FlipCheckbox(TreeGridItem item) // to string, flip, and back again
@@ -87,7 +87,7 @@
                     //Binding = Binding.Property<OSMSelectableFeature, string>(r => r.Name)
                 },
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
                 AutoSize = false,
                 Width = 165, // Don't autosize; hides the arrow buttons on macOS
             };
@@ -102,8 +102,7 @@
                 },
                 Width = 55,
                 Resizable = false,
-                Sortable = true,
-                // Editable = true,
+                Sortable = false,
             };
             featureSelect.Columns.Add(checkColumn);
 
@@ -112,7 +111,7 @@
                 HeaderText = "Nodes Count",
                 DataCell = new TextBoxCell(2),
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
                 Width = 85,
             };
             featureSelect.Columns.Add(nodeColumn);
@@ -122,7 +121,7 @@
                 HeaderText = "Ways Count",
                 DataCell = new TextBoxCell(3),
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
                 Width = 85,
             };
             featureSelect.Columns.Add(wayColumn);
@@ -132,7 +131,7 @@
                 HeaderText = "K:V Format",
                 DataCell = new TextBoxCell(4),
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
                 AutoSize = true,
             };
             featureSelect.Columns.Add(keyValueColumn);
@@ -142,7 +141,7 @@
                 HeaderText = "Wiki Info",
                 DataCell = new TextBoxCell(5),
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
                 AutoSize = true,
             };
             featureSelect.Columns.Add(linkColumn);
@@ -152,7 +151,7 @@
                 HeaderText = "Description",
                 DataCell = new TextBoxCell(6),
                 Resizable = false,
-                Sortable = true,
+                Sortable = false,
             };
             featureSelect.Columns.Add(descriptionColumn);
 
