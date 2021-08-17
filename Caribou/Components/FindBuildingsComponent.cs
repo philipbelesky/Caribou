@@ -17,8 +17,7 @@
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddSurfaceParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
+            AddCommonOutputParams(pManager);
         }
 
         public override Guid ComponentGuid => new Guid("d6b1b021-2b5d-4fa6-9cf2-eb368dd632a1");

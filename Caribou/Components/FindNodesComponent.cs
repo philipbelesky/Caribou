@@ -17,8 +17,7 @@
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddPointParameter("Nodes", "N", "Nodes; e.g. points that describe a location of interest", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
+            AddCommonOutputParams(pManager);
         }
 
         public override Guid ComponentGuid => new Guid("912176ea-061e-2b5b-9642-8417372d6371");

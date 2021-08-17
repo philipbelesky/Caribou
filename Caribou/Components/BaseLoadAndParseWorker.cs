@@ -15,6 +15,7 @@
     using System.Xml.Linq;
     using System.Xml.XPath;
     using System.Linq;
+    using Rhino;
 
     /// <summary>
     /// Shared logic for doing the 'work' of each parsing component.
@@ -31,6 +32,7 @@
         protected RequestHandler result;
         protected GH_Structure<GH_String> itemTags;
         protected GH_Structure<GH_String> itemMetaDatas;
+        protected List<Rectangle3d> boundaries;
 
         public BaseLoadAndParseWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
@@ -69,6 +71,7 @@
                 return;
 
             this.GetTreeForComponentType(); // Form tree structure for Rhino geo
+            boundaries = GetOSMBoundaries.GetBoundariesFromResult(result);
             logger.NoteTiming("Output geometry");
             if (this.CancellationToken.IsCancellationRequested)
                 return;
@@ -125,18 +128,16 @@
         {
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-
             this.OutputTreeForComponentType(da); // Set component-specific outputs
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-
             da.SetDataTree(1, this.itemTags);
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-
             da.SetDataTree(2, this.itemMetaDatas);
+            da.SetDataList(3, this.boundaries);
         }
     }
 }

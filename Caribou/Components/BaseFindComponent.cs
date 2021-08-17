@@ -19,6 +19,13 @@
             pManager.AddTextParameter("OSM Features", "OF", "A list of features and subfeatures to extract from the OSM file, in a 'key=value' format separated by newlines or commas", GH_ParamAccess.list);
         }
 
+        protected void AddCommonOutputParams(GH_OutputParamManager pManager)
+        {
+            pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular node", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Report", "R", ReportDescription, GH_ParamAccess.tree);
+            pManager.AddRectangleParameter("Bounds", "B", "The boundary extends of the OSM file(s)", GH_ParamAccess.list);
+        }
+         
         public override GH_Exposure Exposure => GH_Exposure.primary;
     }
 }
