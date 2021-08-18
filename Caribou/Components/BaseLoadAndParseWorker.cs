@@ -51,7 +51,7 @@
         public override void DoWork(Action<string, double> reportProgress, Action done)
         {
             logger.Reset();
-            logger.indexOfDebugOutput = 3;
+            logger.indexOfDebugOutput = 4; // Dynamic nature of class params requires manually specifying debug log output index
             string typeName = Enum.GetName(typeof(OSMGeometryType), this.WorkerType());
 
             result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
@@ -137,6 +137,7 @@
             if (this.CancellationToken.IsCancellationRequested)
                 return;
             da.SetDataTree(2, this.itemMetaDatas);
+
             da.SetDataList(3, this.boundaries);
         }
     }
