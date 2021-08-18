@@ -13,7 +13,7 @@
         private readonly int windowHeight = 633; // Need to be large enough to show buttom row
         private readonly int buttonHeight = 40;
         private readonly int buttonWidth = 200;
-        private readonly int padding = 10;
+        private readonly int padding = 0;
         private readonly TreeGridItemCollection providedState;
         private readonly CheckBox obscureFeaturesCheckbox; // Need to track so we can manually set state
         public bool hideObscureFeatures;

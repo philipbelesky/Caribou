@@ -171,6 +171,7 @@
             double? currentMinLon = null;
             double? currentMaxLat = null;
             double? currentMaxLon = null;
+            result.AllBounds = new List<Tuple<Coord, Coord>>();
 
             foreach (string xmlPath in result.XmlPaths)
             {
@@ -186,7 +187,14 @@
                     {
                         if (reader.Name == "bounds")
                         {
-                            CheckBounds(reader, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
+                            var minLat = Convert.ToDouble(reader.GetAttribute("minlat"));
+                            var minLon = Convert.ToDouble(reader.GetAttribute("minlon"));
+                            var maxLat = Convert.ToDouble(reader.GetAttribute("maxlat"));
+                            var maxLon = Convert.ToDouble(reader.GetAttribute("maxlon"));
+                            var bounds = new Tuple<Coord, Coord>(new Coord(minLat, minLon), new Coord(maxLat, maxLon));
+                            result.AllBounds.Add(bounds);
+
+                            CheckBounds(bounds, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);
                             break;
                         }
                     }
@@ -197,28 +205,28 @@
             result.MaxBounds = new Coord(currentMaxLat.Value, currentMaxLon.Value);
         }
 
-        public static void CheckBounds(XmlReader reader, ref double? currentMinLat, ref double? currentMinLon,
-                                                          ref double? currentMaxLat, ref double? currentMaxLon)
+        public static void CheckBounds(Tuple<Coord, Coord> bounds, 
+            ref double? currentMinLat, ref double? currentMinLon, ref double? currentMaxLat, ref double? currentMaxLon)
         {
-            var boundsMinLat = Convert.ToDouble(reader.GetAttribute("minlat"));
+            var boundsMinLat = bounds.Item1.Latitude;
             if (!currentMinLat.HasValue || boundsMinLat < currentMinLat)
             {
                 currentMinLat = boundsMinLat;
             }
 
-            var boundsMinLon = Convert.ToDouble(reader.GetAttribute("minlon"));
+            var boundsMinLon = bounds.Item1.Longitude;
             if (!currentMinLon.HasValue || boundsMinLon < currentMinLon)
             {
                 currentMinLon = boundsMinLon;
             }
 
-            var boundsMaxLat = Convert.ToDouble(reader.GetAttribute("maxlat"));
+            var boundsMaxLat = bounds.Item2.Latitude;
             if (!currentMaxLat.HasValue || boundsMaxLat > currentMaxLat)
             {
                 currentMaxLat = boundsMaxLat;
             }
 
-            var boundsMaxLon = Convert.ToDouble(reader.GetAttribute("maxlon"));
+            var boundsMaxLon = bounds.Item2.Longitude;
             if (!currentMaxLon.HasValue || boundsMaxLon > currentMaxLon)
             {
                 currentMaxLon = boundsMaxLon;

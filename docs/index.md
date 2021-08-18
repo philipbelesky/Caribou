@@ -50,6 +50,8 @@ Regardless of the type of `Extract` component you are using, the workflow is the
 
 ![A minimum viable definition](/assets/minimum-viable-definition.png)
 
+[Download the minimal example definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/examples/Caribou%20-%20Simple%20Example.ghx)
+
 ### Non-Geometry Outputs
 
 Each `Extract` component also has two non-geometry outputs.
@@ -117,16 +119,17 @@ building:levels=4
 addr:suburb=Te Aro
 ```
 
-### Previewing, Baking, and Labeling Geometry
+### Previewing, Baking, Filtering, and Labeling Geometry
 
-You can download [this definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/examples/Caribou%20-%20Simple%20Example.ghx) to see examples of how to:
+You can download [this definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/examples/Caribou%20-%20Extensions%20Example.ghx) to see examples of how to:
 
-1. Color the geometry in Grasshopper according to it's metadata data
-2. Display a legend in Rhino with the above color codes.
-3. Bake out the geometry to individually-labelled layers
+1. Color the geometry in Grasshopper according to it's feature/subfeature types
+2. Display a legend in Rhino with the above color codes for features/subfeatures
+3. Filter the results of the parsed geometry/data; e.g. to find all buildings with a height above 40m
+4. Bake out the geometry to individually-labelled layers
   - This requires the use of the [*human* plugin](https://discourse.mcneel.com/c/grasshopper/human/88) which is available for Rhino 6/7 on Windows/Mac. Opening the definition should prompt you to install it.
 
-*When saving the file you will probably need to remove the `.txt` extension, e.g. save it as `Caribou - Simple Example.ghx`.*
+*When saving the file you will probably need to remove the `.txt` extension, e.g. save it as `Caribou - Extension Examples.ghx`.*
 
 ## Support and Source
 

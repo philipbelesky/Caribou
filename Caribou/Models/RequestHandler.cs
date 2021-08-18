@@ -21,6 +21,7 @@
         public ParseRequest RequestedMetaData;
         public Coord MinBounds;
         public Coord MaxBounds;
+        public List<Tuple<Coord, Coord>> AllBounds;
 
         public Dictionary<OSMMetaData, List<FoundItem>> FoundData; // The collected items per request
         public List<string> FoundItemIds; // Used to track for duplicate ways/nodes across files
