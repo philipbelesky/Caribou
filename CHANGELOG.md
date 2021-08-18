@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.12.0] - 2021-??-??
+## [0.12.0] - 2021-08-18
 ### Added
 - New 'extension' examples file to show how to easily bake/filter/legend the Caribou outputs
+- A boundary output for the parsing components to easily see the extents of the OSM files
 
 ### Fixed
 - A crash that could occur when clicking the header rows of the *Specify Features* pop-up. Thanks Clarke for reporting this!
