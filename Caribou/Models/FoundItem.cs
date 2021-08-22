@@ -1,4 +1,4 @@
-﻿namespace Caribou.Data
+﻿namespace Caribou.Models
 {
     using System.Collections.Generic;
 

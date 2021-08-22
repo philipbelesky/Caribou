@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Caribou.Data;
+    using Caribou.Models;
     //using GeoAPI.CoordinateSystems;
     //using GeoAPI.CoordinateSystems.Transformations;
     //using ProjNet.CoordinateSystems;

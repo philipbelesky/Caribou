@@ -1,8 +1,8 @@
-﻿namespace Caribou.Processing
+﻿namespace Caribou.Components
 {
     using System;
-    using Caribou.Components;
     using Caribou.Properties;
+    using Caribou.Workers;
     using Grasshopper.Kernel;
 
     /// <summary>Identifies and outputs all OSM node-type items that contain any of the requested metadata. Logic in worker.</summary>

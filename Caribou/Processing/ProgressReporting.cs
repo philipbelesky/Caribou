@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Caribou.Data;
-
-namespace Caribou.Models
+﻿namespace Caribou.Processing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using Caribou.Models;
+
     /// <summary>
     /// Utilities for determining the initial line counts and during-processing progress for % reporting
     /// </summary>

@@ -1,12 +1,12 @@
-﻿namespace Caribou.Data
+﻿namespace Caribou.Models
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using Newtonsoft.Json;
-    using Caribou.Models;
     using Caribou.Properties;
+    using Caribou.Forms;
 
 #pragma warning disable SA1310 // Field names should not contain underscore
 

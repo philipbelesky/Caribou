@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Xml;
-    using Caribou.Data;
+    using Caribou.Models;
 
     public static class ParseViaXMLDocument
     {

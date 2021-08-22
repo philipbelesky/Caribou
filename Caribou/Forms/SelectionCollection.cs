@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using Caribou.Data;
     using Caribou.Models;
     using Eto.Forms;
 

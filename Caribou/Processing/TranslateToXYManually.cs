@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Caribou.Data;
+    using Caribou.Models;
     using Caribou.Processing;
     using Grasshopper;
     using Grasshopper.Kernel.Data;

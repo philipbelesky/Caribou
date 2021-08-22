@@ -1,11 +1,11 @@
-﻿namespace Caribou.Processing
+﻿namespace Caribou.Workers
 {
     using System;
     using System.IO;
     using System.Collections.Generic;
     using System.Threading;
     using Caribou.Components;
-    using Caribou.Data;
+    using Caribou.Models;
     using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
@@ -16,6 +16,7 @@
     using System.Xml.XPath;
     using System.Linq;
     using Rhino;
+    using Caribou.Processing;
 
     /// <summary>
     /// Shared logic for doing the 'work' of each parsing component.

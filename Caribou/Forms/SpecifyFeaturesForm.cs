@@ -1,4 +1,4 @@
-﻿namespace Caribou.Components
+﻿namespace Caribou.Forms
 {
     using System;
     using System.Collections.Generic;

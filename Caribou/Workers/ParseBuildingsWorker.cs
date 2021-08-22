@@ -1,11 +1,8 @@
-﻿namespace Caribou.Processing
+﻿namespace Caribou.Workers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Threading;
-    using Caribou.Data;
     using Caribou.Models;
-    using Grasshopper;
+    using Caribou.Processing;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
     using Grasshopper.Kernel.Types;

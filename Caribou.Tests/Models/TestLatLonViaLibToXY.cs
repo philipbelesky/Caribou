@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using Caribou.Data;
+    using Caribou.Models;
     using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

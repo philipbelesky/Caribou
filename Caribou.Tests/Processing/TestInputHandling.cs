@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Caribou.Components;
-    using Caribou.Data;
+    using Caribou.Models;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

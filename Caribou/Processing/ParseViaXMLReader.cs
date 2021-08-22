@@ -6,7 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using Caribou.Data;
+    using Caribou.Models;
     using Caribou.Models;
 
     /// <summary>

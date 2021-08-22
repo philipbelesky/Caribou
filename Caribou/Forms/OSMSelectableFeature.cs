@@ -1,7 +1,7 @@
-﻿namespace Caribou.Models
+﻿namespace Caribou.Forms
 {
     using System;
-    using Caribou.Data;
+    using Caribou.Models;
 
     /// <summary>
     /// A OSMMetaData item that will be presented to the user for interaction. It thus has state information and more descriptive information.
