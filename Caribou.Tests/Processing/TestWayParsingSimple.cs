@@ -21,12 +21,11 @@
         const int allTramRoutes = 1;
         const int allTramStops = 0;
         // Counting number of nodes per way
-        const int ndsInEquitableHouse = 4;
-        const int ndsInEquitablePlaza = 3;
+        const int ndsInEquitableHouse = 5;
+        const int ndsInEquitablePlaza = 4;
         // Comparing nodes within a away
         readonly Coord firstNdForEquitableHouse = new Coord(-37.8154598, 144.9630487);
-        readonly Coord secondNdForEquitablePlaza = new Coord(-37.8153878, 144.9632926);
-
+        readonly Coord secondNdForEquitablePlaza = new Coord(-37.81558, 144.963115);
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()

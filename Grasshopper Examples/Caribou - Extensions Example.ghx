@@ -734,7 +734,7 @@
                             <chunk name="Item" index="0">
                               <items count="2">
                                 <item name="null_string" type_name="gh_bool" type_code="1">false</item>
-                                <item name="string" type_name="gh_string" type_code="10">Z:\Sites\Caribou\Caribou.Tests\Cases\wellington-overpass-export.osm</item>
+                                <item name="string" type_name="gh_string" type_code="10">Z:\Sites\Caribou\Caribou.Tests\OSMxml\wellington-overpass-export.osm</item>
                               </items>
                             </chunk>
                           </chunks>
