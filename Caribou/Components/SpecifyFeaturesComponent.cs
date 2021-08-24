@@ -44,7 +44,7 @@
         protected override void StartFormClose()
         {
             this.selectionState = this.componentForm.mainRow.data;
-            this.hideObscureFeatures = this.componentForm.hideObscureFeatures;
+            this.hideObscureFeatures = this.componentForm.customFlagState;
             FinishFormClose();
         }
 

@@ -12,7 +12,7 @@
     /// </summary>
     public class FilterResultsComponent : BasePickerComponent
     {
-        private SpecifyFeaturesForm componentForm;
+        private FilterFeaturesForm componentForm;
         // By default any item with any of the specified tags passed. If true, items must possess all tags
         private bool resultsMustHaveAllTags = false;
 
@@ -42,13 +42,18 @@
         }
 
         // Methods required for button-opening
-        protected override Eto.Forms.Form GetFormForComponent() => new Form();
+        protected override Eto.Forms.Form GetFormForComponent()
+        {
+            this.componentForm = new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
+            return this.componentForm;
+        }
+
         protected override string GetButtonTitle() => "Specify\nTags";
 
         protected override void StartFormClose()
         {
-            //this.selectionState = this.componentForm.mainRow.data;
-            //this.resultsMustHaveAllTags = this.componentForm.hideObscureFeatures;
+            this.selectionState = this.componentForm.mainRow.data;
+            this.resultsMustHaveAllTags = this.componentForm.customFlagState;
             FinishFormClose();
         }
 
