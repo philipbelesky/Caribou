@@ -55,6 +55,33 @@
             logger.indexOfDebugOutput = 4; // Dynamic nature of class params requires manually specifying debug log output index
             string typeName = Enum.GetName(typeof(OSMGeometryType), this.WorkerType());
 
+            // Validate filepaths
+            foreach (var path in this.providedFilePaths)
+            {
+                bool isFilePresent = File.Exists(path);
+                if (!isFilePresent)
+                    this.RuntimeMessages.Add(new Message($"Could not find file located at '{path}'", Message.Level.Warning));
+            }
+            this.providedFilePaths.RemoveAll(path => !File.Exists(path));
+            if (this.providedFilePaths.Count == 0)
+            {
+                this.RuntimeMessages.Add(new Message("No valid file paths provided", Message.Level.Error));
+                done();
+                return;
+            }
+
+            // Validate feature keys
+            if (this.requestedMetaDataRaw.Count == 0)
+            {
+                var text = "Features parameter connected but no feature keys were specified. Please provide them via:\n" +
+                    "- Using Caribou's Specify Features component (click the button!)\n" +
+                    "- Text in a 'key=value' or 'key=*' format separated by commas or newlines";
+                this.RuntimeMessages.Add(new Message(text, Message.Level.Warning));
+                done();
+                return;
+            }
+            this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw);
+
             result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
             logger.NoteTiming("Setup request handler");
             if (this.CancellationToken.IsCancellationRequested)
@@ -85,9 +112,9 @@
             this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
             logger.NoteTiming("Output metadata");
             if (this.CancellationToken.IsCancellationRequested)
-               return;
+                return;
 
-            done();
+            done(); // Must be called to trigger outputs and report messages!
         }
 
         // Generate type-specific geometry (e.g. way or node)
@@ -98,29 +125,16 @@
 
         public override void GetData(IGH_DataAccess da, GH_ComponentParamServer ghParams)
         {
-            var parseMessages = new MessagesWrapper();
-
             if (this.CancellationToken.IsCancellationRequested)
                 return;
 
             // PARSE XML Data
             this.providedFilePaths = new List<string>();
             da.GetDataList(0, this.providedFilePaths);
-            foreach (var path in this.providedFilePaths)
-            {
-                if (!File.Exists(path))
-                    parseMessages.AddRemark($"Could not find file at {path}");
-            }
-            this.providedFilePaths.RemoveAll(path => !File.Exists(path));
-            if (this.providedFilePaths.Count == 0)
-                parseMessages.AddError($"No valid file paths provided");
 
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();
             da.GetDataList(1, this.requestedMetaDataRaw);
-            this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw, ref parseMessages);
-
-            this.RuntimeMessages.Messages.AddRange(parseMessages.Messages);
         }
 
         public abstract void OutputTreeForComponentType(IGH_DataAccess da); // Output type-specific tree (e.g. way or node)
@@ -133,13 +147,16 @@
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-            da.SetDataTree(1, this.itemTags);
+            if (this.itemTags != null)
+                da.SetDataTree(1, this.itemTags);
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-            da.SetDataTree(2, this.itemMetaDatas);
+            if (this.itemMetaDatas != null)
+                da.SetDataTree(2, this.itemMetaDatas);
 
-            da.SetDataList(3, this.boundaries);
+            if (this.boundaries != null)
+                da.SetDataList(3, this.boundaries);
         }
     }
 }

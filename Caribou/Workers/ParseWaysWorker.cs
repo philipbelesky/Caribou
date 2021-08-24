@@ -15,7 +15,7 @@
     /// <summary>Asynchronous task to identify and output all OSM ways as Polylines for a given request.</summary>
     public class ParseWaysWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Curve> wayOutputs;
+        private GH_Structure<GH_Curve> wayOutputs = new GH_Structure<GH_Curve>();
         private Dictionary<OSMMetaData, List<PolylineCurve>> foundWays;
         protected override OSMGeometryType WorkerType()
         {
@@ -42,7 +42,8 @@
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            da.SetDataTree(0, this.wayOutputs);
+            if (this.wayOutputs != null)
+                da.SetDataTree(0, this.wayOutputs);
         }
     }
 }

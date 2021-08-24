@@ -15,7 +15,7 @@
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
     public class ParseNodesWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Point> nodeOutputs;
+        private GH_Structure<GH_Point> nodeOutputs = new GH_Structure<GH_Point>();
         private Dictionary<OSMMetaData, List<Point3d>> foundNodes;
         protected override OSMGeometryType WorkerType()
         {
@@ -42,7 +42,8 @@
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            da.SetDataTree(0, this.nodeOutputs);
+            if (this.nodeOutputs != null)
+                da.SetDataTree(0, this.nodeOutputs);
         }
     }
 }

@@ -11,7 +11,7 @@
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
     public class ParseBuildingsWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Surface> buildingOutputs;
+        private GH_Structure<GH_Surface> buildingOutputs = new GH_Structure<GH_Surface>();
         private Dictionary<OSMMetaData, List<Surface>> foundBuildings;        
         protected override OSMGeometryType WorkerType() {
             return OSMGeometryType.Building;
@@ -37,7 +37,8 @@
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            da.SetDataTree(0, this.buildingOutputs);
+            if (this.buildingOutputs != null)
+                da.SetDataTree(0, this.buildingOutputs);
         }
     }
 }

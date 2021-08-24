@@ -15,15 +15,8 @@
         public List<OSMMetaData> Requests;
         public const char SplitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
 
-        public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
+        public ParseRequest(List<string> metaDataRawValues)
         {
-            if (metaDataRawValues.Count == 0)
-            {
-                messages.AddWarning("No feature keys provided. Please provide them via:\n" +
-                    "- One of Caribou's Specify components." + 
-                    "- Text parameters in a 'key=value' or 'key=*' format separated by commas or newlines\n");
-            }
-
             var cleanedGhInput = new List<string>();
 
             // Split up the big list of strings into an array of single key:values

@@ -16,6 +16,10 @@
         // This approach was developed by Dimitrie Stefanescu for the [Speckle Systems project](https://speckle.systems)
         // This implementation is a near-direct copy of that published in [this repository](https://github.com/specklesystems/GrasshopperAsyncComponent/)
 
+        // Per issues #11 and #14 in https://github.com/specklesystems/GrasshopperAsyncComponent/ this helps prevent messages vanishing
+        protected List<Message> RuntimeMessages = new List<Message>(); // User-facing logging
+        protected LoggingHandler logger = new LoggingHandler(); // Debug logging
+
         /// <summary>
         /// The parent component. Useful for passing state back to the host component.
         /// </summary>
@@ -51,11 +55,6 @@
         /// <param name="done">Call this when everything is <b>done</b>. It will tell the parent component that you're ready to <see cref="SetData(IGH_DataAccess)"/>.</param>
         public abstract void DoWork(Action<string, double> reportProgress, Action done);
 
-        // Per issues #11 and #14 in https://github.com/specklesystems/GrasshopperAsyncComponent/ this helps prevent messages vanishing
-        protected MessagesWrapper RuntimeMessages { get; set; } = new MessagesWrapper();
-
-        protected LoggingHandler logger = new LoggingHandler();
-
         // As per RuntimeMessages, we need to write out any messages passed up
         /// <summary>
         /// Write your data setting logic here. <b>Do not call this function directly from this class. It will be invoked by the parent <see cref="CaribouAsyncComponent"/> after you've called `Done` in the <see cref="DoWork(Action{string}, Action{string, GH_RuntimeMessageLevel}, Action)"/> function.</b>
@@ -63,28 +62,35 @@
         /// <param name="da"></param>
         public void SetData(IGH_DataAccess da)
         {
-            WorkerSetData(da); // Worker must implement a custom SetData as per below
-
-            // Report any messages done by the worker instance
-            // We must manually translate here from the mock warning types back to GH types due to unit testing requirements
-            foreach (var msg in RuntimeMessages.Messages)
+            try
             {
-                foreach (var level in msg.Keys)
+                WorkerSetData(da); // Worker must implement a custom SetData as per below
+            }
+            catch (Exception e)
+            {
+                this.RuntimeMessages.Add(new Message(e.Message, Message.Level.Error));
+            }
+            finally
+            {
+                // Report any messages done by the worker instance
+                // We must manually translate here from the mock warning types back to GH types due to unit testing requirements
+                foreach (var msg in RuntimeMessages)
                 {
-                    switch (level)
+                    switch (msg.level)
                     {
-                        case MessagesWrapper.Level.Error:
-                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, msg[level]);
+                        case Message.Level.Error:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, msg.text);
                             break;
-                        case MessagesWrapper.Level.Warning:
-                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, msg[level]);
+                        case Message.Level.Warning:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, msg.text);
                             break;
-                        case MessagesWrapper.Level.Remark:
-                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, msg[level]);
+                        case Message.Level.Remark:
+                            Parent.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, msg.text);
                             break;
                     }
                 }
             }
+
 
 #if DEBUG
             da.SetDataList(logger.indexOfDebugOutput, logger.debugLogs);
