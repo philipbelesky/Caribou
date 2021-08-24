@@ -2,11 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
-    using Caribou.Models;
+    using Caribou.Components;
     using Caribou.Models;
     using Caribou.Processing;
-    using Grasshopper;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
     using Grasshopper.Kernel.Types;
@@ -44,6 +42,10 @@
         {
             if (this.wayOutputs != null)
                 da.SetDataTree(0, this.wayOutputs);
+                if (this.wayOutputs.DataCount == 0)
+                    this.RuntimeMessages.Add(new Message(
+                        "No ways were found with the specified features or tags.",
+                        Message.Level.Warning));
         }
     }
 }

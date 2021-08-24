@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Caribou.Models;
+    using Caribou.Components;
     using Caribou.Processing;
     using Grasshopper.Kernel;
     using Grasshopper.Kernel.Data;
@@ -39,6 +40,10 @@
         {
             if (this.buildingOutputs != null)
                 da.SetDataTree(0, this.buildingOutputs);
+                if (this.buildingOutputs.DataCount == 0)
+                    this.RuntimeMessages.Add(new Message(
+                        "No buildings were found with the specified features or tags.",
+                        Message.Level.Warning));
         }
     }
 }

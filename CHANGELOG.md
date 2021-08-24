@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.13.0] - 2021-??-??
 ### Fixed
-- Improved error reporting behavior when no valid files or keys are specifieds
+- Improved error reporting behavior when no valid files or keys are specified
+- Improved message reporting when no geometries were found for the provided tags
 
 ## [0.12.0] - 2021-08-18
 ### Added
