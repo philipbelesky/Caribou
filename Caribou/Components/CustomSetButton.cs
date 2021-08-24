@@ -17,9 +17,11 @@
 
         private Action buttonClickHandler;
         private int buttonHeight = 45;
+        private string title;
         
-        public CustomSetButton(SpecifyFeaturesComponent owner, Action openFormCallback) : base(owner) {
+        public CustomSetButton(CaribouComponent owner, string title, Action openFormCallback) : base(owner) {
             this.buttonClickHandler = openFormCallback;
+            this.title = title;
         }
 
         protected override void Layout()
@@ -46,7 +48,7 @@
             if (channel == GH_CanvasChannel.Objects)
             {
                 GH_Capsule button = GH_Capsule.CreateTextCapsule(
-                    ButtonBounds, ButtonBounds, GH_Palette.Black, "Specify\nFeatures", 2, 0);
+                    ButtonBounds, ButtonBounds, GH_Palette.Black, this.title, 2, 0);
                 button.Render(graphics, Selected, Owner.Locked, false);
                 button.Dispose();
             }

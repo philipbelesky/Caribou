@@ -9,7 +9,8 @@
 
     public abstract class BaseFindComponent : CaribouAsyncComponent
     {
-        protected const string ReportDescription = "The name, count, and description of each feature";
+        protected const string ReportDescription = "The name, description, and number of items found of each specified feature";
+       
         public BaseFindComponent(string name, string nickname, string description)
             : base(name, nickname, description, "Parse") { }
 
