@@ -14,7 +14,6 @@
     {
         private List<string> input;
         private ParseRequest results;
-        protected static MessagesWrapper messages = new MessagesWrapper();
         private OSMMetaData expectedParsedGeological = new OSMMetaData("geological");
         private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("restaurant", "amenity");
         private OSMMetaData expectedParsedHighWayResidential = new OSMMetaData("residential", "highway");
@@ -24,7 +23,7 @@
         public void TestSingleKey()
         {
             input = new List<string>() { "geological" };
-            results = new ParseRequest(input, ref messages);
+            results = new ParseRequest(input);
             Assert.AreEqual(results.Requests[0], expectedParsedGeological);
         }
 
@@ -32,7 +31,7 @@
         public void TestSingleKeyValue()
         { 
             input = new List<string>() { "amenity=restaurant" };
-            results = new ParseRequest(input, ref messages);
+            results = new ParseRequest(input);
             Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
         }
 
@@ -85,7 +84,7 @@
                 "route_master=tram", // 0 nodes 1 way
                 "tram_stop=yes" // 1 nodes 0 way
             };
-            results = new ParseRequest(input, ref messages);
+            results = new ParseRequest(input);
             Assert.AreEqual(results.Requests[0], new OSMMetaData("name"));
             Assert.AreEqual(results.Requests[1], new OSMMetaData("wikipedia"));
             Assert.AreEqual(results.Requests[2], new OSMMetaData("tram", "route_master"));
@@ -94,7 +93,7 @@
 
         private void CheckResult(List<string> input)
         {
-            results = new ParseRequest(input, ref messages);
+            results = new ParseRequest(input);
             Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
             Assert.AreEqual(results.Requests[1], expectedParsedHighWayResidential);
             Assert.AreEqual(results.Requests[2], expectedParsedWaterway);

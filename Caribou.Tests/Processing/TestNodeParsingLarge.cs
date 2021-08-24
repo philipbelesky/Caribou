@@ -71,7 +71,7 @@
             Assert.AreEqual(80, CountNodesForMetaData(results, query));
 
             var rawQuery = new List<string>() { "addr:street=Swanston Street" };
-            test = new ParseRequest(rawQuery, ref messages);
+            test = new ParseRequest(rawQuery);
             results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
             Assert.AreEqual(80, CountNodesForMetaData(results, query));
         }

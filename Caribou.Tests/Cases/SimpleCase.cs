@@ -29,7 +29,7 @@
                 "amenity=restaurant", // 1 nodes; 0 ways
                 "Craft=jeweller", // 1 nodes; 1 ways
                 "building=Retail", // 2 nodes; 0 ways
-            }, ref messages);
+            });
 
         protected static readonly ParseRequest arbitraryKeyValues = new ParseRequest(
             new List<string>() {
@@ -38,6 +38,6 @@
                 "wikipedia", // 1 nodes; 1 way
                 "route_master=tram", // 0 nodes 1 way
                 "tram_stop=yes" // 1 nodes 0 way
-            }, ref messages);
+            });
     }
 }

@@ -31,6 +31,6 @@
                 "highway=Residential", // 0 nodes; 5 ways
                 "highway=residential", // 0 nodes; 5 ways
                 "building=retail" // // 130 nodes 19 ways
-            }, ref messages);
+            });
     }
 }

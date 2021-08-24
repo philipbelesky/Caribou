@@ -31,6 +31,6 @@
                 "amenity=restaurant", // x nodes x ways
                 "Craft=JEWELLER", // x nodes x ways
                 "building=retail", // x nodes x ways
-            }, ref messages); 
+            });
     }
 }

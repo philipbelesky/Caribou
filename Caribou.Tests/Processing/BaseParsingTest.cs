@@ -9,7 +9,6 @@
 
     public abstract class BaseParsingTest
     {
-        protected static MessagesWrapper messages = new MessagesWrapper();
         public static Action<string, double> reportProgress;
         protected readonly OSMMetaData craftsData = new OSMMetaData("craft");
         protected readonly OSMMetaData amenitiesData = new OSMMetaData("amenity");

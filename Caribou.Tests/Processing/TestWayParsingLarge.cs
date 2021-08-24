@@ -80,7 +80,7 @@
             Assert.AreEqual(2, CountWaysForMetaData(results, query));
 
             var rawQuery = new List<string>() { "addr:street=Swanston Street" };
-            test = new ParseRequest(rawQuery, ref messages);
+            test = new ParseRequest(rawQuery);
             results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
             Assert.AreEqual(2, CountWaysForMetaData(results, query));
         }

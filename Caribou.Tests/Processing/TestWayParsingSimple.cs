@@ -100,12 +100,12 @@
             Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
 
             var queryB = new List<string>() { "addr:street=Swanston Street" };
-            test = new ParseRequest(queryB, ref messages);
+            test = new ParseRequest(queryB);
             results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
             Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
 
             var queryC = new List<string>() { "addr:street=swanston street" };
-            test = new ParseRequest(queryC, ref messages);
+            test = new ParseRequest(queryC);
             results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
             Assert.AreEqual(1, CountWaysForMetaData(results, queryA));
         }
