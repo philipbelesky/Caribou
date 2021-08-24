@@ -82,39 +82,51 @@
             }
             this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw);
 
-            result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
-            logger.NoteTiming("Setup request handler");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+            reportProgress(Id, 0.02); // Report something in case there is a long node-collection hang when extracting ways 
+            try
+            {
 
-            reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
-            this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
-            logger.NoteTiming($"Extract {typeName}s from data");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+                result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
+                logger.NoteTiming("Setup request handler");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
 
-            this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
-            logger.NoteTiming("Convert to geometry");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+                reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
+                this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
+                logger.NoteTiming($"Extract {typeName}s from data");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
 
-            this.GetTreeForComponentType(); // Form tree structure for Rhino geo
-            boundaries = GetOSMBoundaries.GetBoundariesFromResult(result);
-            logger.NoteTiming("Output geometry");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+                this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
+                logger.NoteTiming("Convert to geometry");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
 
-            this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
-            logger.NoteTiming("Output tags");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+                this.GetTreeForComponentType(); // Form tree structure for Rhino geo
+                boundaries = GetOSMBoundaries.GetBoundariesFromResult(result);
+                logger.NoteTiming("Output geometry");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
 
-            this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
-            logger.NoteTiming("Output metadata");
-            if (this.CancellationToken.IsCancellationRequested)
-                return;
+                this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
+                logger.NoteTiming("Output tags");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
 
-            done(); // Must be called to trigger outputs and report messages!
+                this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
+                logger.NoteTiming("Output metadata");
+                if (this.CancellationToken.IsCancellationRequested)
+                    return;
+            }
+            catch (Exception e)
+            {
+                this.RuntimeMessages.Add(new Message(e.Message, Message.Level.Error));
+            }
+            finally
+            {
+                done(); // Must be called to trigger outputs and report messages!
+            }
+
         }
 
         // Generate type-specific geometry (e.g. way or node)
