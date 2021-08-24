@@ -67,6 +67,6 @@
 
         // Standard GH
         public override Guid ComponentGuid => new Guid("0e86143a-d051-488b-bf65-b91087bce4ac");
-        protected override System.Drawing.Bitmap Icon => Resources.icons_select;
+        protected override System.Drawing.Bitmap Icon => Resources.icons_filter;
     }
 }
