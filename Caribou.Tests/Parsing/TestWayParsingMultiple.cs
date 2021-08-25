@@ -1,4 +1,4 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Parsing
 {
     using System.Collections.Generic;
     using System.Linq;

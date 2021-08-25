@@ -1,4 +1,4 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.LatLon
 {
     using System.Collections.Generic;
     using System.Drawing;

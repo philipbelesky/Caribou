@@ -1,4 +1,4 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Bounds
 {
     using System.Collections.Generic;
     using Caribou.Models;
