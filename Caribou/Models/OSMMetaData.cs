@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Grasshopper.Kernel.Types;
 
     /// <summary>
     /// A key or key:value pairing that might be found within a node or way's tags in an OSM XML file.
@@ -15,58 +16,78 @@
     /// </summary>
     public class OSMMetaData : IEquatable<OSMMetaData>
     {
-        // Constructing from Grasshopper data
-        public OSMMetaData(string specifiedId, string specifiedKey = null)
-        {
-            this.ThisType = specifiedId.ToLower(CultureInfo.InvariantCulture);
+        protected const char SplitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
+        public string TagType { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
+        public OSMMetaData ParentType { get; } // If set, points back to the key this value is associated with.
+        public bool IsDefined { get; } // Is a pre-defined feature or subfeature (as defined in OSMDefinedFeature)
+        public string Name { get; } // Readable name; i.e. including spaces and so on
+        public string Explanation { get; } // A description of what this represents
+
+        // Constructing from a raw keyValue string; e.g. "highway=residential or highway=yes or highway=* or highway"
+        public OSMMetaData(string rawKeyValue)
+        {  
+            this.ParentType = null;
             this.IsDefined = false;
 
-            if (specifiedKey == null && OSMDefinedFeatures.Primary.ContainsKey(specifiedId))
+            if (!rawKeyValue.Contains(SplitChar)) // If the text is just "something"
+                this.TagType = rawKeyValue.ToLower(CultureInfo.InvariantCulture); // Split at = and take left-side
+            else 
+            {
+                // If the text is something=something
+                var rawComponents = rawKeyValue.ToString().Trim().Split(SplitChar);
+
+                // Make a parent if there is a "=something" (e.g. not a sole key) and if that =value is not null or  =*
+                if (rawComponents.Length >= 2 && rawComponents[1] != "*" && !string.IsNullOrEmpty(rawComponents[1]))
+                {
+                    // E.g. PARENT=CHILD
+                    this.TagType = rawComponents[1].ToLower(CultureInfo.InvariantCulture);
+                    this.ParentType = new OSMMetaData(rawComponents[0]);
+                }
+                else
+                {
+                    // E.g. CHILD=* or CHILD
+                    this.TagType = rawComponents[0].ToLower(CultureInfo.InvariantCulture); // Split at = and take left-side
+                }
+            }
+
+            // Lookup if the type is known (e.g. a defined Feature/Subfeature)
+            if (this.ParentType == null && OSMDefinedFeatures.Primary.ContainsKey(this.TagType))
             {
                 // If providing a top-level defined primary feature like "natural" return that object
                 this.IsDefined = true;
-                this.Name = OSMDefinedFeatures.Primary[specifiedId].Name;
-                this.Explanation = MakeNiceExplanation(OSMDefinedFeatures.Primary[specifiedId].Explanation);
-                this.ParentType = null;
+                this.Explanation = MakeNiceExplanation(OSMDefinedFeatures.Primary[this.TagType].Explanation);
+                this.Name = OSMDefinedFeatures.Primary[this.TagType].Name;
             }
             else
             {
-                if (specifiedKey != null && OSMDefinedFeatures.Primary.ContainsKey(specifiedKey))
-                {
-                    // If providing a specific type of information to find/match, e.g. amenity:restaurant
-                    // and the key (e.g. "amenity") is predefined then set parent from hardcoded data
-                    this.ParentType = OSMDefinedFeatures.Primary[specifiedKey];
-                }
-                else if (specifiedKey != null)
+                if (this.ParentType != null)
                 {
                     // If providing arbitrary key:value pairings then create the parent rather than referencing
-                    this.ParentType = new OSMMetaData(specifiedKey);
+                    this.Name = MakeNiceName(null, this.TagType, this.ParentType.ToString());
                 }
-
-                this.Name = MakeNiceName(null, specifiedId, specifiedKey);
+                else
+                {
+                    this.Name = MakeNiceName(null, this.TagType, null);
+                }
             }
         }
 
-        // Constructing from hardcoded data
+        // If providing an explicit key and value, just call the other constructor using the standard format
+        public OSMMetaData(string tagValue, string tagType) : this($"{tagValue}={tagType}") { }
+
+        // Constructing from hardcoded data; e.g. loading from library of feature definitionss
         public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
         {
-            this.ThisType = id;
+            this.TagType = id;
             this.IsDefined = true;
             this.Explanation = MakeNiceExplanation(explanation);
+            this.ParentType = key;
+
             if (key != null)
                 this.Name = MakeNiceName(name, id, key.Name);
             else
                 this.Name = MakeNiceName(name, id, "");
-
-            this.ParentType = key;
         }
-
-        public string ThisType { get; } // The type of information; can either represent a KEY or a VALUE. A sanitised value.
-        public OSMMetaData ParentType { get; } // If set, points back to the key this value is assocaited with.
-        public bool IsDefined { get; } // Is a pre-defined feature or subfeature (as defined in OSMDefinedFeature)
-
-        public string Name { get; } // Readable name; i.e. including spaces and so on
-        public string Explanation { get; } // A description of what this represents
 
         public override string ToString() => this.IsFeature() ? this.SingleSearchNiceName() : this.MultiSearchNiceName();
 
@@ -103,44 +124,24 @@
                     explanation += '.';
                 }
             }
-
             return explanation;
         }
 
-        private string SingleSearchNiceName()
-        {
-            return $"{this.ThisType}=*";
-        }
+        private string SingleSearchNiceName() => $"{this.TagType}=*";
 
-        private string MultiSearchNiceName()
-        {
-            return $"{this.KeyNiceName()}={this.ThisType}";
-        }
+        private string MultiSearchNiceName() => $"{(this.ParentType == null ? "*" : this.ParentType.TagType)}={this.TagType}";
 
-        private string KeyNiceName()
-        {
-            return this.ParentType == null ? "*" : this.ParentType.ThisType;
-        }
+        public bool IsFeature() => this.IsDefined && this.ParentType == null;
 
-        public bool IsFeature()
-        {
-            return this.IsDefined && this.ParentType == null;
-        }
+        public bool IsSubFeature() => this.IsDefined && this.ParentType != null;
 
-        public bool IsSubFeature()
-        {
-            return this.IsDefined && this.ParentType != null;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as OSMMetaData);
-        }
+        // IEquitable implementations
+        public override bool Equals(object obj) => Equals(obj as OSMMetaData);
 
         public bool Equals(OSMMetaData other)
         {
             return other != null &&
-                   this.ThisType == other.ThisType &&
+                   this.TagType == other.TagType &&
                    EqualityComparer<OSMMetaData>.Default.Equals(this.ParentType, other.ParentType);
         }
 
@@ -148,13 +149,9 @@
         public override int GetHashCode()
         {
             if (this.ParentType == null)
-            {
-                return this.ThisType.GetHashCode();
-            }
+                return this.TagType.GetHashCode();
             else
-            {
-                return this.ThisType.GetHashCode() ^ this.ParentType.GetHashCode();
-            }
+                return this.TagType.GetHashCode() ^ this.ParentType.GetHashCode();
         }
     }
 }

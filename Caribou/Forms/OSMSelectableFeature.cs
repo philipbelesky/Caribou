@@ -40,10 +40,10 @@
         {
             if (this.IsFeature())
             {
-                return $"https://wiki.openstreetmap.org/wiki/Key:{this.ThisType}";
+                return $"https://wiki.openstreetmap.org/wiki/Key:{this.TagType}";
             }
 
-            return $"https://wiki.openstreetmap.org/wiki/Tag:{this.ParentType}={this.ThisType}";
+            return $"https://wiki.openstreetmap.org/wiki/Tag:{this.ParentType}={this.TagType}";
         }
 
         private string GetCount(int countType)

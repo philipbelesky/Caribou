@@ -6,6 +6,9 @@
     using Grasshopper.Kernel;
     using Caribou.Forms;
     using System.Collections.Generic;
+    using Grasshopper.Kernel.Types;
+    using Grasshopper.Kernel.Data;
+    using Caribou.Models;
 
     /// <summary>
     /// Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream
@@ -13,6 +16,7 @@
     public class FilterResultsComponent : BasePickerComponent
     {
         private FilterFeaturesForm componentForm;
+        private FilterRequest filterableTags;
         // By default any item with any of the specified tags passed. If true, items must possess all tags
         private bool resultsMustHaveAllTags = false;
 
@@ -27,6 +31,7 @@
         {
             pManager.AddGenericParameter("Items", "I", "TODO", GH_ParamAccess.tree);
             pManager.AddTextParameter("Tags", "R", "TODO", GH_ParamAccess.tree);
+            // TODO key:value params
         }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
@@ -38,6 +43,18 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
+            GH_Structure<IGH_Goo> itemsTree;
+            da.GetDataTree(0, out itemsTree);
+            // TODO: validate
+
+            GH_Structure<GH_String> tagsTree;
+            da.GetDataTree(1, out tagsTree);
+            // TODO: validate
+
+            this.filterableTags = new FilterRequest(tagsTree);
+
+            // TODO: Match geometry paths to selected filters
+
             this.OutputMessageBelowComponent();
         }
 

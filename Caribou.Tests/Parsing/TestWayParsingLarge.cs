@@ -74,7 +74,7 @@
         [TestMethod]
         public void ParseWaysGivenDoubleKeyViaXMLReader()
         {
-            var query = new OSMMetaData("Swanston Street", "addr:street");
+            var query = new OSMMetaData("addr:street", "Swanston Street");
             var test = new ParseRequest(new List<OSMMetaData>() { query });
             var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Way);
             Assert.AreEqual(2, CountWaysForMetaData(results, query));

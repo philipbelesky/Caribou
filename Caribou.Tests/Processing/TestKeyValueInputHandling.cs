@@ -15,8 +15,8 @@
         private List<string> input;
         private ParseRequest results;
         private OSMMetaData expectedParsedGeological = new OSMMetaData("geological");
-        private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("restaurant", "amenity");
-        private OSMMetaData expectedParsedHighWayResidential = new OSMMetaData("residential", "highway");
+        private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("amenity", "restaurant");
+        private OSMMetaData expectedParsedHighWayResidential = new OSMMetaData("highway", "residential");
         private OSMMetaData expectedParsedWaterway = new OSMMetaData("waterway");
 
         [TestMethod]
@@ -24,7 +24,7 @@
         {
             input = new List<string>() { "geological" };
             results = new ParseRequest(input);
-            Assert.AreEqual(results.Requests[0], expectedParsedGeological);
+            Assert.AreEqual(expectedParsedGeological, results.Requests[0]);
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@
         { 
             input = new List<string>() { "amenity=restaurant" };
             results = new ParseRequest(input);
-            Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
+            Assert.AreEqual(expectedParsedAmenityRestaraunt, results.Requests[0]);
         }
 
         [TestMethod]
@@ -85,18 +85,18 @@
                 "tram_stop=yes" // 1 nodes 0 way
             };
             results = new ParseRequest(input);
-            Assert.AreEqual(results.Requests[0], new OSMMetaData("name"));
-            Assert.AreEqual(results.Requests[1], new OSMMetaData("wikipedia"));
-            Assert.AreEqual(results.Requests[2], new OSMMetaData("tram", "route_master"));
-            Assert.AreEqual(results.Requests[3], new OSMMetaData("yes", "tram_stop"));
+            Assert.AreEqual(new OSMMetaData("name"), results.Requests[0]);
+            Assert.AreEqual(new OSMMetaData("wikipedia"), results.Requests[1]);
+            Assert.AreEqual(new OSMMetaData("route_master", "tram"), results.Requests[2]);
+            Assert.AreEqual(new OSMMetaData("tram_stop", "yes"), results.Requests[3]);
         }
 
         private void CheckResult(List<string> input)
         {
             results = new ParseRequest(input);
-            Assert.AreEqual(results.Requests[0], expectedParsedAmenityRestaraunt);
-            Assert.AreEqual(results.Requests[1], expectedParsedHighWayResidential);
-            Assert.AreEqual(results.Requests[2], expectedParsedWaterway);
+            Assert.AreEqual(expectedParsedAmenityRestaraunt, results.Requests[0]);
+            Assert.AreEqual(expectedParsedHighWayResidential, results.Requests[1]);
+            Assert.AreEqual(expectedParsedWaterway, results.Requests[2]);
         }
     }
 }

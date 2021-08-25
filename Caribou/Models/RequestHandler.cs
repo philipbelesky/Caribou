@@ -99,7 +99,7 @@
             foreach (var request in this.RequestedMetaData.Requests)
             {
                 var requestedKey = request.ParentType;
-                var requestedValue = request.ThisType;
+                var requestedValue = request.TagType;
 
                 if (requestedKey == null)
                 {
@@ -109,9 +109,9 @@
                         matches.Add(request);
                     }
                 }
-                else if (tagsOfFoundNode.ContainsKey(requestedKey.ThisType))
+                else if (tagsOfFoundNode.ContainsKey(requestedKey.TagType))
                 {
-                    var testValue = tagsOfFoundNode[requestedKey.ThisType];
+                    var testValue = tagsOfFoundNode[requestedKey.TagType];
                     // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
                     // We don't care about case for matching values, e.g. "Swanston St" vs "swanston st"
                     if (testValue != null && testValue.ToLower(ci) == requestedValue.ToLower(ci))

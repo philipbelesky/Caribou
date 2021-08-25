@@ -24,7 +24,7 @@
             foreach (var primaryFeature in Primary)
             {
                 var pf = primaryFeature.Value;
-                var spf = new OSMSelectableFeature(pf.ThisType, pf.Name, pf.Explanation, 0, 0, false);
+                var spf = new OSMSelectableFeature(pf.TagType, pf.Name, pf.Explanation, 0, 0, false);
                 allDataInHierarchy[spf] = new List<OSMSelectableFeature>() { };
             }
 
@@ -34,7 +34,7 @@
             foreach (var item in jsonValue)
             {
                 var nameID = item["subfeature"];
-                var parent = allDataInHierarchy.Keys.First(k => k.ThisType == item["feature"]);
+                var parent = allDataInHierarchy.Keys.First(k => k.TagType == item["feature"]);
                 OSMSelectableFeature subfeature = new OSMSelectableFeature(
                     nameID, null, item["description"], int.Parse(item["nodes"]), int.Parse(item["ways"]), true, parent);
                 allDataInHierarchy[parent].Add(subfeature);
