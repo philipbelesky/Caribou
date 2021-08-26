@@ -24,13 +24,14 @@
             this.PathsOfRequest = new Dictionary<OSMMetaData, List<GH_Path>>();
 
             // Convert from tree to linear list
-            for (int i = 0; i < tagsTree.Branches.Count; i++)
+            for (int pathIndex = 0; pathIndex < tagsTree.Paths.Count; pathIndex++)
             {
-                var path = new GH_Path(i);
-                for (int j = 0; j < tagsTree.Branches[i].Count; j++)
+                var path = tagsTree.Paths[pathIndex];
+                List<GH_String> itemsInPath = tagsTree[path];   
+                for (int tagIndex = 0; tagIndex < itemsInPath.Count; tagIndex++)
                 {
                     // Make new item and track the path it came from
-                    var tagString = tagsTree.get_DataItem(path, j);
+                    var tagString = itemsInPath[tagIndex];
                     var osmItem = new OSMMetaData(tagString.ToString());
                     if (osmItem != null)
                     {
