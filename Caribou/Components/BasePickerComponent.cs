@@ -11,7 +11,7 @@
     public abstract class BasePickerComponent : CaribouComponent
     {
         protected BaseCaribouForm componentForm;
-        protected Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableData; // Items for form to render
+        protected SelectableDataCollection selectableData; // Items for form to render
         protected TreeGridItemCollection selectionState; // Current state provided to/from the form 
 
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component

@@ -17,10 +17,8 @@
     {
         // By default any item with any of the specified tags passed. If true, items must possess all tags
         private bool resultsMustHaveAllTags = false;
-
-        private List<OSMMetaData> requests = new List<OSMMetaData>();
         // For tracking geometry that is associated with a particular tag
-        private Dictionary<OSMMetaData, List<GH_Path>> pathsPerRequest = new Dictionary<OSMMetaData, List<GH_Path>>();
+        public Dictionary<OSMMetaData, List<GH_Path>> pathsPerRequest;
 
         protected const string ReportDescription = "The name, description, and number of items found of each specified tag";
 
@@ -56,10 +54,10 @@
 
             logger.NoteTiming("Input capture");
 
-            ParseTagsToOSM(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
+            var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
-            this.selectableData = ParseOSMToSelectableOSM(); // Setup form-able items for tags provided and parsed into OSM/Form objects
+            this.selectableData = new SelectableDataCollection(requests.items); // Setup form-able items for tags provided and parsed into OSM/Form objects
             logger.NoteTiming("Tag processing");
 
             this.selectionState = TreeGridUtilities.MakeOSMCollection(this.selectableData);
@@ -70,58 +68,6 @@
             logger.NoteTiming("Geometry matching");
 
             this.OutputMessageBelowComponent();
-        }
-
-        private void ParseTagsToOSM(GH_Structure<GH_String> tagsTree)
-        {
-            // Convert from tree of strings representing tags to linear list of OSM Items
-            for (int pathIndex = 0; pathIndex < tagsTree.Paths.Count; pathIndex++)
-            {
-                var path = tagsTree.Paths[pathIndex];
-                List<GH_String> itemsInPath = tagsTree[path];
-                for (int tagIndex = 0; tagIndex < itemsInPath.Count; tagIndex++)
-                {
-                    // Make new item and track the path it came from
-                    var tagString = itemsInPath[tagIndex];
-                    var osmItem = new OSMMetaData(tagString.ToString());
-                    if (osmItem != null)
-                    {
-                        if (!this.requests.Contains(osmItem)) // Prevent duplicates
-                            this.requests.Add(osmItem);
-
-                        if (this.pathsPerRequest.ContainsKey(osmItem))
-                            this.pathsPerRequest[osmItem].Add(path);
-                        else
-                            this.pathsPerRequest[osmItem] = new List<GH_Path>() { path };
-                    }
-                }
-            }
-        }
-
-        // Translate a list of OSMMetaData items into OSMSelectableFeatures for showing in the form
-        // E.g. like  OSMDefinedFeatures.GetDefinedFeaturesForForm() but for dynamic tags
-        private Dictionary<OSMSelectableData, List<OSMSelectableData>> ParseOSMToSelectableOSM()
-        {
-            var allDataInHierarchy = new Dictionary<OSMSelectableData, List<OSMSelectableData>>();
-
-            foreach (var tag in this.requests)
-            {
-                var selectableTag = new OSMSelectableData(tag.TagType, tag.Name, tag.Explanation, 0, 0, false);
-
-                var parent = tag.ParentType;
-                var selectableParent = new OSMSelectableData(parent.TagType, parent.Name, parent.Explanation, 0, 0, false);
-
-                if (!allDataInHierarchy.ContainsKey(selectableParent))
-                    allDataInHierarchy[selectableParent] = new List<OSMSelectableData>() { selectableTag };
-                else
-                    allDataInHierarchy[selectableParent].Add(selectableTag);
-            }
-
-            // Sort child items alphabetically (parents are sorted in MakeOSMCollection)
-            foreach (var parentType in allDataInHierarchy)
-                parentType.Value.Sort();
-
-            return allDataInHierarchy;
         }
 
         // Methods required for button-opening

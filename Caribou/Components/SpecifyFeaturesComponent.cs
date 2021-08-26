@@ -27,7 +27,7 @@
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
             // Setup form-able items for tags provided and parsed into OSM/Form objects
-            this.selectableData = OSMDefinedFeatures.GetDefinedFeaturesForForm();
+            this.selectableData = new SelectableDataCollection();
             this.selectionState = TreeGridUtilities.MakeOSMCollection(this.selectableData, this.hideObscureFeatures);
 
             this.OutputMessageBelowComponent();

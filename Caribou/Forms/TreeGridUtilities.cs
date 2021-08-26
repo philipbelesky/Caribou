@@ -12,11 +12,10 @@
         private static readonly int keyValueIndex = 4;
 
         /// <summary>Get the OSM items to be shown in the form given a provided list [of defined features or tags] /// </summary>
-        public static TreeGridItemCollection MakeOSMCollection(
-            Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableOSMItems, bool includeObscure = false)
+        public static TreeGridItemCollection MakeOSMCollection(SelectableDataCollection OSMItems, bool includeObscure = false)
         {
             var itemsForCollection = new List<TreeGridItem>();
-            var sortedItems = selectableOSMItems.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
+            var sortedItems = OSMItems.tagHierarchy.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
 
             foreach (var item in sortedItems)
             {
@@ -28,7 +27,8 @@
         }
 
         /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
-        public static TreeGridItemCollection FilterOSMCollection(TreeGridItemCollection providedSelectionState, bool hideObscureFeatures)
+        public static TreeGridItemCollection FilterOSMCollection(
+            TreeGridItemCollection providedSelectionState, bool hideObscureFeatures)
         {
             foreach (var item in providedSelectionState)
             {
@@ -37,7 +37,8 @@
             return providedSelectionState;
         }
 
-        private static TreeGridItem GetItem(OSMSelectableData parentFeature, List<OSMSelectableData> childFeatures, bool hideObscureFeatures)
+        private static TreeGridItem GetItem(
+            OSMSelectableData parentFeature, List<OSMSelectableData> childFeatures, bool hideObscureFeatures)
         {
             var parentItem = new TreeGridItem
             {
@@ -88,7 +89,7 @@
         }
 
         public static TreeGridItemCollection DeserialiseKeyValues(
-            Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableData, string csvSelection, bool includeObscure)
+            SelectableDataCollection selectableData, string csvSelection, bool includeObscure)
         {
             // Need to set selection state back from list of keyValue strings that persisted
             var newSelectionState = TreeGridUtilities.MakeOSMCollection(selectableData, includeObscure);

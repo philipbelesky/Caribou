@@ -1,7 +1,10 @@
 ﻿namespace Caribou.Tests.Processing
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Caribou.Components;
+    using Caribou.Forms;
     using Caribou.Models;
     using Caribou.Tests.Cases;
     using Grasshopper.Kernel.Data;
@@ -44,9 +47,9 @@
             {
                 new List<List<string>>() { TagsTestClases.itemATags, TagsTestClases.itemBTags }
             });
-            var resultMetaData = new FilterRequest(testDataTree);
+            var resultMetaData = new OSMListWithPaths(testDataTree);
 
-            CollectionAssert.AreEquivalent(resultMetaData.Requests, expectedSimpleDataList);
+            CollectionAssert.AreEquivalent(resultMetaData.items, expectedSimpleDataList);
 
             var catholicPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[2]);
             Assert.IsTrue(catholicPaths.Contains(itemAPath.ToString()));
@@ -63,14 +66,14 @@
         public void TestCaseDataInput()
         {
             var testDataTree = MakeTreeFromListofLists(TagsTestClases.GetTagsCaseData());
-            var resultMetaData = new FilterRequest(testDataTree);
+            var resultMetaData = new OSMListWithPaths(testDataTree);
 
-            CollectionAssert.AreEquivalent(resultMetaData.Requests, expectedCaseDataList);
+            CollectionAssert.AreEquivalent(resultMetaData.items, expectedCaseDataList);
         }
 
-        private List<string> GetExpectedPathIndicesForTag(FilterRequest resultMetaData, OSMMetaData tag)
+        private List<string> GetExpectedPathIndicesForTag(OSMListWithPaths resultMetaData, OSMMetaData tag)
         {
-            return resultMetaData.PathsOfRequest[tag].Select(o => o.ToString()).ToList(); 
+            return resultMetaData.pathsPerItem[tag].Select(o => o.ToString()).ToList(); 
         }
 
         private GH_Structure<GH_String>  MakeTreeFromListofLists(List<List<List<string>>> tagsByGeometryPath)
