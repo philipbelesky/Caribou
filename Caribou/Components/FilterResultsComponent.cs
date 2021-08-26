@@ -25,7 +25,6 @@
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
         {
             this.selectionState = SelectionCollection.GetCollection(this.resultsMustHaveAllTags);
-            this.componentForm = new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
@@ -69,6 +68,9 @@
             this.OutputMessageBelowComponent();
         }
 
+
+        // Methods required for button-opening
+        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
         protected override string GetButtonTitle() => "Specify\nTags";
 
         protected override void CustomFormClose()

@@ -16,7 +16,6 @@
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {
             this.selectionState = SelectionCollection.GetCollection(this.hideObscureFeatures);
-            this.componentForm = new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
@@ -32,6 +31,8 @@
             da.SetDataList(0, selectionStateSerialized); // Update downstream text
         }
 
+        // Methods required for button-opening
+        protected override BaseCaribouForm GetFormForComponent() => new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
         protected override string GetButtonTitle() => "Specify\nFeatures";
 
         protected override void CustomFormClose()

@@ -19,15 +19,19 @@
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory) { }
 
-        // Require button methods
+        // Required button methods
         protected abstract string GetButtonTitle(); // Return title for button
         public override void CreateAttributes() // Setup button in GH UI
         {
             m_attributes = new CustomSetButton(this, this.GetButtonTitle(), this.ButtonOpenAction);
         }
 
+        // Required form methods
+        protected abstract BaseCaribouForm GetFormForComponent(); // Provide component-specific form type
+
         public void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
         {
+            this.componentForm = this.GetFormForComponent(); // Need to remake whenever form is opened
             int x = (int)Mouse.Position.X - 5;
             int y = (int)Mouse.Position.Y - 250;
             this.componentForm.Location = new Eto.Drawing.Point(x, y);
