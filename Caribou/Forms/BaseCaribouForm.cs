@@ -10,7 +10,7 @@
 
     public abstract class BaseCaribouForm : Form
     {
-        private readonly TreeGridItemCollection providedState;
+        protected readonly TreeGridItemCollection providedSelectionState; // Passed from component during form init
         public bool customFlagState; // E.g. toggle obscure features flag
 
         public TableStrip mainRow;
@@ -25,7 +25,7 @@
 
         public BaseCaribouForm(TreeGridItemCollection selectionState, string formTitle, bool customFlag) 
         {
-            this.providedState = selectionState;
+            this.providedSelectionState = selectionState;
             this.customFlagState = customFlag;
 
             this.Padding = padding;
@@ -122,7 +122,7 @@
 
         private void CancelAndClose() // Just from the button
         {
-            this.mainRow.data = this.providedState; // Revert to initially provided state
+            this.mainRow.data = this.providedSelectionState; // Revert to initially provided state
             this.Close();
         }
 

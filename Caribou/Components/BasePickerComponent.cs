@@ -11,7 +11,9 @@
     public abstract class BasePickerComponent : CaribouComponent
     {
         protected BaseCaribouForm componentForm;
-        protected TreeGridItemCollection selectionState;
+        protected Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableData; // Items for form to render
+        protected TreeGridItemCollection selectionState; // Current state provided to/from the form 
+
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
         protected readonly string storageKeyForCustomFlag = "selectionCustomFlag"; // Includes obscure or filter by union
@@ -54,12 +56,14 @@
             this.ExpireSolution(true); // Recalculate output
         }
 
+        protected abstract string GetNoSelectionMessage();
+
         // Messages below buttons
         protected void OutputMessageBelowComponent()
         {
             if (this.selectionStateSerialized.Count == 0)
             {
-                this.Message = "\u00A0No Features Selected\u00A0\u00A0"; // Spacing to ensure in black bit
+                this.Message = $"\u00A0{this.GetNoSelectionMessage()}\u00A0\u00A0"; // Spacing to ensure in black bit
             }
             else
             {
@@ -90,7 +94,7 @@
             if (reader.ItemExists(storageKeyForSelectionState))
             {
                 var csvSelection = reader.GetString(storageKeyForSelectionState);
-                this.selectionState = SelectionCollection.DeserialiseKeyValues(csvSelection, GetCustomFlagToSerialize());
+                this.selectionState = TreeGridUtilities.DeserialiseKeyValues(this.selectableData, csvSelection, GetCustomFlagToSerialize());
                 this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             }
             return base.Read(reader);
@@ -105,7 +109,7 @@
             for (var i = 0; i < this.selectionState.Count; i++)
             {
                 var item = this.selectionState[i] as TreeGridItem;
-                SelectionCollection.GetKeyValueTextIfSelected(item, ref selectedKVs);
+                TreeGridUtilities.GetKeyValueTextIfSelected(item, ref selectedKVs);
             }
 
             return selectedKVs;

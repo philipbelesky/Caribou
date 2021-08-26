@@ -17,15 +17,15 @@
     public static class OSMDefinedFeatures
     {
         // Take the hardcoded feature types below, combine with the subfeatures in JSON, & report them back as a tree
-        public static Dictionary<OSMSelectableFeature, List<OSMSelectableFeature>> GetDefinedFeaturesForForm()
+        public static Dictionary<OSMSelectableData, List<OSMSelectableData>> GetDefinedFeaturesForForm()
         {
-            var allDataInHierarchy = new Dictionary<OSMSelectableFeature, List<OSMSelectableFeature>>();
+            var allDataInHierarchy = new Dictionary<OSMSelectableData, List<OSMSelectableData>>();
 
             foreach (var primaryFeature in Primary)
             {
                 var pf = primaryFeature.Value;
-                var spf = new OSMSelectableFeature(pf.TagType, pf.Name, pf.Explanation, 0, 0, false);
-                allDataInHierarchy[spf] = new List<OSMSelectableFeature>() { };
+                var spf = new OSMSelectableData(pf.TagType, pf.Name, pf.Explanation, 0, 0, false);
+                allDataInHierarchy[spf] = new List<OSMSelectableData>() { };
             }
 
             var docString = Encoding.UTF8.GetString(Resources.SubFeatureData);
@@ -35,7 +35,7 @@
             {
                 var nameID = item["subfeature"];
                 var parent = allDataInHierarchy.Keys.First(k => k.TagType == item["feature"]);
-                OSMSelectableFeature subfeature = new OSMSelectableFeature(
+                OSMSelectableData subfeature = new OSMSelectableData(
                     nameID, null, item["description"], int.Parse(item["nodes"]), int.Parse(item["ways"]), true, parent);
                 allDataInHierarchy[parent].Add(subfeature);
             }
@@ -44,7 +44,7 @@
             {
                 primaryFeature.Value.Sort();
                 var description = $"Items that are specified as {primaryFeature.Key.Name}, but without more specific subfeature information";
-                primaryFeature.Value.Insert(0, new OSMSelectableFeature(
+                primaryFeature.Value.Insert(0, new OSMSelectableData(
                     "yes", "UNTAGGED", description, 0, 0, false, primaryFeature.Key));
             }
 

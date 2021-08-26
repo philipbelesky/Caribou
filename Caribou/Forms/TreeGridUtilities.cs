@@ -6,26 +6,38 @@
     using Caribou.Models;
     using Eto.Forms;
 
-    /// <summary>Translates from the Feature/SubFeature datasets into the UI elements in the view.</summary>
-    public static class SelectionCollection
+    /// <summary>Translates from the Feature/SubFeature datasets or Tag sets into the UI elements in the view.</summary>
+    public abstract class TreeGridUtilities
     {
         private static readonly int keyValueIndex = 4;
 
-        public static TreeGridItemCollection GetCollection(bool includeObscure)
+        /// <summary>Get the OSM items to be shown in the form given a provided list [of defined features or tags] /// </summary>
+        public static TreeGridItemCollection MakeOSMCollection(
+            Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableOSMItems, bool includeObscure = false)
         {
             var itemsForCollection = new List<TreeGridItem>();
+            var sortedItems = selectableOSMItems.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
 
-            foreach (var item in OSMDefinedFeatures.GetDefinedFeaturesForForm())
+            foreach (var item in sortedItems)
             {
                 var treeItem = GetItem(item.Key, item.Value, includeObscure);
                 itemsForCollection.Add(treeItem);
             }
 
-            var treeCollection = new TreeGridItemCollection(itemsForCollection);
-            return treeCollection;
+            return new TreeGridItemCollection(itemsForCollection);
         }
 
-        private static TreeGridItem GetItem(OSMSelectableFeature parentFeature, List<OSMSelectableFeature> childFeatures, bool hideObscureFeatures)
+        /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
+        public static TreeGridItemCollection FilterOSMCollection(TreeGridItemCollection providedSelectionState, bool hideObscureFeatures)
+        {
+            foreach (var item in providedSelectionState)
+            {
+                // TODO toggle based on obscurity
+            }
+            return providedSelectionState;
+        }
+
+        private static TreeGridItem GetItem(OSMSelectableData parentFeature, List<OSMSelectableData> childFeatures, bool hideObscureFeatures)
         {
             var parentItem = new TreeGridItem
             {
@@ -75,10 +87,11 @@
             return;
         }
 
-        public static TreeGridItemCollection DeserialiseKeyValues(string csvSelection, bool includeObscure)
+        public static TreeGridItemCollection DeserialiseKeyValues(
+            Dictionary<OSMSelectableData, List<OSMSelectableData>> selectableData, string csvSelection, bool includeObscure)
         {
             // Need to set selection state back from list of keyValue strings that persisted
-            var newSelectionState = SelectionCollection.GetCollection(includeObscure);
+            var newSelectionState = TreeGridUtilities.MakeOSMCollection(selectableData, includeObscure);
             var csvItems = csvSelection.Split(',').ToList();
 
             foreach (TreeGridItem item in newSelectionState)

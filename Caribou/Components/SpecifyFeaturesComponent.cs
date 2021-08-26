@@ -6,6 +6,7 @@
     using Grasshopper.Kernel;
     using Caribou.Forms;
     using System.Collections.Generic;
+    using Caribou.Models;
 
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : BasePickerComponent
@@ -14,9 +15,7 @@
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
-        {
-            this.selectionState = SelectionCollection.GetCollection(this.hideObscureFeatures);
-        }
+        { }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
 
@@ -27,6 +26,10 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
+            // Setup form-able items for tags provided and parsed into OSM/Form objects
+            this.selectableData = OSMDefinedFeatures.GetDefinedFeaturesForForm();
+            this.selectionState = TreeGridUtilities.MakeOSMCollection(this.selectableData, this.hideObscureFeatures);
+
             this.OutputMessageBelowComponent();
             da.SetDataList(0, selectionStateSerialized); // Update downstream text
         }
@@ -34,6 +37,7 @@
         // Methods required for button-opening
         protected override BaseCaribouForm GetFormForComponent() => new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
         protected override string GetButtonTitle() => "Specify\nFeatures";
+        protected override string GetNoSelectionMessage() => "No Features Selected";
 
         protected override void CustomFormClose()
         {

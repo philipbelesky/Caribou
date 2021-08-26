@@ -6,7 +6,7 @@
     /// <summary>
     /// A OSMMetaData item that will be presented to the user for interaction. It thus has state information and more descriptive information.
     /// </summary>
-    public class OSMSelectableFeature : OSMMetaData, IComparable<OSMSelectableFeature>
+    public class OSMSelectableData : OSMMetaData, IComparable<OSMSelectableData>
     {
         public bool IsSelected { get; set; }
         public int NodeCount { get; set; }
@@ -15,9 +15,9 @@
         public bool ShowCounts { get; set; }
 
         // Full constructor
-        public OSMSelectableFeature(string subfeature, string name, string description,
+        public OSMSelectableData(string subfeature, string name, string description,
                                     int nodes, int ways, bool showCounts,
-                                    OSMSelectableFeature key = null)
+                                    OSMSelectableData key = null)
             : base(subfeature, name, description, key)
         {
             this.IsSelected = false;
@@ -77,7 +77,7 @@
         }
 
         // Used in the UI form to sort by alphabetical
-        public int CompareTo(OSMSelectableFeature other)
+        public int CompareTo(OSMSelectableData other)
         {
             return this.Name.CompareTo(other.Name);
         }

@@ -23,7 +23,7 @@
         private void ToggleObscureFeatures()
         {
             this.customFlagState = this.obscureFeaturesCheckbox.Checked.Value;
-            this.mainRow.viewForm.DataStore = SelectionCollection.GetCollection(this.customFlagState);
+            this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterOSMCollection(this.providedSelectionState, this.customFlagState);
             this.mainRow.viewForm.ReloadData();
         }
     }
