@@ -10,18 +10,14 @@
     /// </summary>
     public abstract class BasePickerComponent : CaribouComponent
     {
-        protected Eto.Forms.Form buttonForm;
+        protected BaseCaribouForm componentForm;
         protected TreeGridItemCollection selectionState;
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
         protected readonly string storageKeyForCustomFlag = "selectionCustomFlag"; // Includes obscure or filter by union
 
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
-            : base(name, nickname, description, subCategory)
-        {
-        }
-
-        protected abstract Eto.Forms.Form GetFormForComponent(); // Return custom form type
+            : base(name, nickname, description, subCategory) { }
 
         // Require button methods
         protected abstract string GetButtonTitle(); // Return title for button
@@ -30,18 +26,23 @@
             m_attributes = new CustomSetButton(this, this.GetButtonTitle(), this.ButtonOpenAction);
         }
 
-        // Form-button interaction
-        private void ButtonOpenAction()
+        public void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
         {
-            var buttonForm = GetFormForComponent();
             int x = (int)Mouse.Position.X - 5;
             int y = (int)Mouse.Position.Y - 250;
-            buttonForm.Location = new Eto.Drawing.Point(x, y);
-            buttonForm.Closed += (sender, e) => { StartFormClose(); };
-            buttonForm.Show();
+            this.componentForm.Location = new Eto.Drawing.Point(x, y);
+            this.componentForm.Closed += (sender, e) => { StartFormClose(); };
+            this.componentForm.Show();
         }
 
-        protected abstract void StartFormClose(); // Handler for form closing 
+        protected abstract void CustomFormClose(); // Handler for component-specific actions during form closing 
+
+        protected void StartFormClose() // Handler for form closure with option for custom state setting
+        {
+            this.selectionState = this.componentForm.mainRow.data;
+            CustomFormClose(); // Tracking custom state
+            FinishFormClose();
+        }
 
         protected void FinishFormClose()
         {

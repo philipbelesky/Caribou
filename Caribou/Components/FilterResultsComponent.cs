@@ -15,7 +15,6 @@
     /// </summary>
     public class FilterResultsComponent : BasePickerComponent
     {
-        private FilterFeaturesForm componentForm;
         private FilterRequest filterableTags;
         // By default any item with any of the specified tags passed. If true, items must possess all tags
         private bool resultsMustHaveAllTags = false;
@@ -25,13 +24,15 @@
         public FilterResultsComponent() : base("Filter Tags", "OSM Filter",
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
         {
+            this.selectionState = SelectionCollection.GetCollection(this.resultsMustHaveAllTags);
+            this.componentForm = new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Items", "I", "TODO", GH_ParamAccess.tree);
             pManager.AddTextParameter("Tags", "R", "TODO", GH_ParamAccess.tree);
-            // TODO key:value params
+            // TODO key:value params provided as overrides
         }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
@@ -43,6 +44,8 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
+            logger.Reset();
+
             GH_Structure<IGH_Goo> itemsTree;
             da.GetDataTree(0, out itemsTree);
             // TODO: validate
@@ -51,27 +54,26 @@
             da.GetDataTree(1, out tagsTree);
             // TODO: validate
 
+            logger.NoteTiming("Input capture");
+
             this.filterableTags = new FilterRequest(tagsTree);
 
+            logger.NoteTiming("Tag parsing");
+
+            // TODO: Pass data to form
+
             // TODO: Match geometry paths to selected filters
+
+            logger.NoteTiming("Geometry matching");
 
             this.OutputMessageBelowComponent();
         }
 
-        // Methods required for button-opening
-        protected override Eto.Forms.Form GetFormForComponent()
-        {
-            this.componentForm = new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
-            return this.componentForm;
-        }
-
         protected override string GetButtonTitle() => "Specify\nTags";
 
-        protected override void StartFormClose()
+        protected override void CustomFormClose()
         {
-            this.selectionState = this.componentForm.mainRow.data;
             this.resultsMustHaveAllTags = this.componentForm.customFlagState;
-            FinishFormClose();
         }
 
         // Methods required for serial/deserial -ization

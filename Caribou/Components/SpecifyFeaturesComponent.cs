@@ -10,13 +10,13 @@
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : BasePickerComponent
     {
-        private SpecifyFeaturesForm componentForm;
         protected bool hideObscureFeatures = true;
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {
             this.selectionState = SelectionCollection.GetCollection(this.hideObscureFeatures);
+            this.componentForm = new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
         }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
@@ -32,20 +32,11 @@
             da.SetDataList(0, selectionStateSerialized); // Update downstream text
         }
 
-        // Methods require for ButtonedComponent
-        protected override Eto.Forms.Form GetFormForComponent()
-        {
-            this.componentForm = new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
-            return this.componentForm;
-        }
-
         protected override string GetButtonTitle() => "Specify\nFeatures";
 
-        protected override void StartFormClose()
+        protected override void CustomFormClose()
         {
-            this.selectionState = this.componentForm.mainRow.data;
             this.hideObscureFeatures = this.componentForm.customFlagState;
-            FinishFormClose();
         }
 
         // Methods required for serial/deserial -ization
