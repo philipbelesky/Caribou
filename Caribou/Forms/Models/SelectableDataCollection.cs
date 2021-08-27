@@ -22,15 +22,15 @@
 
             foreach (var tag in requests)
             {
-                var selectableTag = new OSMSelectableData(tag.TagType, tag.Name, tag.Explanation, 0, 0, false);
-
-                var parent = tag.ParentType;
-                var selectableParent = new OSMSelectableData(parent.TagType, parent.Name, parent.Explanation, 0, 0, false);
-
-                if (!tagHierarchy.ContainsKey(selectableParent))
-                    tagHierarchy[selectableParent] = new List<OSMSelectableData>() { selectableTag };
-                else
-                    tagHierarchy[selectableParent].Add(selectableTag);
+                if (tag.ParentType != null)
+                {
+                    var selectableParent = new OSMSelectableData(tag.ParentType.TagType, tag.ParentType.Name, tag.ParentType.Explanation, 0, 0, false);
+                    var selectableTag = new OSMSelectableData(tag.TagType, tag.Name, tag.Explanation, 0, 0, false, selectableParent);
+                    if (!tagHierarchy.ContainsKey(selectableParent))
+                        tagHierarchy[selectableParent] = new List<OSMSelectableData>() { selectableTag };
+                    else
+                        tagHierarchy[selectableParent].Add(selectableTag);
+                }
             }
 
             // Sort child items alphabetically (parents are sorted in MakeOSMCollection)
@@ -39,9 +39,9 @@
         }
 
         // If not providing a specific list of metadata, return defined features
-        public SelectableDataCollection(bool usePredefined)
+        public SelectableDataCollection(bool usingPreDefinedFeatures)
         {
-            tagHierarchy = OSMDefinedFeatures.GetDefinedFeaturesForForm();
+            this.tagHierarchy = OSMDefinedFeatures.GetDefinedFeaturesForForm();
         }
     }
 }

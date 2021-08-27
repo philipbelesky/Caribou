@@ -12,10 +12,10 @@
         private static readonly int keyValueIndex = 4;
 
         /// <summary>Get the OSM items to be shown in the form given a provided list [of defined features or tags] /// </summary>
-        public static TreeGridItemCollection MakeOSMCollection(SelectableDataCollection OSMItems, bool includeObscure = false)
+        public static TreeGridItemCollection MakeOSMCollectionWithoutState(SelectableDataCollection osmItems, bool includeObscure = false)
         {
             var itemsForCollection = new List<TreeGridItem>();
-            var sortedItems = OSMItems.tagHierarchy.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
+            var sortedItems = osmItems.tagHierarchy.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
 
             foreach (var item in sortedItems)
             {
@@ -24,6 +24,40 @@
             }
 
             return new TreeGridItemCollection(itemsForCollection);
+        }
+
+        public static TreeGridItemCollection MakeOSMCollectionFromStoredState(
+            SelectableDataCollection selectableData, string selectedKeyValues, bool includeObscure)
+        {
+            // Need to set selection state back from list of keyValue strings that persisted
+            var newSelectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(selectableData, includeObscure);
+            var csvItems = selectedKeyValues.Split(',').ToList();
+
+            foreach (TreeGridItem item in newSelectionState)
+            {
+                var itemKeyVal = item.Values[keyValueIndex].ToString();
+                if (csvItems.Contains(itemKeyVal))
+                {
+                    item.Values[1] = "True";
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        childItem.Values[1] = "True";
+                    }
+                }
+                else
+                {
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        var childItemKeyVal = childItem.Values[keyValueIndex].ToString();
+                        if (csvItems.Contains(childItemKeyVal))
+                        {
+                            childItem.Values[1] = "True";
+                        }
+                    }
+                }
+            }
+
+            return newSelectionState;
         }
 
         /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
@@ -86,40 +120,6 @@
             }
 
             return;
-        }
-
-        public static TreeGridItemCollection DeserialiseKeyValues(
-            SelectableDataCollection selectableData, string csvSelection, bool includeObscure)
-        {
-            // Need to set selection state back from list of keyValue strings that persisted
-            var newSelectionState = TreeGridUtilities.MakeOSMCollection(selectableData, includeObscure);
-            var csvItems = csvSelection.Split(',').ToList();
-
-            foreach (TreeGridItem item in newSelectionState)
-            {
-                var itemKeyVal = item.Values[keyValueIndex].ToString();
-                if (csvItems.Contains(itemKeyVal))
-                {
-                    item.Values[1] = "True";
-                    foreach (TreeGridItem childItem in item.Children)
-                    {
-                        childItem.Values[1] = "True";
-                    }
-                }
-                else
-                {
-                    foreach (TreeGridItem childItem in item.Children)
-                    {
-                        var childItemKeyVal = childItem.Values[keyValueIndex].ToString();
-                        if (csvItems.Contains(childItemKeyVal))
-                        {
-                            childItem.Values[1] = "True";
-                        }
-                    }
-                }
-            }
-
-            return newSelectionState;
         }
     }
 }

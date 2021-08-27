@@ -15,7 +15,10 @@
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
-        { }
+        {
+            // Setup form-able items for tags provided and parsed into OSM/Form objects
+            this.selectableData = new SelectableDataCollection(true); // true flag just chooses the init method
+        }
 
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
 
@@ -26,17 +29,27 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-            // Setup form-able items for tags provided and parsed into OSM/Form objects
-            this.selectableData = new SelectableDataCollection();
-            this.selectionState = TreeGridUtilities.MakeOSMCollection(this.selectableData, this.hideObscureFeatures);
+            // If solving for the first time after a load, where state has been READ(), use that to make state
+            if (this.selectionState == null)
+                if (this.storedState != null)
+                {
+                    this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
+                        this.selectableData, storedState, GetPropertyForCustomStateKey());
+                    this.storedState = null;
+                }
+                else
+                    this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(
+                        this.selectableData, GetPropertyForCustomStateKey());
 
+            this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();
             da.SetDataList(0, selectionStateSerialized); // Update downstream text
         }
 
-        // Methods required for button-opening
         protected override BaseCaribouForm GetFormForComponent() => new SpecifyFeaturesForm(this.selectionState, this.hideObscureFeatures);
+
         protected override string GetButtonTitle() => "Specify\nFeatures";
+
         protected override string GetNoSelectionMessage() => "No Features Selected";
 
         protected override void CustomFormClose()
@@ -44,8 +57,8 @@
             this.hideObscureFeatures = this.componentForm.customFlagState;
         }
 
-        // Methods required for serial/deserial -ization
-        protected override bool GetCustomFlagToSerialize() => this.hideObscureFeatures;
+        // Methods required for serial/deserialization
+        protected override bool GetPropertyForCustomStateKey() => this.hideObscureFeatures;
 
         protected override void SetCustomFlagFromDeserialize(bool valueToApply) {
             this.hideObscureFeatures = valueToApply;

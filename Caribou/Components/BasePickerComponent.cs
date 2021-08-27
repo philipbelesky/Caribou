@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Caribou.Forms;
     using Eto.Forms;
+    using Grasshopper.Kernel;
 
     /// <summary>
     /// For components providing buttons and messages below the component as well as serialised state
@@ -13,13 +14,15 @@
         protected BaseCaribouForm componentForm;
         protected SelectableDataCollection selectableData; // Items for form to render
         protected TreeGridItemCollection selectionState; // Current state provided to/from the form 
+        protected string storedState; // The component's state, as saved into the GHX and available to deserialise
 
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
         protected readonly string storageKeyForCustomFlag = "selectionCustomFlag"; // Includes obscure or filter by union
 
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
-            : base(name, nickname, description, subCategory) { }
+            : base(name, nickname, description, subCategory) {
+        }
 
         // Required button methods
         protected abstract string GetButtonTitle(); // Return title for button
@@ -31,7 +34,11 @@
         // Required form methods
         protected abstract BaseCaribouForm GetFormForComponent(); // Provide component-specific form type
 
-        public void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
+        // Form-button interaction; passed to CustomSetButton as handler action
+        // Virtual so that the FilterResults form can refuse to open the form when it has no state
+        protected virtual void ButtonOpenAction() => OpenForm();
+
+        protected void OpenForm()
         {
             this.componentForm = this.GetFormForComponent(); // Need to remake whenever form is opened
             int x = (int)Mouse.Position.X - 5;
@@ -78,24 +85,25 @@
         {
             var csvSelection = string.Join(",", this.selectionStateSerialized.ToArray());
             writer.SetString(storageKeyForSelectionState, csvSelection);
-            writer.SetBoolean(storageKeyForCustomFlag, GetCustomFlagToSerialize());
+            writer.SetBoolean(storageKeyForCustomFlag, GetPropertyForCustomStateKey());
             return base.Write(writer);
         }
 
         // Get the customKeyProperty value from a component-specific state flag
-        protected abstract bool GetCustomFlagToSerialize();
+        protected abstract bool GetPropertyForCustomStateKey();
 
         // To persist selection state variables we need to override Read to check for state in the definiton
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
-            if (reader.ItemExists(this.storageKeyForCustomFlag))
+            if (reader.ItemExists(this.storageKeyForCustomFlag)) // Load form UI state (e.g. hide obscure)
                 SetCustomFlagFromDeserialize(reader.GetBoolean(storageKeyForCustomFlag));
 
+            // Load selected items stored as key=value lists
             if (reader.ItemExists(storageKeyForSelectionState))
             {
-                var csvSelection = reader.GetString(storageKeyForSelectionState);
-                this.selectionState = TreeGridUtilities.DeserialiseKeyValues(this.selectableData, csvSelection, GetCustomFlagToSerialize());
-                this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
+                var stateKeyValues = reader.GetString(storageKeyForSelectionState);
+                if (!string.IsNullOrEmpty(stateKeyValues))
+                    this.storedState = reader.GetString(storageKeyForSelectionState); 
             }
             return base.Read(reader);
         }
