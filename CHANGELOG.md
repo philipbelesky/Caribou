@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.13.0] - 2021-??-??
+### Added
+- New *Filter Requests* component that allows users to take the output of any *Extract* component and select Nodes/Ways/Buildings matching specific tags (using the same GUI) within just the tags present in that collection.
+
 ### Fixed
 - Improved error reporting behavior when no valid files or keys are specified
 - Improved message reporting when no geometries were found for the provided tags

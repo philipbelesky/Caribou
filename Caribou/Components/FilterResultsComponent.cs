@@ -90,15 +90,15 @@
             {
                 string itemKeyValue = this.selectionStateSerialized[i];
                 OSMMetaData osmItem = new OSMMetaData(itemKeyValue);
-                foundItemCountsForResult[osmItem] = 0;
 
-                if (!requests.pathsPerItem.ContainsKey(itemKeyValue))
+                if (!requests.pathsPerItem.ContainsKey(osmItem))
                     continue;
 
+                foundItemCountsForResult[osmItem] = 0;
                 // Match keyvalues to OSMListwithpaths
-                for (int j = 0; j < requests.pathsPerItem[itemKeyValue].Count; j++)
+                for (int j = 0; j < requests.pathsPerItem[osmItem].Count; j++)
                 {
-                    GH_Path inputPath = requests.pathsPerItem[itemKeyValue][j];                    
+                    GH_Path inputPath = requests.pathsPerItem[osmItem][j];                    
 
                     var geometryItemsForPath = itemsTree.get_Branch(inputPath);
                     var tagItemsForPath = tagsTree.get_Branch(inputPath);
