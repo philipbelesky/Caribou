@@ -15,17 +15,17 @@
     public struct OSMListWithPaths
     {
         public List<OSMMetaData> items;
-        public Dictionary<OSMMetaData, List<GH_Path>> pathsPerItem;
+        public Dictionary<string, List<GH_Path>> pathsPerItem;
 
         public OSMListWithPaths(GH_Structure<GH_String> tagsTree)
         {
             items = new List<OSMMetaData>();
-            pathsPerItem = new Dictionary<OSMMetaData, List<GH_Path>>();
+            pathsPerItem = new Dictionary<string, List<GH_Path>>();
             // Convert from tree of strings representing tags to linear list of OSM Items
             for (int pathIndex = 0; pathIndex < tagsTree.Paths.Count; pathIndex++)
             {
-                var path = tagsTree.Paths[pathIndex];
-                List<GH_String> itemsInPath = tagsTree[path];
+                var tagPath = tagsTree.Paths[pathIndex];
+                List<GH_String> itemsInPath = tagsTree[tagPath];
                 for (int tagIndex = 0; tagIndex < itemsInPath.Count; tagIndex++)
                 {
                     // Make new item and track the path it came from
@@ -36,10 +36,10 @@
                         if (!items.Contains(osmItem)) // Prevent duplicates
                             items.Add(osmItem);
 
-                        if (pathsPerItem.ContainsKey(osmItem))
-                            pathsPerItem[osmItem].Add(path);
+                        if (pathsPerItem.ContainsKey(osmItem.ToString()))
+                            pathsPerItem[osmItem.ToString()].Add(tagPath);
                         else
-                            pathsPerItem[osmItem] = new List<GH_Path>() { path };
+                            pathsPerItem[osmItem.ToString()] = new List<GH_Path>() { tagPath };
                     }
                 }
             }

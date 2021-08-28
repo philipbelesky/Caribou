@@ -82,11 +82,12 @@
 
             foreach (var entry in foundNodes)
             {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pt in entry.Value)
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Point(pt), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Point pointForPath = new GH_Point(entry.Value[j]);
+                    output.Append(pointForPath, path);
                 }
                 i++;
             }
@@ -101,11 +102,12 @@
 
             foreach (var entry in foundWays)
             {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pLine in entry.Value)
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Curve(pLine), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Curve lineForPath = new GH_Curve(entry.Value[j]);
+                    output.Append(lineForPath, path);
                 }
                 i++;
             }
@@ -119,12 +121,13 @@
             var i = 0;
 
             foreach (var entry in foundBuildings)
-            {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pBuilding in entry.Value)
+            { 
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Surface(pBuilding), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Surface surfaceForPath = new GH_Surface(entry.Value[j]);
+                    output.Append(surfaceForPath, path);
                 }
                 i++;
             }

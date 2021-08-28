@@ -82,25 +82,32 @@
 
             logger.NoteTiming("State loading/making");
 
-            // TODO: Match geometry paths to selected filters
+            // Match geometry paths to selected filters
             var geometryOutput = new GH_Structure<IGH_Goo>();
-            foreach (string keyValue in this.selectionStateSerialized)
+            var tagOutput = new GH_Structure<GH_String>();
+            for (int i = 0; i < this.selectionStateSerialized.Count; i++)
             {
+                string keyValue = this.selectionStateSerialized[i];
+
                 // Match keyvalues to OSMListwithpaths
-                var osmItem = new OSMMetaData(keyValue); // Create a new OSM item to use existing keys
-                var i = 0;
-                if (osmItem.ParentType != null)
+                for (int j = 0; j < requests.pathsPerItem[keyValue].Count; j++)
                 {
-                    foreach (GH_Path inputPath in requests.pathsPerItem[osmItem])
+                    GH_Path inputPath = requests.pathsPerItem[keyValue][j];
+
+                    var geometryItemsForPath = itemsTree.get_Branch(inputPath);
+                    var tagItemsForPath = tagsTree.get_Branch(inputPath);
+                    if (geometryItemsForPath == null)
+                        continue; // No provided geometry path for that OSM item
+
+                    geometryOutput.EnsurePath(inputPath); // Need to ensure even an empty path exists to enable data matching
+                    tagOutput.EnsurePath(inputPath); // Need to ensure even an empty path exists to enable data matching
+                    for (int k = 0; k < geometryItemsForPath.Count; k++)
                     {
-                        GH_Path outputPath = new GH_Path(i);
-                        geometryOutput.EnsurePath(outputPath); // Need to ensure even an empty path exists to enable data matching
-                        var geometryItemsForPath = itemsTree.get_Branch(inputPath);
-                        //foreach (IGH_Goo item in geometryItemsForPath)
-                        //{
-                        //    geometryOutput.Append(item);
-                        //}
-                        i++;
+                        geometryOutput.Append(geometryItemsForPath[k] as IGH_Goo, inputPath);
+                        foreach (GH_String tag in tagItemsForPath)
+                        {
+                            tagOutput.Append(tag, inputPath);
+                        }
                     }
                 }
 
@@ -111,7 +118,8 @@
             logger.NoteTiming("Geometry matching");
 
             this.OutputMessageBelowComponent();
-            da.SetDataList(0, geometryOutput);
+            da.SetDataTree(0, geometryOutput);
+            da.SetDataTree(1, tagOutput);
         }
 
         protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);

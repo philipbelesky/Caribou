@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved error reporting behavior when no valid files or keys are specified
 - Improved message reporting when no geometries were found for the provided tags
 
+### Changed
+- All geometry outputs (nodes, ways, buildings) now have a tree structure that matches that of the metadata report. In practice, this means a list of nodes requested for a tag (e.g. `building=garage`) will have an individual path, e.g. the first node is a single item in the path `{0,1}` rather than the first item in a list at path `{0}`.
+
 ## [0.12.0] - 2021-08-18
 ### Added
 - New 'extension' examples file to show how to easily bake/filter/legend the Caribou outputs
