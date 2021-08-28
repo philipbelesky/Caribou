@@ -35,18 +35,19 @@
             return output;
         }
 
-        public static GH_Structure<GH_String> MakeTreeForMetaDataReport(RequestHandler result)
+        public static GH_Structure<GH_String> MakeReportForRequests(
+            Dictionary<OSMMetaData, int> foundItemsForResult)
         {
             var output = new GH_Structure<GH_String>();
             var tInfo = CultureInfo.CurrentCulture.TextInfo;
 
-            var requestMetaDataCount = result.RequestedMetaData.Requests.Count;
-            for (int i = 0; i < requestMetaDataCount; i++)
+            var requestMetaDataItems = foundItemsForResult.Keys.ToList();
+            for (int i = 0; i < requestMetaDataItems.Count; i++)
             {
+                var metaData = requestMetaDataItems[i];
                 GH_Path path = new GH_Path(i);
-                var metaData = result.RequestedMetaData.Requests[i];
-                var count = result.FoundData[metaData].Count;
-                var colorForItem = GetPerceptualColorForTreeItem(requestMetaDataCount, i);
+                var count = foundItemsForResult[metaData];
+                var colorForItem = GetPerceptualColorForTreeItem(requestMetaDataItems.Count, i);
                 var metaDataTitle = tInfo.ToTitleCase(metaData.Name);
 
                 output.Append(new GH_String(metaDataTitle), path);

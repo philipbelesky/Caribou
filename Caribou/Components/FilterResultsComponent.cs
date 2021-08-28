@@ -17,8 +17,6 @@
     {
         // By default any item with any of the specified tags passed. If true, items must possess all tags
         private bool resultsMustHaveAllTags = false;
-        // For tracking geometry that is associated with a particular tag
-        private Dictionary<OSMMetaData, List<GH_Path>> pathsPerRequest;
         private string PreviousTagsDescription { get; set; } // Need to track this internally to figure out when to force-refresh the form
 
         protected const string ReportDescription = "The name, description, and number of items found of each specified tag";
@@ -85,41 +83,51 @@
             // Match geometry paths to selected filters
             var geometryOutput = new GH_Structure<IGH_Goo>();
             var tagOutput = new GH_Structure<GH_String>();
+            // Setup tracking dictionary for the report tree output
+            var foundItemCountsForResult = new Dictionary<OSMMetaData, int>();
+
             for (int i = 0; i < this.selectionStateSerialized.Count; i++)
             {
-                string keyValue = this.selectionStateSerialized[i];
+                string itemKeyValue = this.selectionStateSerialized[i];
+                OSMMetaData osmItem = new OSMMetaData(itemKeyValue);
+                foundItemCountsForResult[osmItem] = 0;
+
+                if (!requests.pathsPerItem.ContainsKey(itemKeyValue))
+                    continue;
 
                 // Match keyvalues to OSMListwithpaths
-                for (int j = 0; j < requests.pathsPerItem[keyValue].Count; j++)
+                for (int j = 0; j < requests.pathsPerItem[itemKeyValue].Count; j++)
                 {
-                    GH_Path inputPath = requests.pathsPerItem[keyValue][j];
+                    GH_Path inputPath = requests.pathsPerItem[itemKeyValue][j];                    
 
                     var geometryItemsForPath = itemsTree.get_Branch(inputPath);
                     var tagItemsForPath = tagsTree.get_Branch(inputPath);
                     if (geometryItemsForPath == null)
                         continue; // No provided geometry path for that OSM item
 
-                    geometryOutput.EnsurePath(inputPath); // Need to ensure even an empty path exists to enable data matching
-                    tagOutput.EnsurePath(inputPath); // Need to ensure even an empty path exists to enable data matching
+                    foundItemCountsForResult[osmItem] += 1;
                     for (int k = 0; k < geometryItemsForPath.Count; k++)
                     {
-                        geometryOutput.Append(geometryItemsForPath[k] as IGH_Goo, inputPath);
+                        GH_Path outputPathFor = new GH_Path(i, j);
+                        geometryOutput.EnsurePath(outputPathFor); // Need to ensure even an empty path exists to enable data matching
+                        tagOutput.EnsurePath(outputPathFor); // Need to ensure even an empty path exists to enable data matching
+
+                        geometryOutput.Append(geometryItemsForPath[k] as IGH_Goo, outputPathFor);
                         foreach (GH_String tag in tagItemsForPath)
                         {
-                            tagOutput.Append(tag, inputPath);
+                            tagOutput.Append(tag, outputPathFor);
                         }
                     }
                 }
-
-                // Get the report for that original path
-                // Get the geometry for that original path
             }
-
             logger.NoteTiming("Geometry matching");
+
+            var requestReport = TreeFormatters.MakeReportForRequests(foundItemCountsForResult);
 
             this.OutputMessageBelowComponent();
             da.SetDataTree(0, geometryOutput);
             da.SetDataTree(1, tagOutput);
+            da.SetDataTree(2, requestReport);
         }
 
         protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);

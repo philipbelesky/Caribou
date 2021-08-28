@@ -33,16 +33,27 @@
                     var osmItem = new OSMMetaData(tagString.ToString());
                     if (osmItem != null)
                     {
-                        if (!items.Contains(osmItem)) // Prevent duplicates
-                            items.Add(osmItem);
-
-                        if (pathsPerItem.ContainsKey(osmItem.ToString()))
-                            pathsPerItem[osmItem.ToString()].Add(tagPath);
-                        else
-                            pathsPerItem[osmItem.ToString()] = new List<GH_Path>() { tagPath };
+                        AddItem(osmItem, ref items);
+                        AddItemWithPathTracking(osmItem, tagPath, ref pathsPerItem);
+                        AddItem(osmItem.ParentType, ref items);
+                        AddItemWithPathTracking(osmItem.ParentType, tagPath, ref pathsPerItem);
                     }
                 }
             }
+        }
+
+        private void AddItem(OSMMetaData item, ref List<OSMMetaData> items)
+        {
+            if (!items.Contains(item)) // Prevent duplicates
+                items.Add(item);
+        }
+
+        private void AddItemWithPathTracking(OSMMetaData item, GH_Path path, ref Dictionary<string, List<GH_Path>> pathsPerItem)
+        {
+            if (pathsPerItem.ContainsKey(item.ToString()))
+                pathsPerItem[item.ToString()].Add(path);
+            else
+                pathsPerItem[item.ToString()] = new List<GH_Path>() { path };
         }
     }
 }

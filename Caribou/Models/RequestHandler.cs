@@ -131,7 +131,11 @@
 
         public GH_Structure<GH_String> GetTreeForMetaDataReport()
         {
-            return TreeFormatters.MakeTreeForMetaDataReport(this);
+            var foundItemsForResult = new Dictionary<OSMMetaData, int>();
+            foreach (var item in this.FoundData)
+                foundItemsForResult[item.Key] = item.Value.Count;
+
+            return TreeFormatters.MakeReportForRequests(foundItemsForResult);
         }
     }
 }

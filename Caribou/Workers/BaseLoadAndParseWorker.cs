@@ -32,7 +32,7 @@
         // Outputs
         protected RequestHandler result;
         protected GH_Structure<GH_String> itemTags;
-        protected GH_Structure<GH_String> itemMetaDatas;
+        protected GH_Structure<GH_String> requestReport;
         protected List<Rectangle3d> boundaries;
 
         public BaseLoadAndParseWorker(GH_Component parent)
@@ -113,7 +113,7 @@
                 if (this.CancellationToken.IsCancellationRequested)
                     return;
 
-                this.itemMetaDatas = result.GetTreeForMetaDataReport(); // Form tree structure for found items
+                this.requestReport = result.GetTreeForMetaDataReport(); // Form tree structure for found items
                 logger.NoteTiming("Output metadata");
                 if (this.CancellationToken.IsCancellationRequested)
                     return;
@@ -164,8 +164,8 @@
 
             if (this.CancellationToken.IsCancellationRequested)
                 return;
-            if (this.itemMetaDatas != null)
-                da.SetDataTree(2, this.itemMetaDatas);
+            if (this.requestReport != null)
+                da.SetDataTree(2, this.requestReport);
 
             if (this.boundaries != null)
                 da.SetDataList(3, this.boundaries);
