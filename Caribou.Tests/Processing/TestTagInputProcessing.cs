@@ -22,22 +22,13 @@
         public TestTagInputProcessing()
         {
             expectedSimpleDataList = new List<OSMMetaData>();
-            foreach(string tag in TagsTestClases.itemATags)
-            {
-                expectedSimpleDataList.Add(new OSMMetaData(tag));
-            }
-            foreach (string tag in TagsTestClases.itemBTags)
-            {
-                expectedSimpleDataList.Add(new OSMMetaData(tag));
-            }
+            AddItems(TagsTestClases.itemATags, ref expectedSimpleDataList);
+            AddItems(TagsTestClases.itemBTags, ref expectedSimpleDataList);
             expectedSimpleDataList = expectedSimpleDataList.Distinct().ToList(); // Remove overlapping items
 
             expectedCaseDataList = new List<OSMMetaData>();
             var caseData = TagsTestClases.GetTagsCaseData().SelectMany(i => i).SelectMany(i => i).Distinct();
-            foreach (string tag in caseData)
-            {
-                expectedCaseDataList.Add(new OSMMetaData(tag));
-            }
+            AddItems(caseData, ref expectedCaseDataList);
         }
 
         [TestMethod]
@@ -69,6 +60,17 @@
             var resultMetaData = new OSMListWithPaths(testDataTree);
 
             CollectionAssert.AreEquivalent(resultMetaData.items, expectedCaseDataList);
+        }
+
+        private void AddItems(IEnumerable<string> tags, ref List<OSMMetaData> itemList)
+        {
+            foreach (string tagName in tags)
+            {
+                var tagData = new OSMMetaData(tagName);
+                itemList.Add(tagData);
+                if (!itemList.Contains(tagData.ParentType))
+                    itemList.Add(tagData.ParentType);
+            }
         }
 
         private List<string> GetExpectedPathIndicesForTag(OSMListWithPaths resultMetaData, OSMMetaData tag)
