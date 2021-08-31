@@ -19,12 +19,14 @@
             this.selectableData = new SelectableDataCollection(true); // true flag just chooses the init method
         }
 
+        #region InOut Params
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
 
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddTextParameter("OSM Features", "OF", "A list of OSM features and subfeatures", GH_ParamAccess.list);
         }
+        #endregion
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {

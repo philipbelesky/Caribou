@@ -11,6 +11,7 @@
     {
         private static readonly int keyValueIndex = 4;
 
+        #region Making TreeGridItem Collections
         /// <summary>Get the OSM items to be shown in the form given a provided list [of defined features or tags] /// </summary>
         public static TreeGridItemCollection MakeOSMCollectionWithoutState(SelectableDataCollection osmItems, bool hideObscure)
         {
@@ -62,6 +63,7 @@
 
             return newSelectionState;
         }
+        #endregion
 
         /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
         public static TreeGridItemCollection FilterOSMCollection(
@@ -74,6 +76,7 @@
             return providedSelectionState;
         }
 
+        #region Translating to/from TreeGridItems
         private static TreeGridItem GetItem(
             OSMSelectableData parentFeature, List<OSMSelectableData> childFeatures, bool hideObscureFeatures)
         {
@@ -124,5 +127,6 @@
 
             return;
         }
+        #endregion
     }
 }

@@ -10,6 +10,7 @@
 
     public abstract class BaseCaribouForm : Form
     {
+        #region Class Variables
         protected readonly TreeGridItemCollection providedSelectionState; // Passed from component during form init
         public bool shouldHideObscureItems; // E.g. toggle obscure features flag
 
@@ -23,7 +24,9 @@
         protected readonly int buttonHeight = 40;
         protected readonly int buttonWidth = 200;
         protected readonly int padding = 0;
+        #endregion
 
+        #region Form Setup
         public BaseCaribouForm(TreeGridItemCollection selectionState, string formTitle, bool hideObscure) 
         {
             this.providedSelectionState = selectionState;
@@ -59,6 +62,7 @@
 
             FinishTableLayout();
         }
+        #endregion
 
         private void AddCustomButtonsToTop()
         {
@@ -96,6 +100,7 @@
             };
         }
 
+        #region Interaction Handlers
         protected void SelectAll() => this.SetSelection("True");
         protected void SelectNone() => this.SetSelection("False");
         protected void ExpandAll() => this.SetRollout(true);
@@ -140,5 +145,6 @@
             this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterOSMCollection(this.providedSelectionState, this.shouldHideObscureItems);
             this.mainRow.viewForm.ReloadData();
         }
+        #endregion
     }
 }

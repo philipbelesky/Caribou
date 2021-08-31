@@ -11,6 +11,7 @@
     /// </summary>
     public abstract class BasePickerComponent : CaribouComponent
     {
+        #region Class Variables
         protected BaseCaribouForm componentForm;
         protected SelectableDataCollection selectableData; // Items for form to render
         protected TreeGridItemCollection selectionState; // Current state provided to/from the form 
@@ -24,6 +25,7 @@
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory) {
         }
+        #endregion
 
         // Required button methods
         protected abstract string GetButtonTitle(); // Return title for button
@@ -35,6 +37,7 @@
         // Required form methods
         protected abstract BaseCaribouForm GetFormForComponent(); // Provide component-specific form type
 
+        #region Form Interaction
         // Form-button interaction; passed to CustomSetButton as handler action
         // Virtual so that the FilterResults form can refuse to open the form when it has no state
         protected virtual void ButtonOpenAction() => OpenForm();
@@ -61,10 +64,11 @@
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.ExpireSolution(true); // Recalculate output
         }
+        #endregion
 
         protected abstract string GetNoSelectionMessage();
 
-        // Messages below buttons
+        #region Below-Component Messaging 
         protected void OutputMessageBelowComponent()
         {
             if (this.selectionStateSerialized.Count == 0)
@@ -78,7 +82,9 @@
                 this.Message = "\u00A0" + message + "\u00A0";
             }
         }
+        #endregion
 
+        #region State Persistence
         // To persist the selection state variables we need to override Write to record state in the definition
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
@@ -102,18 +108,6 @@
                     this.storedState = reader.GetString(storageKeyForSelectionState); 
             }
             return base.Read(reader);
-        }
-
-        protected List<string> GetSelectedKeyValuesFromForm()
-        {
-            var selectedKVs = new List<string>();
-            for (var i = 0; i < this.selectionState.Count; i++)
-            {
-                var item = this.selectionState[i] as TreeGridItem;
-                TreeGridUtilities.GetKeyValueTextIfSelected(item, ref selectedKVs);
-            }
-
-            return selectedKVs;
         }
 
         // Affordance for assembling the below-component list of values
@@ -141,5 +135,20 @@
             }
             return lineSpacedKeyVals;
         }
+
+        #endregion
+
+        protected List<string> GetSelectedKeyValuesFromForm()
+        {
+            var selectedKVs = new List<string>();
+            for (var i = 0; i < this.selectionState.Count; i++)
+            {
+                var item = this.selectionState[i] as TreeGridItem;
+                TreeGridUtilities.GetKeyValueTextIfSelected(item, ref selectedKVs);
+            }
+
+            return selectedKVs;
+        }
+
     }
 }

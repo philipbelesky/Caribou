@@ -3,9 +3,7 @@
     using System;
     using Caribou.Models;
 
-    /// <summary>
-    /// A OSMMetaData item that will be presented to the user for interaction. It thus has state information and more descriptive information.
-    /// </summary>
+    /// <summary>A OSMMetaData item that will be presented to the user for interaction. It thus has state information and more descriptive information.</summary>
     public class OSMSelectableData : OSMMetaData, IComparable<OSMSelectableData>
     {
         public bool IsSelected { get; set; }
@@ -13,7 +11,6 @@
         //public int RelationCount { get; set; } // Not useful as not filterable
         public int WayCount { get; set; }
         public bool ShowCounts { get; set; }
-
 
         // Full constructor
         public OSMSelectableData(string subfeature, string name, string description,
@@ -37,6 +34,7 @@
             };
         }
 
+        #region Dynamic Properties
         private string GetLink()
         {
             if (this.IsFeature())
@@ -76,6 +74,7 @@
         {
             return this.NodeCount < 1000 && this.WayCount < 1000; // Defined features
         }
+        #endregion
 
         // Used in the UI form to sort by alphabetical
         public int CompareTo(OSMSelectableData other)

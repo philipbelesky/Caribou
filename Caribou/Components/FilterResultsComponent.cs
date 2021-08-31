@@ -27,6 +27,7 @@
             this.selectionState = null;
         }
 
+        #region InOut Params
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Items", "I", "Nodes, Ways, or Building outputs from one of the Extract components", GH_ParamAccess.tree);
@@ -39,6 +40,7 @@
             pManager.AddTextParameter("Tags", "T", "The metadata attached to each particular item", GH_ParamAccess.tree);
             pManager.AddTextParameter("Report", "R", "The name, count, and description of each feature", GH_ParamAccess.tree);
         }
+        #endregion
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
