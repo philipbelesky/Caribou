@@ -1,0 +1,9 @@
+cff-version: "1.2.0"
+message: "If you use this software or are referring to it in an academic context, please cite it using these metadata."
+title: Caribou
+authors:
+  - family-names: Belesky
+    given-names: Philip
+    orcid: "https://orcid.org/0000-0002-4656-3576"
+date-released: 2021-05-16
+repository-code: "https://github.com/philipbelesky/Caribou/"
