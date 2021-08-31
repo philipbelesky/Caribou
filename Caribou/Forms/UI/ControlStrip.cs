@@ -6,13 +6,13 @@
     /// <summary>The bottom row of the window containing the button types.</summary>
     public static class ControlStrip
     {
-        public static CheckBox GetHider(Action toggleAction, bool hideObscureFeaturesState)
+        public static CheckBox GetHider(Action toggleAction, bool hideObscureFeaturesState, string label)
         {
             // Note that checkbox labels misaligned on some versions of MacOS Rhino less than current
             var showHideMinorFeatures = new CheckBox()
             {
                 Checked = hideObscureFeaturesState,
-                Text = " Hide SubFeatures with very low counts",
+                Text = label,
             };
             showHideMinorFeatures.CheckedChanged += (sender, e) => { toggleAction(); };
             return showHideMinorFeatures;

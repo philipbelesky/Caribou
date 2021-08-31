@@ -8,13 +8,10 @@
 
     public class FilterFeaturesForm : BaseCaribouForm
     {
-        public FilterFeaturesForm(TreeGridItemCollection selectionState, bool resultsMustHaveAllTags)
-            : base(selectionState, "Select Tags to Filter For", resultsMustHaveAllTags)
+        public FilterFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
+            : base(selectionState, "Select Tags to Filter For", hideObscureFeatures)
         { }
 
-        protected override void AddCustomButtonsToTop()
-        {
-            return;
-        }
+        protected override string GetLabelForHideObscure() => " Hide unique tag types (e.g. addresses, websites)";
     }
 }

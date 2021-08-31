@@ -64,7 +64,8 @@
             if (this.storedState != null)
             { 
                 // If initing from a GHX with saved state
-                this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(this.selectableData, storedState, GetPropertyForCustomStateKey());
+                this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
+                    this.selectableData, storageKeyForHideObscure, this.hideObscureFeatures);
                 this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
                 this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
                 this.storedState = null; // Reset flag
@@ -73,7 +74,7 @@
             {
                 // If initing from a GHX without saved state or if the incoming data just changed; OR...
                 // If the provided tags have updated then we need to recalculate what the form should show
-                this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(this.selectableData);
+                this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(this.selectableData, this.hideObscureFeatures);
                 this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
                 this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
             }
@@ -130,7 +131,7 @@
             da.SetDataTree(2, requestReport);
         }
 
-        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.resultsMustHaveAllTags);
+        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.hideObscureFeatures);
         protected override string GetButtonTitle() => "Filter\nTags";
         protected override void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
         {
@@ -138,19 +139,6 @@
                 OpenForm();
         }
         protected override string GetNoSelectionMessage() => "No Tags Selected";
-
-        protected override void CustomFormClose()
-        {
-            this.resultsMustHaveAllTags = this.componentForm.customFlagState;
-        }
-
-        // Methods required for serial/deserial -ization
-        protected override bool GetPropertyForCustomStateKey() => this.resultsMustHaveAllTags;
-
-        protected override void SetCustomFlagFromDeserialize(bool valueToApply)
-        {
-            this.resultsMustHaveAllTags = valueToApply;
-        }
 
         // Standard GH
         public override Guid ComponentGuid => new Guid("0e86143a-d051-488b-bf65-b91087bce4ac");

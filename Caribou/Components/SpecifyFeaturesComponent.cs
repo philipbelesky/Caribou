@@ -11,7 +11,6 @@
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : BasePickerComponent
     {
-        protected bool hideObscureFeatures = true;
 
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
@@ -34,12 +33,12 @@
                 if (this.storedState != null)
                 {
                     this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
-                        this.selectableData, storedState, GetPropertyForCustomStateKey());
+                        this.selectableData, this.storedState, this.hideObscureFeatures);
                     this.storedState = null;
                 }
                 else
                     this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(
-                        this.selectableData, GetPropertyForCustomStateKey());
+                        this.selectableData, this.hideObscureFeatures);
 
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();
@@ -51,18 +50,6 @@
         protected override string GetButtonTitle() => "Specify\nFeatures";
 
         protected override string GetNoSelectionMessage() => "No Features Selected";
-
-        protected override void CustomFormClose()
-        {
-            this.hideObscureFeatures = this.componentForm.customFlagState;
-        }
-
-        // Methods required for serial/deserialization
-        protected override bool GetPropertyForCustomStateKey() => this.hideObscureFeatures;
-
-        protected override void SetCustomFlagFromDeserialize(bool valueToApply) {
-            this.hideObscureFeatures = valueToApply;
-        }
 
         // Standard GH
         public override Guid ComponentGuid => new Guid("cc8d82ba-f381-46ee-8014-7e2d1bff824c");

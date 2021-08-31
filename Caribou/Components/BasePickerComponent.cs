@@ -18,7 +18,8 @@
 
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
-        protected readonly string storageKeyForCustomFlag = "selectionCustomFlag"; // Includes obscure or filter by union
+        protected readonly string storageKeyForHideObscure = "selectionHidesObscure"; // Includes obscure or filter by union
+        protected bool hideObscureFeatures = true;
 
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory) {
@@ -48,12 +49,10 @@
             this.componentForm.Show();
         }
 
-        protected abstract void CustomFormClose(); // Handler for component-specific actions during form closing 
-
         protected void StartFormClose() // Handler for form closure with option for custom state setting
         {
             this.selectionState = this.componentForm.mainRow.data;
-            CustomFormClose(); // Tracking custom state
+            this.hideObscureFeatures = this.componentForm.shouldHideObscureItems;
             FinishFormClose();
         }
 
@@ -85,18 +84,15 @@
         {
             var csvSelection = string.Join(",", this.selectionStateSerialized.ToArray());
             writer.SetString(storageKeyForSelectionState, csvSelection);
-            writer.SetBoolean(storageKeyForCustomFlag, GetPropertyForCustomStateKey());
+            writer.SetBoolean(storageKeyForHideObscure, this.hideObscureFeatures);
             return base.Write(writer);
         }
-
-        // Get the customKeyProperty value from a component-specific state flag
-        protected abstract bool GetPropertyForCustomStateKey();
 
         // To persist selection state variables we need to override Read to check for state in the definiton
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
-            if (reader.ItemExists(this.storageKeyForCustomFlag)) // Load form UI state (e.g. hide obscure)
-                SetCustomFlagFromDeserialize(reader.GetBoolean(storageKeyForCustomFlag));
+            if (reader.ItemExists(this.storageKeyForHideObscure)) // Load form UI state (e.g. hide obscure)
+                this.hideObscureFeatures = reader.GetBoolean(storageKeyForHideObscure);
 
             // Load selected items stored as key=value lists
             if (reader.ItemExists(storageKeyForSelectionState))
@@ -107,9 +103,6 @@
             }
             return base.Read(reader);
         }
-
-        // Set the component-specific state flag from the deserialisation of the customKeyProperty value
-        protected abstract void SetCustomFlagFromDeserialize(bool valueToApply);
 
         protected List<string> GetSelectedKeyValuesFromForm()
         {

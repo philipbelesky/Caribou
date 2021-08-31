@@ -12,14 +12,17 @@
         private static readonly int keyValueIndex = 4;
 
         /// <summary>Get the OSM items to be shown in the form given a provided list [of defined features or tags] /// </summary>
-        public static TreeGridItemCollection MakeOSMCollectionWithoutState(SelectableDataCollection osmItems, bool includeObscure = false)
+        public static TreeGridItemCollection MakeOSMCollectionWithoutState(SelectableDataCollection osmItems, bool hideObscure)
         {
             var itemsForCollection = new List<TreeGridItem>();
             var sortedItems = osmItems.tagHierarchy.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
 
             foreach (var item in sortedItems)
             {
-                var treeItem = GetItem(item.Key, item.Value, includeObscure);
+                if (hideObscure && (Array.IndexOf(OSMUniqueTags.names, item.Key.TagType) >= 0))
+                    continue; // Filter out obscure parent-types by matching against a static list
+
+                var treeItem = GetItem(item.Key, item.Value, hideObscure);
                 itemsForCollection.Add(treeItem);
             }
 
@@ -27,10 +30,10 @@
         }
 
         public static TreeGridItemCollection MakeOSMCollectionFromStoredState(
-            SelectableDataCollection selectableData, string selectedKeyValues, bool includeObscure)
+            SelectableDataCollection selectableData, string selectedKeyValues, bool hideObscure)
         {
             // Need to set selection state back from list of keyValue strings that persisted
-            var newSelectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(selectableData, includeObscure);
+            var newSelectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(selectableData, hideObscure);
             var csvItems = selectedKeyValues.Split(',').ToList();
 
             foreach (TreeGridItem item in newSelectionState)

@@ -11,22 +11,23 @@
     public abstract class BaseCaribouForm : Form
     {
         protected readonly TreeGridItemCollection providedSelectionState; // Passed from component during form init
-        public bool customFlagState; // E.g. toggle obscure features flag
+        public bool shouldHideObscureItems; // E.g. toggle obscure features flag
 
         public TableStrip mainRow;
         protected DynamicLayout topButtons;
         protected DynamicLayout bottomButtons;
+        protected CheckBox obscureFeaturesCheckbox; // Need to track so we can manually set state
 
-        private readonly int windowWidth = 1000;
-        private readonly int windowHeight = 633; // Need to be large enough to show buttom row
+        protected readonly int windowWidth = 1000;
+        protected readonly int windowHeight = 633; // Need to be large enough to show buttom row
         protected readonly int buttonHeight = 40;
         protected readonly int buttonWidth = 200;
-        private readonly int padding = 0;
+        protected readonly int padding = 0;
 
-        public BaseCaribouForm(TreeGridItemCollection selectionState, string formTitle, bool customFlag) 
+        public BaseCaribouForm(TreeGridItemCollection selectionState, string formTitle, bool hideObscure) 
         {
             this.providedSelectionState = selectionState;
-            this.customFlagState = customFlag;
+            this.shouldHideObscureItems = hideObscure;
 
             this.Padding = padding;
             this.Title = formTitle;
@@ -59,8 +60,15 @@
             FinishTableLayout();
         }
 
-        protected abstract void AddCustomButtonsToTop();
-  
+        private void AddCustomButtonsToTop()
+        {
+            this.obscureFeaturesCheckbox = ControlStrip.GetHider(
+                ToggleObscureFeatures, this.shouldHideObscureItems, GetLabelForHideObscure());
+            this.topButtons.Add(obscureFeaturesCheckbox);
+        }
+
+        protected abstract string GetLabelForHideObscure(); // Provide a label for the obscure toggle
+
         protected void FinishTableLayout()
         {
             // Create rows
@@ -126,5 +134,11 @@
             this.Close();
         }
 
+        protected void ToggleObscureFeatures()
+        {
+            this.shouldHideObscureItems = this.obscureFeaturesCheckbox.Checked.Value;
+            this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterOSMCollection(this.providedSelectionState, this.shouldHideObscureItems);
+            this.mainRow.viewForm.ReloadData();
+        }
     }
 }

@@ -14,6 +14,7 @@
         public int WayCount { get; set; }
         public bool ShowCounts { get; set; }
 
+
         // Full constructor
         public OSMSelectableData(string subfeature, string name, string description,
                                     int nodes, int ways, bool showCounts,
@@ -73,7 +74,7 @@
 
         public bool IsObscure()
         {
-            return this.NodeCount < 1000 && this.WayCount < 1000;
+            return this.NodeCount < 1000 && this.WayCount < 1000; // Defined features
         }
 
         // Used in the UI form to sort by alphabetical
