@@ -132,6 +132,7 @@
             da.SetDataTree(0, geometryOutput);
             da.SetDataTree(1, tagOutput);
             da.SetDataTree(2, requestReport);
+            logger.NoteTiming("Data tree setting");
         }
 
         protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.hideObscureFeatures);
