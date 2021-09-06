@@ -21,17 +21,22 @@
         {
             items = new List<OSMMetaData>();
             pathsPerItem = new Dictionary<OSMMetaData, List<GH_Path>>();
+            GH_Path tagPath;
+            List<GH_String> itemsInPath;
+            GH_String tagString;
+            OSMMetaData osmItem;
 
             // Convert from tree of strings representing tags to linear list of OSM Items
             for (int pathIndex = 0; pathIndex < tagsTree.Paths.Count; pathIndex++)
             {
-                var tagPath = tagsTree.Paths[pathIndex];
-                List<GH_String> itemsInPath = tagsTree[tagPath];
+                tagPath = tagsTree.Paths[pathIndex];
+                itemsInPath = tagsTree[tagPath];
+
                 for (int tagIndex = 0; tagIndex < itemsInPath.Count; tagIndex++)
                 {
                     // Make new item and track the path it came from
-                    var tagString = itemsInPath[tagIndex];
-                    var osmItem = new OSMMetaData(tagString.ToString());
+                    tagString = itemsInPath[tagIndex];
+                    osmItem = new OSMMetaData(tagString.Value);
                     if (osmItem != null)
                     {
                         AddItem(osmItem, ref items);

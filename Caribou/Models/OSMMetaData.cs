@@ -34,7 +34,7 @@
             else 
             {
                 // If the text is something=something
-                var rawComponents = rawKeyValue.ToString().Trim().Split(SplitChar);
+                var rawComponents = rawKeyValue.Trim().Split(SplitChar);
 
                 // Make a parent if there is a "=something" (e.g. not a sole key) and if that =value is not null or  =*
                 if (rawComponents.Length >= 2 && rawComponents[1] != "*" && !string.IsNullOrEmpty(rawComponents[1]))

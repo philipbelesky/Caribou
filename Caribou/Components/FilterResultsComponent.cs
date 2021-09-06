@@ -126,6 +126,7 @@
             logger.NoteTiming("Geometry matching");
 
             var requestReport = TreeFormatters.MakeReportForRequests(foundItemCountsForResult);
+            logger.NoteTiming("Tree formatting");
 
             this.OutputMessageBelowComponent();
             da.SetDataTree(0, geometryOutput);
