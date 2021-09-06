@@ -67,7 +67,7 @@
             { 
                 // If initing from a GHX with saved state
                 this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
-                    this.selectableData, storageKeyForHideObscure, this.hideObscureFeatures);
+                    this.selectableData, this.storedState, this.hideObscureFeatures);
                 this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
                 this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
                 this.storedState = null; // Reset flag
