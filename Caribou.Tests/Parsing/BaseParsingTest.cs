@@ -1,9 +1,8 @@
-﻿namespace Caribou.Tests.Processing
+﻿namespace Caribou.Tests.Parsing
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Caribou.Components;
     using Caribou.Models;
     using Caribou.Processing;
 

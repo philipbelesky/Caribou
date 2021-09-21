@@ -1,9 +1,7 @@
 ﻿namespace Caribou.Tests.Parsing
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Caribou.Models;
-    using Caribou.Processing;
+    using Caribou.Tests.Cases;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

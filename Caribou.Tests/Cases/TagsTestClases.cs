@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Caribou.Tests.Cases
+﻿namespace Caribou.Tests.Cases
 {
+    using System.Collections.Generic;
+
     // Query from amenity=parking and building:levels=5 on singapore top/left/right OSM files
     public static class TagsTestClases
     {

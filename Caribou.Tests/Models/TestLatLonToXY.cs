@@ -1,7 +1,5 @@
 ﻿namespace Caribou.Tests.Models
 {
-    using System.Collections.Generic;
-    using System.Drawing;
     using Caribou.Models;
     using Caribou.Processing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

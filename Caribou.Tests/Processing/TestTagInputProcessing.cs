@@ -1,9 +1,7 @@
 ﻿namespace Caribou.Tests.Processing
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Caribou.Components;
     using Caribou.Forms;
     using Caribou.Models;
     using Caribou.Tests.Cases;

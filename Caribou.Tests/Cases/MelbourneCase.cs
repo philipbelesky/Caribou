@@ -1,14 +1,8 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Cases
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Caribou.Components;
     using Caribou.Models;
-    using Caribou.Processing;
-    using Caribou.Tests.Processing;
+    using Caribou.Tests.Parsing;
 
     public class MelbourneCase : BaseParsingTest
     {

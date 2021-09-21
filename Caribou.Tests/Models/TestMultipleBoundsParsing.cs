@@ -1,8 +1,9 @@
-﻿namespace Caribou.Tests.Bounds
+﻿namespace Caribou.Tests.Models
 {
     using System.Collections.Generic;
     using Caribou.Models;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Caribou.Tests.Cases;
 
     [TestClass]
     public class TestMultipleBoundsParsing : MelbourneCase

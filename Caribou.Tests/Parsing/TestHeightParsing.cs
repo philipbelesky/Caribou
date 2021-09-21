@@ -1,17 +1,12 @@
 ﻿namespace Caribou.Tests.Parsing
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Caribou.Processing;
 
     [TestClass]
     public class TestHeightParsing
     {
-
         [TestMethod]
         public void TestHeighTagOptions()
         {
