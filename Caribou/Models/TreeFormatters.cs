@@ -116,9 +116,9 @@
             return output;
         }
 
-        public static GH_Structure<GH_Surface> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Surface>> foundBuildings)
+        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Brep>> foundBuildings)
         {
-            var output = new GH_Structure<GH_Surface>();
+            var output = new GH_Structure<GH_Brep>();
             var i = 0;
 
             foreach (var entry in foundBuildings)
@@ -127,8 +127,8 @@
                 {
                     GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
                     output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                    GH_Surface surfaceForPath = new GH_Surface(entry.Value[j]);
-                    output.Append(surfaceForPath, path);
+                    GH_Brep brepForPath = new GH_Brep(entry.Value[j]);
+                    output.Append(brepForPath, path);
                 }
                 i++;
             }

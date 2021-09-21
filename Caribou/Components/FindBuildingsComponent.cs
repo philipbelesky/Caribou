@@ -15,9 +15,16 @@
             this.BaseWorker = new ParseBuildingsWorker(this);
         }
 
+        protected override void RegisterExtraInputParams(GH_InputParamManager pManager)
+        {
+            pManager.AddBooleanParameter("Output Heighted", "OH?", 
+                "If true, only outputs buildings with height data. If false, only outputs buildings without height data.", 
+                GH_ParamAccess.item, true);
+        }
+
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddSurfaceParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
+            pManager.AddBrepParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
             AddCommonOutputParams(pManager);
         }
 

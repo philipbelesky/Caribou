@@ -18,7 +18,10 @@
         {
             pManager.AddGenericParameter("OSM File Path", "FP", "The path to XML file(s) downloaded from Open Street map", GH_ParamAccess.list);
             pManager.AddTextParameter("OSM Features", "OF", "A list of features and subfeatures to extract from the OSM file, in a 'key=value' format separated by newlines or commas", GH_ParamAccess.list);
+            RegisterExtraInputParams(pManager);
         }
+
+        protected virtual void RegisterExtraInputParams(GH_InputParamManager pManager) { }
 
         protected void AddCommonOutputParams(GH_OutputParamManager pManager)
         {

@@ -12,8 +12,10 @@
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
     public class ParseBuildingsWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Surface> buildingOutputs = new GH_Structure<GH_Surface>();
-        private Dictionary<OSMMetaData, List<Surface>> foundBuildings;        
+        private GH_Structure<GH_Brep> buildingOutputs = new GH_Structure<GH_Brep>();
+        private Dictionary<OSMMetaData, List<Brep>> foundBuildings;
+        private bool outputHeighed;
+
         protected override OSMGeometryType WorkerType() {
             return OSMGeometryType.Building;
         }
@@ -23,12 +25,18 @@
         {
         }
 
+        protected override void GetExtraData(IGH_DataAccess da)
+        {
+            base.GetExtraData(da);
+            da.GetData(2, ref this.outputHeighed);
+        }
+
         public override WorkerInstance Duplicate() => new ParseBuildingsWorker(this.Parent);
 
         public override void MakeGeometryForComponentType()
         {
             // Translate OSM nodes to Rhino Surfaces
-            this.foundBuildings = TranslateToXYManually.BuildingSurfacesFromCoords(this.result);
+            this.foundBuildings = TranslateToXYManually.BuildingBrepsFromCoords(this.result, this.outputHeighed);
         }
 
         public override void GetTreeForComponentType()

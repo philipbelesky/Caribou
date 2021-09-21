@@ -147,7 +147,11 @@
             // PARSE Feature Keys
             this.requestedMetaDataRaw = new List<string>();
             da.GetDataList(1, this.requestedMetaDataRaw);
+
+            GetExtraData(da);
         }
+
+        protected virtual void GetExtraData(IGH_DataAccess da) { }
 
         public abstract void OutputTreeForComponentType(IGH_DataAccess da); // Output type-specific tree (e.g. way or node)
 

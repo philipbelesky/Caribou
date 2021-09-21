@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Caribou.Models;
-    using Caribou.Processing;
-    using Grasshopper;
-    using Grasshopper.Kernel.Data;
     using Rhino;
     using Rhino.Geometry;
 
@@ -56,15 +53,16 @@
             return geometryResult;
         }
 
-        public static Dictionary<OSMMetaData, List<Surface>> BuildingSurfacesFromCoords(RequestHandler result)
+        public static Dictionary<OSMMetaData, List<Brep>> BuildingBrepsFromCoords(RequestHandler result, bool outputHeighted)
         {
-            var geometryResult = new Dictionary<OSMMetaData, List<Surface>>();
+            var geometryResult = new Dictionary<OSMMetaData, List<Brep>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
+            var tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance; 
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
 
             foreach (var entry in result.FoundData)
             {
-                geometryResult[entry.Key] = new List<Surface>();
+                geometryResult[entry.Key] = new List<Brep>();
                 var lines = new List<PolylineCurve>();
                 foreach (FoundItem item in entry.Value)
                 {
@@ -77,13 +75,19 @@
 
                     var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
                     var height = IdentifyBuildingHeight.ParseHeight(item.Tags, unitScale);
-                    if (height > 0.0)
+                    if (outputHeighted && height > 0.0)
                     {
                         if (polyLine.ClosedCurveOrientation() == CurveOrientation.Clockwise)
                             height *= -1; // If curve plane's Z != global Z; extrude in opposite direction
 
-                        var surface = Extrusion.Create(polyLine, height, true);
-                        geometryResult[entry.Key].Add(surface);
+                        var builtVolume = Extrusion.Create(polyLine, height, true);
+                        geometryResult[entry.Key].Add(builtVolume.ToBrep());
+                    }
+                    else if (!outputHeighted && height == 0.0)
+                    {
+                        var builtSurface = Brep.CreatePlanarBreps(polyLine, tolerance);
+                        if (builtSurface != null && builtSurface.Length > 0)
+                            geometryResult[entry.Key].Add(builtSurface[0]);
                     }
                 }
             }
