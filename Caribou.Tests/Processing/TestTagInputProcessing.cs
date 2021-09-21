@@ -42,13 +42,17 @@
 
             CollectionAssert.AreEquivalent(resultMetaData.items, expectedSimpleDataList);
 
-            var catholicPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[2]);
+            var catholicPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[2]); // denom=catholic
             Assert.IsTrue(catholicPaths.Contains(itemAPath.ToString()));
 
-            var futunaPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[0]);
+            var futunaPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[0]); // name=futuna
             Assert.IsTrue(futunaPaths.Contains(itemAPath.ToString()));
 
-            var buildingPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[3]);
+            var amenityPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[3]); // amenity=*
+            Assert.IsTrue(amenityPaths.Contains(itemAPath.ToString()));
+            Assert.IsTrue(amenityPaths.Contains(itemBPath.ToString()));
+
+            var buildingPaths = GetExpectedPathIndicesForTag(resultMetaData, expectedSimpleDataList[6]); // building=yes
             Assert.IsTrue(buildingPaths.Contains(itemAPath.ToString()));
             Assert.IsTrue(buildingPaths.Contains(itemBPath.ToString()));
         }

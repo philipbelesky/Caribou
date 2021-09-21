@@ -53,8 +53,10 @@
                             ref Dictionary<OSMMetaData, List<GH_Path>> pathsPerItem)
         {
             if (!pathsPerItem.ContainsKey(item))
+            {
                 items.Add(item);
                 pathsPerItem[item] = new List<GH_Path>();
+            }
         }
     }
 }
