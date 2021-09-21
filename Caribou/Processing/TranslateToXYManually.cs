@@ -53,7 +53,7 @@
             return geometryResult;
         }
 
-        public static Dictionary<OSMMetaData, List<Brep>> BuildingBrepsFromCoords(RequestHandler result, bool outputHeighted)
+        public static Dictionary<OSMMetaData, List<Brep>> BuildingBrepsFromCoords(ref RequestHandler result, bool outputHeighted)
         {
             var geometryResult = new Dictionary<OSMMetaData, List<Brep>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
@@ -63,19 +63,21 @@
             foreach (var entry in result.FoundData)
             {
                 geometryResult[entry.Key] = new List<Brep>();
-                var lines = new List<PolylineCurve>();
-                foreach (FoundItem item in entry.Value)
+
+                for (int i = entry.Value.Count - 1; i >= 0; i--)
                 {
                     var linePoints = new List<Point3d>();
-                    foreach (var coord in item.Coords)
+
+                    foreach (var coord in entry.Value[i].Coords)
                     {
                         var pt = GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds);
                         linePoints.Add(pt);
                     }
 
                     var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
-                    var height = IdentifyBuildingHeight.ParseHeight(item.Tags, unitScale);
-                    if (outputHeighted && height > 0.0)
+                    var height = IdentifyBuildingHeight.ParseHeight(entry.Value[i].Tags, unitScale);
+
+                    if (outputHeighted && height > 0.0) // Output heighted buildings
                     {
                         if (polyLine.ClosedCurveOrientation() == CurveOrientation.Clockwise)
                             height *= -1; // If curve plane's Z != global Z; extrude in opposite direction
@@ -83,14 +85,21 @@
                         var builtVolume = Extrusion.Create(polyLine, height, true);
                         geometryResult[entry.Key].Add(builtVolume.ToBrep());
                     }
-                    else if (!outputHeighted && height == 0.0)
+                    else if (!outputHeighted && height == 0.0) // Output unheighted buildings
                     {
                         var builtSurface = Brep.CreatePlanarBreps(polyLine, tolerance);
                         if (builtSurface != null && builtSurface.Length > 0)
                             geometryResult[entry.Key].Add(builtSurface[0]);
                     }
+                    else // Item wasn't matched, so should be removed from result so it's metadata is not output
+                    {
+                        entry.Value.RemoveAt(i);
+                    }
                 }
+                geometryResult[entry.Key].Reverse(); // We iterated in reverse order, so swap list back to right direction
             }
+
+
             return geometryResult;
         }
 

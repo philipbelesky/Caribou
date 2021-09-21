@@ -9,6 +9,8 @@
     public static class IdentifyBuildingHeight
     {
         public const double METERS_PER_LEVEL = 3.0;
+        public const double FT_TO_M = 0.3048;
+        public const double INCHES_TO_M = 0.0254;
 
         public static double ParseHeight(Dictionary<string, string> tags, double unitScale)
         {
@@ -25,6 +27,14 @@
             {
                 height = GetSanitisedLevels(tags["building:levels"]) * unitScale;
             }
+            else if (tags.ContainsKey("building:level"))
+            {
+                height = GetSanitisedLevels(tags["building:level"]) * unitScale;
+            }
+            else if (tags.ContainsKey("stories"))
+            {
+                height = GetSanitisedLevels(tags["stories"]) * unitScale;
+            }
             else if (tags.ContainsKey("levels"))
             {
                 height = GetSanitisedLevels(tags["levels"]) * unitScale;
@@ -34,11 +44,29 @@
 
         static double GetSanitisedHeight(string heightKey)
         {
-            var rawHeight = heightKey.Replace("m", "").Trim();
-            if (IsDigitsOnly(rawHeight))
+            double parsedHeight;
+
+            if (heightKey.Contains('\'') || heightKey.Contains('\"')) // Imperial is valid per OSM
             {
-                return Double.Parse(rawHeight);
+                string rawFeet = heightKey.Split('\'')[0].Trim();
+                string remainingHeight = heightKey.Replace('\'', ' ').Replace(heightKey.Split('\'')[0], "");
+
+                string rawInches;
+                if (remainingHeight.Contains('\"'))
+                    rawInches = remainingHeight.Split('\"')[0].Trim();
+                else
+                    rawInches = "0";
+
+                parsedHeight = (int.Parse(rawFeet) * FT_TO_M) + (int.Parse(rawInches) * INCHES_TO_M);
             }
+            else
+            {
+                var rawHeight = heightKey.Replace("m", "").Trim();
+                parsedHeight = Double.Parse(rawHeight);
+            }
+
+            if (parsedHeight > 0)
+                return parsedHeight;
 
             return 0.0;
         }

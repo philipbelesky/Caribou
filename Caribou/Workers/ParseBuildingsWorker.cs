@@ -36,7 +36,7 @@
         public override void MakeGeometryForComponentType()
         {
             // Translate OSM nodes to Rhino Surfaces
-            this.foundBuildings = TranslateToXYManually.BuildingBrepsFromCoords(this.result, this.outputHeighed);
+            this.foundBuildings = TranslateToXYManually.BuildingBrepsFromCoords(ref this.result, this.outputHeighed);
         }
 
         public override void GetTreeForComponentType()
