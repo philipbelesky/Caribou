@@ -9,6 +9,7 @@
     using Grasshopper.Kernel.Types;
     using Grasshopper.Kernel.Data;
     using Caribou.Models;
+    using Caribou.Forms.Models;
 
     /// <summary>
     /// Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream
@@ -22,7 +23,7 @@
         public FilterResultsComponent() : base("Filter Tags", "OSM Filter",
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
         {
-            this.selectionState = null;
+            this.selectableOSMs = null;
         }
 
         #region InOut Params
@@ -75,27 +76,27 @@
             var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
-            this.selectableData = new SelectableDataCollection(requests.items); // Setup form-able items for tags provided and parsed into OSM/Form objects
+            SetSelectionStateFromTags(requests.items); // Setup form-able items for tags provided and parsed into OSM/Form objects
             logger.NoteTiming("Tag processing");
 
-            // If solving for the first time after a load, where state has been READ(), use that to make state
-            if (this.storedState != null)
-            { 
-                // If initing from a GHX with saved state
-                this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
-                    this.selectableData, this.storedState, this.hideObscureFeatures);
-                this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
-                this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
-                this.storedState = null; // Reset flag
-            }
-            else if (this.selectionState == null || tagsTree.DataDescription(false, false) != this.PreviousTagsDescription)
-            {
-                // If initing from a GHX without saved state or if the incoming data just changed; OR...
-                // If the provided tags have updated then we need to recalculate what the form should show
-                this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(this.selectableData, this.hideObscureFeatures);
-                this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
-                this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
-            }
+            //// If solving for the first time after a load, where state has been READ(), use that to make state
+            //if (this.storedState != null)
+            //{ 
+            //    // If initing from a GHX with saved state
+            //    this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
+            //        this.selectableData, this.storedState, this.hideObscureFeatures);
+            //    this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
+            //    this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
+            //    this.storedState = null; // Reset flag
+            //}
+            //else if (this.selectionState == null || tagsTree.DataDescription(false, false) != this.PreviousTagsDescription)
+            //{
+            //    // If initing from a GHX without saved state or if the incoming data just changed; OR...
+            //    // If the provided tags have updated then we need to recalculate what the form should show
+            //    this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(this.selectableData, this.hideObscureFeatures);
+            //    this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
+            //    this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
+            //}
 
             logger.NoteTiming("State loading/making");
 
@@ -151,11 +152,31 @@
             logger.NoteTiming("Data tree setting");
         }
 
-        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectionState, this.hideObscureFeatures);
+        protected void SetSelectionStateFromTags(List<OSMMetaData> tags)
+        {
+            var indexOfParents = new Dictionary<string, int>();
+
+            foreach (var tag in tags)
+            {
+                if (!indexOfParents.ContainsKey(tag.ParentType.ToString()))
+                {
+                    var parentItem = new CaribouTreeGridItem(tag.ParentType, 0, 0, false);
+                    this.selectableOSMs.Add(parentItem);
+                    indexOfParents[parentItem.ToString()] = this.selectableOSMs.Count - 1;
+                }
+
+                var childItem = new CaribouTreeGridItem(tag, 0, 0, false);
+                var parentIndex = indexOfParents[childItem.Parent.ToString()];
+                var parent = this.selectableOSMs[parentIndex] as CaribouTreeGridItem;
+                parent.Children.Add(childItem);
+            }
+        }
+
+        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectableOSMs, this.hideObscureFeatures);
         protected override string GetButtonTitle() => "Filter\nTags";
         protected override void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
         {
-            if (this.selectionState != null) // e.g. if we have connected inputs, and thus state to show in the form
+            if (this.selectableOSMs != null) // e.g. if we have connected inputs, and thus state to show in the form
                 OpenForm();
         }
         protected override string GetNoSelectionMessage() => "No Tags Selected";

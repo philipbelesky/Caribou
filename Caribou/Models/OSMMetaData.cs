@@ -76,15 +76,15 @@
         public OSMMetaData(string tagValue, string tagType) : this($"{tagValue}={tagType}") { }
 
         // Constructing from hardcoded data; e.g. loading from library of feature definitionss
-        public OSMMetaData(string id, string name, string explanation, OSMMetaData key = null)
+        public OSMMetaData(string id, string name, string explanation, OSMMetaData parent = null)
         {
             this.TagType = id;
             this.IsDefined = true;
             this.Explanation = MakeNiceExplanation(explanation);
-            this.ParentType = key;
+            this.ParentType = parent;
 
-            if (key != null)
-                this.Name = MakeNiceName(name, id, key.Name);
+            if (parent != null)
+                this.Name = MakeNiceName(name, id, parent.Name);
             else
                 this.Name = MakeNiceName(name, id, "");
         }

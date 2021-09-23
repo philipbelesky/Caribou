@@ -13,11 +13,10 @@
     {
         #region Class Variables
         protected BaseCaribouForm componentForm;
-        protected SelectableDataCollection selectableData; // Items for form to render
-        protected TreeGridItemCollection selectionState; // Current state provided to/from the form 
-        protected string storedState; // The component's state, as saved into the GHX and available to deserialise
-
+        protected TreeGridItemCollection selectableOSMs = new TreeGridItemCollection(); // Current state provided to/from the form 
+        protected string storedSelectionState; // The component's state, as saved into the GHX and available to deserialise
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
+        
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
         protected readonly string storageKeyForHideObscure = "selectionHidesObscure"; // Includes obscure or filter by union
         protected bool hideObscureFeatures = true;
@@ -54,7 +53,7 @@
 
         protected void StartFormClose() // Handler for form closure with option for custom state setting
         {
-            this.selectionState = this.componentForm.mainRow.data;
+            this.selectableOSMs = this.componentForm.mainRow.data;
             this.hideObscureFeatures = this.componentForm.shouldHideObscureItems;
             FinishFormClose();
         }
@@ -105,7 +104,7 @@
             {
                 var stateKeyValues = reader.GetString(storageKeyForSelectionState);
                 if (!string.IsNullOrEmpty(stateKeyValues))
-                    this.storedState = reader.GetString(storageKeyForSelectionState); 
+                    this.storedSelectionState = reader.GetString(storageKeyForSelectionState); 
             }
             return base.Read(reader);
         }
@@ -141,9 +140,9 @@
         protected List<string> GetSelectedKeyValuesFromForm()
         {
             var selectedKVs = new List<string>();
-            for (var i = 0; i < this.selectionState.Count; i++)
+            for (var i = 0; i < this.selectableOSMs.Count; i++)
             {
-                var item = this.selectionState[i] as TreeGridItem;
+                var item = this.selectableOSMs[i] as TreeGridItem;
                 TreeGridUtilities.GetKeyValueTextIfSelected(item, ref selectedKVs);
             }
 

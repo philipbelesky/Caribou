@@ -27,9 +27,9 @@
         #endregion
 
         #region Form Setup
-        public BaseCaribouForm(TreeGridItemCollection selectionState, string formTitle, bool hideObscure) 
+        public BaseCaribouForm(TreeGridItemCollection providedSelectableItems, string formTitle, bool hideObscure) 
         {
-            this.providedSelectionState = selectionState;
+            this.providedSelectionState = providedSelectableItems;
             this.shouldHideObscureItems = hideObscure;
 
             this.Padding = padding;
@@ -37,7 +37,7 @@
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
 
-            this.mainRow = new TableStrip(selectionState);
+            this.mainRow = new TableStrip(TreeGridUtilities.FilterByObscurity(providedSelectableItems, this.shouldHideObscureItems));
 
             this.topButtons = new DynamicLayout();
             this.topButtons.BeginHorizontal();
@@ -112,9 +112,7 @@
             {
                 item.SetValue(1, boolAsString);
                 foreach (TreeGridItem childItem in item.Children)
-                {
                     childItem.SetValue(1, boolAsString);
-                }
             }
             this.mainRow.viewForm.ReloadData();
         }
@@ -122,9 +120,8 @@
         private void SetRollout(bool value)
         {
             foreach (TreeGridItem item in this.mainRow.data)
-            {
                 item.Expanded = value;
-            }
+
             this.mainRow.viewForm.ReloadData();
         }
 
@@ -142,7 +139,7 @@
         protected void ToggleObscureFeatures()
         {
             this.shouldHideObscureItems = this.obscureFeaturesCheckbox.Checked.Value;
-            this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterOSMCollection(this.providedSelectionState, this.shouldHideObscureItems);
+            this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterByObscurity(this.providedSelectionState, this.shouldHideObscureItems);
             this.mainRow.viewForm.ReloadData();
         }
         #endregion

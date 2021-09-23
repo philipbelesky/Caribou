@@ -6,7 +6,6 @@
     using System.Text;
     using Newtonsoft.Json;
     using Caribou.Properties;
-    using Caribou.Forms;
 
 #pragma warning disable SA1310 // Field names should not contain underscore
 
@@ -16,39 +15,12 @@
     /// </summary>
     public static class OSMDefinedFeatures
     {
-        // Take the hardcoded feature types below, combine with the subfeatures in JSON, & report them back as a tree
-        public static Dictionary<OSMSelectableData, List<OSMSelectableData>> GetDefinedFeaturesForForm()
+        public static List<Dictionary<string, string>> SubFeatures()
         {
-            var allDataInHierarchy = new Dictionary<OSMSelectableData, List<OSMSelectableData>>();
-
-            foreach (var primaryFeature in Primary)
-            {
-                var pf = primaryFeature.Value;
-                var spf = new OSMSelectableData(pf.TagType, pf.Name, pf.Explanation, 0, 0, false);
-                allDataInHierarchy[spf] = new List<OSMSelectableData>() { };
-            }
-
             var docString = Encoding.UTF8.GetString(Resources.SubFeatureData);
             var jsonValue = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(docString);
-
-            foreach (var item in jsonValue)
-            {
-                var nameID = item["subfeature"];
-                var parent = allDataInHierarchy.Keys.First(k => k.TagType == item["feature"]);
-                OSMSelectableData subfeature = new OSMSelectableData(
-                    nameID, null, item["description"], int.Parse(item["nodes"]), int.Parse(item["ways"]), true, parent);
-                allDataInHierarchy[parent].Add(subfeature);
-            }
-
-            foreach (var primaryFeature in allDataInHierarchy)
-            {
-                primaryFeature.Value.Sort();
-                var description = $"Items that are specified as {primaryFeature.Key.Name}, but without more specific subfeature information";
-                primaryFeature.Value.Insert(0, new OSMSelectableData(
-                    "yes", "UNTAGGED", description, 0, 0, false, primaryFeature.Key));
-            }
-
-            return allDataInHierarchy;
+            jsonValue = jsonValue.OrderBy(item => item["subfeature"]).ToList(); // Sort by subfeature key so they are ordered when attached to PKs
+            return jsonValue;
         }
 
         public static readonly Dictionary<string, OSMMetaData> Primary = new Dictionary<string, OSMMetaData>()
