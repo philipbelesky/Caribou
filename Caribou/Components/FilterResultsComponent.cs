@@ -15,8 +15,6 @@
     /// </summary>
     public class FilterResultsComponent : BasePickerComponent
     {
-        // By default any item with any of the specified tags passed. If true, items must possess all tags
-        private bool resultsMustHaveAllTags = false;
         private string PreviousTagsDescription { get; set; } // Need to track this internally to figure out when to force-refresh the form
 
         protected const string ReportDescription = "The name, description, and number of items found of each specified tag";
@@ -48,11 +46,29 @@
 
             GH_Structure<IGH_Goo> itemsTree;
             da.GetDataTree(0, out itemsTree);
-            // TODO: validate
+            if (itemsTree.Branches[0][0] as IGH_GeometricGoo == null)
+            {
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error,
+                   "It looks like you have provided a non-geometry input to the Items parameter. This input should connect to the Nodes, Ways, or Buildings outputs produced by the Extract components.");
+                return;
+            }
 
             GH_Structure<GH_String> tagsTree;
             da.GetDataTree(1, out tagsTree);
-            // TODO: validate
+            if (tagsTree.Branches[0].Count >= 3)
+                if (tagsTree.Branches[0][2].ToString().Contains(" found"))
+                {
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error,
+                       "It looks like you have provided a Report parameter output as the Tag parameter input. Use a Tag parameter output instead.");
+                    return;
+                }
+
+            if (itemsTree.PathCount != tagsTree.PathCount)
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning,
+                    "The path counts of the Items and Tags do not match - check these are coming from the same component.");
+            else if (itemsTree.Branches.Count != tagsTree.Branches.Count)
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, 
+                    "The branch structure of the Items and Tags do not match - check these are coming from the same component.");
 
             logger.NoteTiming("Input capture");
 
