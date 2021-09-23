@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - All geometry outputs (nodes, ways, buildings) now have a tree structure that matches that of the metadata report. In practice, this means a list of nodes requested for a tag (e.g. `building=garage`) will have an individual path, e.g. the first node is a single item in the path `{0,1}` rather than the first item in a list at path `{0}`.
+- Raised the default 'obscurity' threshold to be 5000 items worldwide (either nodes or curves)
 
 ## [0.12.0] - 2021-08-18
 ### Added

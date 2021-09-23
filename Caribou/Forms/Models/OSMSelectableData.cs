@@ -6,6 +6,7 @@
     /// <summary>A OSMMetaData item that will be presented to the user for interaction. It thus has state information and more descriptive information.</summary>
     public class OSMSelectableData : OSMMetaData, IComparable<OSMSelectableData>
     {
+        private const int OBSCURITY_THRESHOLD = 5000;
         public bool IsSelected { get; set; }
         public int NodeCount { get; set; }
         //public int RelationCount { get; set; } // Not useful as not filterable
@@ -51,7 +52,7 @@
             {
                 return "";
             }
-
+            
             if (countType < 100)
                 return "Very Rare";
             else if (countType < 1000)
@@ -64,15 +65,13 @@
                 return "Very Common";
             else if (countType < 10000000)
                 return "Abundant";
-            else if (countType >= 100000000)
+            else
                 return "Heaps";
-
-            return countType.ToString();
         }
 
         public bool IsObscure()
         {
-            return this.NodeCount < 1000 && this.WayCount < 1000; // Defined features
+            return this.NodeCount + this.WayCount < OBSCURITY_THRESHOLD; // Defined features
         }
         #endregion
 
