@@ -36,8 +36,12 @@
         {
             if (this.OSMData.IsFeature() || this.OSMData.TagType == "yes")
                 return false;
+            else if (this.NodeCount > 0 || this.WayCount > 0)
+                return this.NodeCount + this.WayCount < OBSCURITY_THRESHOLD;
+            else if (OSMUniqueTags.names.ContainsKey(this.OSMData.TagType))
+                return true;
 
-            return this.NodeCount + this.WayCount < OBSCURITY_THRESHOLD;
+            return false;
         }
 
         private string[] GetColumnData(bool selectedState) // For the form table

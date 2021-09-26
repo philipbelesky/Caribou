@@ -1,10 +1,8 @@
 ﻿namespace Caribou.Components
 {
-    using System;
     using System.Collections.Generic;
     using Caribou.Forms;
     using Eto.Forms;
-    using Grasshopper.Kernel;
 
     /// <summary>
     /// For components providing buttons and messages below the component as well as serialised state
@@ -13,7 +11,7 @@
     {
         #region Class Variables
         protected BaseCaribouForm componentForm;
-        protected TreeGridItemCollection selectableOSMs = new TreeGridItemCollection(); // Current state provided to/from the form 
+        protected TreeGridItemCollection selectableOSMs; // Current state provided to/from the form 
         protected string storedSelectionState; // The component's state, as saved into the GHX and available to deserialise
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
         

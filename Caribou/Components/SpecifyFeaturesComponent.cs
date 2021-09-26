@@ -1,12 +1,13 @@
 ﻿namespace Caribou.Components
 {
     using System;
-    using Caribou.Properties;
-    using Grasshopper.Kernel;
-    using Caribou.Forms;
     using System.Collections.Generic;
+    using Grasshopper.Kernel;
+    using Caribou.Properties;
+    using Caribou.Forms;
     using Caribou.Models;
     using Caribou.Forms.Models;
+    using Eto.Forms;
 
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : BasePickerComponent
@@ -16,6 +17,7 @@
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {
             // Setup form-items for tags provided and parsed into OSM/Form objects
+            this.selectableOSMs = new TreeGridItemCollection();
             var indexOfParents = new Dictionary<string, int>();
 
             var primaryFeatures = new List<OSMMetaData>(OSMDefinedFeatures.Primary.Values);

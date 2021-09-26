@@ -1,15 +1,15 @@
 ﻿namespace Caribou.Components
 {
     using System;
-    using Caribou.Properties;
-    using Eto.Forms;
-    using Grasshopper.Kernel;
-    using Caribou.Forms;
     using System.Collections.Generic;
+    using Grasshopper.Kernel;
     using Grasshopper.Kernel.Types;
     using Grasshopper.Kernel.Data;
+    using Caribou.Forms;
+    using Caribou.Properties;
     using Caribou.Models;
     using Caribou.Forms.Models;
+    using Eto.Forms;
 
     /// <summary>
     /// Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream
@@ -76,6 +76,7 @@
             var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
+            this.selectableOSMs = new TreeGridItemCollection();
             SetSelectionStateFromTags(requests.items); // Setup form-able items for tags provided and parsed into OSM/Form objects
             logger.NoteTiming("Tag processing");
 
@@ -158,17 +159,23 @@
 
             foreach (var tag in tags)
             {
-                if (!indexOfParents.ContainsKey(tag.ParentType.ToString()))
+                if (tag.ParentType != null)
                 {
-                    var parentItem = new CaribouTreeGridItem(tag.ParentType, 0, 0, false);
-                    this.selectableOSMs.Add(parentItem);
-                    indexOfParents[parentItem.ToString()] = this.selectableOSMs.Count - 1;
+                    if (!indexOfParents.ContainsKey(tag.ParentType.TagType))
+                    {
+                        var parentItem = new CaribouTreeGridItem(tag.ParentType, 0, 0, false);
+                        this.selectableOSMs.Add(parentItem);
+                        indexOfParents[parentItem.OSMData.TagType] = this.selectableOSMs.Count - 1;
+                    }
                 }
 
                 var childItem = new CaribouTreeGridItem(tag, 0, 0, false);
-                var parentIndex = indexOfParents[childItem.Parent.ToString()];
-                var parent = this.selectableOSMs[parentIndex] as CaribouTreeGridItem;
-                parent.Children.Add(childItem);
+                if (childItem.OSMData.ParentType != null)
+                {
+                    var parentKey = indexOfParents[childItem.OSMData.ParentType.TagType];
+                    var parent = this.selectableOSMs[parentKey] as CaribouTreeGridItem;
+                    parent.Children.Add(childItem);
+                }
             }
         }
 

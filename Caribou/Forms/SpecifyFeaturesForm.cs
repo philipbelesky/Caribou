@@ -12,6 +12,6 @@
             : base(selectionState, "Specify Features and Sub-Features", hideObscureFeatures)
         { }
 
-        protected override string GetLabelForHideObscure() => " Hide SubFeatures with very low counts";
+        protected override string GetLabelForHideObscure() => " Hide sub features with very low (worldwide) counts";
     }
 }
