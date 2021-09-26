@@ -37,7 +37,8 @@
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
 
-            this.mainRow = new TableStrip(TreeGridUtilities.FilterByObscurity(providedSelectableItems, this.shouldHideObscureItems));
+            this.mainRow = new TableStrip(TreeGridUtilities.FilterByObscurity(
+                this.providedSelectionState, this.shouldHideObscureItems));
 
             this.topButtons = new DynamicLayout();
             this.topButtons.BeginHorizontal();
@@ -108,7 +109,7 @@
 
         private void SetSelection(string boolAsString)
         {
-            foreach (TreeGridItem item in this.mainRow.data)
+            foreach (CaribouTreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
             {
                 item.SetValue(1, boolAsString);
                 foreach (TreeGridItem childItem in item.Children)
@@ -119,7 +120,7 @@
 
         private void SetRollout(bool value)
         {
-            foreach (TreeGridItem item in this.mainRow.data)
+            foreach (TreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
                 item.Expanded = value;
 
             this.mainRow.viewForm.ReloadData();
@@ -132,14 +133,16 @@
 
         private void CancelAndClose() // Just from the button
         {
-            this.mainRow.data = this.providedSelectionState; // Revert to initially provided state
             this.Close();
         }
 
         protected void ToggleObscureFeatures()
         {
             this.shouldHideObscureItems = this.obscureFeaturesCheckbox.Checked.Value;
-            this.mainRow.viewForm.DataStore = TreeGridUtilities.FilterByObscurity(this.providedSelectionState, this.shouldHideObscureItems);
+            var newState = TreeGridUtilities.FilterByObscurity(this.providedSelectionState, this.shouldHideObscureItems, 
+                this.mainRow.GetCurrentData());
+
+            this.mainRow.viewForm.DataStore = newState;
             this.mainRow.viewForm.ReloadData();
         }
         #endregion

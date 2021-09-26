@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved message reporting when no geometries were found for the provided tags
 - Building metadata lists now properly match the geometry output
 - Parsing of building heights specified in imperial units 
+- Feature/Tag forms now preserve rolled-out items when toggling for obscure items
 
 ### Changed
 - All geometry outputs (nodes, ways, buildings) now have a tree structure that matches that of the metadata report. In practice, this means a list of nodes requested for a tag (e.g. `building=garage`) will have an individual path, e.g. the first node is a single item in the path `{0,1}` rather than the first item in a list at path `{0}`.

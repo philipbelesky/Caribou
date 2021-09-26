@@ -40,16 +40,34 @@
         }
 
         /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
-        public static TreeGridItemCollection FilterByObscurity(TreeGridItemCollection selectableData, bool hideObscureFeatures)
+        public static TreeGridItemCollection FilterByObscurity(TreeGridItemCollection selectableData, 
+            bool hideObscureFeatures, TreeGridItemCollection currentSelectableData = null)
         {
-            if (!hideObscureFeatures)
-                return selectableData;
-            
-            for (int i = selectableData.Count - 1; i >= 0; i--)
-                  if ((selectableData[i] as CaribouTreeGridItem).IsObscure)
-                    selectableData.RemoveAt(i);
+            // Need to clone the items and make a new list to preserve the original Collection as unfiltered
+            var newSelectableData = new TreeGridItemCollection();
 
-            return selectableData;
+            for (var i = 0; i < selectableData.Count - 1; i++)
+            {
+                // Try to preserve open/close and selected/unselected state during filtering
+                var previousItem = selectableData[i] as CaribouTreeGridItem;
+                if (currentSelectableData != null)
+                    previousItem = currentSelectableData[i] as CaribouTreeGridItem;
+
+                var currentTagExpanded = previousItem.Expanded;
+                var currentTagSelected = previousItem.IsSelected();
+
+                var originalTag = selectableData[i] as CaribouTreeGridItem;
+                var newTag = new CaribouTreeGridItem(originalTag.OSMData, originalTag.NodeCount, originalTag.WayCount,
+                                                     currentTagSelected, currentTagExpanded);
+
+                foreach (CaribouTreeGridItem originalChild in originalTag.Children)
+                    if (!originalChild.IsObscure || !hideObscureFeatures)
+                        newTag.Children.Add(originalChild);
+                
+                newSelectableData.Add(newTag);
+            }
+
+            return newSelectableData;
         }
 
         public static void GetKeyValueTextIfSelected(TreeGridItem item, ref List<string> keyvalues)

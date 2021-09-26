@@ -8,13 +8,16 @@
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
     public class TableStrip
     {
-        public TreeGridItemCollection data;
         public TreeGridView viewForm;
 
         public TableStrip(TreeGridItemCollection selectionState)
         {
-            this.data = selectionState;
-            this.viewForm = GetLayout();
+            this.viewForm = GetLayout(selectionState);
+        }
+
+        public TreeGridItemCollection GetCurrentData()
+        {
+            return this.viewForm.DataStore as TreeGridItemCollection;
         }
 
         private void ToggleSelectedStatus(TreeGridItem item)
@@ -44,13 +47,9 @@
         private void CellClickHandler(object sender, GridCellMouseEventArgs e)
         {
             if (e.Column == 1)
-            {
                 ToggleSelectedStatus(e.Item as TreeGridItem);
-            }
             else if (e.Column == 5)
-            {
                 OpenWikiLink(e.Item as TreeGridItem);
-            }
         }
 
         private void HeaderClickHandler(object sender, EventArgs e)
@@ -67,7 +66,7 @@
             return newBool.ToString();
         }
 
-        private TreeGridView GetLayout()
+        private TreeGridView GetLayout(TreeGridItemCollection selectableItems)
         {
             var featureSelect = new TreeGridView()
             {
@@ -155,7 +154,7 @@
             };
             featureSelect.Columns.Add(descriptionColumn);
 
-            featureSelect.DataStore = this.data;
+            featureSelect.DataStore = selectableItems;
             return featureSelect;
         }
     }

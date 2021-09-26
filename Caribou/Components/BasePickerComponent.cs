@@ -51,7 +51,7 @@
 
         protected void StartFormClose() // Handler for form closure with option for custom state setting
         {
-            this.selectableOSMs = this.componentForm.mainRow.data;
+            this.selectableOSMs = this.componentForm.mainRow.GetCurrentData();
             this.hideObscureFeatures = this.componentForm.shouldHideObscureItems;
             FinishFormClose();
         }

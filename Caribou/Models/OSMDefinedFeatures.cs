@@ -1,13 +1,14 @@
 ﻿namespace Caribou.Models
 {
+#pragma warning disable SA1310 // Field names should not contain underscore
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using Newtonsoft.Json;
     using Caribou.Properties;
-
-#pragma warning disable SA1310 // Field names should not contain underscore
+    using Caribou.Forms.Models;
+    using Eto.Forms;
 
     /// <summary>
     /// A predefined list of major/common feature & subfeature pairings specified on the
@@ -21,6 +22,39 @@
             var jsonValue = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(docString);
             jsonValue = jsonValue.OrderBy(item => item["subfeature"]).ToList(); // Sort by subfeature key so they are ordered when attached to PKs
             return jsonValue;
+        }
+
+        public static TreeGridItemCollection GetTreeCollection()
+        {
+            var selectableOSMs = new TreeGridItemCollection();
+            var indexOfParents = new Dictionary<string, int>();
+
+            var primaryFeatures = new List<OSMMetaData>(OSMDefinedFeatures.Primary.Values);
+            for (var i = 0; i < primaryFeatures.Count; i++)
+            {
+                var parentItem = new CaribouTreeGridItem(primaryFeatures[i], 0, 0, false);
+
+                // Insert untagged item
+                var description = $"Items that are specified as {primaryFeatures[i].Name}, but without more specific subfeature information";
+                var childUntaggedOSM = new OSMMetaData("yes", "",
+                                                       description, primaryFeatures[i]);
+                var childUntaggedItem = new CaribouTreeGridItem(childUntaggedOSM, 0, 0, false);
+                parentItem.Children.Add(childUntaggedItem);
+
+                selectableOSMs.Add(parentItem);
+                indexOfParents[primaryFeatures[i].TagType] = i;
+            }
+
+            foreach (var item in OSMDefinedFeatures.SubFeatures())
+            {
+                var parentItem = selectableOSMs[indexOfParents[item["feature"]]] as CaribouTreeGridItem;
+
+                var childOSM = new OSMMetaData(item["subfeature"], null, item["description"],
+                    parentItem.OSMData);
+                var childItem = new CaribouTreeGridItem(childOSM, int.Parse(item["nodes"]), int.Parse(item["ways"]), false);
+                parentItem.Children.Add(childItem);
+            }
+            return selectableOSMs;
         }
 
         public static readonly Dictionary<string, OSMMetaData> Primary = new Dictionary<string, OSMMetaData>()

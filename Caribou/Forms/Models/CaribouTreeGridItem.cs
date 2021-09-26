@@ -16,14 +16,16 @@
         public int WayCount { get; set; }
         public bool IsObscure { get; set; }
 
-        public CaribouTreeGridItem(OSMMetaData osmItem, int nodeCount, int wayCount, bool selected)
+        public CaribouTreeGridItem(OSMMetaData osmItem, int nodeCount, int wayCount, bool selected, bool expanded = false)
         {
             OSMData = osmItem;
             NodeCount = nodeCount;
             WayCount = wayCount;
             IsObscure = SetObscurity(); // Defined features;
             Values = this.GetColumnData(selected);
+            Expanded = expanded;
         }
+
         public bool IsSelected()
         {
             if ((this.Values[1] as string) == "True")
