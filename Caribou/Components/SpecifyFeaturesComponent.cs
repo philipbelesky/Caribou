@@ -30,7 +30,11 @@
         {
             // If solving for the first time after a load, where state has been READ(), use that to make state
             if (this.storedSelectionState != null)
-                this.selectableOSMs = TreeGridUtilities.SetSelectionsFromStoredState(this.selectableOSMs, this.storedSelectionState);
+            {
+                this.selectableOSMs = TreeGridUtilities.SetSelectionsFromStoredState(
+                    this.selectableOSMs, this.storedSelectionState);
+                this.storedSelectionState = null; // Reset flag
+            }
 
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();

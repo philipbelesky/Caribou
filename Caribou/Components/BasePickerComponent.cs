@@ -91,11 +91,13 @@
         #endregion
 
         #region State Persistence
+
+        protected string GetStateKeys() => string.Join(",", this.selectionStateSerialized.ToArray());
+
         // To persist the selection state variables we need to override Write to record state in the definition
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
-            var csvSelection = string.Join(",", this.selectionStateSerialized.ToArray());
-            writer.SetString(storageKeyForSelectionState, csvSelection);
+            writer.SetString(storageKeyForSelectionState, GetStateKeys());
             writer.SetBoolean(storageKeyForHideObscure, this.hideObscureFeatures);
             return base.Write(writer);
         }

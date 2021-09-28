@@ -46,6 +46,7 @@
         {
             logger.Reset();
 
+            #region Input Parsing
             GH_Structure<IGH_Goo> itemsTree;
             da.GetDataTree(0, out itemsTree);
             if (itemsTree.Branches[0][0] as IGH_GeometricGoo == null)
@@ -73,35 +74,29 @@
                     "The branch structure of the Items and Tags do not match - check these are coming from the same component.");
 
             logger.NoteTiming("Input capture");
+            #endregion
 
+            // Setup form-able items for tags provided and parsed into OSM/Form objects
             var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
-            // Setup form-able items for tags provided and parsed into OSM/Form objects
-            this.selectableOSMs = SetSelectionStateFromTags(requests.items);
-            logger.NoteTiming("Tag processing");
+            // If tags have changed we write out current state so we can try to preserve it in the new tags list
+            if (tagsTree.DataDescription(false, false) != this.PreviousTagsDescription) 
+                this.storedSelectionState = GetStateKeys();
 
-            //// If solving for the first time after a load, where state has been READ(), use that to make state
-            //if (this.storedState != null)
-            //{ 
-            //    // If initing from a GHX with saved state
-            //    this.selectionState = TreeGridUtilities.MakeOSMCollectionFromStoredState(
-            //        this.selectableData, this.storedState, this.hideObscureFeatures);
-            //    this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
-            //    this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
-            //    this.storedState = null; // Reset flag
-            //}
-            //else if (this.selectionState == null || tagsTree.DataDescription(false, false) != this.PreviousTagsDescription)
-            //{
-            //    // If initing from a GHX without saved state or if the incoming data just changed; OR...
-            //    // If the provided tags have updated then we need to recalculate what the form should show
-            //    this.selectionState = TreeGridUtilities.MakeOSMCollectionWithoutState(this.selectableData, this.hideObscureFeatures);
-            //    this.selectionStateSerialized = GetSelectedKeyValuesFromForm(); // Load selected form items as key-values
-            //    this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
-            //}
+            // If loading from scratch, or if the tags have changed
+            if (this.storedSelectionState != null) 
+            {
+                var availableOSMs = GetSelectableTagsFromInputTree(requests.items);
+                this.selectableOSMs = TreeGridUtilities.SetSelectionsFromStoredState(
+                    availableOSMs, this.storedSelectionState);
+                this.storedSelectionState = null; // Reset flag
+            }
 
+            this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
             logger.NoteTiming("State loading/making");
 
+            #region Outputting
             // Match geometry paths to selected filters
             var geometryOutput = new GH_Structure<IGH_Goo>();
             var tagOutput = new GH_Structure<GH_String>();
@@ -147,14 +142,16 @@
             var requestReport = TreeFormatters.MakeReportForRequests(foundItemCountsForResult);
             logger.NoteTiming("Tree formatting");
 
+            this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();
             da.SetDataTree(0, geometryOutput);
             da.SetDataTree(1, tagOutput);
             da.SetDataTree(2, requestReport);
             logger.NoteTiming("Data tree setting");
+            #endregion
         }
 
-        protected TreeGridItemCollection SetSelectionStateFromTags(List<OSMMetaData> tags)
+        protected TreeGridItemCollection GetSelectableTagsFromInputTree(List<OSMMetaData> tags)
         {
             var indexOfParents = new Dictionary<string, int>();
             var sortedTags = tags.OrderBy(t => t.ToString()).ToList();
