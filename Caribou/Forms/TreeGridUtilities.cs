@@ -46,7 +46,7 @@
             // Need to clone the items and make a new list to preserve the original Collection as unfiltered
             var newSelectableData = new TreeGridItemCollection();
 
-            for (var i = 0; i < selectableData.Count - 1; i++)
+            for (var i = 0; i < selectableData.Count; i++)
             {
                 // Try to preserve open/close and selected/unselected state during filtering
                 var previousItem = selectableData[i] as CaribouTreeGridItem;

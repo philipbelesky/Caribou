@@ -10,6 +10,7 @@
     using Caribou.Models;
     using Caribou.Forms.Models;
     using Eto.Forms;
+    using System.Linq;
 
     /// <summary>
     /// Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream
@@ -76,8 +77,8 @@
             var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
-            this.selectableOSMs = new TreeGridItemCollection();
-            SetSelectionStateFromTags(requests.items); // Setup form-able items for tags provided and parsed into OSM/Form objects
+            // Setup form-able items for tags provided and parsed into OSM/Form objects
+            this.selectableOSMs = SetSelectionStateFromTags(requests.items);
             logger.NoteTiming("Tag processing");
 
             //// If solving for the first time after a load, where state has been READ(), use that to make state
@@ -153,19 +154,21 @@
             logger.NoteTiming("Data tree setting");
         }
 
-        protected void SetSelectionStateFromTags(List<OSMMetaData> tags)
+        protected TreeGridItemCollection SetSelectionStateFromTags(List<OSMMetaData> tags)
         {
             var indexOfParents = new Dictionary<string, int>();
+            var sortedTags = tags.OrderBy(t => t.ToString()).ToList();
+            var selectableTags = new TreeGridItemCollection();
 
-            foreach (var tag in tags)
+            foreach (var tag in sortedTags)
             {
                 if (tag.ParentType != null)
                 {
                     if (!indexOfParents.ContainsKey(tag.ParentType.TagType))
                     {
                         var parentItem = new CaribouTreeGridItem(tag.ParentType, 0, 0, false);
-                        this.selectableOSMs.Add(parentItem);
-                        indexOfParents[parentItem.OSMData.TagType] = this.selectableOSMs.Count - 1;
+                        selectableTags.Add(parentItem);
+                        indexOfParents[parentItem.OSMData.TagType] = selectableTags.Count - 1;
                     }
                 }
 
@@ -173,10 +176,12 @@
                 if (childItem.OSMData.ParentType != null)
                 {
                     var parentKey = indexOfParents[childItem.OSMData.ParentType.TagType];
-                    var parent = this.selectableOSMs[parentKey] as CaribouTreeGridItem;
+                    var parent = selectableTags[parentKey] as CaribouTreeGridItem;
                     parent.Children.Add(childItem);
                 }
             }
+
+            return selectableTags;
         }
 
         protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectableOSMs, this.hideObscureFeatures);

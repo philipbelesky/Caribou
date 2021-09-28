@@ -109,7 +109,7 @@
 
         private void SetSelection(string boolAsString)
         {
-            foreach (CaribouTreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
+            foreach (TreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
             {
                 item.SetValue(1, boolAsString);
                 foreach (TreeGridItem childItem in item.Children)
