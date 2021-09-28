@@ -51,12 +51,19 @@
                 // Try to preserve open/close and selected/unselected state during filtering
                 var previousItem = selectableData[i] as CaribouTreeGridItem;
                 if (currentSelectableData != null)
-                    previousItem = currentSelectableData[i] as CaribouTreeGridItem;
+                {
+                    var currentItem = currentSelectableData.Where(t => t.ToString() == previousItem.ToString()).First();
+                    if (currentItem != null)
+                        previousItem = currentItem  as CaribouTreeGridItem;
+                }
 
                 var currentTagExpanded = previousItem.Expanded;
                 var currentTagSelected = previousItem.IsSelected();
 
                 var originalTag = selectableData[i] as CaribouTreeGridItem;
+                if (originalTag.IsObscure && hideObscureFeatures)
+                    continue;
+
                 var newTag = new CaribouTreeGridItem(originalTag.OSMData, originalTag.NodeCount, originalTag.WayCount,
                                                      currentTagSelected, currentTagExpanded);
 
