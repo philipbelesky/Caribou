@@ -18,6 +18,7 @@
         protected readonly string storageKeyForSelectionState = "selectionSerialised";
         protected readonly string storageKeyForHideObscure = "selectionHidesObscure"; // Includes obscure or filter by union
         protected bool hideObscureFeatures = true;
+        protected bool formIsOpen = false;
 
         protected BasePickerComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory) {
@@ -41,12 +42,19 @@
 
         protected void OpenForm()
         {
+            if (this.formIsOpen)
+            {
+                Rhino.UI.Dialogs.ShowTextDialog("The selection window for this component is already open!", "Notice");
+                return; // Don't double-open the form
+            }
+
             this.componentForm = this.GetFormForComponent(); // Need to remake whenever form is opened
             int x = (int)Mouse.Position.X - 5;
             int y = (int)Mouse.Position.Y - 250;
             this.componentForm.Location = new Eto.Drawing.Point(x, y);
             this.componentForm.Closed += (sender, e) => { StartFormClose(); };
             this.componentForm.Show();
+            this.formIsOpen = true;
         }
 
         protected void StartFormClose() // Handler for form closure with option for custom state setting
@@ -60,6 +68,7 @@
         {
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.ExpireSolution(true); // Recalculate output
+            this.formIsOpen = false;
         }
         #endregion
 
