@@ -12,9 +12,7 @@
     using Eto.Forms;
     using System.Linq;
 
-    /// <summary>
-    /// Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream
-    /// </summary>
+    /// <summary>Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream </summary>
     public class FilterResultsComponent : BasePickerComponent
     {
         private string PreviousTagsDescription { get; set; } // Need to track this internally to figure out when to force-refresh the form
@@ -24,7 +22,7 @@
         public FilterResultsComponent() : base("Filter Tags", "OSM Filter",
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
         {
-            this.selectableOSMs = null;
+            this.selectableOSMs = null; // Set during solve
         }
 
         #region InOut Params
@@ -76,14 +74,15 @@
             logger.NoteTiming("Input capture");
             #endregion
 
-            // Setup form-able items for tags provided and parsed into OSM/Form objects
+            #region Form Data Setup
+            // Setup form-presentable items for tags provided and parsed into OSM objects
             var requests = new OSMListWithPaths(tagsTree); // Parse provided tree into OSM objects and a dictionary of paths per object
             logger.NoteTiming("Tag parsing");
 
             // If tags have changed we write out current state so we can try to preserve it in the new tags list
             if (tagsTree.DataDescription(false, false) != this.PreviousTagsDescription) 
                 this.storedSelectionState = GetStateKeys();
-
+            
             // If loading from scratch, or if the tags have changed
             if (this.storedSelectionState != null) 
             {
@@ -93,8 +92,9 @@
                 this.storedSelectionState = null; // Reset flag
             }
 
-            this.PreviousTagsDescription = tagsTree.DataDescription(false, false);
+            this.PreviousTagsDescription = tagsTree.DataDescription(false, false); // Track tag input identity
             logger.NoteTiming("State loading/making");
+            #endregion
 
             #region Outputting
             // Match geometry paths to selected filters
@@ -144,6 +144,7 @@
 
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();
+
             da.SetDataTree(0, geometryOutput);
             da.SetDataTree(1, tagOutput);
             da.SetDataTree(2, requestReport);
@@ -151,6 +152,7 @@
             #endregion
         }
 
+        /// <summary>Parse the Grasshopper data tree into the form's data tree</summary>
         protected TreeGridItemCollection GetSelectableTagsFromInputTree(List<OSMMetaData> tags)
         {
             var indexOfParents = new Dictionary<string, int>();

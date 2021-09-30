@@ -4,7 +4,7 @@
     using Eto.Forms;
 
     /// <summary>
-    /// Extension of the TreeGridItem class to contain the OSM item related to it
+    /// Extension of the TreeGridItem class to contain the OSM item related to it and custom presentation logic
     /// </summary>
     public class CaribouTreeGridItem: TreeGridItem
     {
@@ -21,7 +21,7 @@
             OSMData = osmItem;
             NodeCount = nodeCount;
             WayCount = wayCount;
-            IsObscure = SetObscurity(); // Defined features;
+            IsObscure = GetObscurity(); // Defined features;
             Values = this.GetColumnData(selected);
             Expanded = expanded;
         }
@@ -34,7 +34,7 @@
             return false;
         }
 
-        private bool SetObscurity()
+        private bool GetObscurity()
         {
             if (this.OSMData.IsFeature() || this.OSMData.TagType == "yes")
                 return false;
@@ -51,7 +51,7 @@
             return new string[]
             {
                 OSMData.Name, selectedState.ToString(),
-                PresentCount(this.NodeCount), PresentCount(this.WayCount),
+                GetCount(this.NodeCount), GetCount(this.WayCount),
                 OSMData.ToString(), "View", OSMData.Explanation, this.GetLink(),
             };
         }
@@ -64,7 +64,7 @@
             return $"https://wiki.openstreetmap.org/wiki/Tag:{this.OSMData.ParentType}={this.OSMData.TagType}";
         }
 
-        private string PresentCount(int countType)
+        private string GetCount(int countType)
         {
             if (this.OSMData.IsFeature())
                 return "";

@@ -12,6 +12,7 @@
     {
         private static readonly int keyValueIndex = 4;
 
+        /// <summary>Takes a list of key:values (as a single string) and then sets the corresponding Form rows as selected if they are present</summary>
         public static TreeGridItemCollection SetSelectionsFromStoredState(TreeGridItemCollection selectableData, string selectedKeyValues)
         {
             var csvItems = selectedKeyValues.Split(',').ToList();
@@ -39,7 +40,7 @@
             return selectableData;
         }
 
-        /// <summary>Given a pre-existing tree grid collection, show/hide items based on if features should be hidden </summary>
+        /// <summary>Given a pre-existing tree grid collection, show/hide items based on if obscure features should be hidden </summary>
         public static TreeGridItemCollection FilterByObscurity(TreeGridItemCollection selectableData, 
             bool hideObscureFeatures, TreeGridItemCollection currentSelectableData = null)
         {
@@ -77,6 +78,7 @@
             return newSelectableData;
         }
 
+        /// <summary>Given a (parent) feature's form item, check it and its children to see if they were selected (in the form)</summary>
         public static void GetKeyValueTextIfSelected(TreeGridItem item, ref List<string> keyvalues)
         {
             var childSelections = new List<string>();

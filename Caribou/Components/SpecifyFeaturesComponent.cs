@@ -9,13 +9,11 @@
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
     public class SpecifyFeaturesComponent : BasePickerComponent
     {
-
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {            
             this.selectableOSMs = OSMDefinedFeatures.GetTreeCollection(); // Setup form-items for tags provided and parsed into OSM/Form objects
         }
-
 
         #region InOut Params
         protected override void RegisterInputParams(GH_InputParamManager pManager) { }
@@ -28,12 +26,12 @@
 
         protected override void CaribouSolveInstance(IGH_DataAccess da)
         {
-            // If solving for the first time after a load, where state has been READ(), use that to make state
+            // If solving for the first time after a load, where stored state has been READ()
             if (this.storedSelectionState != null)
             {
                 this.selectableOSMs = TreeGridUtilities.SetSelectionsFromStoredState(
-                    this.selectableOSMs, this.storedSelectionState);
-                this.storedSelectionState = null; // Reset flag
+                    this.selectableOSMs, this.storedSelectionState); // Init options with state
+                this.storedSelectionState = null; // Reset state now that it is set 
             }
 
             this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
