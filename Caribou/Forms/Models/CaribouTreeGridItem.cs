@@ -66,8 +66,10 @@
 
         private string GetCount(int countType)
         {
-            if (this.OSMData.IsFeature())
+            if (this.OSMData.ParentType == null) // Top levels have no count
                 return "";
+            if (!this.OSMData.IsDefined) // When using the filter form
+                return (NodeCount + WayCount).ToString();
 
             if (countType < 100)
                 return "Very Rare";

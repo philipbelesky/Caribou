@@ -11,6 +11,7 @@
     using Caribou.Forms.Models;
     using Eto.Forms;
     using System.Linq;
+    using Rhino.Geometry;
 
     /// <summary>Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream </summary>
     public class FilterResultsComponent : BasePickerComponent
@@ -18,6 +19,7 @@
         private string PreviousTagsDescription { get; set; } // Need to track this internally to figure out when to force-refresh the form
 
         protected const string ReportDescription = "The name, description, and number of items found of each specified tag";
+        protected bool ProvidedNodes; // Tracking if provided data is points or curves/breps
 
         public FilterResultsComponent() : base("Filter Tags", "OSM Filter",
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
@@ -53,6 +55,8 @@
                    "It looks like you have provided a non-geometry input to the Items parameter. This input should connect to the Nodes, Ways, or Buildings outputs produced by the Extract components.");
                 return;
             }
+            var geometryTest = itemsTree.Branches[0][0] as GH_Point;
+            ProvidedNodes = geometryTest != null;
 
             GH_Structure<GH_String> tagsTree;
             da.GetDataTree(1, out tagsTree);
@@ -86,7 +90,7 @@
             // If loading from scratch, or if the tags have changed
             if (this.storedSelectionState != null) 
             {
-                var availableOSMs = GetSelectableTagsFromInputTree(requests.items);
+                var availableOSMs = GetSelectableTagsFromInputTree(requests);
                 this.selectableOSMs = TreeGridUtilities.SetSelectionsFromStoredState(
                     availableOSMs, this.storedSelectionState);
                 this.storedSelectionState = null; // Reset flag
@@ -153,10 +157,10 @@
         }
 
         /// <summary>Parse the Grasshopper data tree into the form's data tree</summary>
-        protected TreeGridItemCollection GetSelectableTagsFromInputTree(List<OSMMetaData> tags)
+        protected TreeGridItemCollection GetSelectableTagsFromInputTree(OSMListWithPaths requests)
         {
             var indexOfParents = new Dictionary<string, int>();
-            var sortedTags = tags.OrderBy(t => t.ToString()).ToList();
+            var sortedTags = requests.items.OrderBy(t => t.ToString()).ToList();
             var selectableTags = new TreeGridItemCollection();
 
             foreach (var tag in sortedTags)
@@ -171,7 +175,13 @@
                     }
                 }
 
-                var childItem = new CaribouTreeGridItem(tag, 0, 0, false);
+                var nodeCount = 0; var wayCount = 0;
+                if (ProvidedNodes)
+                    nodeCount = requests.pathsPerItem[tag].Count();
+                else
+                    wayCount = requests.pathsPerItem[tag].Count();
+
+                var childItem = new CaribouTreeGridItem(tag, nodeCount, wayCount, false);
                 if (childItem.OSMData.ParentType != null)
                 {
                     var parentKey = indexOfParents[childItem.OSMData.ParentType.TagType];
