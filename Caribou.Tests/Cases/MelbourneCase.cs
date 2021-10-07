@@ -11,10 +11,10 @@
         };
 
         protected static readonly ParseRequest mainFeatures = new ParseRequest(
-            new List<OSMMetaData>() {
-                new OSMMetaData("amenity"), // 610 nodes 45 ways
-                new OSMMetaData("HIGHWAY"),  // 143 nodes, 615 ways
-                new OSMMetaData("building") // 140 nodes, 466 ways
+            new List<OSMTag>() {
+                new OSMTag("amenity"), // 610 nodes 45 ways
+                new OSMTag("HIGHWAY"),  // 143 nodes, 615 ways
+                new OSMTag("building") // 140 nodes, 466 ways
             }
         );
 

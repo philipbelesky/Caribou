@@ -105,12 +105,12 @@
             var geometryOutput = new GH_Structure<IGH_Goo>();
             var tagOutput = new GH_Structure<GH_String>();
             // Setup tracking dictionary for the report tree output
-            var foundItemCountsForResult = new Dictionary<OSMMetaData, int>();
+            var foundItemCountsForResult = new Dictionary<OSMTag, int>();
 
             for (int i = 0; i < this.selectionStateSerialized.Count; i++)
             {
                 string itemKeyValue = this.selectionStateSerialized[i];
-                OSMMetaData osmItem = new OSMMetaData(itemKeyValue);
+                OSMTag osmItem = new OSMTag(itemKeyValue);
 
                 if (!requests.pathsPerItem.ContainsKey(osmItem))
                     continue;
@@ -165,13 +165,13 @@
 
             foreach (var tag in sortedTags)
             {
-                if (tag.ParentType != null)
+                if (tag.Key != null)
                 {
-                    if (!indexOfParents.ContainsKey(tag.ParentType.TagType))
+                    if (!indexOfParents.ContainsKey(tag.Key.Value))
                     {
-                        var parentItem = new CaribouTreeGridItem(tag.ParentType, 0, 0, false);
+                        var parentItem = new CaribouTreeGridItem(tag.Key, 0, 0, false);
                         selectableTags.Add(parentItem);
-                        indexOfParents[parentItem.OSMData.TagType] = selectableTags.Count - 1;
+                        indexOfParents[parentItem.OSMData.Value] = selectableTags.Count - 1;
                     }
                 }
 
@@ -182,9 +182,9 @@
                     wayCount = requests.pathsPerItem[tag].Count();
 
                 var childItem = new CaribouTreeGridItem(tag, nodeCount, wayCount, false);
-                if (childItem.OSMData.ParentType != null)
+                if (childItem.OSMData.Key != null)
                 {
-                    var parentKey = indexOfParents[childItem.OSMData.ParentType.TagType];
+                    var parentKey = indexOfParents[childItem.OSMData.Key.Value];
                     var parent = selectableTags[parentKey] as CaribouTreeGridItem;
                     parent.Children.Add(childItem);
                 }

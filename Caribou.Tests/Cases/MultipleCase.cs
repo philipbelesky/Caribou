@@ -13,10 +13,10 @@
         };
 
         protected static readonly ParseRequest mainFeatures = new ParseRequest(
-            new List<OSMMetaData>() {
-                new OSMMetaData("craft"), // x nodes x ways
-                new OSMMetaData("Amenity"), // x nodes x ways
-                new OSMMetaData("building")  // x nodes x ways
+            new List<OSMTag>() {
+                new OSMTag("craft"), // x nodes x ways
+                new OSMTag("Amenity"), // x nodes x ways
+                new OSMTag("building")  // x nodes x ways
             }
         );
 

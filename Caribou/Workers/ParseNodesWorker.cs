@@ -14,7 +14,7 @@
     public class ParseNodesWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Point> nodeOutputs = new GH_Structure<GH_Point>();
-        private Dictionary<OSMMetaData, List<Point3d>> foundNodes;
+        private Dictionary<OSMTag, List<Point3d>> foundNodes;
         protected override OSMGeometryType WorkerType()
         {
             return OSMGeometryType.Node;

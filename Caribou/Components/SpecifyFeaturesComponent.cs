@@ -12,7 +12,7 @@
         public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {            
-            this.selectableOSMs = OSMDefinedFeatures.GetTreeCollection(); // Setup form-items for tags provided and parsed into OSM/Form objects
+            this.selectableOSMs = OSMPrimaryTypes.GetTreeCollection(); // Setup form-items for tags provided and parsed into OSM/Form objects
         }
 
         #region InOut Params

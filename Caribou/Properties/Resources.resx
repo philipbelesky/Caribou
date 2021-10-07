@@ -142,10 +142,10 @@
   <data name="KeyData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\KeyData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="SubFeatureData" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SubFeatureData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="PrimaryValuesData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrimaryValuesData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TagData" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TagData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="KeyValueData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KeyValueData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -65,8 +65,8 @@
         [TestMethod]
         public void ParseNodesGivenDoubleKeyViaXMLReader()
         {
-            var query = new OSMMetaData("addr:street", "Swanston Street");
-            var test = new ParseRequest(new List<OSMMetaData>() { query });
+            var query = new OSMTag("addr:street", "Swanston Street");
+            var test = new ParseRequest(new List<OSMTag>() { query });
             var results = fetchResultsViaXMLReader(OSMXMLs, test, OSMGeometryType.Node);
             Assert.AreEqual(80, CountNodesForMetaData(results, query));
 

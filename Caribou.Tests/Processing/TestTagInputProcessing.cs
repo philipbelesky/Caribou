@@ -12,19 +12,19 @@
     [TestClass]
     public class TestTagInputProcessing
     {
-        private List<OSMMetaData> expectedSimpleDataList;
-        private List<OSMMetaData> expectedCaseDataList;
+        private List<OSMTag> expectedSimpleDataList;
+        private List<OSMTag> expectedCaseDataList;
         private GH_Path itemAPath = new GH_Path(0, 0);
         private GH_Path itemBPath = new GH_Path(0, 1);
 
         public TestTagInputProcessing()
         {
-            expectedSimpleDataList = new List<OSMMetaData>();
+            expectedSimpleDataList = new List<OSMTag>();
             AddItems(TagsTestClases.itemATags, ref expectedSimpleDataList);
             AddItems(TagsTestClases.itemBTags, ref expectedSimpleDataList);
             expectedSimpleDataList = expectedSimpleDataList.Distinct().ToList(); // Remove overlapping items
 
-            expectedCaseDataList = new List<OSMMetaData>();
+            expectedCaseDataList = new List<OSMTag>();
             var caseData = TagsTestClases.GetTagsCaseData().SelectMany(i => i).SelectMany(i => i).Distinct();
             AddItems(caseData, ref expectedCaseDataList);
         }
@@ -64,18 +64,18 @@
             CollectionAssert.AreEquivalent(resultMetaData.items, expectedCaseDataList);
         }
 
-        private void AddItems(IEnumerable<string> tags, ref List<OSMMetaData> itemList)
+        private void AddItems(IEnumerable<string> tags, ref List<OSMTag> itemList)
         {
             foreach (string tagName in tags)
             {
-                var tagData = new OSMMetaData(tagName);
+                var tagData = new OSMTag(tagName);
                 itemList.Add(tagData);
-                if (!itemList.Contains(tagData.ParentType))
-                    itemList.Add(tagData.ParentType);
+                if (!itemList.Contains(tagData.Key))
+                    itemList.Add(tagData.Key);
             }
         }
 
-        private List<string> GetExpectedPathIndicesForTag(OSMListWithPaths resultMetaData, OSMMetaData tag)
+        private List<string> GetExpectedPathIndicesForTag(OSMListWithPaths resultMetaData, OSMTag tag)
         {
             return resultMetaData.pathsPerItem[tag].Select(o => o.ToString()).ToList(); 
         }

@@ -123,7 +123,7 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] KeyData {
+        internal static byte[] KeyValueData {
             get {
                 object obj = ResourceManager.GetObject("KeyData", resourceCulture);
                 return ((byte[])(obj));
@@ -133,9 +133,9 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] SubFeatureData {
+        internal static byte[] PrimaryValuesData {
             get {
-                object obj = ResourceManager.GetObject("SubFeatureData", resourceCulture);
+                object obj = ResourceManager.GetObject("PrimaryValuesData", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] TagData {
+        internal static byte[] KeyData {
             get {
-                object obj = ResourceManager.GetObject("TagData", resourceCulture);
+                object obj = ResourceManager.GetObject("KeyData", resourceCulture);
                 return ((byte[])(obj));
             }
         }

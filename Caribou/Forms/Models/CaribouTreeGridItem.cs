@@ -9,21 +9,17 @@
     public class CaribouTreeGridItem: TreeGridItem
     {
         private const int OBSCURITY_THRESHOLD = 5000;
-        public OSMMetaData OSMData;
-
-        public int NodeCount { get; set; }
-        //public int RelationCount { get; set; } // Not useful as not filterable
-        public int WayCount { get; set; }
+        public OSMTag OSMData;
         public bool IsObscure { get; set; }
 
-        public CaribouTreeGridItem(OSMMetaData osmItem, int nodeCount, int wayCount, bool selected, bool expanded = false)
+        public CaribouTreeGridItem(OSMTag osmItem, int nodeCount, int wayCount, bool selected, bool expanded = false)
         {
             OSMData = osmItem;
-            NodeCount = nodeCount;
-            WayCount = wayCount;
             IsObscure = GetObscurity(); // Defined features;
             Values = this.GetColumnData(selected);
             Expanded = expanded;
+            osmItem.NodeCount = nodeCount;
+            osmItem.WayCount = wayCount;
         }
 
         public bool IsSelected()
@@ -36,11 +32,11 @@
 
         private bool GetObscurity()
         {
-            if (this.OSMData.IsFeature() || this.OSMData.TagType == "yes")
+            if (this.OSMData.Value == "yes") // Untagged items, e.g. building=yes, always shown
                 return false;
-            else if (this.NodeCount > 0 || this.WayCount > 0)
-                return this.NodeCount + this.WayCount < OBSCURITY_THRESHOLD;
-            else if (OSMUniqueTags.names.ContainsKey(this.OSMData.TagType))
+            else if (this.OSMData.NodeCount > 0 || this.OSMData.WayCount > 0)
+                return this.OSMData.NodeCount + this.OSMData.WayCount < OBSCURITY_THRESHOLD;
+            else if (OSMUniqueTags.names.ContainsKey(this.OSMData.Value))
                 return true;
 
             return false;
@@ -51,25 +47,27 @@
             return new string[]
             {
                 OSMData.Name, selectedState.ToString(),
-                GetCount(this.NodeCount), GetCount(this.WayCount),
-                OSMData.ToString(), "View", OSMData.Explanation, this.GetLink(),
+                GetCount(this.OSMData.NodeCount), GetCount(this.OSMData.WayCount),
+                OSMData.ToString(), "View", OSMData.Description, this.GetLink(),
             };
         }
 
         private string GetLink()
         {
-            if (OSMData.IsFeature())
-                return $"https://wiki.openstreetmap.org/wiki/Key:{this.OSMData.TagType}";
+            if (OSMData.IsParent())
+                return $"https://wiki.openstreetmap.org/wiki/Key:{this.OSMData.Value}";
 
-            return $"https://wiki.openstreetmap.org/wiki/Tag:{this.OSMData.ParentType}={this.OSMData.TagType}";
+            return $"https://wiki.openstreetmap.org/wiki/Tag:{this.OSMData.Key}={this.OSMData.Value}";
         }
 
         private string GetCount(int countType)
         {
-            if (this.OSMData.ParentType == null) // Top levels have no count
+            if (this.OSMData.IsParent()) // Top levels have no count
                 return "";
-            if (!this.OSMData.IsDefined) // When using the filter form
-                return (NodeCount + WayCount).ToString();
+            // TODO: wire up some sort of flag for when to return raw vs actual counts
+            // E.g. for filter form vs picker form
+            //if (!this.OSMData.IsDefined) // When using the filter form
+            //    return (OSMData.NodeCount + OSMData.WayCount).ToString();
 
             if (countType < 100)
                 return "Very Rare";

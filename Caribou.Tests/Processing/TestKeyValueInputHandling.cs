@@ -9,10 +9,10 @@
     {
         private List<string> input;
         private ParseRequest results;
-        private OSMMetaData expectedParsedGeological = new OSMMetaData("geological");
-        private OSMMetaData expectedParsedAmenityRestaraunt = new OSMMetaData("amenity", "restaurant");
-        private OSMMetaData expectedParsedHighWayResidential = new OSMMetaData("highway", "residential");
-        private OSMMetaData expectedParsedWaterway = new OSMMetaData("waterway");
+        private OSMTag expectedParsedGeological = new OSMTag("geological");
+        private OSMTag expectedParsedAmenityRestaraunt = new OSMTag("amenity", "restaurant");
+        private OSMTag expectedParsedHighWayResidential = new OSMTag("highway", "residential");
+        private OSMTag expectedParsedWaterway = new OSMTag("waterway");
 
         [TestMethod]
         public void TestSingleKey()
@@ -80,10 +80,10 @@
                 "tram_stop=yes" // 1 nodes 0 way
             };
             results = new ParseRequest(input);
-            Assert.AreEqual(new OSMMetaData("name"), results.Requests[0]);
-            Assert.AreEqual(new OSMMetaData("wikipedia"), results.Requests[1]);
-            Assert.AreEqual(new OSMMetaData("route_master", "tram"), results.Requests[2]);
-            Assert.AreEqual(new OSMMetaData("tram_stop", "yes"), results.Requests[3]);
+            Assert.AreEqual(new OSMTag("name"), results.Requests[0]);
+            Assert.AreEqual(new OSMTag("wikipedia"), results.Requests[1]);
+            Assert.AreEqual(new OSMTag("route_master", "tram"), results.Requests[2]);
+            Assert.AreEqual(new OSMTag("tram_stop", "yes"), results.Requests[3]);
         }
 
         private void CheckResult(List<string> input)

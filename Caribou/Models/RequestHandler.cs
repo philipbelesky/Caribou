@@ -19,7 +19,7 @@
         public Coord MaxBounds;
         public List<Tuple<Coord, Coord>> AllBounds;
 
-        public Dictionary<OSMMetaData, List<FoundItem>> FoundData; // The collected items per request
+        public Dictionary<OSMTag, List<FoundItem>> FoundData; // The collected items per request
         public List<string> FoundItemIds; // Used to track for duplicate ways/nodes across files
 
         public string WorkerId; // Used for progress reporting
@@ -34,8 +34,8 @@
 
             // Setup data holders
             this.FoundItemIds = new List<string>();
-            this.FoundData = new Dictionary<OSMMetaData, List<FoundItem>>();
-            foreach (OSMMetaData metaData in requestedMetaData.Requests)
+            this.FoundData = new Dictionary<OSMTag, List<FoundItem>>();
+            foreach (OSMTag metaData in requestedMetaData.Requests)
             {
                 this.FoundData[metaData] = new List<FoundItem>();
             }
@@ -80,15 +80,15 @@
             }
         }
 
-        private void AddItem(OSMMetaData match, Dictionary<string, string> nodeTags, List<Coord> coords)
+        private void AddItem(OSMTag match, Dictionary<string, string> nodeTags, List<Coord> coords)
         {
             var newFind = new FoundItem(nodeTags, coords);
             this.FoundData[match].Add(newFind);
         }
 
-        private List<OSMMetaData> RequestsThatWantItem(string nodeId, Dictionary<string, string> tagsOfFoundNode)
+        private List<OSMTag> RequestsThatWantItem(string nodeId, Dictionary<string, string> tagsOfFoundNode)
         {
-            var matches = new List<OSMMetaData>();
+            var matches = new List<OSMTag>();
             var ci = CultureInfo.InvariantCulture;
 
             if (string.IsNullOrEmpty(nodeId) || this.FoundItemIds.Contains(nodeId))
@@ -98,8 +98,8 @@
 
             foreach (var request in this.RequestedMetaData.Requests)
             {
-                var requestedKey = request.ParentType;
-                var requestedValue = request.TagType;
+                var requestedKey = request.Key;
+                var requestedValue = request.Value;
 
                 if (requestedKey == null)
                 {
@@ -109,9 +109,9 @@
                         matches.Add(request);
                     }
                 }
-                else if (tagsOfFoundNode.ContainsKey(requestedKey.TagType))
+                else if (tagsOfFoundNode.ContainsKey(requestedKey.Value))
                 {
-                    var testValue = tagsOfFoundNode[requestedKey.TagType];
+                    var testValue = tagsOfFoundNode[requestedKey.Value];
                     // If we are looking for a key:value pair, e.g .all <tag k="building" v="retail"/>
                     // We don't care about case for matching values, e.g. "Swanston St" vs "swanston st"
                     if (testValue != null && testValue.ToLower(ci) == requestedValue.ToLower(ci))
@@ -131,7 +131,7 @@
 
         public GH_Structure<GH_String> GetTreeForMetaDataReport()
         {
-            var foundItemsForResult = new Dictionary<OSMMetaData, int>();
+            var foundItemsForResult = new Dictionary<OSMTag, int>();
             foreach (var item in this.FoundData)
                 foundItemsForResult[item.Key] = item.Value.Count;
 

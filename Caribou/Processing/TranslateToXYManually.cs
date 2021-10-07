@@ -8,9 +8,9 @@
 
     public static class TranslateToXYManually
     {
-        public static Dictionary<OSMMetaData, List<Point3d>> NodePointsFromCoords(RequestHandler result)
+        public static Dictionary<OSMTag, List<Point3d>> NodePointsFromCoords(RequestHandler result)
         {
-            var geometryResult = new Dictionary<OSMMetaData, List<Point3d>>();
+            var geometryResult = new Dictionary<OSMTag, List<Point3d>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
 
@@ -27,9 +27,9 @@
             return geometryResult;
         }
 
-        public static Dictionary<OSMMetaData, List<PolylineCurve>> WayPolylinesFromCoords(RequestHandler result)
+        public static Dictionary<OSMTag, List<PolylineCurve>> WayPolylinesFromCoords(RequestHandler result)
         {
-            var geometryResult = new Dictionary<OSMMetaData, List<PolylineCurve>>();
+            var geometryResult = new Dictionary<OSMTag, List<PolylineCurve>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);
 
@@ -53,9 +53,9 @@
             return geometryResult;
         }
 
-        public static Dictionary<OSMMetaData, List<Brep>> BuildingBrepsFromCoords(ref RequestHandler result, bool outputHeighted)
+        public static Dictionary<OSMTag, List<Brep>> BuildingBrepsFromCoords(ref RequestHandler result, bool outputHeighted)
         {
-            var geometryResult = new Dictionary<OSMMetaData, List<Brep>>();
+            var geometryResult = new Dictionary<OSMTag, List<Brep>>();
             var unitScale = RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem); // OSM conversion assumes meters
             var tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance; 
             Coord lengthPerDegree = GetDegreesPerAxis(result.MinBounds, result.MaxBounds, unitScale);

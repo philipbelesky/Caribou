@@ -14,7 +14,7 @@
     public class CustomSetButton : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
     {
         // Adapted from https://www.grasshopper3d.com/forum/topics/create-radio-button-on-grasshopper-component?commentId=2985220%3AComment%3A835552
-
+        private System.Drawing.Rectangle ButtonBounds { get; set; }
         private Action buttonClickHandler;
         private int buttonHeight = 45;
         private string title;
@@ -39,7 +39,6 @@
             Bounds = componentRect;
             ButtonBounds = buttonRect;
         }
-        private System.Drawing.Rectangle ButtonBounds { get; set; }
 
         protected override void Render(GH_Canvas canvas, System.Drawing.Graphics graphics, GH_CanvasChannel channel)
         {
@@ -53,6 +52,7 @@
                 button.Dispose();
             }
         }
+        
         public override GH_ObjectResponse RespondToMouseDown(GH_Canvas sender, GH_CanvasMouseEvent e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)

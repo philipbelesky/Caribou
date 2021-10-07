@@ -10,7 +10,7 @@
     /// </summary>
     public struct ParseRequest
     {
-        public List<OSMMetaData> Requests;
+        public List<OSMTag> Requests;
 
         // Requests coming to a list input in Grasshopper, e.g. the Find components via Specify or Panel outputs
         public ParseRequest(List<string> metaDataRawValues)
@@ -18,10 +18,10 @@
             var cleanedGhInput = SplitTextStreamIntoIndividualItems(metaDataRawValues);
 
             // Transform the key:value formatted strings into OSM items and assign them
-            this.Requests = new List<OSMMetaData>();
+            this.Requests = new List<OSMTag>();
             foreach (string inputString in cleanedGhInput)
             {
-                var osmItem = new OSMMetaData(inputString);
+                var osmItem = new OSMTag(inputString);
                 if (osmItem != null)
                 {
                     if (!this.Requests.Contains(osmItem)) // Prevent duplicates
@@ -31,7 +31,7 @@
         }
 
         // This constructor is mostly just used to enable testing
-        public ParseRequest(List<OSMMetaData> prepackagedData)
+        public ParseRequest(List<OSMTag> prepackagedData)
         {
             this.Requests = prepackagedData;
         }

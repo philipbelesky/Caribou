@@ -65,8 +65,8 @@
                 if (originalTag.IsObscure && hideObscureFeatures)
                     continue;
 
-                var newTag = new CaribouTreeGridItem(originalTag.OSMData, originalTag.NodeCount, originalTag.WayCount,
-                                                     currentTagSelected, currentTagExpanded);
+                var newTag = new CaribouTreeGridItem(originalTag.OSMData, originalTag.OSMData.NodeCount, 
+                    originalTag.OSMData.WayCount, currentTagSelected, currentTagExpanded);
 
                 foreach (CaribouTreeGridItem originalChild in originalTag.Children)
                     if (!originalChild.IsObscure || !hideObscureFeatures)

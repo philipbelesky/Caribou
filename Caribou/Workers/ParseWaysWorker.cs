@@ -14,7 +14,7 @@
     public class ParseWaysWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Curve> wayOutputs = new GH_Structure<GH_Curve>();
-        private Dictionary<OSMMetaData, List<PolylineCurve>> foundWays;
+        private Dictionary<OSMTag, List<PolylineCurve>> foundWays;
         protected override OSMGeometryType WorkerType()
         {
             return OSMGeometryType.Way;

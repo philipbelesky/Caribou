@@ -13,7 +13,7 @@
     public class ParseBuildingsWorker : BaseLoadAndParseWorker
     {
         private GH_Structure<GH_Brep> buildingOutputs = new GH_Structure<GH_Brep>();
-        private Dictionary<OSMMetaData, List<Brep>> foundBuildings;
+        private Dictionary<OSMTag, List<Brep>> foundBuildings;
         private bool outputHeighed;
 
         protected override OSMGeometryType WorkerType() {

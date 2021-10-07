@@ -36,7 +36,7 @@
         }
 
         public static GH_Structure<GH_String> MakeReportForRequests(
-            Dictionary<OSMMetaData, int> foundItemsForResult)
+            Dictionary<OSMTag, int> foundItemsForResult)
         {
             var output = new GH_Structure<GH_String>();
             var tInfo = CultureInfo.CurrentCulture.TextInfo;
@@ -54,9 +54,9 @@
                 output.Append(new GH_String(metaData.ToString()), path);
                 output.Append(new GH_String($"{count} found"), path);
                 output.Append(new GH_String(colorForItem.ToString()));
-                if (metaData.ParentType != null)
+                if (metaData.Key != null)
                 {
-                    var titleName = tInfo.ToTitleCase(metaData.ParentType.Name);
+                    var titleName = tInfo.ToTitleCase(metaData.Key.Name);
                     output.Append(new GH_String(titleName), path);
                     var layerName = titleName + "::" + metaDataTitle;
                     output.Append(new GH_String(layerName), path); // Layer path helper
@@ -67,16 +67,16 @@
                     output.Append(new GH_String(metaDataTitle + "::"), path); // Layer path helper
                 }
 
-                if (!string.IsNullOrEmpty(metaData.Explanation))
+                if (!string.IsNullOrEmpty(metaData.Description))
                 {
-                    output.Append(new GH_String($"Defined as: {metaData.Explanation}"), path);
+                    output.Append(new GH_String($"Defined as: {metaData.Description}"), path);
                 }
             }
 
             return output;
         }
 
-        public static GH_Structure<GH_Point> MakeTreeForNodes(Dictionary<OSMMetaData, List<Point3d>> foundNodes)
+        public static GH_Structure<GH_Point> MakeTreeForNodes(Dictionary<OSMTag, List<Point3d>> foundNodes)
         {
             var output = new GH_Structure<GH_Point>();
             var i = 0;
@@ -96,7 +96,7 @@
             return output;
         }
 
-        public static GH_Structure<GH_Curve> MakeTreeForWays(Dictionary<OSMMetaData, List<PolylineCurve>> foundWays)
+        public static GH_Structure<GH_Curve> MakeTreeForWays(Dictionary<OSMTag, List<PolylineCurve>> foundWays)
         {
             var output = new GH_Structure<GH_Curve>();
             var i = 0;
@@ -116,7 +116,7 @@
             return output;
         }
 
-        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Brep>> foundBuildings)
+        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMTag, List<Brep>> foundBuildings)
         {
             var output = new GH_Structure<GH_Brep>();
             var i = 0;
