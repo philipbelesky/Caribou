@@ -17,8 +17,8 @@ defined_features = [
 # Tags related to defined features; Subfeatures are tags relating to features defined in OSMDefinedFeatures
 # Keys relate to arbitrary metadata
 data = {
-    'subfeature': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
-    'tag': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
+    'definedValues': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
+    'value': [], # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Tag:shop=computer">
     'key': []  # e.g. <skos:Concept rdf:about="http://wiki.openstreetmap.org/wiki/Key:meadow">
 }
 
@@ -28,24 +28,20 @@ for tagRoot in root:
 
     if 'Tag:' in tagUrl:
         tagPath = tagUrl.split('Tag:')[1]
-        feature = tagPath.split('=')[0]
-        subfeature = tagPath.split('=')[1]
+        key = tagPath.split('=')[0]
+        value = tagPath.split('=')[1]
 
-        if feature in defined_features:
-            tagType = "subfeature"
+        if key in defined_features:
+            tagType = "definedValues"
         else:
-            tagType = "tag"
+            tagType = "value"
 
 
     elif 'Key:' in tagUrl:
         tagType = "key"
         tagPath = tagUrl.split('Key:')[1]
-        if tagPath.count(':') == 0:
-            feature = tagPath
-            subfeature = ''
-        else:
-            feature = tagPath.split(':')[0]
-            subfeature = tagPath.split(':')[1]
+        key = tagPath
+        value = ''
     else:
         continue
 
@@ -75,8 +71,8 @@ for tagRoot in root:
         relation_count = json.loads(relation_countTag.text)['count']
 
     tag_example = {
-        'feature': feature,
-        'subfeature': subfeature,
+        'key': key,
+        'value': value,
         'description': description,
         'nodes': node_count,
         'ways': way_count,
@@ -84,15 +80,15 @@ for tagRoot in root:
     }
     data[tagType].append(tag_example)
 
-print("Found this many subfeatures:", len(data['subfeature']))
-print("Found this many tags:", len(data['tag']))
+print("Found this many defined values:", len(data['definedValues']))
+print("Found this many tags:", len(data['value']))
 print("Found this many key:", len(data['key']))
 
-with open('SubFeatureData.json', 'w') as fp:
-    json.dump(data['subfeature'], fp, indent=4, sort_keys=True)
+with open('PrimaryValuesData.json', 'w') as fp:
+    json.dump(data['definedValues'], fp, indent=4, sort_keys=True)
 
-with open('TagData.json', 'w') as fp:
-    json.dump(data['tag'], fp, indent=4, sort_keys=True)
+with open('KeyValueData.json', 'w') as fp:
+    json.dump(data['value'], fp, indent=4, sort_keys=True)
 
 with open('KeyData.json', 'w') as fp:
     json.dump(data['key'], fp, indent=4, sort_keys=True)

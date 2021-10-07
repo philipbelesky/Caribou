@@ -66,10 +66,9 @@
             var miscA = new OSMTag("capacity=charging");
             Assert.AreEqual(miscA.ToString(), "capacity=charging");
             Assert.AreEqual(miscA.IsParent(), false);
-            Assert.AreEqual(miscA.Key, miscA);
 
             Assert.AreEqual(miscA.Key.ToString(), "capacity=*");
-            Assert.AreEqual(miscA.Key.IsParent(), false);
+            Assert.AreEqual(miscA.Key.IsParent(), true);
         }
 
         [TestMethod]
