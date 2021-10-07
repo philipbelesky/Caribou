@@ -52,13 +52,6 @@
                 var parentItem = new CaribouTreeGridItem(primaryFeatures[i], 
                     0, 0, false, false);
 
-                // Insert untagged item
-                var description = $"Items that are specified as {primaryFeatures[i].Name}, but without more specific subfeature information";
-                var childUntaggedOSM = new OSMTag("yes", "", description, primaryFeatures[i]);
-                var childUntaggedItem = new CaribouTreeGridItem(
-                    childUntaggedOSM,  0, 0, false, false);
-                parentItem.Children.Add(childUntaggedItem);
-
                 selectableOSMs.Add(parentItem);
                 indexOfParents[primaryFeatures[i].Value] = i;
             }
@@ -72,7 +65,11 @@
                 var childOSM = new OSMTag(item["value"], null, item["description"], parentItem.OSMData);
                 var childItem = new CaribouTreeGridItem(childOSM, 
                     int.Parse(item["nodes"]), int.Parse(item["ways"]), false, false);
-                parentItem.Children.Add(childItem);
+
+                if (childItem.OSMData.Value == "yes")
+                    parentItem.Children.Insert(0, childItem);
+                else
+                    parentItem.Children.Add(childItem);
             }
 
             return selectableOSMs;

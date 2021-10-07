@@ -84,8 +84,9 @@
             logger.NoteTiming("Tag parsing");
 
             // If tags have changed we write out current state so we can try to preserve it in the new tags list
-            if (tagsTree.DataDescription(false, false) != this.PreviousTagsDescription) 
-                this.storedSelectionState = GetStateKeys();
+            if (this.PreviousTagsDescription != null)
+                if (tagsTree.DataDescription(false, false) != this.PreviousTagsDescription) 
+                    this.storedSelectionState = GetStateKeys();
             
             // If loading from scratch, or if the tags have changed
             if (this.storedSelectionState != null) 
