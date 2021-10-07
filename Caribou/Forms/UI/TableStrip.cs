@@ -80,7 +80,7 @@
 
             var titleColumn = new GridColumn()
             {
-                HeaderText = "Feature",
+                HeaderText = "Type",
                 DataCell = new TextBoxCell(0)
                 {
                     //Binding = Binding.Property<OSMSelectableFeature, string>(r => r.Name)

@@ -49,13 +49,14 @@
             var primaryFeatures = new List<OSMTag>(OSMPrimaryTypes.Keys.Values);
             for (var i = 0; i < primaryFeatures.Count; i++)
             {
-                var parentItem = new CaribouTreeGridItem(primaryFeatures[i], 0, 0, false);
+                var parentItem = new CaribouTreeGridItem(primaryFeatures[i], 
+                    0, 0, false, false);
 
                 // Insert untagged item
                 var description = $"Items that are specified as {primaryFeatures[i].Name}, but without more specific subfeature information";
-                var childUntaggedOSM = new OSMTag("yes", "",
-                                                       description, primaryFeatures[i]);
-                var childUntaggedItem = new CaribouTreeGridItem(childUntaggedOSM, 0, 0, false);
+                var childUntaggedOSM = new OSMTag("yes", "", description, primaryFeatures[i]);
+                var childUntaggedItem = new CaribouTreeGridItem(
+                    childUntaggedOSM,  0, 0, false, false);
                 parentItem.Children.Add(childUntaggedItem);
 
                 selectableOSMs.Add(parentItem);
@@ -66,13 +67,14 @@
             foreach (var keyValue in secondaryFeatures.Keys)
             {
                 var item = secondaryFeatures[keyValue];
-                var parentItem = selectableOSMs[indexOfParents[item["feature"]]] as CaribouTreeGridItem;
+                var parentItem = selectableOSMs[indexOfParents[item["key"]]] as CaribouTreeGridItem;
 
-                var childOSM = new OSMTag(item["subfeature"], null, item["description"],
-                    parentItem.OSMData);
-                var childItem = new CaribouTreeGridItem(childOSM, int.Parse(item["nodes"]), int.Parse(item["ways"]), false);
+                var childOSM = new OSMTag(item["value"], null, item["description"], parentItem.OSMData);
+                var childItem = new CaribouTreeGridItem(childOSM, 
+                    int.Parse(item["nodes"]), int.Parse(item["ways"]), false, false);
                 parentItem.Children.Add(childItem);
             }
+
             return selectableOSMs;
         }
 
@@ -80,7 +82,8 @@
         {
             var docString = Encoding.UTF8.GetString(Resources.PrimaryValuesData);
             var jsonValue = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(docString);
-            var jsonDict = jsonValue.ToDictionary(item => item["key"] + "=" + item["value"]);
+            var sortedValues = jsonValue.OrderBy(item => item["value"]).ToList();
+            var jsonDict = sortedValues.ToDictionary(item => item["key"] + "=" + item["value"]);
             return jsonDict;
         }
 

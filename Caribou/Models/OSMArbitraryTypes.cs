@@ -39,7 +39,7 @@
         {
             var docString = Encoding.UTF8.GetString(Resources.KeyData);
             var jsonValue = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(docString);
-            var jsonDict = jsonValue.ToDictionary(item => item["key"] + "=" + item["value"]);
+            var jsonDict = jsonValue.ToDictionary(item => item["key"]);
             return jsonDict;
         }
 

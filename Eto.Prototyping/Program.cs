@@ -29,19 +29,21 @@
         {
             var mockTags = new TreeGridItemCollection();
 
-            var itemA = new CaribouTreeGridItem(new OSMTag("website"), 0, 0, false);
-            var AChildA = new CaribouTreeGridItem(new OSMTag("website=http://www.google.com"), 1, 2, false);
+            var parentA = new OSMTag("website");
+            var itemA = new CaribouTreeGridItem(parentA, 0, 0, false, false);
+            var AChildA = new CaribouTreeGridItem(new OSMTag("website=http://www.google.com"), 1, 2, true, false);
             itemA.Children.Add(AChildA);
-            var AChildB = new CaribouTreeGridItem(new OSMTag("website=http://www.test.com"), 1, 2, false);
+            var AChildB = new CaribouTreeGridItem(new OSMTag("website=http://www.test.com"), 1, 2, true, false);
             itemA.Children.Add(AChildB);
             mockTags.Add(itemA);
 
-            var itemB = new CaribouTreeGridItem(new OSMTag("height"), 0, 0, false);
-            var BChildA = new CaribouTreeGridItem(new OSMTag("height=10m"), 2, 2, false);
+            var parentB = new OSMTag("height");
+            var itemB = new CaribouTreeGridItem(parentB, 0, 0, false, false);
+            var BChildA = new CaribouTreeGridItem(new OSMTag("height=10m"), 2, 2, true, false);
             itemB.Children.Add(BChildA);
-            var BChildB = new CaribouTreeGridItem(new OSMTag("height=5"), 1, 1, false);
+            var BChildB = new CaribouTreeGridItem(new OSMTag("height=5"), 1, 1, true, false);
             itemB.Children.Add(BChildB);
-            var CChildC = new CaribouTreeGridItem(new OSMTag("height=11"), 3, 3, false);
+            var CChildC = new CaribouTreeGridItem(new OSMTag("height=11"), 3, 3, true, false);
             itemB.Children.Add(CChildC);
             mockTags.Add(itemB);
 

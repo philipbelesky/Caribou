@@ -83,6 +83,7 @@
                 Assert.AreEqual(item.ToString(), "website=*");
                 Assert.AreEqual(item.Name, "Website");
                 Assert.AreEqual(item.Key, null);
+                Assert.AreNotEqual(item.Description, "");
             }
         }
 
@@ -99,6 +100,13 @@
                 Assert.AreEqual(item.ToString(), "website=http://www.google.com");
                 Assert.AreEqual(item.Key, websiteParentA);
             }
+        }
+
+        [TestMethod]
+        public void TestKeyValueParsingD()
+        {
+            var height = new OSMTag("height");
+            Assert.AreNotEqual(height.Description, "");
         }
     }
 }

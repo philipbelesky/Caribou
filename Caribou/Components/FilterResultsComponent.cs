@@ -169,7 +169,7 @@
                 {
                     if (!indexOfParents.ContainsKey(tag.Key.Value))
                     {
-                        var parentItem = new CaribouTreeGridItem(tag.Key, 0, 0, false);
+                        var parentItem = new CaribouTreeGridItem(tag.Key, 0, 0, true, false);
                         selectableTags.Add(parentItem);
                         indexOfParents[parentItem.OSMData.Value] = selectableTags.Count - 1;
                     }
@@ -181,7 +181,7 @@
                 else
                     wayCount = requests.pathsPerItem[tag].Count();
 
-                var childItem = new CaribouTreeGridItem(tag, nodeCount, wayCount, false);
+                var childItem = new CaribouTreeGridItem(tag, nodeCount, wayCount, true, false);
                 if (childItem.OSMData.Key != null)
                 {
                     var parentKey = indexOfParents[childItem.OSMData.Key.Value];

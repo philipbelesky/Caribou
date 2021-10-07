@@ -18,7 +18,7 @@
     {
         #region Instance
         protected const char SplitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
-        public readonly OSMTag Key; // If set, points back to the key this value is associated with.
+        public readonly OSMTag Key = null; // If set, points back to the key this value is associated with.
         public readonly string Value; // The type of information; can represent a keyless value; e.g. "building"
         public readonly string Name;  // Readable name; i.e. including spaces and so on
         public readonly string Description; // A description of what this represents
@@ -54,7 +54,7 @@
                 }
                 else if (OSMArbitraryTypes.Keys.ContainsKey(key))
                 {
-                    name = OSMArbitraryTypes.Keys[key]["name"];
+                    name = OSMArbitraryTypes.Keys[key]["key"];
                     explanation = OSMArbitraryTypes.Keys[key]["description"];
                     tagType = key;
                 }
@@ -102,19 +102,19 @@
             }
 
             Value = tagType;
-            Name = MakeNiceName(name, Value, this.Key);
-            Description = MakeNiceExplanation(explanation);
+            Name = MakeNiceName(name, tagType, this.Key);
+            Description = explanation;
         }
 
         // If providing an explicit key and value, just call the other constructor using the standard format
         public OSMTag(string tagKey, string tagValue) : this($"{tagKey}={tagValue}") { }
 
         // Constructing from hardcoded data; e.g. loading from library of feature definitions (only used by primary keys)
-        public OSMTag(string value, string name, string explanation, OSMTag parent = null)
+        public OSMTag(string value, string name, string description, OSMTag parent = null)
         {
             Value = value;
-            Name = name;
-            Description = MakeNiceExplanation(explanation);
+            Name = MakeNiceName(name, value, parent);
+            Description = description;
             this.Key = parent;
         }
 
@@ -157,7 +157,7 @@
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             if (!string.IsNullOrEmpty(providedName))
-                return providedName;
+                return textInfo.ToTitleCase(providedName);
             else if (string.IsNullOrEmpty(providedID))
                 return "*";
 
@@ -169,25 +169,9 @@
             return textInfo.ToTitleCase(name);
         }
 
-        private static string MakeNiceExplanation(string explanation)
-        {
-            if (!string.IsNullOrEmpty(explanation))
-            {
-                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-                explanation = textInfo.ToTitleCase(explanation);
-                if (explanation.Last() != '.')
-                {
-                    explanation += '.';
-                }
-            }
-            return explanation;
-        }
-
         #endregion
 
         public bool IsParent() =>  this.Key == null;
-
-        public bool IsChild() => this.Key != null;
 
         #region IEquitable implementation
         public override bool Equals(object obj) => Equals(obj as OSMTag);
@@ -202,7 +186,7 @@
         // Need to provide a hash code as we are using this as a dictionary key in RequestHandler
         public override int GetHashCode()
         {
-            if (!this.IsParent())
+            if (this.IsParent())
                 return this.Value.GetHashCode();
             else
                 return this.Value.GetHashCode() ^ this.Key.GetHashCode();

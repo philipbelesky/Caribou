@@ -11,15 +11,19 @@
         private const int OBSCURITY_THRESHOLD = 5000;
         public OSMTag OSMData;
         public bool IsObscure { get; set; }
+        public bool IsParsed { get; set; } // Coming from already-parsed tag lists; not a predefined list
 
-        public CaribouTreeGridItem(OSMTag osmItem, int nodeCount, int wayCount, bool selected, bool expanded = false)
+        public CaribouTreeGridItem(OSMTag osmItem, int nodeCount, int wayCount,
+            bool showCounts, bool selected, bool expanded = false)
         {
-            OSMData = osmItem;
-            IsObscure = GetObscurity(); // Defined features;
-            Values = this.GetColumnData(selected);
-            Expanded = expanded;
             osmItem.NodeCount = nodeCount;
             osmItem.WayCount = wayCount;
+            OSMData = osmItem;
+
+            Expanded = expanded;
+            IsParsed = showCounts;
+            IsObscure = GetObscurity(); // Defined features;
+            Values = this.GetColumnData(selected);
         }
 
         public bool IsSelected()
@@ -32,12 +36,17 @@
 
         private bool GetObscurity()
         {
-            if (this.OSMData.Value == "yes") // Untagged items, e.g. building=yes, always shown
+            if (!IsParsed && this.OSMData.Value == "yes") // Untagged items, e.g. building=yes, always shown
                 return false;
+            if (IsParsed)
+                if (OSMUniqueTags.names.ContainsKey(this.OSMData.Value))
+                    return true;
+                else if (this.OSMData.Key != null && OSMUniqueTags.names.ContainsKey(this.OSMData.Key.Value))
+                    return true;
+                else
+                    return false;
             else if (this.OSMData.NodeCount > 0 || this.OSMData.WayCount > 0)
                 return this.OSMData.NodeCount + this.OSMData.WayCount < OBSCURITY_THRESHOLD;
-            else if (OSMUniqueTags.names.ContainsKey(this.OSMData.Value))
-                return true;
 
             return false;
         }
@@ -64,10 +73,8 @@
         {
             if (this.OSMData.IsParent()) // Top levels have no count
                 return "";
-            // TODO: wire up some sort of flag for when to return raw vs actual counts
-            // E.g. for filter form vs picker form
-            //if (!this.OSMData.IsDefined) // When using the filter form
-            //    return (OSMData.NodeCount + OSMData.WayCount).ToString();
+            else if(this.IsParsed)
+                return countType.ToString();
 
             if (countType < 100)
                 return "Very Rare";
