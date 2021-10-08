@@ -1,10 +1,9 @@
 ﻿namespace Caribou.Forms
 {
     using System;
-    using System.Collections.Generic;
     using Caribou.Forms.Models;
-    using Caribou.Models;
     using Eto.Forms;
+    using Eto.Drawing;
 
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
     public class TableStrip
@@ -35,7 +34,7 @@
 
         private void OpenWikiLink(TreeGridItem item)
         {
-            var url = item.Values[6] as string;
+            var url = item.Values[7] as string;
             System.Diagnostics.Process.Start(url);
         }
 
@@ -69,25 +68,35 @@
         // Styling - set tree grid items to be bold if they or any children are selected
         void _OnFormatCell(object sender, GridCellFormatEventArgs e)
         {
-            if (e.Column.HeaderText == "Type")
+            switch (e.Column.HeaderText)
             {
-                var checkItem = e.Item as OSMTreeGridItem;
-                var isSelectedOrHasChildSelected = false;
+                case "Type":
+                    var checkItem = e.Item as OSMTreeGridItem;
+                    var isSelectedOrHasChildSelected = false;
 
-                if (checkItem.IsSelected())
-                    isSelectedOrHasChildSelected = true;
-                else if (checkItem.Children.Count > 0)
-                    foreach (OSMTreeGridItem child in checkItem.Children)
-                        if (child.IsSelected())
-                        {
-                            isSelectedOrHasChildSelected = true;
-                            break;
-                        }
+                    if (checkItem.IsSelected())
+                        isSelectedOrHasChildSelected = true;
+                    else if (checkItem.Children.Count > 0)
+                        foreach (OSMTreeGridItem child in checkItem.Children)
+                            if (child.IsSelected())
+                            {
+                                isSelectedOrHasChildSelected = true;
+                                break;
+                            }
 
-                if (isSelectedOrHasChildSelected)
-                    e.Font = new Eto.Drawing.Font(Eto.Drawing.SystemFont.Bold);
-                else
-                    e.Font = new Eto.Drawing.Font(Eto.Drawing.SystemFont.Default);
+                    if (isSelectedOrHasChildSelected)
+                        e.Font = new Font(SystemFont.Bold);
+                    else
+                        e.Font = new Font(SystemFont.Default);
+                    break;
+
+                case "Wiki Info":
+                    e.ForegroundColor = new ColorHSL(230f, 1.0f, 0.5f);
+                    break;
+
+                case "Description":
+                    e.Font = new Font(FontFamilies.Sans, 9.0f, FontStyle.Italic);
+                    break;
             }
         }
 
@@ -151,7 +160,8 @@
                 DataCell = new TextBoxCell(4),
                 Resizable = false,
                 Sortable = false,
-                AutoSize = true,
+                AutoSize = false,
+                Width = 150,
             };
             featureSelect.Columns.Add(keyValueColumn);
 
