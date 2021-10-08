@@ -8,7 +8,7 @@
     using Eto.Drawing;
     using Eto.Forms;
 
-    public abstract class BaseCaribouForm : Form
+    public abstract class BaseForm : Form
     {
         #region Class Variables
         protected readonly TreeGridItemCollection providedSelectionState; // Passed from component during form init
@@ -27,7 +27,7 @@
         #endregion
 
         #region Form Setup
-        public BaseCaribouForm(TreeGridItemCollection providedSelectableItems, string formTitle, bool hideObscure) 
+        public BaseForm(TreeGridItemCollection providedSelectableItems, string formTitle, bool hideObscure) 
         {
             this.providedSelectionState = providedSelectableItems;
             this.shouldHideObscureItems = hideObscure;

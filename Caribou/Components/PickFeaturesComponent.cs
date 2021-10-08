@@ -7,9 +7,9 @@
     using Caribou.Forms;
 
     /// <summary>Provides a GUI interface to selecting/specifying predefined OSM features/subfeatures.</summary>
-    public class SpecifyFeaturesComponent : BasePickerComponent
+    public class PickFeaturesComponent : BasePickComponent
     {
-        public SpecifyFeaturesComponent() : base("Specify Features", "OSM Specify",
+        public PickFeaturesComponent() : base("Specify Features", "OSM Specify",
             "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
         {            
             this.selectableOSMs = OSMPrimaryTypes.GetTreeCollection(); // Setup form-items for tags provided and parsed into OSM/Form objects
@@ -39,7 +39,7 @@
             da.SetDataList(0, selectionStateSerialized); // Update downstream text
         }
 
-        protected override BaseCaribouForm GetFormForComponent() => new SpecifyFeaturesForm(this.selectableOSMs, this.hideObscureFeatures);
+        protected override BaseForm GetFormForComponent() => new SpecifyFeaturesForm(this.selectableOSMs, this.hideObscureFeatures);
 
         protected override string GetButtonTitle() => "Specify\nFeatures";
 

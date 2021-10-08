@@ -7,10 +7,10 @@
     /// <summary>
     /// For components providing buttons and messages below the component as well as serialised state
     /// </summary>
-    public abstract class BasePickerComponent : CaribouComponent
+    public abstract class BasePickComponent : CaribouComponent
     {
         #region Class Variables
-        protected BaseCaribouForm componentForm;
+        protected BaseForm componentForm;
         protected TreeGridItemCollection selectableOSMs; // Current state provided to/from the form 
         protected string storedSelectionState; // The component's state, as saved into the GHX and available to deserialise
         protected List<string> selectionStateSerialized = new List<string>(); // For outputing to definition and below component
@@ -20,7 +20,7 @@
         protected bool hideObscureFeatures = true;
         protected bool formIsOpen = false;
 
-        protected BasePickerComponent(string name, string nickname, string description, string subCategory)
+        protected BasePickComponent(string name, string nickname, string description, string subCategory)
             : base(name, nickname, description, subCategory) {
         }
         #endregion
@@ -33,7 +33,7 @@
         }
 
         // Required form methods
-        protected abstract BaseCaribouForm GetFormForComponent(); // Provide component-specific form type
+        protected abstract BaseForm GetFormForComponent(); // Provide component-specific form type
 
         #region Form Interaction
         // Form-button interaction; passed to CustomSetButton as handler action

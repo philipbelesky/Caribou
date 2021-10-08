@@ -6,7 +6,7 @@
     using Eto.Drawing;
     using Eto.Forms;
 
-    public class SpecifyFeaturesForm : BaseCaribouForm
+    public class SpecifyFeaturesForm : BaseForm
     {
         public SpecifyFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures) 
             : base(selectionState, "Specify Features and Sub-Features", hideObscureFeatures)

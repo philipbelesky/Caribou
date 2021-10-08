@@ -75,7 +75,7 @@
                     }
 
                     var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
-                    var height = IdentifyBuildingHeight.ParseHeight(entry.Value[i].Tags, unitScale);
+                    var height = GetBuildingHeights.ParseHeight(entry.Value[i].Tags, unitScale);
 
                     if (outputHeighted && height > 0.0) // Output heighted buildings
                     {

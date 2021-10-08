@@ -17,13 +17,13 @@
         {
             var csvItems = selectedKeyValues.Split(',').ToList();
 
-            foreach (CaribouTreeGridItem item in selectableData)
+            foreach (OSMTreeGridItem item in selectableData)
             {
                 var itemKeyVal = item.Values[keyValueIndex].ToString();
                 if (csvItems.Contains(itemKeyVal))
                 {
                     item.Values[1] = "True";
-                    foreach (CaribouTreeGridItem childItem in item.Children)
+                    foreach (OSMTreeGridItem childItem in item.Children)
                         childItem.Values[1] = "True";
                 }
                 else
@@ -50,25 +50,25 @@
             for (var i = 0; i < selectableData.Count; i++)
             {
                 // Try to preserve open/close and selected/unselected state during filtering
-                var previousItem = selectableData[i] as CaribouTreeGridItem;
+                var previousItem = selectableData[i] as OSMTreeGridItem;
                 if (currentSelectableData != null)
                 {
                     var currentItem = currentSelectableData.Where(t => t.ToString() == previousItem.ToString()).First();
                     if (currentItem != null)
-                        previousItem = currentItem  as CaribouTreeGridItem;
+                        previousItem = currentItem  as OSMTreeGridItem;
                 }
 
                 var currentTagExpanded = previousItem.Expanded;
                 var currentTagSelected = previousItem.IsSelected();
 
-                var originalTag = selectableData[i] as CaribouTreeGridItem;
+                var originalTag = selectableData[i] as OSMTreeGridItem;
                 if (originalTag.IsObscure && hideObscureFeatures)
                     continue;
 
-                var newTag = new CaribouTreeGridItem(originalTag.OSMData, originalTag.OSMData.NodeCount, 
+                var newTag = new OSMTreeGridItem(originalTag.OSMData, originalTag.OSMData.NodeCount, 
                     originalTag.OSMData.WayCount, originalTag.IsParsed, currentTagSelected, currentTagExpanded);
 
-                foreach (CaribouTreeGridItem originalChild in originalTag.Children)
+                foreach (OSMTreeGridItem originalChild in originalTag.Children)
                     if (!originalChild.IsObscure || !hideObscureFeatures)
                         newTag.Children.Add(originalChild);
                 
@@ -84,7 +84,7 @@
             var childSelections = new List<string>();
             for (var j = 0; j < item.Children.Count; j++)
             {
-                var childItem = item.Children[j] as CaribouTreeGridItem;
+                var childItem = item.Children[j] as OSMTreeGridItem;
                 var childIsChecked = childItem.Values[1].ToString() == "True";
                 if (childIsChecked)
                     childSelections.Add(childItem.Values[keyValueIndex].ToString());

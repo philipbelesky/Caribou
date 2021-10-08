@@ -6,14 +6,14 @@
     /// <summary>
     /// Extension of the TreeGridItem class to contain the OSM item related to it and custom presentation logic
     /// </summary>
-    public class CaribouTreeGridItem: TreeGridItem
+    public class OSMTreeGridItem: TreeGridItem
     {
         private const int OBSCURITY_THRESHOLD = 5000;
         public OSMTag OSMData;
         public bool IsObscure { get; set; }
         public bool IsParsed { get; set; } // Coming from already-parsed tag lists; not a predefined list
 
-        public CaribouTreeGridItem(OSMTag osmItem, int nodeCount, int wayCount,
+        public OSMTreeGridItem(OSMTag osmItem, int nodeCount, int wayCount,
             bool showCounts, bool selected, bool expanded = false)
         {
             osmItem.NodeCount = nodeCount;

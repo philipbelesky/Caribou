@@ -14,14 +14,14 @@
     using Rhino.Geometry;
 
     /// <summary>Provides a GUI interface to selecting/specifying OSM features for a given set of nodes/ways/buildings provided upstream </summary>
-    public class FilterResultsComponent : BasePickerComponent
+    public class PickTagsComponent : BasePickComponent
     {
         private string PreviousTagsDescription { get; set; } // Need to track this internally to figure out when to force-refresh the form
 
         protected const string ReportDescription = "The name, description, and number of items found of each specified tag";
         protected bool ProvidedNodes; // Tracking if provided data is points or curves/breps
 
-        public FilterResultsComponent() : base("Filter Tags", "OSM Filter",
+        public PickTagsComponent() : base("Filter Tags", "OSM Filter",
             "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
         {
             this.selectableOSMs = null; // Set during solve
@@ -170,7 +170,7 @@
                 {
                     if (!indexOfParents.ContainsKey(tag.Key.Value))
                     {
-                        var parentItem = new CaribouTreeGridItem(tag.Key, 0, 0, true, false);
+                        var parentItem = new OSMTreeGridItem(tag.Key, 0, 0, true, false);
                         selectableTags.Add(parentItem);
                         indexOfParents[parentItem.OSMData.Value] = selectableTags.Count - 1;
                     }
@@ -182,11 +182,11 @@
                 else
                     wayCount = requests.pathsPerItem[tag].Count();
 
-                var childItem = new CaribouTreeGridItem(tag, nodeCount, wayCount, true, false);
+                var childItem = new OSMTreeGridItem(tag, nodeCount, wayCount, true, false);
                 if (childItem.OSMData.Key != null)
                 {
                     var parentKey = indexOfParents[childItem.OSMData.Key.Value];
-                    var parent = selectableTags[parentKey] as CaribouTreeGridItem;
+                    var parent = selectableTags[parentKey] as OSMTreeGridItem;
                     parent.Children.Add(childItem);
                 }
             }
@@ -194,7 +194,7 @@
             return selectableTags;
         }
 
-        protected override BaseCaribouForm GetFormForComponent() => new FilterFeaturesForm(this.selectableOSMs, this.hideObscureFeatures);
+        protected override BaseForm GetFormForComponent() => new FilterTagsForm(this.selectableOSMs, this.hideObscureFeatures);
         protected override string GetButtonTitle() => "Filter\nTags";
         protected override void ButtonOpenAction() // Form-button interaction; passed to CustomSetButton as handler action
         {

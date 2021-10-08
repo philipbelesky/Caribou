@@ -49,7 +49,7 @@
             var primaryFeatures = new List<OSMTag>(OSMPrimaryTypes.Keys.Values);
             for (var i = 0; i < primaryFeatures.Count; i++)
             {
-                var parentItem = new CaribouTreeGridItem(primaryFeatures[i], 
+                var parentItem = new OSMTreeGridItem(primaryFeatures[i], 
                     0, 0, false, false);
 
                 selectableOSMs.Add(parentItem);
@@ -60,10 +60,10 @@
             foreach (var keyValue in secondaryFeatures.Keys)
             {
                 var item = secondaryFeatures[keyValue];
-                var parentItem = selectableOSMs[indexOfParents[item["key"]]] as CaribouTreeGridItem;
+                var parentItem = selectableOSMs[indexOfParents[item["key"]]] as OSMTreeGridItem;
 
                 var childOSM = new OSMTag(item["value"], null, item["description"], parentItem.OSMData);
-                var childItem = new CaribouTreeGridItem(childOSM, 
+                var childItem = new OSMTreeGridItem(childOSM, 
                     int.Parse(item["nodes"]), int.Parse(item["ways"]), false, false);
 
                 if (childItem.OSMData.Value == "yes")

@@ -6,9 +6,9 @@
     using Eto.Drawing;
     using Eto.Forms;
 
-    public class FilterFeaturesForm : BaseCaribouForm
+    public class FilterTagsForm : BaseForm
     {
-        public FilterFeaturesForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
+        public FilterTagsForm(TreeGridItemCollection selectionState, bool hideObscureFeatures)
             : base(selectionState, "Select Tags to Filter For", hideObscureFeatures)
         { }
 
