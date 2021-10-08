@@ -39,9 +39,9 @@
             if (!IsParsed && this.OSMData.Value == "yes") // Untagged items, e.g. building=yes, always shown
                 return false;
             if (IsParsed)
-                if (OSMUniqueTags.names.ContainsKey(this.OSMData.Value))
+                if (OSMSpecialTags.uniqueTags.ContainsKey(this.OSMData.Value))
                     return true;
-                else if (this.OSMData.Key != null && OSMUniqueTags.names.ContainsKey(this.OSMData.Key.Value))
+                else if (this.OSMData.Key != null && OSMSpecialTags.uniqueTags.ContainsKey(this.OSMData.Key.Value))
                     return true;
                 else
                     return false;

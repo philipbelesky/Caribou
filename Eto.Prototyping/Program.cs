@@ -15,7 +15,7 @@
         {
             // Select Form
             ShowSpecifyForm();
-            //ShowFilterForm();
+            ShowFilterForm();
         }
 
         static void ShowSpecifyForm()
@@ -39,12 +39,16 @@
 
             var parentB = new OSMTag("height");
             var itemB = new OSMTreeGridItem(parentB, 0, 0, false, false);
-            var BChildA = new OSMTreeGridItem(new OSMTag("height=10m"), 2, 2, true, false);
+            var BChildA = new OSMTreeGridItem(new OSMTag("height=10"), 2, 2, true, false);
             itemB.Children.Add(BChildA);
             var BChildB = new OSMTreeGridItem(new OSMTag("height=5"), 1, 1, true, false);
             itemB.Children.Add(BChildB);
             var CChildC = new OSMTreeGridItem(new OSMTag("height=11"), 3, 3, true, false);
             itemB.Children.Add(CChildC);
+            var BChildD = new OSMTreeGridItem(new OSMTag("height=2"), 3, 3, true, false);
+            itemB.Children.Add(BChildD);
+            var CChildE = new OSMTreeGridItem(new OSMTag("height=20"), 3, 3, true, false);
+            itemB.Children.Add(CChildE);
             mockTags.Add(itemB);
 
             new Application(Eto.Platforms.Wpf).Run(new FilterTagsForm(mockTags, HideObscure));

@@ -98,5 +98,15 @@
 
             return;
         }
+
+        /// <summary>For sorting a set of numeric values, like building heights, that may contain strings</summary>
+        public static double? MayBeIntSort(this OSMTreeGridItem item)
+        {
+            string value = item.OSMData.Value;
+
+            double i;
+            bool success = double.TryParse(value, out i);
+            return success ? (double?)i : (double?)null;
+        }
     }
 }

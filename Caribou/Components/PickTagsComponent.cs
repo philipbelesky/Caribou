@@ -190,6 +190,17 @@
                 }
             }
 
+            foreach (OSMTreeGridItem tag in selectableTags) // Hack to sort numeric data properly
+            {
+                if (OSMSpecialTags.numericTags.ContainsKey(tag.OSMData.Value))
+                {
+                    var childrenCopy = tag.Children.Cast<OSMTreeGridItem>().OrderBy(
+                        item => TreeGridUtilities.MayBeIntSort(item)).ToList();
+                    tag.Children.Clear();
+                    tag.Children.AddRange(childrenCopy);
+                }
+            }
+
             return selectableTags;
         }
 
