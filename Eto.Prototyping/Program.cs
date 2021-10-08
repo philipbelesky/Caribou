@@ -15,7 +15,7 @@
         {
             // Select Form
             ShowSpecifyForm();
-            //ShowFilterForm();
+            ShowFilterForm();
         }
 
         static void ShowSpecifyForm()

@@ -12,19 +12,17 @@
     [TestClass]
     public class TestTagInputProcessing
     {
-        private List<OSMTag> expectedSimpleDataList;
-        private List<OSMTag> expectedCaseDataList;
-        private GH_Path itemAPath = new GH_Path(0, 0);
-        private GH_Path itemBPath = new GH_Path(0, 1);
+        private readonly List<OSMTag> expectedSimpleDataList = new List<OSMTag>();
+        private readonly List<OSMTag> expectedCaseDataList = new List<OSMTag>();
+        private readonly GH_Path itemAPath = new GH_Path(0, 0);
+        private readonly GH_Path itemBPath = new GH_Path(0, 1);
 
         public TestTagInputProcessing()
-        {
-            expectedSimpleDataList = new List<OSMTag>();
+        {            
             AddItems(TagsTestClases.itemATags, ref expectedSimpleDataList);
             AddItems(TagsTestClases.itemBTags, ref expectedSimpleDataList);
             expectedSimpleDataList = expectedSimpleDataList.Distinct().ToList(); // Remove overlapping items
 
-            expectedCaseDataList = new List<OSMTag>();
             var caseData = TagsTestClases.GetTagsCaseData().SelectMany(i => i).SelectMany(i => i).Distinct();
             AddItems(caseData, ref expectedCaseDataList);
         }

@@ -25,7 +25,6 @@
         public int NodeCount { get; set; }
         public int RelationCount { get; set; }
         public int WayCount { get; set; }
-        private TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
         #endregion
 
         #region Constructors
@@ -33,15 +32,14 @@
         // Constructing from a raw keyValue string; e.g. "highway=residential or highway=yes or highway=* or highway"
         public OSMTag(string rawKeyValue)
         {
-            string key, value;
-            GetKeyValueComponents(rawKeyValue, out key, out value);
+            GetKeyValueComponents(rawKeyValue, out string key, out string value);
             // Possible options (string) > key:value
             // building             -> building:null        -> type=building, no parent
             // building=*           -> building:null        -> type=building, no parent
             // building=hospital    -> building:hospital    -> type=hospital, building=parent
             string explanation = "";
             string name = "";
-            string tagType = "";
+            string tagType;
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             if (String.IsNullOrEmpty(value) || value == "*") // If providing a top-level feature like "natural"

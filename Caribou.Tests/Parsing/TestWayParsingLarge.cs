@@ -9,18 +9,18 @@
     [TestClass]
     public class TestWayParsingLarge : MelbourneCase
     {
-        const int allHighways = 612;
-        const int allAmenities = 45;
-        const int allBuildings = 466;
-        const int allAmenitiesRestaurants = 0;
-        const int allAmenitiesWorship = 6;
-        const int allHighwaysResidential = 5;
-        const int allBuildingsRetail = 19;
-        const int firstHighwaysResidentialNodesCount = 42;
-        const double firstAmenityWorshipFirstNodeLat = -37.8164641;
-        const double firstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed
-        const double firstHighwayResidentialFirstNodeLon = 144.9735701;
-        const double firstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
+        const int AllHighways = 612;
+        const int AllAmenities = 45;
+        const int AllBuildings = 466;
+        const int AllAmenitiesRestaurants = 0;
+        const int AllAmenitiesWorship = 6;
+        const int AllHighwaysResidential = 5;
+        const int AllBuildingsRetail = 19;
+        const int FirstHighwaysResidentialNodesCount = 42;
+        const double FirstAmenityWorshipFirstNodeLat = -37.8164641;
+        const double FirstAmenityWorksipLastNodeLat = -37.8165976; // Actually 2nd to last as closed
+        const double FirstHighwayResidentialFirstNodeLon = 144.9735701;
+        const double FirstHighwayResidentialLastNodeLon = 144.9659697; // Actually last as not closed
 
         //    //[TestMethod]
         //    public void ParseWaysGivenKeyViaXMLDocument()
@@ -45,9 +45,9 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Way);
 
-            Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
-            Assert.AreEqual(allHighways, CountWaysForMetaData(results, highwaysData));
-            Assert.AreEqual(allBuildings, CountWaysForMetaData(results, buildingsData));
+            Assert.AreEqual(AllAmenities, CountWaysForMetaData(results, amenitiesData));
+            Assert.AreEqual(AllHighways, CountWaysForMetaData(results, highwaysData));
+            Assert.AreEqual(AllBuildings, CountWaysForMetaData(results, buildingsData));
         }
 
         [TestMethod]
@@ -55,20 +55,20 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Way);
 
-            Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
-            Assert.AreEqual(allAmenitiesWorship, CountWaysForMetaData(results, amenitiesWorshipData));
-            Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
-            Assert.AreEqual(allHighwaysResidential, CountWaysForMetaData(results, highwayResidentialData));
+            Assert.AreEqual(AllAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(AllAmenitiesWorship, CountWaysForMetaData(results, amenitiesWorshipData));
+            Assert.AreEqual(AllBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
+            Assert.AreEqual(AllHighwaysResidential, CountWaysForMetaData(results, highwayResidentialData));
 
             var itemCountA = results.FoundData[amenitiesWorshipData][0].Coords.Count;
-            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[0].Latitude);
-            Assert.AreEqual(firstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 1].Latitude);
-            Assert.AreEqual(firstAmenityWorksipLastNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 2].Latitude);
-            Assert.AreEqual(firstHighwaysResidentialNodesCount, results.FoundData[highwayResidentialData][0].Coords.Count);
+            Assert.AreEqual(FirstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[0].Latitude);
+            Assert.AreEqual(FirstAmenityWorshipFirstNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 1].Latitude);
+            Assert.AreEqual(FirstAmenityWorksipLastNodeLat, results.FoundData[amenitiesWorshipData][0].Coords[itemCountA - 2].Latitude);
+            Assert.AreEqual(FirstHighwaysResidentialNodesCount, results.FoundData[highwayResidentialData][0].Coords.Count);
 
             var itemCountB = results.FoundData[highwayResidentialData][0].Coords.Count;
-            Assert.AreEqual(firstHighwayResidentialFirstNodeLon, results.FoundData[highwayResidentialData][0].Coords[0].Longitude);
-            Assert.AreEqual(firstHighwayResidentialLastNodeLon, results.FoundData[highwayResidentialData][0].Coords[itemCountB - 1].Longitude);
+            Assert.AreEqual(FirstHighwayResidentialFirstNodeLon, results.FoundData[highwayResidentialData][0].Coords[0].Longitude);
+            Assert.AreEqual(FirstHighwayResidentialLastNodeLon, results.FoundData[highwayResidentialData][0].Coords[itemCountB - 1].Longitude);
         }
 
         [TestMethod]

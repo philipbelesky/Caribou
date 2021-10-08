@@ -9,10 +9,10 @@
     {
         private List<string> input;
         private ParseRequest results;
-        private OSMTag expectedParsedGeological = new OSMTag("geological");
-        private OSMTag expectedParsedAmenityRestaraunt = new OSMTag("amenity", "restaurant");
-        private OSMTag expectedParsedHighWayResidential = new OSMTag("highway", "residential");
-        private OSMTag expectedParsedWaterway = new OSMTag("waterway");
+        private readonly OSMTag expectedParsedGeological = new OSMTag("geological");
+        private readonly OSMTag expectedParsedAmenityRestaraunt = new OSMTag("amenity", "restaurant");
+        private readonly OSMTag expectedParsedHighWayResidential = new OSMTag("highway", "residential");
+        private readonly OSMTag expectedParsedWaterway = new OSMTag("waterway");
 
         [TestMethod]
         public void TestSingleKey()

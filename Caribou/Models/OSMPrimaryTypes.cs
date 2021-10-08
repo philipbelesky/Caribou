@@ -1,6 +1,5 @@
 ﻿namespace Caribou.Models
 {
-#pragma warning disable SA1310 // Field names should not contain underscore
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -121,5 +120,4 @@
         }
 
     }
-#pragma warning restore SA1310 // Field names should not contain underscore
 }

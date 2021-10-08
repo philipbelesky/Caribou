@@ -10,19 +10,19 @@
     public class TestWayParsingSimple : SimpleCase
     {
         // Counting number of ways per type
-        const int allCrafts = 2;
-        const int allAmenities = 0;
-        const int allBuildings = 1;
-        const int allAmenitiesRestaurants = 0;
-        const int allCraftJewellers = 1;
-        const int allBuildingsRetail = 0;
-        const int allNamedThings = 2;
-        const int allWikiRelated = 1;
-        const int allTramRoutes = 1;
-        const int allTramStops = 0;
+        const int AllCrafts = 2;
+        const int AllAmenities = 0;
+        const int AllBuildings = 1;
+        const int AllAmenitiesRestaurants = 0;
+        const int AllCraftJewellers = 1;
+        const int AllBuildingsRetail = 0;
+        const int AllNamedThings = 2;
+        const int AllWikiRelated = 1;
+        const int AllTramRoutes = 1;
+        const int AllTramStops = 0;
         // Counting number of nodes per way
-        const int ndsInEquitableHouse = 5;
-        const int ndsInEquitablePlaza = 4;
+        const int NdsInEquitableHouse = 5;
+        const int NdsInEquitablePlaza = 4;
         // Comparing nodes within a away
         readonly Coord firstNdForEquitableHouse = new Coord(-37.8154598, 144.9630487);
         readonly Coord secondNdForEquitablePlaza = new Coord(-37.81558, 144.963115);
@@ -51,11 +51,11 @@
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Way);
             var equitableHouse = results.FoundData[buildingsData][0];
 
-            Assert.AreEqual(allCrafts, CountWaysForMetaData(results, craftsData));
-            Assert.AreEqual(allAmenities, CountWaysForMetaData(results, amenitiesData));
-            Assert.AreEqual(allBuildings, CountWaysForMetaData(results, buildingsData));
+            Assert.AreEqual(AllCrafts, CountWaysForMetaData(results, craftsData));
+            Assert.AreEqual(AllAmenities, CountWaysForMetaData(results, amenitiesData));
+            Assert.AreEqual(AllBuildings, CountWaysForMetaData(results, buildingsData));
 
-            Assert.AreEqual(ndsInEquitableHouse, equitableHouse.Coords.Count);
+            Assert.AreEqual(NdsInEquitableHouse, equitableHouse.Coords.Count);
             Assert.AreEqual(firstNdForEquitableHouse, equitableHouse.Coords[0]);
             Assert.AreEqual("yes", equitableHouse.Tags["building"]);
             Assert.AreEqual("falconry", equitableHouse.Tags["craft"]);
@@ -68,11 +68,11 @@
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Way);
             var equitablePlaza = results.FoundData[craftJewellersData][0];
 
-            Assert.AreEqual(allAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
-            Assert.AreEqual(allCraftJewellers, CountWaysForMetaData(results, craftJewellersData));
-            Assert.AreEqual(allBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
+            Assert.AreEqual(AllAmenitiesRestaurants, CountWaysForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(AllCraftJewellers, CountWaysForMetaData(results, craftJewellersData));
+            Assert.AreEqual(AllBuildingsRetail, CountWaysForMetaData(results, buildingsRetailData));
 
-            Assert.AreEqual(ndsInEquitablePlaza, equitablePlaza.Coords.Count);
+            Assert.AreEqual(NdsInEquitablePlaza, equitablePlaza.Coords.Count);
             Assert.AreEqual(secondNdForEquitablePlaza, equitablePlaza.Coords[1]);
             Assert.AreEqual("jeweller", equitablePlaza.Tags["craft"]);
             Assert.AreEqual("Equitable Plaza", equitablePlaza.Tags["name"]);
@@ -83,10 +83,10 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMGeometryType.Way);
 
-            Assert.AreEqual(allNamedThings, CountWaysForMetaData(results, namedThingsData));
-            Assert.AreEqual(allWikiRelated, CountWaysForMetaData(results, wikiRelatedData));
-            Assert.AreEqual(allTramRoutes, CountWaysForMetaData(results, tramRoutesData));
-            Assert.AreEqual(allTramStops, CountWaysForMetaData(results, tramStopsData));
+            Assert.AreEqual(AllNamedThings, CountWaysForMetaData(results, namedThingsData));
+            Assert.AreEqual(AllWikiRelated, CountWaysForMetaData(results, wikiRelatedData));
+            Assert.AreEqual(AllTramRoutes, CountWaysForMetaData(results, tramRoutesData));
+            Assert.AreEqual(AllTramStops, CountWaysForMetaData(results, tramStopsData));
             Assert.AreEqual("falconry", results.FoundData[namedThingsData][0].Tags["craft"]);
             Assert.AreEqual("Equitable House", results.FoundData[namedThingsData][0].Tags["name"]);
         }

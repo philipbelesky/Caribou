@@ -8,18 +8,18 @@
     [TestClass]
     public class TestNodeParsingSimple : SimpleCase
     {
-        const int allCrafts = 2;
-        const int allAmenities = 1;
-        const int allBuildings = 2;
-        const int allAmenitiesRestaurants = 1;
-        const int allCraftJewellers = 1;
-        const int allBuildingsRetail = 2;
-        const double expectedFirstRestaurantLat = -37.8134515;
-        const double expectedFirstBuildingLon = 144.9658410;
-        const int allNamedThings = 1;
-        const int allWikiRelated = 1;
-        const int allTramRoutes = 0;
-        const int allTramStops = 1;
+        const int AllCrafts = 2;
+        const int AllAmenities = 1;
+        const int AllBuildings = 2;
+        const int AllAmenitiesRestaurants = 1;
+        const int AllCraftJewellers = 1;
+        const int AllBuildingsRetail = 2;
+        const double ExpectedFirstRestaurantLat = -37.8134515;
+        const double ExpectedFirstBuildingLon = 144.9658410;
+        const int AllNamedThings = 1;
+        const int AllWikiRelated = 1;
+        const int AllTramRoutes = 0;
+        const int AllTramStops = 1;
 
         //[TestMethod]
         //public void ParseNodesGivenKeyViaXMLDocument()
@@ -45,10 +45,10 @@
             var results = fetchResultsViaXMLReader(OSMXMLs, mainFeatures, OSMGeometryType.Node);
             var firstBuilding = results.FoundData[buildingsData][0];
 
-            Assert.AreEqual(allCrafts, CountNodesForMetaData(results, craftsData));
-            Assert.AreEqual(allAmenities, CountNodesForMetaData(results, amenitiesData));
-            Assert.AreEqual(allBuildings, CountNodesForMetaData(results, buildingsData));
-            Assert.AreEqual(expectedFirstBuildingLon, firstBuilding.Coords[0].Longitude);
+            Assert.AreEqual(AllCrafts, CountNodesForMetaData(results, craftsData));
+            Assert.AreEqual(AllAmenities, CountNodesForMetaData(results, amenitiesData));
+            Assert.AreEqual(AllBuildings, CountNodesForMetaData(results, buildingsData));
+            Assert.AreEqual(ExpectedFirstBuildingLon, firstBuilding.Coords[0].Longitude);
             Assert.AreEqual("falconry", firstBuilding.Tags["craft"]);
             Assert.AreEqual("retail", firstBuilding.Tags["building"]);
         }
@@ -59,11 +59,11 @@
             var results = fetchResultsViaXMLReader(OSMXMLs, miscSubFeatures, OSMGeometryType.Node);
             var firstRestaurant = results.FoundData[amenitiesRestaurantsData][0];
 
-            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
-            Assert.AreEqual(allCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
-            Assert.AreEqual(allBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
+            Assert.AreEqual(AllAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(AllCraftJewellers, CountNodesForMetaData(results, craftJewellersData));
+            Assert.AreEqual(AllBuildingsRetail, CountNodesForMetaData(results, buildingsRetailData));
 
-            Assert.AreEqual(expectedFirstRestaurantLat, firstRestaurant.Coords[0].Latitude);
+            Assert.AreEqual(ExpectedFirstRestaurantLat, firstRestaurant.Coords[0].Latitude);
             Assert.AreEqual("restaurant", firstRestaurant.Tags["amenity"]);
         }
 
@@ -72,11 +72,11 @@
         {
             var results = fetchResultsViaXMLReader(OSMXMLs, arbitraryKeyValues, OSMGeometryType.Node);
 
-            Assert.AreEqual(allAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
-            Assert.AreEqual(allNamedThings, CountNodesForMetaData(results, namedThingsData));
-            Assert.AreEqual(allWikiRelated, CountNodesForMetaData(results, wikiRelatedData));
-            Assert.AreEqual(allTramRoutes, CountNodesForMetaData(results, tramRoutesData));
-            Assert.AreEqual(allTramStops, CountNodesForMetaData(results, tramStopsData));
+            Assert.AreEqual(AllAmenitiesRestaurants, CountNodesForMetaData(results, amenitiesRestaurantsData));
+            Assert.AreEqual(AllNamedThings, CountNodesForMetaData(results, namedThingsData));
+            Assert.AreEqual(AllWikiRelated, CountNodesForMetaData(results, wikiRelatedData));
+            Assert.AreEqual(AllTramRoutes, CountNodesForMetaData(results, tramRoutesData));
+            Assert.AreEqual(AllTramStops, CountNodesForMetaData(results, tramStopsData));
             Assert.AreEqual("falconry", results.FoundData[namedThingsData][0].Tags["craft"]);
             Assert.AreEqual("Ye Olde Falcon Store", results.FoundData[namedThingsData][0].Tags["name"]);
         }

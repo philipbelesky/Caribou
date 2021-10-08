@@ -47,19 +47,18 @@
             logger.Reset();
 
             #region Input Parsing
-            GH_Structure<IGH_Goo> itemsTree;
-            da.GetDataTree(0, out itemsTree);
+
+            da.GetDataTree(0, out GH_Structure<IGH_Goo> itemsTree);
             if (itemsTree.Branches[0][0] as IGH_GeometricGoo == null)
             {
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error,
                    "It looks like you have provided a non-geometry input to the Items parameter. This input should connect to the Nodes, Ways, or Buildings outputs produced by the Extract components.");
                 return;
             }
-            var geometryTest = itemsTree.Branches[0][0] as GH_Point;
-            ProvidedNodes = geometryTest != null;
 
-            GH_Structure<GH_String> tagsTree;
-            da.GetDataTree(1, out tagsTree);
+            ProvidedNodes = itemsTree.Branches[0][0] is GH_Point;
+
+            da.GetDataTree(1, out GH_Structure<GH_String> tagsTree);
             if (tagsTree.Branches[0].Count >= 3)
                 if (tagsTree.Branches[0][2].ToString().Contains(" found"))
                 {
