@@ -52,24 +52,24 @@
             int x = (int)Mouse.Position.X - 5;
             int y = (int)Mouse.Position.Y - 250;
             this.componentForm.Location = new Eto.Drawing.Point(x, y);
-            this.componentForm.Closed += (sender, e) => { StartFormClose(); };
+            this.componentForm.Closed += (sender, e) => { FinishFormClose(sender as BaseForm); };
             this.componentForm.Show();
             this.formIsOpen = true;
         }
 
-        protected void StartFormClose() // Handler for form closure with option for custom state setting
+        protected void FinishFormClose(BaseForm sender) // Handler for form closure with option for custom state setting
         {
-            this.selectableOSMs = this.componentForm.mainRow.GetCurrentData();
-            this.hideObscureFeatures = this.componentForm.shouldHideObscureItems;
-            FinishFormClose();
-        }
+            if (sender.updateStateOnClose) // If saved+closed; not cancelled+closed
+            {
+                this.selectableOSMs = sender.mainRow.GetCurrentData();
+                this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
+                this.ExpireSolution(true); // Recalculate output
+            }
 
-        protected void FinishFormClose()
-        {
-            this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
-            this.ExpireSolution(true); // Recalculate output
+            this.hideObscureFeatures = sender.shouldHideObscureItems;
             this.formIsOpen = false;
         }
+
         #endregion
 
         protected abstract string GetNoSelectionMessage();

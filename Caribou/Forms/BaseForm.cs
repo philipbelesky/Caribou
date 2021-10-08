@@ -13,6 +13,7 @@
         #region Class Variables
         protected readonly TreeGridItemCollection providedSelectionState; // Passed from component during form init
         public bool shouldHideObscureItems; // E.g. toggle obscure features flag
+        public bool updateStateOnClose = false;
 
         public TableStrip mainRow;
         protected DynamicLayout topButtons;
@@ -27,7 +28,7 @@
         #endregion
 
         #region Form Setup
-        public BaseForm(TreeGridItemCollection providedSelectableItems, string formTitle, bool hideObscure) 
+        public BaseForm(TreeGridItemCollection providedSelectableItems, string formTitle, bool hideObscure)
         {
             this.providedSelectionState = providedSelectableItems;
             this.shouldHideObscureItems = hideObscure;
@@ -36,6 +37,7 @@
             this.Title = formTitle;
             this.Resizable = true;
             this.Topmost = true; // Put form atop Grasshopper (MacOS)
+
 
             this.mainRow = new TableStrip(TreeGridUtilities.FilterByObscurity(
                 this.providedSelectionState, this.shouldHideObscureItems));
@@ -126,13 +128,9 @@
             this.mainRow.viewForm.ReloadData();
         }
 
-        private void UpdateAndClose() // Just from the button
-        {
-            this.Close();
-        }
-
-        private void CancelAndClose() // Just from the button
-        {
+        private void CancelAndClose() => this.Close();
+        private void UpdateAndClose() {
+            this.updateStateOnClose = true;
             this.Close();
         }
 
