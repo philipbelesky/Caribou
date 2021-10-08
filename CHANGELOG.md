@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.13.0] - 2021-??-??
 ### Added
-- New *Filter Requests* component that allows users to take the output of any *Extract* component and select Nodes/Ways/Buildings matching specific tags (using the same GUI) within just the tags present in that collection.
+- New *Filter Tags* component that allows users to take the output of any *Extract* component and select Nodes/Ways/Buildings matching specific tags (using the same GUI) within just the tags present in that collection.
 - Option for the *Extract Buildings* component to only output items *without* height data - e.g. so these can be easily isolated and a 'default' height applied.
+- The Selected/Filter forms now bold tags that are either selected, or have a sub-item selected
 
 ### Fixed
 - Improved error reporting behavior when no valid files or keys are specified

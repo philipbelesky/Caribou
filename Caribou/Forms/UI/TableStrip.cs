@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Caribou.Forms.Models;
     using Caribou.Models;
     using Eto.Forms;
 
@@ -24,7 +25,6 @@
         {
             var newValue = FlipCheckbox(item);
             item.SetValue(1, newValue);
-
             foreach (TreeGridItem subItem in item.Children)
             {
                 subItem.SetValue(1, newValue);
@@ -66,6 +66,31 @@
             return newBool.ToString();
         }
 
+        // Styling - set tree grid items to be bold if they or any children are selected
+        void _OnFormatCell(object sender, GridCellFormatEventArgs e)
+        {
+            if (e.Column.HeaderText == "Type")
+            {
+                var checkItem = e.Item as OSMTreeGridItem;
+                var isSelectedOrHasChildSelected = false;
+
+                if (checkItem.IsSelected())
+                    isSelectedOrHasChildSelected = true;
+                else if (checkItem.Children.Count > 0)
+                    foreach (OSMTreeGridItem child in checkItem.Children)
+                        if (child.IsSelected())
+                        {
+                            isSelectedOrHasChildSelected = true;
+                            break;
+                        }
+
+                if (isSelectedOrHasChildSelected)
+                    e.Font = new Eto.Drawing.Font(Eto.Drawing.SystemFont.Bold);
+                else
+                    e.Font = new Eto.Drawing.Font(Eto.Drawing.SystemFont.Default);
+            }
+        }
+
         private TreeGridView GetLayout(TreeGridItemCollection selectableItems)
         {
             var featureSelect = new TreeGridView()
@@ -77,28 +102,23 @@
             featureSelect.CellDoubleClick += this.CellDoubleClickHandler;
             featureSelect.CellClick += this.CellClickHandler;
             featureSelect.ColumnHeaderClick += this.HeaderClickHandler;
+            featureSelect.CellFormatting += _OnFormatCell;
 
             var titleColumn = new GridColumn()
             {
                 HeaderText = "Type",
-                DataCell = new TextBoxCell(0)
-                {
-                    //Binding = Binding.Property<OSMSelectableFeature, string>(r => r.Name)
-                },
+                DataCell = new TextBoxCell(0),
                 Resizable = false,
                 Sortable = false,
                 AutoSize = false,
                 Width = 165, // Don't autosize; hides the arrow buttons on macOS
-            };
+            };            
             featureSelect.Columns.Add(titleColumn);
 
             var checkColumn = new GridColumn()
             {
                 HeaderText = "Select",
-                DataCell = new CheckBoxCell(1)
-                {
-                    //Binding = Binding.Property<OSMSelectableFeature, bool>(r => r.IsSelected)
-                },
+                DataCell = new CheckBoxCell(1),
                 Width = 55,
                 Resizable = false,
                 Sortable = false,
