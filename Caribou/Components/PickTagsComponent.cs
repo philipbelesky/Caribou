@@ -95,8 +95,13 @@
                     availableOSMs, this.storedSelectionState);
                 this.storedSelectionState = null; // Reset flag
             }
+            else
+            {
+                this.selectableOSMs = GetSelectableTagsFromInputTree(requests);
+            }
 
             this.PreviousTagsDescription = tagsTree.DataDescription(false, false); // Track tag input identity
+            this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             logger.NoteTiming("State loading/making");
             #endregion
 
@@ -146,7 +151,6 @@
             var requestReport = TreeFormatters.MakeReportForRequests(foundItemCountsForResult);
             logger.NoteTiming("Tree formatting");
 
-            this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
             this.OutputMessageBelowComponent();
 
             da.SetDataTree(0, geometryOutput);

@@ -63,6 +63,7 @@
             {
                 this.selectableOSMs = sender.mainRow.GetCurrentData();
                 this.selectionStateSerialized = GetSelectedKeyValuesFromForm();
+                this.storedSelectionState = GetStateKeys();
                 this.ExpireSolution(true); // Recalculate output
             }
 
