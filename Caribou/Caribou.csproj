@@ -20,7 +20,6 @@
 
   <!--NUGET-->
   <ItemGroup>
-    <PackageReference Include="Eto.Forms" Version="2.5.0" IncludeAssets="compile;build" />
     <PackageReference Include="Grasshopper" Version="6.10.18308.14011" IncludeAssets="compile;build" />
     <PackageReference Include="Hsluv" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -28,6 +27,12 @@
 
   <!--LOCALLY REFERENCED ASSEMBLIES-->
   <ItemGroup>
+    <Reference Include="Eto">
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.UI">
+      <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />

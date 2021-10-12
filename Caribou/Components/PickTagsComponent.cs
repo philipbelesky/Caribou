@@ -210,6 +210,8 @@
         {
             if (this.selectableOSMs != null) // e.g. if we have connected inputs, and thus state to show in the form
                 OpenForm();
+            else
+                Rhino.UI.Dialogs.ShowTextDialog("No tag data has been provided to pick!", "Notice");
         }
         protected override string GetNoSelectionMessage() => "No Tags Selected";
 
