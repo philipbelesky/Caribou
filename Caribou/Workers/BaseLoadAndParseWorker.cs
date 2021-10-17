@@ -56,12 +56,17 @@
             string typeName = Enum.GetName(typeof(OSMGeometryType), this.WorkerType());
 
             // Validate filepaths
-            foreach (var path in this.providedFilePaths)
+            for (var i = 0; i < this.providedFilePaths.Count; i++)
             {
+                var path = this.providedFilePaths[i];
+                path = path.Replace("\n", "").Replace("\r", "").Trim(); // paths from Panels are messy
                 bool isFilePresent = File.Exists(path);
                 if (!isFilePresent)
                     this.RuntimeMessages.Add(new Message($"Could not find file located at '{path}'", Message.Level.Warning));
+
+                this.providedFilePaths[i] = path;
             }
+
             this.providedFilePaths.RemoveAll(path => !File.Exists(path));
             if (this.providedFilePaths.Count == 0)
             {
@@ -77,56 +82,47 @@
                     "- Using Caribou's Specify Features component (click the button!)\n" +
                     "- Text in a 'key=value' or 'key=*' format separated by commas or newlines";
                 this.RuntimeMessages.Add(new Message(text, Message.Level.Warning));
-                done();
-                return;
+                done(); return;
             }
             this.requestedMetaData = new ParseRequest(this.requestedMetaDataRaw);
 
             reportProgress(Id, 0.02); // Report something in case there is a long node-collection hang when extracting ways 
-            try
+
+            result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
+            logger.NoteTiming("Setup request handler");
+            if (this.CancellationToken.IsCancellationRequested) { done(); return; }
+
+            if (result.LinesPerFile.Contains(-1))
             {
-
-                result = new RequestHandler(providedFilePaths, requestedMetaData, this.WorkerType(), reportProgress, Id);
-                logger.NoteTiming("Setup request handler");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-
-                reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
-                this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
-                logger.NoteTiming($"Extract {typeName}s from data");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-
-                this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
-                logger.NoteTiming("Convert to geometry");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-
-                this.GetTreeForComponentType(); // Form tree structure for Rhino geo
-                boundaries = GetOSMBoundaries.GetBoundariesFromResult(result);
-                logger.NoteTiming("Output geometry");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-
-                this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
-                logger.NoteTiming("Output tags");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-
-                this.requestReport = result.GetTreeForMetaDataReport(); // Form tree structure for found items
-                logger.NoteTiming("Output metadata");
-                if (this.CancellationToken.IsCancellationRequested)
-                    return;
-            }
-            catch (Exception e)
-            {
-                this.RuntimeMessages.Add(new Message(e.Message, Message.Level.Error));
-            }
-            finally
-            {
-                done(); // Must be called to trigger outputs and report messages!
+                var text = "One of the files provided could not be read.\n" +
+                    "Check that the file is in the provided location.\n" +
+                    "If providing a file path via a Panel, check it does not contain spaces, new lines, etc";
+                this.RuntimeMessages.Add(new Message(text, Message.Level.Error));
+                done(); return;
             }
 
+            reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
+            this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
+            logger.NoteTiming($"Extract {typeName}s from data");
+            if (this.CancellationToken.IsCancellationRequested) { done(); return; }
+
+            this.MakeGeometryForComponentType(); // Translate lat/lon data to Rhino geo
+            logger.NoteTiming("Convert to geometry");
+            if (this.CancellationToken.IsCancellationRequested) { done(); return; }
+
+            this.GetTreeForComponentType(); // Form tree structure for Rhino geo
+            boundaries = GetOSMBoundaries.GetBoundariesFromResult(result);
+            logger.NoteTiming("Output geometry");
+            if (this.CancellationToken.IsCancellationRequested) { done(); return; }
+
+            this.itemTags = result.GetTreeForItemTags(); // Form tree structure for key:value data per geo
+            logger.NoteTiming("Output tags");
+            if (this.CancellationToken.IsCancellationRequested) { done(); return; }
+
+            this.requestReport = result.GetTreeForMetaDataReport(); // Form tree structure for found items
+            logger.NoteTiming("Output metadata");
+
+            done(); // Must be called to trigger outputs and report messages!
         }
 
         // Generate type-specific geometry (e.g. way or node)
