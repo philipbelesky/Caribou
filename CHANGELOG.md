@@ -8,19 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.13.0] - 2021-??-??
 ### Added
 - New *Filter Tags* component that allows users to take the output of any *Extract* component and select Nodes/Ways/Buildings matching specific tags (using the same GUI) within just the tags present in that collection.
-- Option for the *Extract Buildings* component to only output items *without* height data - e.g. so these can be easily isolated and a 'default' height applied.
-- The Selected/Filter forms now bold tags that are either selected, or have a sub-item selected
+- Option for the *Extract Buildings* component to only output items *without* height data - e.g. so buildings without a height can be easily isolated and a 'default' height applied.
+- The Selected/Filter forms now indicates (in bold) tags that are either selected, or have a sub-item selected
 
 ### Fixed
+- Improved handling/reporting of file paths that are badly formed or missing
 - Improved error reporting behavior when no valid files or keys are specified
 - Improved message reporting when no geometries were found for the provided tags
 - Building metadata lists now properly match the geometry output
-- Parsing of building heights specified in imperial units 
-- Feature/Tag forms now preserve rolled-out items when toggling for obscure items
+- Parsing of building heights now works with imperial units
+- The Feature/Tag selection forms now preserve rolled-out items when toggling for obscure items
 
 ### Changed
 - All geometry outputs (nodes, ways, buildings) now have a tree structure that matches that of the metadata report. In practice, this means a list of nodes requested for a tag (e.g. `building=garage`) will have an individual path, e.g. the first node is a single item in the path `{0,1}` rather than the first item in a list at path `{0}`.
-- Raised the default 'obscurity' threshold to be 5000 items worldwide (either nodes or curves)
+- Raised the default 'obscurity' threshold to be 5000 items worldwide (either nodes or ways)
 
 ## [0.12.0] - 2021-08-18
 ### Added
