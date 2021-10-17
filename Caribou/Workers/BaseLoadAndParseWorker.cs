@@ -44,7 +44,7 @@
         protected abstract OSMGeometryType WorkerType();
 
         // Parse the XML to extract component specific results
-        public void ExtractCoordsForComponentType(Action<string, double> reportProgress)
+        public void ExtractCoordsForComponentType()
         {
             ParseViaXMLReader.FindItemsByTag(ref this.result, this.WorkerType());
         }
@@ -102,7 +102,7 @@
             }
 
             reportProgress(Id, 0.03); // Report something in case there is a long node-collection hang when extracting ways 
-            this.ExtractCoordsForComponentType(reportProgress); // Parse XML for lat/lon data
+            this.ExtractCoordsForComponentType(); // Parse XML for lat/lon data
             logger.NoteTiming($"Extract {typeName}s from data");
             if (this.CancellationToken.IsCancellationRequested) { done(); return; }
 

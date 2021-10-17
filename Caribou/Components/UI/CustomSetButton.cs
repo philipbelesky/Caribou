@@ -15,9 +15,9 @@
     {
         // Adapted from https://www.grasshopper3d.com/forum/topics/create-radio-button-on-grasshopper-component?commentId=2985220%3AComment%3A835552
         private System.Drawing.Rectangle ButtonBounds { get; set; }
-        private Action buttonClickHandler;
-        private int buttonHeight = 45;
-        private string title;
+        private readonly Action buttonClickHandler;
+        private readonly int buttonHeight = 45;
+        private readonly string title;
         
         public CustomSetButton(CaribouComponent owner, string title, Action openFormCallback) : base(owner) {
             this.buttonClickHandler = openFormCallback;

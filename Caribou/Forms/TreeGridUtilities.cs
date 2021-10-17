@@ -104,8 +104,7 @@
         {
             string value = item.OSMData.Value;
 
-            double i;
-            bool success = double.TryParse(value, out i);
+            bool success = double.TryParse(value, out var i);
             return success ? (double?)i : (double?)null;
         }
     }
