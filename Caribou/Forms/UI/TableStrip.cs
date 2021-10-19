@@ -8,6 +8,11 @@
     /// <summary>The 'main' layout for feature/subfeature selection within the window</summary>
     public class TableStrip
     {
+        public const string TagTypeLabel = "Type";
+        private const string SelectTagLabel = "Select";
+        private const string TagKVLabel = "Key=Value Format";
+        private const string TagWikiLabel = "Wiki Link";
+
         public TreeGridView viewForm;
 
         public TableStrip(TreeGridItemCollection selectionState)
@@ -59,8 +64,7 @@
         private string FlipCheckbox(TreeGridItem item) // to string, flip, and back again
         {
             var currentValue = item.GetValue(1);
-            bool currentBool;
-            bool.TryParse(currentValue as string, out currentBool);
+            bool.TryParse(currentValue as string, out var currentBool);
             bool newBool = !currentBool;
             return newBool.ToString();
         }
@@ -70,7 +74,7 @@
         {
             switch (e.Column.HeaderText)
             {
-                case "Type":
+                case TagTypeLabel:
                     var checkItem = e.Item as OSMTreeGridItem;
                     var isSelectedOrHasChildSelected = false;
 
@@ -90,18 +94,25 @@
                         e.Font = new Font(SystemFont.Default);
                     break;
 
-                case "Wiki Info":
+                case TagWikiLabel:
                     e.ForegroundColor = new ColorHSL(230f, 1.0f, 0.5f);
                     break;
 
+                case TagKVLabel:
+                    e.ForegroundColor = new ColorHSL(0f, 0f, 0.33f);
+                    e.Font = new Font(FontFamilies.Sans, 8.0f, FontStyle.None);
+                    break;
+
                 case "Description":
-                    e.Font = new Font(FontFamilies.Sans, 9.0f, FontStyle.Italic);
+                    e.Font = new Font(FontFamilies.Sans, 8.0f, FontStyle.Italic);
                     break;
             }
         }
 
         private TreeGridView GetLayout(TreeGridItemCollection selectableItems)
         {
+            var isMacOS = Eto.Platform.Detect.IsMac;
+
             var featureSelect = new TreeGridView()
             {
                 GridLines = GridLines.Horizontal,
@@ -115,20 +126,20 @@
 
             var titleColumn = new GridColumn()
             {
-                HeaderText = "Type",
+                HeaderText = TagTypeLabel,
                 DataCell = new TextBoxCell(0),
                 Resizable = false,
                 Sortable = false,
                 AutoSize = false,
-                Width = 165, // Don't autosize; hides the arrow buttons on macOS
+                Width = 220, // Don't autosize; hides the arrow buttons on macOS
             };            
             featureSelect.Columns.Add(titleColumn);
 
             var checkColumn = new GridColumn()
             {
-                HeaderText = "Select",
+                HeaderText = SelectTagLabel,
                 DataCell = new CheckBoxCell(1),
-                Width = 55,
+                Width = isMacOS ? 53 : 44, // 53 minimum macOS without ellipses 
                 Resizable = false,
                 Sortable = false,
             };
@@ -140,7 +151,7 @@
                 DataCell = new TextBoxCell(2),
                 Resizable = false,
                 Sortable = false,
-                Width = 85,
+                Width = isMacOS ? 98 : 88,
             };
             featureSelect.Columns.Add(nodeColumn);
 
@@ -150,28 +161,28 @@
                 DataCell = new TextBoxCell(3),
                 Resizable = false,
                 Sortable = false,
-                Width = 85,
+                Width = isMacOS ? 98 : 88,
             };
             featureSelect.Columns.Add(wayColumn);
 
             var keyValueColumn = new GridColumn()
             {
-                HeaderText = "K:V Format",
+                HeaderText = TagKVLabel,
                 DataCell = new TextBoxCell(4),
                 Resizable = false,
                 Sortable = false,
                 AutoSize = false,
-                Width = 150,
+                Width = isMacOS ? 130 : 130,
             };
             featureSelect.Columns.Add(keyValueColumn);
 
             var linkColumn = new GridColumn()
             {
-                HeaderText = "Wiki Info",
+                HeaderText = TagWikiLabel,
                 DataCell = new TextBoxCell(5),
                 Resizable = false,
                 Sortable = false,
-                AutoSize = true,
+                Width = isMacOS ? 67 : 62, // 67 minimum macOS without ellipses 
             };
             featureSelect.Columns.Add(linkColumn);
 
