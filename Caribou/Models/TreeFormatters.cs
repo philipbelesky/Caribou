@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Drawing;
-    using Caribou.Data;
+    using Caribou.Models;
     using Grasshopper.Kernel.Data;
     using Grasshopper.Kernel.Types;
     using Rhino.Geometry;
@@ -35,27 +35,28 @@
             return output;
         }
 
-        public static GH_Structure<GH_String> MakeTreeForMetaDataReport(RequestHandler result)
+        public static GH_Structure<GH_String> MakeReportForRequests(
+            Dictionary<OSMTag, int> foundItemsForResult)
         {
             var output = new GH_Structure<GH_String>();
             var tInfo = CultureInfo.CurrentCulture.TextInfo;
 
-            var requestMetaDataCount = result.RequestedMetaData.Requests.Count;
-            for (int i = 0; i < requestMetaDataCount; i++)
+            var requestMetaDataItems = foundItemsForResult.Keys.ToList();
+            for (int i = 0; i < requestMetaDataItems.Count; i++)
             {
+                var metaData = requestMetaDataItems[i];
                 GH_Path path = new GH_Path(i);
-                var metaData = result.RequestedMetaData.Requests[i];
-                var count = result.FoundData[metaData].Count;
-                var colorForItem = GetPerceptualColorForTreeItem(requestMetaDataCount, i);
+                var count = foundItemsForResult[metaData];
+                var colorForItem = GetPerceptualColorForTreeItem(requestMetaDataItems.Count, i);
                 var metaDataTitle = tInfo.ToTitleCase(metaData.Name);
 
                 output.Append(new GH_String(metaDataTitle), path);
                 output.Append(new GH_String(metaData.ToString()), path);
                 output.Append(new GH_String($"{count} found"), path);
                 output.Append(new GH_String(colorForItem.ToString()));
-                if (metaData.ParentType != null)
+                if (metaData.Key != null)
                 {
-                    var titleName = tInfo.ToTitleCase(metaData.ParentType.Name);
+                    var titleName = tInfo.ToTitleCase(metaData.Key.Name);
                     output.Append(new GH_String(titleName), path);
                     var layerName = titleName + "::" + metaDataTitle;
                     output.Append(new GH_String(layerName), path); // Layer path helper
@@ -66,27 +67,28 @@
                     output.Append(new GH_String(metaDataTitle + "::"), path); // Layer path helper
                 }
 
-                if (!string.IsNullOrEmpty(metaData.Explanation))
+                if (!string.IsNullOrEmpty(metaData.Description))
                 {
-                    output.Append(new GH_String($"Defined as: {metaData.Explanation}"), path);
+                    output.Append(new GH_String($"Defined as: {metaData.Description}"), path);
                 }
             }
 
             return output;
         }
 
-        public static GH_Structure<GH_Point> MakeTreeForNodes(Dictionary<OSMMetaData, List<Point3d>> foundNodes)
+        public static GH_Structure<GH_Point> MakeTreeForNodes(Dictionary<OSMTag, List<Point3d>> foundNodes)
         {
             var output = new GH_Structure<GH_Point>();
             var i = 0;
 
             foreach (var entry in foundNodes)
             {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pt in entry.Value)
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Point(pt), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Point pointForPath = new GH_Point(entry.Value[j]);
+                    output.Append(pointForPath, path);
                 }
                 i++;
             }
@@ -94,18 +96,19 @@
             return output;
         }
 
-        public static GH_Structure<GH_Curve> MakeTreeForWays(Dictionary<OSMMetaData, List<PolylineCurve>> foundWays)
+        public static GH_Structure<GH_Curve> MakeTreeForWays(Dictionary<OSMTag, List<PolylineCurve>> foundWays)
         {
             var output = new GH_Structure<GH_Curve>();
             var i = 0;
 
             foreach (var entry in foundWays)
             {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pLine in entry.Value)
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Curve(pLine), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Curve lineForPath = new GH_Curve(entry.Value[j]);
+                    output.Append(lineForPath, path);
                 }
                 i++;
             }
@@ -113,18 +116,19 @@
             return output;
         }
 
-        public static GH_Structure<GH_Surface> MakeTreeForBuildings(Dictionary<OSMMetaData, List<Surface>> foundBuildings)
+        public static GH_Structure<GH_Brep> MakeTreeForBuildings(Dictionary<OSMTag, List<Brep>> foundBuildings)
         {
-            var output = new GH_Structure<GH_Surface>();
+            var output = new GH_Structure<GH_Brep>();
             var i = 0;
 
             foreach (var entry in foundBuildings)
-            {
-                GH_Path path = new GH_Path(i);
-                output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
-                foreach (var pBuilding in entry.Value)
+            { 
+                for (int j = 0; j < entry.Value.Count; j++)
                 {
-                    output.Append(new GH_Surface(pBuilding), path);
+                    GH_Path path = new GH_Path(i, j); // Need to ensure even an empty path exists to enable data matching
+                    output.EnsurePath(path); // Need to ensure even an empty path exists to enable data matching
+                    GH_Brep brepForPath = new GH_Brep(entry.Value[j]);
+                    output.Append(brepForPath, path);
                 }
                 i++;
             }

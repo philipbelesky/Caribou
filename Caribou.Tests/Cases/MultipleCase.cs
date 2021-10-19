@@ -1,14 +1,8 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Cases
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Caribou.Components;
-    using Caribou.Data;
-    using Caribou.Processing;
-    using Caribou.Tests.Processing;
+    using Caribou.Models;
+    using Caribou.Tests.Parsing;
 
     public class MultipleCase : BaseParsingTest
     {
@@ -19,10 +13,10 @@
         };
 
         protected static readonly ParseRequest mainFeatures = new ParseRequest(
-            new List<OSMMetaData>() {
-                new OSMMetaData("craft"), // x nodes x ways
-                new OSMMetaData("Amenity"), // x nodes x ways
-                new OSMMetaData("building")  // x nodes x ways
+            new List<OSMTag>() {
+                new OSMTag("craft"), // x nodes x ways
+                new OSMTag("Amenity"), // x nodes x ways
+                new OSMTag("building")  // x nodes x ways
             }
         );
 
@@ -31,6 +25,6 @@
                 "amenity=restaurant", // x nodes x ways
                 "Craft=JEWELLER", // x nodes x ways
                 "building=retail", // x nodes x ways
-            }, ref messages); 
+            });
     }
 }

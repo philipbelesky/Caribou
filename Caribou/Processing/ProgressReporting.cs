@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Caribou.Data;
-
-namespace Caribou.Models
+﻿namespace Caribou.Processing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using Caribou.Models;
+
     /// <summary>
     /// Utilities for determining the initial line counts and during-processing progress for % reporting
     /// </summary>
@@ -39,11 +39,16 @@ namespace Caribou.Models
             var count = new List<int>();
             foreach (var filePath in xmlFilePaths)
             {
-                int linesForFile = File.ReadLines(filePath).Count();
-                if (typeToFind == OSMGeometryType.Node)
-                    linesForFile = Convert.ToInt32(linesForFile * 0.55); // Only half of the amount of a file is nodes
-
-                count.Add(linesForFile);
+                try
+                {
+                    int linesForFile = File.ReadLines(filePath).Count();
+                    if (typeToFind == OSMGeometryType.Node)
+                        linesForFile = Convert.ToInt32(linesForFile * 0.55); // Only half of the amount of a file is nodes
+                    count.Add(linesForFile);
+                }
+                catch { // Usually when file path is unreadable/reachable
+                    count.Add(-1);
+                }                
             }
             return count;
         }

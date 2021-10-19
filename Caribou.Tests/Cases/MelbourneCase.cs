@@ -1,14 +1,8 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Cases
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Caribou.Components;
-    using Caribou.Data;
-    using Caribou.Processing;
-    using Caribou.Tests.Processing;
+    using Caribou.Models;
+    using Caribou.Tests.Parsing;
 
     public class MelbourneCase : BaseParsingTest
     {
@@ -17,10 +11,10 @@
         };
 
         protected static readonly ParseRequest mainFeatures = new ParseRequest(
-            new List<OSMMetaData>() {
-                new OSMMetaData("amenity"), // 610 nodes 45 ways
-                new OSMMetaData("HIGHWAY"),  // 143 nodes, 615 ways
-                new OSMMetaData("building") // 140 nodes, 466 ways
+            new List<OSMTag>() {
+                new OSMTag("amenity"), // 610 nodes 45 ways
+                new OSMTag("HIGHWAY"),  // 143 nodes, 615 ways
+                new OSMTag("building") // 140 nodes, 466 ways
             }
         );
 
@@ -31,6 +25,6 @@
                 "highway=Residential", // 0 nodes; 5 ways
                 "highway=residential", // 0 nodes; 5 ways
                 "building=retail" // // 130 nodes 19 ways
-            }, ref messages);
+            });
     }
 }

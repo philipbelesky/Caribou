@@ -1,6 +1,7 @@
-﻿namespace Caribou.Tests
+﻿namespace Caribou.Tests.Models
 {
-    using Caribou.Data;
+    using Caribou.Models;
+    using Caribou.Tests.Cases;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

@@ -1,10 +1,8 @@
-﻿namespace Caribou.Data
+﻿namespace Caribou.Models
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using Caribou.Components;
 
     /// <summary>
     /// A wrapper around a list of OSMMetaData items. These are requested metadata tags to find.
@@ -12,76 +10,51 @@
     /// </summary>
     public struct ParseRequest
     {
-        public List<OSMMetaData> Requests;
-        public const char SplitChar = '='; // Can't use ":" because that is used within OSM keys, like addr:housenumber
+        public List<OSMTag> Requests;
 
-        public ParseRequest(List<string> metaDataRawValues, ref MessagesWrapper messages)
+        // Requests coming to a list input in Grasshopper, e.g. the Find components via Specify or Panel outputs
+        public ParseRequest(List<string> metaDataRawValues)
         {
-            if (metaDataRawValues.Count == 0)
-            {
-                messages.AddWarning("No feature keys provided. Please provide them via:\n" +
-                    "- One of Caribou's Specify components." + 
-                    "- Text parameters in a 'key=value' or 'key=*' format separated by commas or newlines\n");
-            }
+            var cleanedGhInput = SplitTextStreamIntoIndividualItems(metaDataRawValues);
 
-            var cleanedGhInput = new List<string>();
-
-            // Split up the big list of strings into an array of single key:values
-            foreach (string inputString in metaDataRawValues)
-            {
-                string[] lines = inputString.Split(
-                    new[] { "\r\n", "\r", "\n", "," }, // Split on new lines and on commas
-                    StringSplitOptions.None);
-
-                for (var i = 0; i < lines.Length; i++)
-                {
-                    cleanedGhInput.Add(lines[i].Trim().ToLower(CultureInfo.InvariantCulture));
-                }
-            }
-
-            this.Requests = new List<OSMMetaData>();
             // Transform the key:value formatted strings into OSM items and assign them
+            this.Requests = new List<OSMTag>();
             foreach (string inputString in cleanedGhInput)
             {
-                var osmItem = ParseItemToOSMMetaData(inputString);
+                var osmItem = new OSMTag(inputString);
                 if (osmItem != null)
                 {
                     if (!this.Requests.Contains(osmItem)) // Prevent duplicates
-                    {
                         this.Requests.Add(osmItem);
-                    }
                 }
             }
         }
 
         // This constructor is mostly just used to enable testing
-        public ParseRequest(List<OSMMetaData> prepackagedData)
+        public ParseRequest(List<OSMTag> prepackagedData)
         {
             this.Requests = prepackagedData;
         }
 
-        public static OSMMetaData ParseItemToOSMMetaData(string inputString)
+        /// <summary>Take a list of strings that may or may not be individual items and/or list items</summary>
+        public static List<string> SplitTextStreamIntoIndividualItems(List<string> rawText)
         {
-            List<OSMMetaData> foundItems = new List<OSMMetaData>();
-
-            if (inputString.Length == 0)
+            var cleanedItems = new List<string>();
+            // Split up the big list of strings into an array of single key:values
+            foreach (string inputString in rawText)
             {
-                return null;
-            }
+                string[] lines = inputString.ToString().Split(
+                    new[] { "\r\n", "\r", "\n", "," }, // Split on new lines and on commas
+                    StringSplitOptions.None);
 
-            var osmKey = inputString.Trim().Split(SplitChar)[0];
-            if (inputString.Trim().Split(SplitChar).Length >= 2)
-            {
-                var osmValue = inputString.Trim().Split(SplitChar)[1];
-                if (osmValue != "*" && !string.IsNullOrEmpty(osmValue))
+                for (var i = 0; i < lines.Length; i++)
                 {
-                    // If dealing with a pair, e.g. amenity:restaurant
-                    return new OSMMetaData(osmValue, osmKey);
+                    var cleanedKeyValue = lines[i].Trim().Replace(",", string.Empty);
+                    if (!string.IsNullOrEmpty(lines[i]))
+                        cleanedItems.Add(cleanedKeyValue.ToLower(CultureInfo.InvariantCulture));
                 }
             }
-
-            // If dealing with a top level item, e.g. geological (or geological: or geological:*)
-            return new OSMMetaData(osmKey);
+            return cleanedItems;
         }
     }
 }

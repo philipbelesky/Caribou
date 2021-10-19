@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using Caribou.Processing;
-    using Caribou.Data;
+    using Caribou.Models;
 
     public class MelbourneBenchmarks
     {

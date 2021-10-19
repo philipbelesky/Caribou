@@ -1,4 +1,4 @@
-﻿namespace Caribou.Data
+﻿namespace Caribou.Models
 {
     /// <summary>Just a convenient equivalent to Point for geographic coordinates.</summary>
     public struct Coord

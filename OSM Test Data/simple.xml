@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API 0.7.56.1004 6cd3eaec">
+<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+<meta osm_base="2020-07-23T08:46:02Z"/>
+  <bounds minlat="-37.9164200" minlon="144.9627400" maxlat="-37.8089200" maxlon="144.9710600"/>
+  <node id="1" lat="-37.8134515" lon="144.9689196" version="1" timestamp="2017-04-15T22:43:13Z" changeset="47826499" uid="4633898" user="monena41">
+    <tag k="amenity" v="restaurant"/>
+    <tag k="addr:street" v="Swanston Street"/>
+  </node>
+  <node id="2" lat="-37.8129890" lon="144.9628410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+    <tag k="craft" v="jeweller"/>
+    <tag k="wikipedia" v="en:Uncut Gems"/>
+  </node>
+  <node id="3" lat="-37.8149890" lon="144.9658410" version="1" timestamp="2015-12-05T04:06:40Z" changeset="35761955" uid="57437" user="Canley">
+    <tag k="craft" v="falconry"/>
+    <tag k="building" v="retail"/>
+    <tag k="name" v="Ye Olde Falcon Store"/>
+  </node>
+  <node id="4" lat="-37.8156850" lon="144.9649280" version="8" timestamp="2019-03-27T08:13:08Z" changeset="68576545" uid="9451067" user="b-jazz-bot">
+    <tag k="building" v="retail"/>
+    <tag k="tram_stop" v="yes"/>
+    <tag k="addr:street" v="Swanston Street"/>
+  </node>
+  <node id="5" lat="-37.8154598" lon="144.9630487" version="3" timestamp="2018-12-28T04:33:46Z" changeset="65831015" uid="2506908" user="philam48"/>
+  <node id="6" lat="-37.815393" lon="144.963241" version="4" timestamp="2018-12-28T04:33:46Z" changeset="65831015" uid="2506908" user="philam48"/>
+  <node id="7" lat="-37.815528" lon="144.963295" version="5" timestamp="2019-09-16T22:47:51Z" changeset="74552383" uid="2506908" user="philam48"/>
+  <node id="8" lat="-37.81558" lon="144.963115" version="1" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48"/>
+  <node id="9" lat="-37.815641" lon="144.963142" version="1" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48"/>
+  <way id="1" version="3" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48">
+    <nd ref="5"/>
+    <nd ref="6"/>
+    <nd ref="7"/>
+    <nd ref="8"/>
+    <nd ref="5"/>
+    <tag k="building" v="yes"/>
+    <tag k="building:height" v="26 m"/>
+    <tag k="craft" v="falconry"/>
+    <tag k="name" v="Equitable House"/>
+    <tag k="addr:street" v="Swanston Street"/>
+  </way>
+  <way id="2" version="3" timestamp="2019-10-30T20:45:12Z" changeset="76414657" uid="2506908" user="philam48">
+    <nd ref="7"/>
+    <nd ref="8"/>
+    <nd ref="9"/>
+    <nd ref="7"/>
+    <tag k="craft" v="jeweller"/>
+    <tag k="building:levels" v="5"/>
+    <tag k="route_master" v="tram"/>
+    <tag k="name" v="Equitable Plaza"/>
+    <tag k="wikipedia" v="en:Test"/>
+  </way>
+  <relation id="9056" version="176" timestamp="2017-04-07T11:56:58Z" changeset="47537174" uid="838520" user="Pizza1016">
+    <member type="relation" ref="6170460" role=""/>
+    <member type="relation" ref="6170459" role=""/>
+    <member type="relation" ref="6305927" role=""/>
+    <member type="relation" ref="6386782" role=""/>
+    <tag k="route_master" v="tram"/>
+    <tag k="type" v="route_master"/>
+    <tag k="wikidata" v="Q6811967"/>
+    <tag k="wikipedia" v="en:Melbourne tram route 70"/>
+  </relation>
+</osm>

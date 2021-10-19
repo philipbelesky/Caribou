@@ -3,6 +3,7 @@
     using System;
     using Caribou.Components;
     using Caribou.Properties;
+    using Caribou.Workers;
     using Grasshopper.Kernel;
 
     /// <summary>Identifies and outputs all OSM way-type items that building tags alongside any of the requested metadata. Logic in worker.</summary>
@@ -14,9 +15,16 @@
             this.BaseWorker = new ParseBuildingsWorker(this);
         }
 
+        protected override void RegisterExtraInputParams(GH_InputParamManager pManager)
+        {
+            pManager.AddBooleanParameter("Output Heighted", "OH?", 
+                "If true, only outputs buildings with height data. If false, only outputs buildings without height data.", 
+                GH_ParamAccess.item, true);
+        }
+
         protected override void CaribouRegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddSurfaceParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
+            pManager.AddBrepParameter("Buildings", "B", "Buildings as extrusions from associated way geometries", GH_ParamAccess.tree);
             AddCommonOutputParams(pManager);
         }
 

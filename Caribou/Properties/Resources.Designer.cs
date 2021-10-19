@@ -69,33 +69,13 @@ namespace Caribou.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons_buildings1 {
-            get {
-                object obj = ResourceManager.GetObject("icons_buildings1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap icons_nodes {
             get {
                 object obj = ResourceManager.GetObject("icons_nodes", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons_nodes1 {
-            get {
-                object obj = ResourceManager.GetObject("icons_nodes1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,16 +93,6 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons_plugin1 {
-            get {
-                object obj = ResourceManager.GetObject("icons_plugin1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icons_select {
             get {
                 object obj = ResourceManager.GetObject("icons_select", resourceCulture);
@@ -133,13 +103,13 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons_select1 {
+        internal static System.Drawing.Bitmap icons_filter {
             get {
-                object obj = ResourceManager.GetObject("icons_select1", resourceCulture);
+                object obj = ResourceManager.GetObject("icons_filter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -151,19 +121,9 @@ namespace Caribou.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons_ways1 {
-            get {
-                object obj = ResourceManager.GetObject("icons_ways1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] KeyData {
+        internal static byte[] KeyValueData {
             get {
                 object obj = ResourceManager.GetObject("KeyData", resourceCulture);
                 return ((byte[])(obj));
@@ -173,9 +133,9 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] SubFeatureData {
+        internal static byte[] PrimaryValuesData {
             get {
-                object obj = ResourceManager.GetObject("SubFeatureData", resourceCulture);
+                object obj = ResourceManager.GetObject("PrimaryValuesData", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -183,9 +143,9 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] TagData {
+        internal static byte[] KeyData {
             get {
-                object obj = ResourceManager.GetObject("TagData", resourceCulture);
+                object obj = ResourceManager.GetObject("KeyData", resourceCulture);
                 return ((byte[])(obj));
             }
         }
