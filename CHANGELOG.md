@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.13.0] - 2021-??-??
+## [0.13.0] - 2021-10-19
 ### Added
 - New *Filter Tags* component that allows users to take the output of any *Extract* component and select Nodes/Ways/Buildings matching specific tags (using the same GUI) within just the tags present in that collection.
 - Option for the *Extract Buildings* component to only output items *without* height data - e.g. so buildings without a height can be easily isolated and a 'default' height applied.
