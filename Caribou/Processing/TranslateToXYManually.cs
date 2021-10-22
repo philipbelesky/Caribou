@@ -66,39 +66,37 @@
 
                 for (int i = entry.Value.Count - 1; i >= 0; i--)
                 {
-                    var linePoints = new List<Point3d>();
-
+                    var outlinePoints = new List<Point3d>();
                     foreach (var coord in entry.Value[i].Coords)
-                    {
-                        var pt = GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds);
-                        linePoints.Add(pt);
-                    }
+                        outlinePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds));
 
-                    var polyLine = new PolylineCurve(linePoints); // Creating a polylinecurve from scratch makes invalid geometry
+                    var outline = new PolylineCurve(outlinePoints); // Creating a polylinecurve from scratch makes invalid geometry
+
                     var height = GetBuildingHeights.ParseHeight(entry.Value[i].Tags, unitScale);
-
                     if (outputHeighted && height > 0.0) // Output heighted buildings
                     {
-                        if (polyLine.ClosedCurveOrientation() == CurveOrientation.Clockwise)
-                            height *= -1; // If curve plane's Z != global Z; extrude in opposite direction
+                        var toHeight = new Vector3d(0, 0, height);
 
-                        var builtVolume = Extrusion.Create(polyLine, height, true);
-                        geometryResult[entry.Key].Add(builtVolume.ToBrep());
+                        var envelope = Surface.CreateExtrusion(outline, toHeight);
+                        var floor = Brep.CreatePlanarBreps(outline, tolerance);
+                        outline.Translate(toHeight);
+                        var roof = Brep.CreatePlanarBreps(outline, tolerance);
+
+                        var volume = Brep.JoinBreps(new Brep[] { floor[0], envelope.ToBrep(), roof[0] }, tolerance);
+                        geometryResult[entry.Key].Add(volume[0]);
                     }
                     else if (!outputHeighted && height == 0.0) // Output unheighted buildings
                     {
-                        var builtSurface = Brep.CreatePlanarBreps(polyLine, tolerance);
+                        var builtSurface = Brep.CreatePlanarBreps(outline, tolerance);
                         if (builtSurface != null && builtSurface.Length > 0)
                             geometryResult[entry.Key].Add(builtSurface[0]);
                     }
-                    else // Item wasn't matched, so should be removed from result so it's metadata is not output
-                    {
+                    else // Item wasn't matched, so should be removed from result so its metadata is not output
                         entry.Value.RemoveAt(i);
-                    }
                 }
+
                 geometryResult[entry.Key].Reverse(); // We iterated in reverse order, so swap list back to right direction
             }
-
 
             return geometryResult;
         }
