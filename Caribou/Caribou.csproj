@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <VersionPrefix>0.12.0</VersionPrefix>
+    <VersionPrefix>0.13.1</VersionPrefix>
     <VersionSuffix>beta</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
@@ -54,17 +54,6 @@
   </ItemGroup>
 
   <!--BUILDS-->
-  <!--Make Unit-Testable DLLs-->
-  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
-    <PostBuildEvent>
-      echo f | xcopy "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou\bin\ForTests\Caribou.dll" /y /i
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([MSBuild]::IsOSUnixLike())">
-    <PostBuildEvent>
-      cp "$(TargetDir)Caribou.gha" "$(SolutionDir)Caribou/bin/ForTests/Caribou.dll"
-    </PostBuildEvent>
-  </PropertyGroup>
   <!-- Don't provide pdb file for release builds -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>

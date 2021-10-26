@@ -16,12 +16,21 @@
 
   <!-- Both the project and assembly reference seem to be required for tests to not skip -->
   <ItemGroup>
-    <ProjectReference Include="..\Caribou\Caribou.csproj" />
+    <ProjectReference Include="..\Caribou\Caribou.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Caribou">
-      <HintPath>..\Caribou\bin\ForTests\Caribou.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+
+  <!--Make Unit-Testable DLLs (Caribou, as a referenced project, is copied over as a gha -->
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
+    <PostBuildEvent>
+      echo f | xcopy "$(TargetDir)Caribou.gha" "$(TargetDir)Caribou.dll" /y /i
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([MSBuild]::IsOSUnixLike())">
+    <PostBuildEvent>
+      cp "$(TargetDir)Caribou.gha" "$(TargetDir)Caribou.dll"
+    </PostBuildEvent>
+  </PropertyGroup>
 
 </Project>

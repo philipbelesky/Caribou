@@ -1,7 +1,7 @@
 # Release Checklist
 
 1. Bump version numbers in:
-  1. Assembly / Visual Studio
+  1. `VersionPrefix` and `AssemblyVersion` and `FileVersion`in `Caribou.csproj`
   2. Yak `manifest.yml`
   3. Definitions, `Caribou, Version=0.13.1.0` string
 2. Update CHANGELOG date
