@@ -35,8 +35,8 @@
             //            }
 
             //            var tagValue = result.Attributes("v").First().Value;
-            //            var lat = Convert.ToDouble(result.Parent.Attributes("lat").First().Value);
-            //            var lon = Convert.ToDouble(result.Parent.Attributes("lon").First().Value);
+            //            var lat = Convert.ToDouble(result.Parent.Attributes("lat").First().Value, System.Globalization.CultureInfo.InvariantCulture);
+            //            var lon = Convert.ToDouble(result.Parent.Attributes("lon").First().Value, System.Globalization.CultureInfo.InvariantCulture);
             //            matches.AddNodeGivenFeature(tagKey, tagValue, new Coord(lat, lon));
             //        }
             //    }
@@ -56,8 +56,8 @@
             //                    continue;
             //                }
 
-            //                var lat = Convert.ToDouble(result.Attributes("lat").First().Value);
-            //                var lon = Convert.ToDouble(result.Attributes("lon").First().Value);
+            //                var lat = Convert.ToDouble(result.Attributes("lat").First().Value, System.Globalization.CultureInfo.InvariantCulture);
+            //                var lon = Convert.ToDouble(result.Attributes("lon").First().Value, System.Globalization.CultureInfo.InvariantCulture);
             //                matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, new Coord(lat, lon));
             //            }
             //        }
@@ -80,10 +80,10 @@
             {
                 var xml = XDocument.Parse(providedXML);
                 var boundsElement = (from el in xml.Descendants("bounds") select el).First();
-                var minLat = Convert.ToDouble(boundsElement.Attributes("minlat").First().Value);
-                var minLon = Convert.ToDouble(boundsElement.Attributes("minlon").First().Value);
-                var maxLat = Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value);
-                var maxLon = Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value);
+                var minLat = Convert.ToDouble(boundsElement.Attributes("minlat").First().Value, System.Globalization.CultureInfo.InvariantCulture);
+                var minLon = Convert.ToDouble(boundsElement.Attributes("minlon").First().Value, System.Globalization.CultureInfo.InvariantCulture);
+                var maxLat = Convert.ToDouble(boundsElement.Attributes("maxlat").First().Value, System.Globalization.CultureInfo.InvariantCulture);
+                var maxLon = Convert.ToDouble(boundsElement.Attributes("maxlon").First().Value, System.Globalization.CultureInfo.InvariantCulture);
                 var bounds = new Tuple<Coord, Coord>(new Coord(minLat, minLon), new Coord(maxLat, maxLon));
                 result.AllBounds.Add(bounds);
                 CheckBounds(bounds, ref currentMinLat, ref currentMinLon, ref currentMaxLat, ref currentMaxLon);

@@ -32,8 +32,8 @@
             //        foreach (XmlNode featureTag in nodeList)
             //        {
             //            var tagValue = featureTag.Attributes.GetNamedItem("v").Value;
-            //            lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
-            //            lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+            //            lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
+            //            lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value, System.Globalization.CultureInfo.InvariantCulture);
             //            matches.AddNodeGivenFeature(tagKey, tagValue, new Coord(lat, lon));
             //        }
             //    }
@@ -45,8 +45,8 @@
             //            nodeList = root.SelectNodes("/osm/node/tag[@k='" + tagKey + "' and @v='" + tagValue + "']");
             //            foreach (XmlNode featureTag in nodeList)
             //            {
-            //                lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value);
-            //                lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value);
+            //                lat = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
+            //                lon = Convert.ToDouble(featureTag.ParentNode.Attributes.GetNamedItem("lon").Value, System.Globalization.CultureInfo.InvariantCulture);
             //                matches.AddNodeGivenFeatureAndSubFeature(tagKey, tagValue, new Coord(lat, lon));
             //            }
             //        }
@@ -80,25 +80,25 @@
         private static void CheckBounds(XmlNode node, ref double? currentMinLat, ref double? currentMinLon,
                                                          ref double? currentMaxLat, ref double? currentMaxLon)
         {
-            var boundsMinLat = Convert.ToDouble(node.Attributes.GetNamedItem("minlat").Value);
+            var boundsMinLat = Convert.ToDouble(node.Attributes.GetNamedItem("minlat").Value, System.Globalization.CultureInfo.InvariantCulture);
             if (!currentMinLat.HasValue || boundsMinLat < currentMinLat)
             {
                 currentMinLat = boundsMinLat;
             }
 
-            var boundsMinLon = Convert.ToDouble(node.Attributes.GetNamedItem("minlon").Value);
+            var boundsMinLon = Convert.ToDouble(node.Attributes.GetNamedItem("minlon").Value, System.Globalization.CultureInfo.InvariantCulture);
             if (!currentMinLon.HasValue || boundsMinLon < currentMinLon)
             {
                 currentMinLon = boundsMinLon;
             }
 
-            var boundsMaxLat = Convert.ToDouble(node.Attributes.GetNamedItem("maxlat").Value);
+            var boundsMaxLat = Convert.ToDouble(node.Attributes.GetNamedItem("maxlat").Value, System.Globalization.CultureInfo.InvariantCulture);
             if (!currentMaxLat.HasValue || boundsMaxLat > currentMaxLat)
             {
                 currentMaxLat = boundsMaxLat;
             }
 
-            var boundsMaxLon = Convert.ToDouble(node.Attributes.GetNamedItem("maxlon").Value);
+            var boundsMaxLon = Convert.ToDouble(node.Attributes.GetNamedItem("maxlon").Value, System.Globalization.CultureInfo.InvariantCulture);
             if (!currentMaxLon.HasValue || boundsMaxLon > currentMaxLon)
             {
                 currentMaxLon = boundsMaxLon;
