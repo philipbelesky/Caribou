@@ -14,7 +14,7 @@
     {
         private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, 
                                                int fileIndex, bool onlyBuildings = false);
-
+        private static readonly CultureInfo CI = CultureInfo.InvariantCulture;
 
         public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool pathIsContents = false)
         {
@@ -50,7 +50,6 @@
             double currentLat = 0;
             double currentLon = 0;
             var currentNodeMetaData = new Dictionary<string, string>();
-            var ci = CultureInfo.InvariantCulture;
             var xli = (IXmlLineInfo)reader; // Used to track read progress
             var nodesCollected = 0;
 
@@ -63,12 +62,12 @@
                     if (reader.Name == "node")
                     {
                         currentNodeId = reader.GetAttribute("id");
-                        currentLat = Convert.ToDouble(reader.GetAttribute("lat"));
-                        currentLon = Convert.ToDouble(reader.GetAttribute("lon"));
+                        currentLat = Convert.ToDouble(reader.GetAttribute("lat"), CI);
+                        currentLon = Convert.ToDouble(reader.GetAttribute("lon"), CI);
                     }
                     else if (reader.Name == "tag")
                     {
-                        currentNodeMetaData[reader.GetAttribute("k").ToLower(ci)] = reader.GetAttribute("v");
+                        currentNodeMetaData[reader.GetAttribute("k").ToLower(CI)] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "way")
                     {
@@ -93,7 +92,6 @@
             var currentWayNodes = new List<Coord>();
             var allNodes = new Dictionary<string, Coord>();
             var inANode = false; // Only needed for ways
-            var ci = CultureInfo.InvariantCulture;
             var xli = (IXmlLineInfo)reader; // Used to track read progress
             var waysCollected = 0;
 
@@ -110,8 +108,8 @@
                     {
                         var nodeId = reader.GetAttribute("id");
                         allNodes[nodeId] = new Coord(
-                            Convert.ToDouble(reader.GetAttribute("lat")),
-                            Convert.ToDouble(reader.GetAttribute("lon")));
+                            Convert.ToDouble(reader.GetAttribute("lat"), CI),
+                            Convert.ToDouble(reader.GetAttribute("lon"), CI));
                     }
                     else if (inANode && reader.Name == "nd")
                     {
@@ -120,7 +118,7 @@
                     }
                     else if (inANode && reader.Name == "tag")
                     {
-                        currentWayMetaData[reader.GetAttribute("k").ToLower(ci)] = reader.GetAttribute("v");
+                        currentWayMetaData[reader.GetAttribute("k").ToLower(CI)] = reader.GetAttribute("v");
                     }
                     else if (reader.Name == "relation")
                     {
@@ -185,10 +183,10 @@
                     {
                         if (reader.Name == "bounds")
                         {
-                            var minLat = Convert.ToDouble(reader.GetAttribute("minlat"));
-                            var minLon = Convert.ToDouble(reader.GetAttribute("minlon"));
-                            var maxLat = Convert.ToDouble(reader.GetAttribute("maxlat"));
-                            var maxLon = Convert.ToDouble(reader.GetAttribute("maxlon"));
+                            var minLat = Convert.ToDouble(reader.GetAttribute("minlat"), CI);
+                            var minLon = Convert.ToDouble(reader.GetAttribute("minlon"), CI);
+                            var maxLat = Convert.ToDouble(reader.GetAttribute("maxlat"), CI);
+                            var maxLon = Convert.ToDouble(reader.GetAttribute("maxlon"), CI);
                             var bounds = new Tuple<Coord, Coord>(new Coord(minLat, minLon), new Coord(maxLat, maxLon));
                             result.AllBounds.Add(bounds);
 

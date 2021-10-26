@@ -79,7 +79,7 @@ jobs:
     - name: Push Rhino 7 version to YAK
       run: |
         $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
-        $yakRh7Name =  $yakCurrentVersName -Replace "rh6_16", "rh7_0"
+        $yakRh7Name =  $yakCurrentVersName -Replace "rh6_10", "rh7_0"
         echo $yakRh7Name
         Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
         .\yak.exe push $yakRh7Name

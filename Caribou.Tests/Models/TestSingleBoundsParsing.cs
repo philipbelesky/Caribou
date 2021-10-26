@@ -1,5 +1,7 @@
 ﻿namespace Caribou.Tests.Models
 {
+    using System.Globalization;
+    using System.Threading;
     using Caribou.Models;
     using Caribou.Tests.Cases;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +17,38 @@
         [TestMethod]
         public void ParseBoundsViaXMLReader()
         {
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
+            CheckResult();
+        }
+
+        [TestMethod]
+        public void ParseBoundsViaXMLReaderLocaleA()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
+            CheckResult();
+        }
+
+        [TestMethod]
+        public void ParseBoundsViaXMLReaderLocaleB()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
+            CheckResult();
+        }
+
+        [TestMethod]
+        public void ParseBoundsViaXMLReaderLocaleC()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("it-IT", false);
+            Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
+            CheckResult();
+        }
+
+        [TestMethod]
+        public void ParseBoundsViaXMLReaderLocaleD()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-Hans", false);
             Caribou.Processing.ParseViaXMLReader.GetBounds(ref results, true);
             CheckResult();
         }
