@@ -20,7 +20,11 @@ Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing dow
 
 Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*) or on [Food4Rhino](https://www.food4rhino.com/en/app/caribou?lang=en). If installing via the Package Manager, please ensure you fully quit/restart Rhinoceros after installing.
 
-## Setup and Use
+## Setup and Use (Video)
+
+<iframe width="832" height="468" src="https://www.youtube.com/embed/bK2gNkipJ_4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Setup and Use (Instructions)
 
 ### Downloading Open Street Map data
 
@@ -50,7 +54,7 @@ Regardless of the type of `Extract` component you are using, the workflow is the
 
 ![A minimum viable definition](/assets/minimum-viable-definition.png)
 
-[Download the minimal example definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/examples/Caribou%20-%20Simple%20Example.ghx)
+[Download the minimal example definition](https://raw.githubusercontent.com/philipbelesky/Caribou/develop/Grasshopper%20Examples/Caribou%20-%20Simple%20Example.ghx)
 
 ### Non-Geometry Outputs
 
@@ -121,7 +125,7 @@ addr:suburb=Te Aro
 
 ### Previewing, Baking, Filtering, and Labeling Geometry
 
-You can download [this definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/examples/Caribou%20-%20Extensions%20Example.ghx) to see examples of how to:
+You can download [this definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/Grasshopper%20Examples/Caribou%20-%20Extensions%20Example.ghx) to see examples of how to:
 
 1. Color the geometry in Grasshopper according to it's feature/subfeature types.
 2. Display a legend in Rhino with the above color codes for features/subfeatures.
