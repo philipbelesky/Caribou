@@ -24,6 +24,8 @@ Caribou is available to download via the [Rhino Package Manager](https://www.rhi
 
 <iframe width="832" height="468" src="https://www.youtube.com/embed/bK2gNkipJ_4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+<iframe width="832" height="468" src="https://www.youtube.com/embed/JuuEoGWdF0I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Setup and Use (Instructions)
 
 ### Downloading Open Street Map data
