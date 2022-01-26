@@ -46,29 +46,33 @@
         {
             double parsedHeight;
 
-            if (heightKey.Contains('\'') || heightKey.Contains('\"')) // Imperial is valid per OSM
+            try
             {
-                string rawFeet = heightKey.Split('\'')[0].Trim();
-                string remainingHeight = heightKey.Replace('\'', ' ').Replace(heightKey.Split('\'')[0], "");
+                if (heightKey.Contains('\'') || heightKey.Contains('\"')) // Imperial is valid per OSM
+                {
+                    string rawFeet = heightKey.Split('\'')[0].Trim();
+                    string remainingHeight = heightKey.Replace('\'', ' ').Replace(heightKey.Split('\'')[0], "");
 
-                string rawInches;
-                if (remainingHeight.Contains('\"'))
-                    rawInches = remainingHeight.Split('\"')[0].Trim();
+                    string rawInches;
+                    if (remainingHeight.Contains('\"'))
+                        rawInches = remainingHeight.Split('\"')[0].Trim();
+                    else
+                        rawInches = "0";
+
+                    parsedHeight = (int.Parse(rawFeet) * FT_TO_M) + (int.Parse(rawInches) * INCHES_TO_M);
+                }
                 else
-                    rawInches = "0";
-
-                parsedHeight = (int.Parse(rawFeet) * FT_TO_M) + (int.Parse(rawInches) * INCHES_TO_M);
+                {
+                    var rawHeight = heightKey.Replace("m", "").Trim();
+                    parsedHeight = Double.Parse(rawHeight);
+                }
             }
-            else
+            catch
             {
-                var rawHeight = heightKey.Replace("m", "").Trim();
-                parsedHeight = Double.Parse(rawHeight);
+                return 0.0;
             }
 
-            if (parsedHeight > 0)
-                return parsedHeight;
-
-            return 0.0;
+            return parsedHeight;
         }
 
         static double GetSanitisedLevels(string levelKey)
@@ -76,7 +80,15 @@
             var rawLevels = levelKey.Trim();
             if (IsDigitsOnly(rawLevels))
             {
-                return Double.Parse(rawLevels) * METERS_PER_LEVEL;
+                try
+                {
+                    var height = Double.Parse(rawLevels) * METERS_PER_LEVEL;
+                    return height;
+                }
+                catch
+                {
+                    return 0.0;
+                }
             }
 
             return 0.0;

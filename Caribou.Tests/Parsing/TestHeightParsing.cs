@@ -8,7 +8,7 @@
     public class TestHeightParsing
     {
         [TestMethod]
-        public void TestHeighTagOptions()
+        public void TestValidHeighTagOptions()
         {
             var mPerL = GetBuildingHeights.METERS_PER_LEVEL;
 
@@ -39,6 +39,19 @@
             var i = new Dictionary<string, string>() { { "height", "11' 4\"" } };
             var expected = (11 * GetBuildingHeights.FT_TO_M) + (4 * GetBuildingHeights.INCHES_TO_M);
             Assert.AreEqual(GetBuildingHeights.ParseHeight(i, 1), expected);
+
+            var j = new Dictionary<string, string>() { { "height", "15 m'" } };
+            Assert.AreEqual(GetBuildingHeights.ParseHeight(h, 1), 15 * mPerL);
+        }
+
+        [TestMethod]
+        public void TestInValidHeighTagOptions()
+        {
+            var a = new Dictionary<string, string>() { { "building:height", "xyz" } };
+            Assert.AreEqual(GetBuildingHeights.ParseHeight(a, 1), 0.0);
+
+            var b = new Dictionary<string, string>() { { "height", "0.5;25" } };
+            Assert.AreEqual(GetBuildingHeights.ParseHeight(b, 1), 0.0);
         }
     }
 }
