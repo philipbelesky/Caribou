@@ -125,6 +125,14 @@ building:levels=4
 addr:suburb=Te Aro
 ```
 
+### Filtering Arbitrary Metadata
+
+Once data has been parsed using the *Extract Nodes/Ways/Buildings* component, all of the tags present across all items can be viewed and filtered using a *Filter Tags* component. This component takes as inputs the items (e.g. `Node/Ways/Buildings`) and `Tags` outputs from any of the *Extract* components.
+
+Clicking the *Filter Tags* button will then bring up the style of window presented by the *Specify Features* component. However, it will show all tags present in the provided items — both features/subfeatures but also all other forms of tags. You can use successive *Filter Tags* components to perform GIS-style queries that look for the presence/absence of different types of tags.
+
+![The Tag filtering UI](/assets/tag-filtering.png)
+
 ### Previewing, Baking, Filtering, and Labeling Geometry
 
 You can download [this definition](https://raw.githubusercontent.com/philipbelesky/Caribou/main/Grasshopper%20Examples/Caribou%20-%20Extensions%20Example.ghx) to see examples of how to:
