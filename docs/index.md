@@ -8,7 +8,7 @@ Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing dow
 
 ## Features
 
-- ✅ Windows and MacOS are both fully supported on Rhino 6 and Rhino 7
+- ✅ Windows and MacOS are both fully supported on Rhino 6, 7, and 8
 - ✅ Very fast parsing of even very large files
 - ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
 - ✅ Parsing is performed asynchronously so Grasshopper remains responsive
@@ -18,7 +18,9 @@ Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing dow
 
 ## Installation
 
-Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*) or on [Food4Rhino](https://www.food4rhino.com/en/app/caribou?lang=en). If installing via the Package Manager, please ensure you fully quit/restart Rhinoceros after installing.
+Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*). If you are on Rhinoceros 6, note that the Package Manager needs to be loaded with the `TestPackageManager` command.
+
+When installing via the Package Manager, please ensure you fully restart all running copies of Rhinoceros after installing.
 
 ## Setup and Use (Video)
 
@@ -124,6 +126,14 @@ cuisine=mexican
 building:levels=4
 addr:suburb=Te Aro
 ```
+
+### Filtering Arbitrary Metadata
+
+Once data has been parsed using the *Extract Nodes/Ways/Buildings* component, all of the tags present across all items can be viewed and filtered using a *Filter Tags* component. This component takes as inputs the items (e.g. `Node/Ways/Buildings`) and `Tags` outputs from any of the *Extract* components.
+
+Clicking the *Filter Tags* button will then bring up the style of window presented by the *Specify Features* component. However, it will show all tags present in the provided items — both features/subfeatures but also all other forms of tags. You can use successive *Filter Tags* components to perform GIS-style queries that look for the presence/absence of different types of tags.
+
+![The Tag filtering UI](/assets/tag-filtering.png)
 
 ### Previewing, Baking, Filtering, and Labeling Geometry
 

@@ -86,3 +86,15 @@ jobs:
       working-directory: ${{ env.Release_File_Path }}
       env:
         YAK_TOKEN: ${{ secrets.YAK_TOKEN }}
+
+    # Rename the distribution tag to enable Rhino8 support
+    - name: Push Rhino 8 version to YAK
+      run: |
+        $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
+        $yakRh8Name =  $yakCurrentVersName -Replace "rh6_10", "rh8_0"
+        echo $yakRh8Name
+        Rename-Item -Path $yakCurrentVersName -NewName $yakRh8Name
+        .\yak.exe push $yakRh8Name
+      working-directory: ${{ env.Release_File_Path }}
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_TOKEN }}
