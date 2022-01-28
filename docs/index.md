@@ -8,7 +8,7 @@ Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing dow
 
 ## Features
 
-- ✅ Windows and MacOS are both fully supported on Rhino 6 and Rhino 7
+- ✅ Windows and MacOS are both fully supported on Rhino 6, 7, and 8
 - ✅ Very fast parsing of even very large files
 - ✅ Data-rich GUI interface provided for understanding and filtering OSM metadata
 - ✅ Parsing is performed asynchronously so Grasshopper remains responsive
@@ -18,7 +18,9 @@ Caribou is a [Grasshopper](https://www.grasshopper3d.com) plugin for parsing dow
 
 ## Installation
 
-Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*) or on [Food4Rhino](https://www.food4rhino.com/en/app/caribou?lang=en). If installing via the Package Manager, please ensure you fully quit/restart Rhinoceros after installing.
+Caribou is available to download via the [Rhino Package Manager](https://www.rhino3d.com/features/package-manager/) (search *"Caribou"*). If you are on Rhinoceros 6, note that the Package Manager needs to be loaded with the `TestPackageManager` command.
+
+When installing via the Package Manager, please ensure you fully restart all running copies of Rhinoceros after installing.
 
 ## Setup and Use (Video)
 
