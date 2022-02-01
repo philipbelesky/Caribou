@@ -22,7 +22,7 @@
         protected bool ProvidedNodes; // Tracking if provided data is points or curves/breps
 
         public PickTagsComponent() : base("Filter Tags", "OSM Filter",
-            "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Select")
+            "Provides a graphical interface of OSM features to filter the results of an Extract component based on common tags.", "Pick")
         {
             this.selectableOSMs = null; // Set during solve
         }

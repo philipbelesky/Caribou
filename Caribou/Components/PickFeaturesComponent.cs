@@ -10,7 +10,7 @@
     public class PickFeaturesComponent : BasePickComponent
     {
         public PickFeaturesComponent() : base("Specify Features", "OSM Specify",
-            "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Select")
+            "Provides a graphical interface to specify a list of OSM features that the Extract components will then find.", "Pick")
         {            
             this.selectableOSMs = OSMPrimaryTypes.GetTreeCollection(); // Setup form-items for tags provided and parsed into OSM/Form objects
         }
