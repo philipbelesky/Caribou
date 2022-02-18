@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <VersionPrefix>0.13.3</VersionPrefix>
+    <VersionPrefix>0.13.5</VersionPrefix>
     <VersionSuffix>beta</VersionSuffix>
     <Title>Caribou</Title>
     <Description>Description of Caribou</Description>
@@ -13,9 +13,9 @@
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://philipbelesky.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/philipbelesky/Caribou</RepositoryUrl>
-    <AssemblyVersion>0.13.3.0</AssemblyVersion>
-    <FileVersion>0.13.3.0</FileVersion>
-    <Version>0.13.3-beta</Version>
+    <AssemblyVersion>0.13.5.0</AssemblyVersion>
+    <FileVersion>0.13.5.0</FileVersion>
+    <Version>0.13.5-beta</Version>
   </PropertyGroup>
 
   <!--NUGET-->
