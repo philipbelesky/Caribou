@@ -8,6 +8,9 @@
 
     public static class TranslateToXYManually
     {
+        // The largest 'gap' size that will attempted to be automatically closed to try and make closed curves for buildings
+        static double ALLOWABLE_CLOSURE = 1.0 * RhinoMath.UnitScale(UnitSystem.Meters, RhinoDoc.ActiveDoc.ModelUnitSystem);
+            
         public static Dictionary<OSMTag, List<Point3d>> NodePointsFromCoords(RequestHandler result)
         {
             var geometryResult = new Dictionary<OSMTag, List<Point3d>>();
@@ -71,6 +74,18 @@
                         outlinePoints.Add(GetPointFromLatLong(coord, lengthPerDegree, result.MinBounds));
 
                     var outline = new PolylineCurve(outlinePoints); // Creating a polylinecurve from scratch makes invalid geometry
+                    if (!outline.IsClosed)
+                    {
+                        if (outline.IsClosable(ALLOWABLE_CLOSURE)) // Force-close the curve
+                        {
+                            outline.MakeClosed(ALLOWABLE_CLOSURE); 
+                        }
+                        else // Skip this curve as no valid Brep can be made
+                        {
+                            entry.Value.RemoveAt(i); 
+                            continue;
+                        }
+                    }
 
                     var height = GetBuildingHeights.ParseHeight(entry.Value[i].Tags, unitScale);
                     if (outputHeighted && height > 0.0) // Output heighted buildings
