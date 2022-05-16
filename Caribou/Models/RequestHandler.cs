@@ -60,12 +60,6 @@
             }
         }
 
-        public void AddBuildingIfMatchesRequest(string nodeId, Dictionary<string, string> nodeTags, List<Coord> coords)
-        {
-            if (nodeTags.ContainsKey("building"))
-                AddWayIfMatchesRequest(nodeId, nodeTags, coords);
-        }
-
         public void AddNodeIfMatchesRequest(string nodeId, Dictionary<string, string> nodeTags, double lat, double lon)
         {
             var matches = RequestsThatWantItem(nodeId, nodeTags);

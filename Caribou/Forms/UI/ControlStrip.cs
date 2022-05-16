@@ -18,6 +18,18 @@
             return showHideMinorFeatures;
         }
 
+        public static Button GetSelectBuildings(int buttonWidth, int buttonHeight, Action selectBuildings)
+        {
+            var allButton = new Button()
+            {
+                Text = "🏙 Select Buildings",
+                Width = buttonWidth,
+                Height = buttonHeight,
+            };
+            allButton.Click += (sender, e) => { selectBuildings(); };
+            return allButton;
+        }
+
         public static Button GetSelectAll(int buttonWidth, int buttonHeight, Action selectAll)
         {
             var allButton = new Button()

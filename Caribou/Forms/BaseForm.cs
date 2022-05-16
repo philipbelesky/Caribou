@@ -46,13 +46,15 @@
             this.topButtons.BeginHorizontal();
             AddCustomButtonsToTop();
             this.topButtons.Add(null);
-            this.topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
-            this.topButtons.Add(new Label() { Width = 10 });
-            this.topButtons.Add(ControlStrip.GetCollapseAll(buttonWidth - 90, buttonHeight, CollapseAll));
+            this.topButtons.Add(ControlStrip.GetSelectBuildings(buttonWidth - 60, buttonHeight, SelectBuildings));
             this.topButtons.Add(new Label() { Width = 10 });
             this.topButtons.Add(ControlStrip.GetSelectAll(buttonWidth - 90, buttonHeight, SelectAll));
             this.topButtons.Add(new Label() { Width = 10 });
             this.topButtons.Add(ControlStrip.GetSelectNone(buttonWidth - 90, buttonHeight, SelectNone));
+            this.topButtons.Add(new Label() { Width = 10 });
+            this.topButtons.Add(ControlStrip.GetExpandAll(buttonWidth - 90, buttonHeight, ExpandAll));
+            this.topButtons.Add(new Label() { Width = 10 });
+            this.topButtons.Add(ControlStrip.GetCollapseAll(buttonWidth - 90, buttonHeight, CollapseAll));
             this.topButtons.EndHorizontal();
 
             this.bottomButtons = new DynamicLayout();
@@ -104,10 +106,58 @@
         }
 
         #region Interaction Handlers
+        protected void SelectBuildings() => this.SetBuildings();
         protected void SelectAll() => this.SetSelection("True");
         protected void SelectNone() => this.SetSelection("False");
         protected void ExpandAll() => this.SetRollout(true);
         protected void CollapseAll() => this.SetRollout(false);
+
+        private void SetBuildings()
+        {
+            var buildingValuesToMatchElsewhere = new List<string>();
+            foreach (TreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
+            {
+                if (item.GetValue(0) as string == "Building")
+                {
+                    item.SetValue(1, "True");
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        childItem.SetValue(1, "True");
+                        buildingValuesToMatchElsewhere.Add(childItem.GetValue(0) as string);
+                    }
+                }
+            }
+
+            // Items are often noted without building tags but with equivalent tags like landuse=residential or amenity=hospital
+            // Instead of building=hospital or building=residential
+            // To match these, search for values within the landuse/amenity keys that are also used as building values
+            foreach (TreeGridItem item in this.mainRow.viewForm.DataStore as TreeGridItemCollection)
+            { 
+                if (item.GetValue(0) as string == "Landuse")
+                {
+                    item.SetValue(1, "True");
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        if (buildingValuesToMatchElsewhere.Contains(childItem.GetValue(0)))
+                        {
+                            childItem.SetValue(1, "True");
+                        }
+                    }
+                }
+                if (item.GetValue(0) as string == "Amenity")
+                {
+                    item.SetValue(1, "True");
+                    foreach (TreeGridItem childItem in item.Children)
+                    {
+                        if (buildingValuesToMatchElsewhere.Contains(childItem.GetValue(0)))
+                        {
+                            childItem.SetValue(1, "True");
+                        }
+                    }
+                }
+            }
+            this.mainRow.viewForm.ReloadData();
+        }
 
         private void SetSelection(string boolAsString)
         {

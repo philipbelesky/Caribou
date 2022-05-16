@@ -12,16 +12,12 @@
     /// </summary>
     public static class ParseViaXMLReader
     {
-        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, 
-                                               int fileIndex, bool onlyBuildings = false);
+        private delegate void DispatchDelegate(XmlReader reader, ref RequestHandler request, int fileIndex);
         private static readonly CultureInfo CI = CultureInfo.InvariantCulture;
 
         public static void FindItemsByTag(ref RequestHandler request, OSMGeometryType typeToFind, bool pathIsContents = false)
         {
             var dispatchForType = GetDispatchForType(typeToFind);
-            bool onlyBuildings = false;
-            if (typeToFind == OSMGeometryType.Building)
-                onlyBuildings = true;
 
             GetBounds(ref request, pathIsContents);
             for (var i = 0; i < request.XmlPaths.Count; i++)
@@ -31,7 +27,7 @@
                 {
                     using (XmlReader reader = XmlReader.Create(new StringReader(xmlPath)))
                     {
-                        dispatchForType(reader, ref request, i, onlyBuildings); // Only used in testing
+                        dispatchForType(reader, ref request, i); // Only used in testing
                     }
                 }
                 else
@@ -44,7 +40,7 @@
             }
         }
 
-        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
+        public static void FindNodesInXML(XmlReader reader, ref RequestHandler request, int fileIndex)
         {
             string currentNodeId = "";
             double currentLat = 0;
@@ -85,7 +81,7 @@
             }
         }
 
-        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, int fileIndex, bool onlyBuildings)
+        public static void FindWaysInXML(XmlReader reader, ref RequestHandler request, int fileIndex)
         {
             string currentWayId = "";
             var currentWayMetaData = new Dictionary<string, string>();
@@ -131,10 +127,7 @@
                     if (reader.Name == "way") // Closing out a way tag
                     {
                         // If finished looping over a prior node
-                        if (onlyBuildings) 
-                            request.AddBuildingIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes); 
-                        else
-                            request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
+                        request.AddWayIfMatchesRequest(currentWayId, currentWayMetaData, currentWayNodes);
 
                         waysCollected += 1;
                         if (waysCollected % 2000 == 0)
@@ -153,7 +146,7 @@
             DispatchDelegate dispatchForType;
             if (typeToFind == OSMGeometryType.Node)
                 dispatchForType = FindNodesInXML;
-            else if (typeToFind == OSMGeometryType.Way || typeToFind == OSMGeometryType.Building)
+            else if (typeToFind == OSMGeometryType.Way)
                 dispatchForType = FindWaysInXML;
             else
                 dispatchForType = null; // Necessary to prevent below paths thinking variable not set
