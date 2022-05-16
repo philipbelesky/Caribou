@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public static class GetBuildingHeights
+    public static class InterpretHeights
     {
         public const double METERS_PER_LEVEL = 3.0;
         public const double FT_TO_M = 0.3048;

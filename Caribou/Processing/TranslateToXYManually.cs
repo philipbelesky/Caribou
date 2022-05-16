@@ -87,7 +87,7 @@
                         }
                     }
 
-                    var height = GetBuildingHeights.ParseHeight(entry.Value[i].Tags, unitScale);
+                    var height = InterpretHeights.ParseHeight(entry.Value[i].Tags, unitScale);
                     if (outputHeighted && height > 0.0) // Output heighted buildings
                     {
                         var toHeight = new Vector3d(0, 0, height);

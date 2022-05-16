@@ -63,7 +63,7 @@ namespace Caribou.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons_buildings {
+        internal static System.Drawing.Bitmap icons_volumes {
             get {
                 object obj = ResourceManager.GetObject("icons_buildings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

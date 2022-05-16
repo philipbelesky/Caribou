@@ -10,17 +10,17 @@
     using Rhino.Geometry;
 
     /// <summary>Asynchronous task to identify and output all OSM nodes as Points for a given request.</summary>
-    public class ParseBuildingsWorker : BaseLoadAndParseWorker
+    public class ParseVolumesWorker : BaseLoadAndParseWorker
     {
-        private GH_Structure<GH_Brep> buildingOutputs = new GH_Structure<GH_Brep>();
-        private Dictionary<OSMTag, List<Brep>> foundBuildings;
+        private GH_Structure<GH_Brep> volumeOutputs = new GH_Structure<GH_Brep>();
+        private Dictionary<OSMTag, List<Brep>> foundVolumes;
         private bool outputHeighed;
 
         protected override OSMGeometryType WorkerType() {
-            return OSMGeometryType.Building;
+            return OSMGeometryType.Way;
         }
 
-        public ParseBuildingsWorker(GH_Component parent)
+        public ParseVolumesWorker(GH_Component parent)
             : base(parent) // Pass parent component back to base class so state (e.g. remarks) can bubble up
         {
         }
@@ -31,26 +31,26 @@
             da.GetData(2, ref this.outputHeighed);
         }
 
-        public override WorkerInstance Duplicate() => new ParseBuildingsWorker(this.Parent);
+        public override WorkerInstance Duplicate() => new ParseVolumesWorker(this.Parent);
 
         public override void MakeGeometryForComponentType()
         {
             // Translate OSM nodes to Rhino Surfaces
-            this.foundBuildings = TranslateToXYManually.BuildingBrepsFromCoords(ref this.result, this.outputHeighed);
+            this.foundVolumes = TranslateToXYManually.BuildingBrepsFromCoords(ref this.result, this.outputHeighed);
         }
 
         public override void GetTreeForComponentType()
         {
-            this.buildingOutputs = TreeFormatters.MakeTreeForBuildings(this.foundBuildings);
+            this.volumeOutputs = TreeFormatters.MakeTreeForBuildings(this.foundVolumes);
         }
 
         public override void OutputTreeForComponentType(IGH_DataAccess da)
         {
-            if (this.buildingOutputs != null)
-                da.SetDataTree(0, this.buildingOutputs);
-                if (this.buildingOutputs.DataCount == 0)
+            if (this.volumeOutputs != null)
+                da.SetDataTree(0, this.volumeOutputs);
+                if (this.volumeOutputs.DataCount == 0)
                     this.RuntimeMessages.Add(new Message(
-                        "No buildings were found with the specified features or tags.",
+                        "No volumes were found with the specified features or tags.",
                         Message.Level.Warning));
         }
     }

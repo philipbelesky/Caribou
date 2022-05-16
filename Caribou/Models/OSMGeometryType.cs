@@ -10,6 +10,5 @@
     {
         Node,
         Way,
-        Building
     }
 }
